@@ -6,7 +6,12 @@ README - ORGANISATION DES DOCUMENTS SUR GOOGLE DRIVE
 ====================================================
 
 Date de dernière mise à jour : 21 septembre 2025
-Contact : cchrisrock98gmail.com
+Contact : `jbmouyabi@iutbayonne.univ-pau.fr`
+          `ccurra@iutbayonne.univ-pau.fr`	   
+          `tdidelot@iutbayonne.univ-pau.fr`
+          `ehoarau003@iutbayonne.univ-pau.fr`
+          `adrbatalla@iutbayonne.univ-pau.fr`
+          `rteisseir001@iutbayonne.univ-pau.fr`
 
 ----------------------------------------------------
 1. OBJET DE CE DOCUMENT
