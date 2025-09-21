@@ -42,6 +42,5 @@ Dans chaque dossier de projet, vous trouverez la structure standard suivante :
 6. QUESTIONS ET SUPPORT
 ----------------------------------------------------
 
-====================================================
-FIN DU DOCUMENT
-====================================================
+=================FIN DU DOCUMENT====================
+
