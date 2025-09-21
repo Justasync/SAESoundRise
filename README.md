@@ -25,10 +25,10 @@ Le Google Drive est organisé hiérarchiquement, en commençant par les dossiers
 
 3.1. 01. Projets Actifs
 ----------------------------------------------------
-Ce dossier contient des sous-dossiers pour chaque projet actif. La convention de nommage pour les sous-dossiers de projets est : `[Code_Projet] - [Nom_Projet]`.
+Ce dossier contient des sous-dossiers pour chaque projet actif. La convention de nommage pour les sous-dossiers de projets est : `[]`.
 
 Dans chaque dossier de projet, vous trouverez la structure standard suivante :
-    *   **01. Planification :** Propositions, calendriers, plans de travail, procès-verbaux des réunions initiales.
+    *   **01. Planification :** Example: '[Propositions, calendriers, plans de travail, procès-verbaux des réunions initiales.]'
 
 ----------------------------------------------------
 4. CONVENTIONS DE NOMMAGE DES FICHIERS
