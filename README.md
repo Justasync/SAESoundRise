@@ -5,7 +5,7 @@ Code Source du Projet SAE
 README - ORGANISATION DES DOCUMENTS SUR GOOGLE DRIVE
 ====================================================
 
-Date de dernière mise à jour : 21 septembre 2025
+Date de dernière mise à jour : 21 septembre 2025<br>
 Contact : `jbmouyabi@iutbayonne.univ-pau.fr`<br>
           `ccurra@iutbayonne.univ-pau.fr`<br>	   
           `tdidelot@iutbayonne.univ-pau.fr`<br>
