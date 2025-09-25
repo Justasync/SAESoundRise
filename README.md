@@ -2,7 +2,7 @@
 
 Code Source du Projet SAE
 ====================================================
-README - ORGANISATION DES DOCUMENTS SUR GOOGLE DRIVE
+README - ORGANISATION DES DOCUMENTS SUR GITHUB
 ====================================================
 
 Date de dernière mise à jour : 24 septembre 2025<br>
