@@ -1,88 +1,135 @@
+<!--
+  Fichier : pageTransparence.html
+  Auteurs : Hoarau Erwan
+            Didelot Tim
+  Date : 24/09/2025
+  Description : Page des mentions légales pour le site web de l'entreprise.
+-->
 <!doctype html>
 <html lang="fr">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R5W07VVCNF"></script>
-    <script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-R5W07VVCNF"></script>
+  <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-R5W07VVCNF');
-    </script>
+  </script>
 
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title>Mentions légales — Nom de l'entreprise</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Mentions légales — SoundRise</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 </head>
 <body>
-  <h1>Mentions légales</h1>
 
-  <section id="editeur">
-    <h2>Éditeur du site</h2>
-    <p>Le site <strong>nomdusite.fr</strong> est édité par :</p>
-    <dl>
-      <dt>Dénomination / Nom :</dt><dd>SARL SoundRise</dd>
-      <dt>Forme juridique :</dt><dd>SARL</dd>
-      <dt>Capital social :</dt><dd>10 000 €</dd>
-      <dt>Siège social / adresse :</dt><dd>IUT de Bayonne et du Pays Basque, Anglet</dd>
-      <dt>Numéro SIREN / SIRET :</dt><dd>123 456 789</dd>
-      <dt>Numéro RCS (s'il y a lieu) :</dt><dd>RCS PARIS B 123 456 789 </dd>
-      <dt>Numéro TVA intracommunautaire (si applicable) :</dt><dd>FR12 345678901</dd>
-    </dl>
-  </section>
+  <div class="container py-5">
+    <h1 class="mb-4 text-center text-light">Mentions légales</h1>
 
-  <section id="responsable">
-    <h2>Responsable(s)</h2>
-    <p><strong>Directeur de la publication :</strong> David Angel</p>
-    <p><strong>Responsable de la rédaction :</strong> N/A</p>
-  </section>
+    <!-- Éditeur -->
+    <section id="editeur" class="card mb-4 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title h4">Éditeur du site</h2>
+        <p>Le site <strong>soundrise.eu</strong> est édité par :</p>
+        <dl class="row">
+          <dt class="col-sm-4">Dénomination / Nom :</dt><dd class="col-sm-8">SARL SoundRise</dd>
+          <dt class="col-sm-4">Forme juridique :</dt><dd class="col-sm-8">SARL</dd>
+          <dt class="col-sm-4">Capital social :</dt><dd class="col-sm-8">100 000 €</dd>
+          <dt class="col-sm-4">Siège social :</dt><dd class="col-sm-8">IUT de Bayonne et du Pays Basque, Anglet</dd>
+          <dt class="col-sm-4">Numéro SIREN / SIRET :</dt><dd class="col-sm-8">123 456 789</dd>
+          <dt class="col-sm-4">Numéro RCS :</dt><dd class="col-sm-8">RCS PARIS B 123 456 789</dd>
+          <dt class="col-sm-4">Numéro TVA :</dt><dd class="col-sm-8">FR12 345678901</dd>
+        </dl>
+      </div>
+    </section>
 
-  <section id="contact">
-    <h2>Contact</h2>
-    <p>Pour toute question : </p>
-    <ul>
-      <li>Email : <a href="mailto:contact@nomdusite.fr">contact@soundrise.fr</a></li>
-      <li>Téléphone : 01.23.45.67.89</li>
-    </ul>
-  </section>
+    <!-- Responsable -->
+    <section id="responsable" class="card mb-4 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title h4">Responsable(s)</h2>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><strong>Directeur de la publication :</strong> David Angel </li>
+          <li class="list-group-item"><strong>Responsable de la rédaction :</strong> N/A </li>
+        </ul>
+      </div>
+    </section>
 
-  <section id="hebergeur">
-    <h2>Hébergeur</h2>
-    <p>Le site est hébergé par :</p>
-    <dl>
-      <dt>Nom / Raison sociale :</dt><dd>lakartxela</dd>
-      <dt>Adresse :</dt><dd>IUT de Bayonne et du Pays Basque, Anglet</dd>
-      <dt>Téléphone :</dt><dd>05.59.57.43.27</dd>
-    </dl>
-  </section>
+    <!-- Contact -->
+    <section id="contact" class="card mb-4 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title h4">Contact</h2>
+        <p>Pour toute question :</p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Email : <a href="mailto:contact@soundrise.eu">contact@soundrise.eu</a></li>
+          <li class="list-group-item">Téléphone : 01.23.45.67.89</li>
+        </ul>
+      </div>
+    </section>
 
-  <section id="donnees">
-    <h2>Données personnelles & RGPD</h2>
-    <p>Le responsable du traitement des données collectées sur ce site est : SoundRise.</p>
-    <p>Pour en savoir plus sur le traitement des données (finalités, durées de conservation, droits des personnes, contact DPO le cas échéant), consultez notre <a href="/politique-de-confidentialite">Politique de confidentialité</a>.</p>
-  </section>
+    <!-- Hébergeur -->
+    <section id="hebergeur" class="card mb-4 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title h4">Hébergeur</h2>
+        <dl class="row">
+          <dt class="col-sm-4">Nom / Raison sociale :</dt><dd class="col-sm-8">lakartxela</dd>
+          <dt class="col-sm-4">Adresse :</dt><dd class="col-sm-8">IUT de Bayonne et du Pays Basque, Anglet</dd>
+          <dt class="col-sm-4">Téléphone :</dt><dd class="col-sm-8">05.59.57.43.20</dd>
+        </dl>
+      </div>
+    </section>
 
-  <section id="propriete">
-    <h2>Propriété intellectuelle</h2>
-    <p>Tous les contenus présents sur ce site (textes, images, logos, etc.) sont protégés par le droit d'auteur. Toute reproduction totale ou partielle est interdite sans autorisation.</p>
-  </section>
+    <!-- Données -->
+    <section id="donnees" class="card mb-4 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title h4">Données personnelles & RGPD</h2>
+        <p>Le responsable du traitement des données collectées sur ce site est : <strong>SoundRise</strong>.</p>
+        <p>Pour en savoir plus, consultez notre 
+          <a href="/politique-de-confidentialite" class="link-primary">Politique de confidentialité</a>.
+        </p>
+      </div>
+    </section>
 
-  <section id="responsabilite">
-    <h2>Limitation de responsabilité</h2>
-    <p>Les informations fournies sur ce site le sont à titre informatif. L'éditeur s'efforce d'assurer l'exactitude des informations mais ne saurait garantir qu'elles sont complètes et à jour. L'utilisation du site se fait à vos risques et périls.</p>
-  </section>
+    <!-- Propriété intellectuelle -->
+    <section id="propriete" class="card mb-4 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title h4">Propriété intellectuelle</h2>
+        <p>Tous les contenus présents sur ce site (textes, images, logos, etc.) sont protégés par le droit d'auteur. 
+        Toute reproduction totale ou partielle est interdite sans autorisation.</p>
+      </div>
+    </section>
 
-  <section id="cookies">
-    <h2>Cookies</h2>
-    <p>Ce site utilise des cookies. Pour en savoir plus et paramétrer vos choix, consultez notre <a href="/cookies">politique de cookies</a>.</p>
-  </section>
+    <!-- Responsabilité -->
+    <section id="responsabilite" class="card mb-4 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title h4">Limitation de responsabilité</h2>
+        <p>Les informations fournies sur ce site le sont à titre informatif. 
+        L'éditeur s'efforce d'assurer l'exactitude des informations mais ne saurait garantir qu'elles sont complètes et à jour. 
+        L'utilisation du site se fait à vos risques et périls.</p>
+      </div>
+    </section>
 
-  <footer class="small">
-    <p>Dernière mise à jour : 24/09/2025</p>
-    <p>Mentions légales conformes à la loi pour la confiance dans l'économie numérique (LCEN) et aux recommandations CNIL. Pour plus d'infos : <a href="https://www.service-public.fr">service-public.fr</a></p>
-  </footer>
+    <!-- Cookies -->
+    <section id="cookies" class="card mb-4 shadow-sm">
+      <div class="card-body">
+        <h2 class="card-title h4">Cookies</h2>
+        <p>Ce site utilise des cookies. Pour en savoir plus et paramétrer vos choix, 
+          consultez notre <a href="/cookies" class="link-primary">politique de cookies</a>.
+        </p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center small mt-5 text-light">
+      <p>Dernière mise à jour : 24/09/2025</p>
+      <p>Mentions légales conformes à la loi pour la confiance dans l'économie numérique (LCEN) 
+        et aux recommandations CNIL. 
+        Plus d'infos : <a href="https://www.service-public.fr" target="_blank">service-public.fr</a></p>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
