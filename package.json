@@ -4,7 +4,7 @@
   "description": "Code Source du Projet SAE\r ====================================================\r README - ORGANISATION DES DOCUMENTS SUR GOOGLE DRIVE\r ====================================================",
   "main": "tarteaucitron_init.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build-css": "sass SCSS/custom.scss CSS/styles.css"
   },
   "repository": {
     "type": "git",
@@ -20,5 +20,8 @@
   "homepage": "https://github.com/Justasync/SAESoundRise#readme",
   "dependencies": {
     "bootstrap": "^5.3.8"
+  },
+  "devDependencies": {
+    "sass": "^1.93.3"
   }
 }
