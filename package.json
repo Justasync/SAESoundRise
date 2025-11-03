@@ -1,0 +1,24 @@
+{
+  "name": "saesoundrise",
+  "version": "1.0.0",
+  "description": "Code Source du Projet SAE\r ====================================================\r README - ORGANISATION DES DOCUMENTS SUR GOOGLE DRIVE\r ====================================================",
+  "main": "tarteaucitron_init.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Justasync/SAESoundRise.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Justasync/SAESoundRise/issues"
+  },
+  "homepage": "https://github.com/Justasync/SAESoundRise#readme",
+  "dependencies": {
+    "bootstrap": "^5.3.8"
+  }
+}
