@@ -4,7 +4,10 @@
   "description": "Code Source du Projet SAE\r ====================================================\r README - ORGANISATION DES DOCUMENTS SUR GOOGLE DRIVE\r ====================================================",
   "main": "tarteaucitron_init.js",
   "scripts": {
-    "build-css": "sass SCSS/custom.scss CSS/styles.css"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sass:build": "sass --source-map SCSS/styles.scss CSS/styles.css",
+    "build-css": "sass SCSS/custom.scss CSS/styles.css",
+    "sass:watch": "sass --watch --source-map SCSS/styles.scss CSS/styles.css"
   },
   "repository": {
     "type": "git",
