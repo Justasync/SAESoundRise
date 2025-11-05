@@ -1,0 +1,13 @@
+# Disable directory listing
+Options -Indexes
+
+# Evita el acceso directo a archivos dentro de config y views
+RewriteEngine On
+
+RewriteRule ^config/ - [F,L]
+RewriteRule ^sql/ - [F,L]
+
+# Deny access to sensitive files
+<FilesMatch "\.(htaccess|htpasswd|env|ini|log|sh|p8|pem|key|crt|gitignore|gitmodules|lock|sql|bak)$">
+  Require all denied
+</FilesMatch>

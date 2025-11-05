@@ -1,53 +1,81 @@
-# SAESoundRise
+# SAE Paaxio
 
-Code Source du Projet SAE
-====================================================
-README - ORGANISATION DES DOCUMENTS SUR GITHUB
-====================================================
+## Code Source du Projet SAE
 
-Date de dernière mise à jour : 24 septembre 2025<br>
-Contact : <br>
-          `jbmouyabi@iutbayonne.univ-pau.fr`<br>
-          `ccurra@iutbayonne.univ-pau.fr`<br>
-          `tdidelot@iutbayonne.univ-pau.fr`<br>
-          `ehoarau003@iutbayonne.univ-pau.fr`<br>
-          `adrbatalla@iutbayonne.univ-pau.fr`<br>
-          `rteisseir001@iutbayonne.univ-pau.fr`<br>
+### README — Organisation des Documents sur GitHub
 
-----------------------------------------------------
-1. OBJET DE CE DOCUMENT
-----------------------------------------------------
-Ce fichier README a pour but de fournir un guide clair sur la structure et le contenu des documents stockés sur Github. Son objectif est de faciliter la navigation, la recherche d'informations et d'assurer une organisation cohérente pour tous les utilisateurs.
+Date de dernière mise à jour : **5 novembre 2025**  
+Contact :
 
-----------------------------------------------------
-2. STRUCTURE GÉNÉRALE DES DOSSIERS
-----------------------------------------------------
-Le Google Drive est organisé hiérarchiquement, en commençant par les dossiers principaux suivants à la racine :
+- [BOIX Yohan](https://github.com/) — `yboix@iutbayonne.univ-pau.fr`
+- [BOUSSOU MOUYABI Jarlin](https://github.com/clevaYann) — `jbmouyabi@iutbayonne.univ-pau.fr`
+- [CECILIA URRA Christopher](https://github.com/Justasync) — `ccurra@iutbayonne.univ-pau.fr`
+- [DIDELOT Tim](https://github.com/xFufly) — `tdidelot@iutbayonne.univ-pau.fr`
+- [HOARAU Erwan](https://github.com/ErwanH7) — `ehoarau003@iutbayonne.univ-pau.fr`
+- [RAMIREZ BATALLA Angel David](https://github.com/batallio) — `adrbatalla@iutbayonne.univ-pau.fr`
+- [TEISSEIRE Raphaël](https://github.com/rTeisseire) — `rteisseir001@iutbayonne.univ-pau.fr`
 
-*   **01. XXXX :** Contient toute la documentation relative aux XXXX cours.
+---
 
-----------------------------------------------------
-3. DESCRIPTION DÉTAILLÉE DES DOSSIERS PRINCIPAUX
+# 🧩 Projet Web — Installation et Configuration
 
-3.1. 01. Projets Actifs
-----------------------------------------------------
-Ce dossier contient des sous-dossiers pour chaque projet actif. La convention de nommage pour les sous-dossiers de projets est : `[]`.
+Bienvenue dans **SAEPaaxio**, un projet collaboratif de développement web.  
+Ce document explique comment installer et exécuter le projet en local.
 
-Dans chaque dossier de projet, vous trouverez la structure standard suivante :
-    *   **01. Planification :** Example: `[Propositions, calendriers, plans de travail, procès-verbaux des réunions initiales.]`
+---
 
-----------------------------------------------------
-4. CONVENTIONS DE NOMMAGE DES FICHIERS
-----------------------------------------------------
+## 🚀 Prérequis
 
-----------------------------------------------------
-5. COMMENT GARDER CE DRIVE ORGANISÉ
-----------------------------------------------------
+Avant de commencer, assurez-vous d’avoir installé :
 
-----------------------------------------------------
-6. QUESTIONS ET SUPPORT
-----------------------------------------------------
+- **PHP**
+- **Composer**
+- **Node.js** et **npm**
+- **MySQL**
 
-=============================================
-FIN DU DOCUMENT
-=============================================
+---
+
+## 📂 Installation du projet
+
+1. **Cloner le dépôt**
+
+   ```bash
+   git clone https://github.com/Justasync/SAESoundRise.git
+   cd SAESoundRise
+   ```
+
+2. **Installer les dépendances PHP**
+
+   ```bash
+   composer install
+   ```
+
+3. **Installer les dépendances Node.js**
+
+   ```bash
+   npm install
+   ```
+
+4. **Créer le fichier de configuration `constantes.php`**
+
+   Vous devez créer un fichier `constantes.php` dans le dossier `/config/`.  
+   Exemple de contenu pour `/config/constantes.php` :
+
+   ```php
+   <?php
+   define('DB_HOST', 'localhost');
+   define('DB_NAME', 'paaxio_db');
+   define('DB_USER', 'root');
+   define('DB_PASS', '!Paaxio123@');
+   ```
+
+5. **Créer et remplir la base de données**
+
+   Vous pouvez exécuter les fichiers `.sql` de création et de population présents dans le dossier `/sql/` pour initialiser la base de données :
+
+   ```bash
+   mysql -u root -p paaxio_db < sql/create_database.sql
+   mysql -u root -p paaxio_db < sql/populate_database.sql
+   ```
+
+   Remplacez `root` et `paaxio_db` par votre nom d’utilisateur et le nom de votre base si besoin.

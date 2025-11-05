@@ -1,51 +1,52 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.css"> 
-    <link rel="stylesheet" href="styles.css">
-    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
-    <script src="tarteaucitron/tarteaucitron.min.js"></script>
-    <script src="tarteaucitron_init.js"></script>
-    <title>{% block title %}Page Accueil{% endblock %}</title>
-</head>
-<body>
-<header>
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="index.php"> 
-        <img src="node_modules/img/VectorSoundRise.svg" alt="SoundRise" width="100" height="80">
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link fs-4 active" aria-current="page" href="#">Accueil</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link fs-4" aria-current="page" href="#">Profil</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link fs-4" href="#">Ma Musique</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link fs-4" aria-current="page" href="#">Découvrir</a>
-        </li>
-      </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-      </form>
-    </div>
-  </div>
-</nav>
-</header>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.css">
+		<link rel="stylesheet" href="styles.css">
+		<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+		<script src="tarteaucitron/tarteaucitron.min.js"></script>
+		<script src="tarteaucitron_init.js"></script>
+		<title>
+			{% block title %}Page Accueil
+			{% endblock %}
+		</title>
+	</head>
+	<body>
+		<header>
+			<nav class="navbar navbar-expand-lg bg-body-tertiary">
+				<div class="container-fluid">
+					<a class="navbar-brand" href="index.php">
+						<img src="node_modules/img/VectorSoundRise.svg" alt="Paaxio" width="100" height="80">
+					</a>
+					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<div class="collapse navbar-collapse" id="navbarSupportedContent">
+						<ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+							<li class="nav-item">
+								<a class="nav-link fs-4 active" aria-current="page" href="#">Accueil</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link fs-4" aria-current="page" href="#">Profil</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link fs-4" href="#">Ma Musique</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link fs-4" aria-current="page" href="#">Découvrir</a>
+							</li>
+						</ul>
+						<form class="d-flex" role="search">
+							<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+						</form>
+					</div>
+				</div>
+			</nav>
+		</header>
 
-{% block content %}{% endblock %}
-{% block script %}{% endblock %}
-</body>
+		{% block content %}{% endblock %}
+		{% block script %}{% endblock %}
+	</body>
 </html>
-
- 
