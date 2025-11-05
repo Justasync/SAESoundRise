@@ -4,38 +4,37 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.css">
-		<link rel="stylesheet" href="styles.css">
+		<link rel="stylesheet" href="/assets/css/styles.css">
 		<script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
 		<script src="tarteaucitron/tarteaucitron.min.js"></script>
+		<link rel="icon" type="image/x-icon" href="/assets/images/logos/paaxio_logo_noir.ico">
 		<script src="tarteaucitron_init.js"></script>
+		{% block header %}{% endblock %}
 		<title>
-			{% block title %}Page Accueil
-			{% endblock %}
+			{% block title %}{% endblock %}
 		</title>
 	</head>
 	<body>
 		<header>
 			<nav class="navbar navbar-expand-lg bg-body-tertiary">
 				<div class="container-fluid">
-					<a class="navbar-brand" href="index.php">
-						<img src="node_modules/img/VectorSoundRise.svg" alt="Paaxio" width="100" height="80">
-					</a>
+					<a class="navbar-brand" href="/"><img src="/assets/images/logos/paaxio_logo_nom_droit_noir.svg" alt="Paaxio" width="150"></a>
 					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="navbar-toggler-icon"></span>
 					</button>
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
 						<ul class="navbar-nav mx-auto mb-2 mb-lg-0">
 							<li class="nav-item">
-								<a class="nav-link fs-4 active" aria-current="page" href="#">Accueil</a>
+								<a class="nav-link fs-4 {% if pageName is defined and pageName == 'accueil' %}active{% endif %}" aria-current="page" href="/">Accueil</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link fs-4" aria-current="page" href="#">Profil</a>
+								<a class="nav-link fs-4 {% if pageName is defined and pageName == 'profil' %}active{% endif %}" aria-current="page" href="#">Profil</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link fs-4" href="#">Ma Musique</a>
+								<a class="nav-link fs-4 {% if pageName is defined and pageName == 'maMusique' %}active{% endif %}" href="#">Ma Musique</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link fs-4" aria-current="page" href="#">Découvrir</a>
+								<a class="nav-link fs-4 {% if pageName is defined and pageName == 'decouvrir' %}active{% endif %}" aria-current="page" href="#">Découvrir</a>
 							</li>
 						</ul>
 						<form class="d-flex" role="search">
@@ -47,6 +46,23 @@
 		</header>
 
 		{% block content %}{% endblock %}
+
+		<footer class="py-3 my-4">
+			<ul class="nav justify-content-center border-bottom pb-3 mb-3">
+				<li class="nav-item">
+					<a href="/newsletter.php" class="nav-link px-2 text-body-secondary">Newsletter</a>
+				</li>
+				<li class="nav-item">
+					<a href="/mentionsLegales.php" class="nav-link px-2 text-body-secondary">Mentions légales</a>
+				</li>
+			</ul>
+			<div class="d-flex justify-content-center">
+				<a href="/" class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none" aria-label="Paaxio">
+					<img src="/assets/images/logos/paaxio_logo_noir.svg" alt="Paaxio" height="60">
+				</a>
+			</div>
+			<p class="text-center text-body-secondary">&copy; 2025 Paaxio</p>
+		</footer>
 		{% block script %}{% endblock %}
 	</body>
 </html>
