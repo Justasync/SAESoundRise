@@ -9,5 +9,5 @@ include_once 'config/constantes.php';
 //Ajout de la configuration de Twig
 include_once 'config/twig.php';
 
-//Ajout de la configuration de la connexion à la base de données
-include_once 'config/connexion.php';
+//Ajout du modele qui gere la connexion mysql
+include_once 'models/bd.class.php';

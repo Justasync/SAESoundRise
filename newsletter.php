@@ -2,5 +2,9 @@
 require_once 'include.php';
 $template = $twig->load('newsletter.html.twig');
 echo $template->render([
-    'pageName' => "newsletter"
+    "page" => [
+        'title' => "Newsletter",
+        'name' => "newsletter",
+        'description' => "Newsletter de Paaxio"
+    ]
 ]);
