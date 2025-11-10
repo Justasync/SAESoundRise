@@ -10,4 +10,4 @@ include_once 'config/constantes.php';
 include_once 'config/twig.php';
 
 //Ajout du modele qui gere la connexion mysql
-include_once 'models/bd.class.php';
+include_once 'modeles/bd.class.php';
