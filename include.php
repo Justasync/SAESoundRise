@@ -11,3 +11,6 @@ include_once 'config/twig.php';
 
 //Ajout du modele qui gere la connexion mysql
 include_once 'modeles/bd.class.php';
+
+//Ajout des contrôleurs
+include_once 'controller/controller.class.php';
