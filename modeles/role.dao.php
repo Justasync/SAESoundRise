@@ -10,6 +10,17 @@ class RoleDao
         $this->pdo = $pdo;
     }
 
+    public function findAll(): array
+    {
+        $sql = "SELECT * FROM Role";
+        $pdoStatement = $this->pdo->prepare($sql);
+        $pdoStatement->execute();
+        $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
+        $tableau = $pdoStatement->fetchAll();
+        $roles = $this->hydrateMany($tableau);
+        return $roles;
+    }
+
     public function find(int $id): Role
     {
         $sql = "SELECT * FROM Role WHERE idRole = :id";
@@ -17,9 +28,28 @@ class RoleDao
         $pdoStatement->execute(array(
             ':id' => $id
         ));
-        $pdoStatement->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Role');
-        $role = $pdoStatement->fetch();
+        $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
+        $tableau = $pdoStatement->fetch();
+        $role = $this->hydrate($tableau);
         return $role;
+    }
+
+    public function hydrate(array $tableaAssoc): Role
+    {
+        $role = new Role();
+        $role->setIdRole(isset($tableaAssoc['idRole']) ? (int)$tableaAssoc['idRole'] : null);
+        $role->setTypeRole($tableaAssoc['typeRole'] ?? null);
+        $role->setLibelleRole($tableaAssoc['libelleRole'] ?? null);
+        return $role;
+    }
+
+    public function hydrateMany(array $tableauxAssoc): array
+    {
+        $roles = [];
+        foreach ($tableauxAssoc as $tableauAssoc) {
+            $roles[] = $this->hydrate($tableauAssoc);
+        }
+        return $roles;
     }
 
     public function getPDO(): ?PDO
