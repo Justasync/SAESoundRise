@@ -1,6 +1,6 @@
 <?php
 
-class RecetteDAO{
+class UtilisateurDAO{
     private ?PDO $pdo;
 
     public function __construct(?PDO $pdo) {
