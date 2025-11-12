@@ -85,7 +85,7 @@ CREATE TABLE chanson (
   albumChanson INT,
   genreChanson INT NOT NULL,
   urlFichierAudioChanson VARCHAR(191) NOT NULL,
-  emailPublicateur VARCHAR(191) NOT NULL,
+  emailPublicateur VARCHAR(191),
 
   CONSTRAINT fkAlbumChanson
     FOREIGN KEY (albumChanson) REFERENCES album(idAlbum)
