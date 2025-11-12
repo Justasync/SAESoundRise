@@ -28,6 +28,7 @@ class RoleDao
         $pdoStatement->execute(array(
             ':id' => $id
         ));
+
         $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
         $tableau = $pdoStatement->fetch();
         $role = $this->hydrate($tableau);

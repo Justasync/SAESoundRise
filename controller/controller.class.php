@@ -1,6 +1,7 @@
 <?php
 //Définition de la classe controller
-class Controller {
+class Controller
+{
     // Code du contrôleur
     private PDO $pdo;
     private \Twig\Loader\FilesystemLoader $loader;
@@ -9,7 +10,8 @@ class Controller {
     private ?array $post = null;
 
     // Constructeur du contrôleur
-    public function __construct(\Twig\Loader\FilesystemLoader $loader, \Twig\Environment $twig) {
+    public function __construct(\Twig\Loader\FilesystemLoader $loader, \Twig\Environment $twig)
+    {
         $db = bd::getInstance();
         $this->pdo = $db->getConnexion();
         $this->loader = $loader;
@@ -25,13 +27,13 @@ class Controller {
         $this->post = $_POST;
     }
     // Méthode pour appeler une méthode du contrôleur
-    public function call(string $methode): mixed {
-        if(!method_exists($this, $methode)) {
-            throw new Exception("La méthode $methode n'existe pas dans le contrôleur __CLASS__");
+    public function call(string $method): mixed
+    {
+        if (!method_exists($this, $method)) {
+            throw new Exception("La méthode $method n'existe pas dans le contrôleur __CLASS__");
         } else {
-            return $this->$methode();
+            return $this->$method();
         }
-
     }
 
     public function getPDO(): ?PDO
@@ -42,7 +44,6 @@ class Controller {
     public function setPDO(?PDO $pdo): void
     {
         $this->pdo = $pdo;
-    
     }
 
     public function getLoader(): ?\Twig\Loader\FilesystemLoader
