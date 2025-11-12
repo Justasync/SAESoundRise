@@ -17,7 +17,7 @@
 						</p>
 						<div class="d-flex flex-wrap gap-3">
 							<a href="#" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#signupModal">S'inscrire</a>
-							<a href="#" class="btn btn-lg btn-outline-secondary">Se connecter</a>
+							<a href="#" class="btn btn-lg btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#signinModal">Se connecter</a>
 						</div>
 					</div>
 
@@ -268,6 +268,40 @@
 							<button type="button" class="btn btn-outline-secondary d-none" data-action="secondary"></button>
 							<button type="button" class="btn btn-primary" data-action="next">Continuer</button>
 						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Sign-in Modal -->
+		<div class="modal fade" id="signinModal" tabindex="-1" aria-labelledby="signinModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<div>
+							<h1 class="modal-title fs-3 mb-0" id="signinModalLabel">Se connecter</h1>
+							<p class="text-secondary mb-0">Connectez-vous à votre compte Paaxio</p>
+						</div>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<form id="signinForm">
+							<div class="mb-3">
+								<label for="signinEmail" class="form-label">Adresse e-mail</label>
+								<input type="email" class="form-control" id="signinEmail" placeholder="votre@email.com" required autocomplete="email">
+							</div>
+							<div class="mb-3">
+								<label for="signinPassword" class="form-label">Mot de passe</label>
+								<input type="password" class="form-control" id="signinPassword" placeholder="Entrez votre mot de passe" required autocomplete="current-password">
+							</div>
+							<div class="mb-3 d-flex justify-content-end">
+								<button type="button" class="btn btn-link p-0" id="forgotPasswordBtn">Mot de passe oublié ?</button>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+						<button type="submit" form="signinForm" class="btn btn-primary">Se connecter</button>
 					</div>
 				</div>
 			</div>
