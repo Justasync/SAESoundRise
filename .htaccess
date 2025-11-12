@@ -4,6 +4,7 @@ Options -Indexes
 # Evita el acceso directo a archivos dentro de config y views
 RewriteEngine On
 
+RewriteRule ^archive/ - [F,L]
 RewriteRule ^config/ - [F,L]
 RewriteRule ^sql/ - [F,L]
 
