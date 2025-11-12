@@ -29,14 +29,14 @@ class ChansonDAO {
                 $row['emailUtilisateur'],
                 $row['urlFichier']
             );
-        }        return null;
-        return null; 
+        }
+        return null;
     }
 
 
     /**
      * Get the value of pdo
-     */ 
+     */
     public function getPdo(): ?PDO
     {
         return $this->pdo;
@@ -45,7 +45,7 @@ class ChansonDAO {
     /**
      * Set the value of pdo
      *
-     */ 
+     */
     public function setPdo($pdo): void
     {
         $this->pdo = $pdo;

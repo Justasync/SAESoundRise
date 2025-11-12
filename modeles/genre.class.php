@@ -13,7 +13,7 @@ class Genre {
 
     /**
      * Get the value of idGenre
-     */ 
+     */
     public function getIdGenre(): int
     {
         return $this->idGenre;
@@ -22,7 +22,7 @@ class Genre {
     /**
      * Set the value of idGenre
      *
-     */ 
+     */
     public function setIdGenre($idGenre): void
     {
         $this->idGenre = $idGenre;
@@ -30,7 +30,7 @@ class Genre {
 
     /**
      * Get the value of nomgenre
-     */ 
+     */
     public function getNomgenre(): ?string
     {
         return $this->nomgenre;
@@ -39,7 +39,7 @@ class Genre {
     /**
      * Set the value of nomgenre
      *
-     */ 
+     */
     public function setNomgenre(?string $nomgenre): void
     {
         $this->nomgenre = $nomgenre;

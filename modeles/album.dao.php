@@ -21,7 +21,7 @@ class AlbumDAO {
                 $row['pochetteAlbum']
             );
         }
-        return null; 
+        return null;
     }
 
     /**

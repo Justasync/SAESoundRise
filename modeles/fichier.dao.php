@@ -20,7 +20,7 @@ class FichierDAO {
                 TypeFichier::from($row['typeFichier'])
             );
         }
-        return null; 
+        return null;
     }
 
     /**

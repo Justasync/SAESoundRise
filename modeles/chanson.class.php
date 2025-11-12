@@ -19,7 +19,7 @@ class Chanson {
 
     //Constructeur
 
-    public function __construct( int $idChanson, string $titreChanson, int $dureeChanson, string $dateTeleversementChanson, 
+    public function __construct( int $idChanson, string $titreChanson, int $dureeChanson, string $dateTeleversementChanson,
         int $albumChanson, int $genreChanson, string $emailPublicateur, string $urlFichierAudioChanson,
         ?string $descriptionChanson = null, ?string $compositeurChanson = null, ?string $parolierChanson = null,
         ?bool $estPublieeChanson = null, ?int $nbEcouteChanson = null
@@ -43,7 +43,7 @@ class Chanson {
 
     /**
      * Get the value of idChanson
-     */ 
+     */
     public function getIdChanson(): int
     {
         return $this->idChanson;
@@ -52,7 +52,7 @@ class Chanson {
     /**
      * Set the value of idChanson
      *
-     */ 
+     */
     public function setIdChanson($idChanson): void
     {
         $this->idChanson = $idChanson;
@@ -60,7 +60,7 @@ class Chanson {
 
     /**
      * Get the value of titreChanson
-     */ 
+     */
     public function getTitreChanson(): string
     {
         return $this->titreChanson;
@@ -69,7 +69,7 @@ class Chanson {
     /**
      * Set the value of titreChanson
      *
-     */ 
+     */
     public function setTitreChanson($titreChanson): void
     {
         $this->titreChanson = $titreChanson;
@@ -86,7 +86,7 @@ class Chanson {
     /**
      * Set the value of descriptionChanson
      *
-     */ 
+     */
     public function setDescriptionChanson($descriptionChanson): void
     {
         $this->descriptionChanson = $descriptionChanson;
@@ -103,12 +103,12 @@ class Chanson {
     /**
      * Set the value of dureeChanson
      *
-     */ 
+     */
     public function setDureeChanson($dureeChanson): void
     {
         $this->dureeChanson = $dureeChanson;
     }
-    
+
     /**
      * Get the value of dateTeleversementChanson
      */
@@ -120,7 +120,7 @@ class Chanson {
     /**
      * Set the value of dateTeleversementChanson
      *
-     */ 
+     */
     public function setDateTeleversementChanson($dateTeleversementChanson): void
     {
         $this->dateTeleversementChanson = $dateTeleversementChanson;
@@ -137,7 +137,7 @@ class Chanson {
     /**
      * Set the value of compositeurChanson
      *
-     */ 
+     */
     public function setCompositeurChanson($compositeurChanson): void
     {
         $this->compositeurChanson = $compositeurChanson;
@@ -154,7 +154,7 @@ class Chanson {
     /**
      * Set the value of parolierChanson
      *
-     */ 
+     */
     public function setParolierChanson($parolierChanson): void
     {
         $this->parolierChanson = $parolierChanson;
@@ -171,7 +171,7 @@ class Chanson {
     /**
      * Set the value of estPublieeChanson
      *
-     */ 
+     */
     public function setEstPublieeChanson($estPublieeChanson): void
     {
         $this->estPublieeChanson = $estPublieeChanson;
@@ -188,7 +188,7 @@ class Chanson {
     /**
      * Set the value of nbEcouteChanson
      *
-     */ 
+     */
     public function setNbEcouteChanson($nbEcouteChanson): void
     {
         $this->nbEcouteChanson = $nbEcouteChanson;

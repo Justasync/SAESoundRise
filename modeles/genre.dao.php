@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 class GenreDAO {
     private ?PDO $pdo;
@@ -19,7 +19,7 @@ class GenreDAO {
                 $row['nomgenre']
             );
         }
-        return null; 
+        return null;
     }
 
     /**

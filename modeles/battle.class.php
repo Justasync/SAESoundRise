@@ -15,8 +15,8 @@ class Battle {
     private string $emailCreateurBattle;
     private string|null $emailParticipantBattle;
 
-    public function __construct(int $idBattle, string $titreBattle, DateTime $dateDebutBattle, 
-                                DateTime $dateFinBattle, StatutBattle $statutBattle, 
+    public function __construct(int $idBattle, string $titreBattle, DateTime $dateDebutBattle,
+                                DateTime $dateFinBattle, StatutBattle $statutBattle,
                                 string $emailCreateurBattle, ?string $emailParticipantBattle)
     {
         $this->idBattle = $idBattle;

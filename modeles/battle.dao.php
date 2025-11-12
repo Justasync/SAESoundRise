@@ -24,7 +24,7 @@ class BattleDAO {
                 $row['emailParticipantBattle']
             );
         }
-        return null; 
+        return null;
     }
 
     /**

@@ -31,7 +31,7 @@ class Fichier {
 
     /**
      * Get the value of urlFichier
-     */ 
+     */
     public function getUrlFichier(): string
     {
         return $this->urlFichier;
@@ -39,7 +39,7 @@ class Fichier {
     /**
      * Set the value of urlFichier
      *
-     */ 
+     */
     public function setUrlFichier(string $urlFichier): void
     {
         $this->urlFichier = $urlFichier;
@@ -56,7 +56,7 @@ class Fichier {
     /**
      * Set the value of typeProprietaireFichier
      *
-     */ 
+     */
     public function setTypeProprietaireFichier(TypeProprietaireFichier $typeProprietaireFichier): void
     {
         $this->typeProprietaireFichier = $typeProprietaireFichier;
@@ -73,7 +73,7 @@ class Fichier {
     /**
      * Set the value of typeFichier
      *
-     */ 
+     */
     public function setTypeFichier(TypeFichier $typeFichier): void
     {
         $this->typeFichier = $typeFichier;
@@ -90,8 +90,8 @@ class Fichier {
     /**
      * Set the value of dateAjout
      *
-     */ 
-    public function setDateAjout(DateTime $dateAjout): void 
+     */
+    public function setDateAjout(DateTime $dateAjout): void
     {
         $this->dateAjout = $dateAjout;
     }

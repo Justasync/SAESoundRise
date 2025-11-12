@@ -32,3 +32,5 @@ require_once 'modeles/battle.class.php';
 require_once 'modeles/battle.dao.php';
 require_once 'modeles/fichier.class.php';
 require_once 'modeles/fichier.dao.php';
+require_once 'modeles/utilisateur.class.php';
+require_once 'modeles/utilisateur.dao.php';

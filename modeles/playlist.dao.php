@@ -22,7 +22,7 @@ class PlaylistDAO {
                 $row['emailProprietaire']
             );
         }
-        return null; 
+        return null;
     }
 
     /**
