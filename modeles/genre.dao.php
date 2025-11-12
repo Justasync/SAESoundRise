@@ -1,6 +1,7 @@
-<?php 
+<?php
 
-class GenreDAO {
+class GenreDAO
+{
     private ?PDO $pdo;
 
     public function __construct(?PDO $pdo = null)
