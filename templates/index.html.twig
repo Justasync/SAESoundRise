@@ -1,6 +1,27 @@
 {% extends 'base_template.html.twig' %}
 
 {% block content %}
-<h1>Bienvenue sur la page d'accueil de Paaxio !</h1>
+	<main>
+		<section class="py-5">
+			<div class="container">
+				<div class="row align-items-center">
+					<div class="col-lg-8">
+						<h1 class="display-3 fw-bold mb-4">Paaxio</h1>
+						<p class="lead mb-4">
+							Contrairement aux plateformes de streaming classiques, Paaxio repose sur un modèle basé sur une mise en avant équitable des talents émergents, indépendamment de leur notoriété initiale.
+						</p>
+						<div class="d-flex flex-wrap gap-3">
+							<a href="#" class="btn btn-lg btn-primary">S'inscrire</a>
+							<a href="#" class="btn btn-lg btn-outline-secondary">Se connecter</a>
+						</div>
+					</div>
 
+					{# Optional right column for a future illustration/pattern #}
+					<div
+						class="col-lg-4 d-none d-lg-block">{# <img src="{{ asset('assets/images/hero-pattern.svg') }}" alt="" class="img-fluid"> #}
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
 {% endblock %}
