@@ -1,13 +1,30 @@
-<?php 
+<?php
 
-class GenreDAO {
+class GenreDAO
+{
     private ?PDO $pdo;
 
-    public function __construct(?PDO $pdo) {
+    public function __construct(?PDO $pdo)
+    {
         $this->pdo = $pdo;
     }
 
-    public function find(?int $idGenre): ?Genre {
+    public function findAll(): array
+    {
+        $sql = "SELECT * FROM genre";
+        $stmt = $this->pdo->query($sql);
+        $genres = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $genres[] = new Genre(
+                $row['idGenre'],
+                $row['nomGenre']
+            );
+        }
+        return $genres;
+    }
+
+    public function find(?int $idGenre): ?Genre
+    {
         $sql = "SELECT * FROM genre WHERE idGenre = :idGenre";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':idGenre', $idGenre, PDO::PARAM_INT);
@@ -16,10 +33,10 @@ class GenreDAO {
         if ($row) {
             return new Genre(
                 $row['idGenre'],
-                $row['nomgenre']
+                $row['nomGenre']
             );
         }
-        return null; 
+        return null;
     }
 
     /**

@@ -16,6 +16,11 @@ try {
 
     // Gestion de la page d'accueil par défaut
     if ($controllerName == '' && $method == '') {
+
+        $pdo = bd::getInstance()->getConnexion();
+        $genreDAO = new GenreDAO($pdo);
+        $genres = $genreDAO->findAll();
+
         $template = $twig->load('index.html.twig');
         echo $template->render([
             'page' => [
@@ -23,6 +28,7 @@ try {
                 'name' => "accueil",
                 'description' => "Page d'accueil de Paaxio"
             ],
+            'genres' => $genres,
         ]);
         exit;
     }
