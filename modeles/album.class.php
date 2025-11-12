@@ -1,12 +1,12 @@
 <?php
 
 class Album {
-    private int $idAlbum;
-    private string $titreAlbum;
-    private string $dateSortieAlbum;
+    private int|null $idAlbum;
+    private string|null $titreAlbum;
+    private string|null $dateSortieAlbum;
     private string|null $pochetteAlbum;
 
-    public function __construct(int $idAlbum, string $titreAlbum, string $dateSortieAlbum, ?string $pochetteAlbum = null) {
+    public function __construct(?int $idAlbum = null, ?string $titreAlbum = null, ?string $dateSortieAlbum = null, ?string $pochetteAlbum = null) {
         $this->idAlbum = $idAlbum;
         $this->titreAlbum = $titreAlbum;
         $this->dateSortieAlbum = $dateSortieAlbum;
@@ -16,7 +16,7 @@ class Album {
     /**
      * Get the value of idAlbum
      */
-    public function getIdAlbum(): int
+    public function getIdAlbum(): ?int
     {
         return $this->idAlbum;
     }
@@ -24,7 +24,7 @@ class Album {
      * Set the value of idAlbum
      *
      */
-    public function setIdAlbum(int $idAlbum): void
+    public function setIdAlbum(?int $idAlbum): void
     {
         $this->idAlbum = $idAlbum;
     }
@@ -32,7 +32,7 @@ class Album {
     /**
      * Get the value of titreAlbum
      */
-    public function getTitreAlbum(): string
+    public function getTitreAlbum(): ?string
     {
         return $this->titreAlbum;
     }
@@ -40,7 +40,7 @@ class Album {
      * Set the value of titreAlbum
      *
      */
-    public function setTitreAlbum(string $titreAlbum): void
+    public function setTitreAlbum(?string $titreAlbum): void
     {
         $this->titreAlbum = $titreAlbum;
     }
@@ -48,7 +48,7 @@ class Album {
     /**
      * Get the value of dateSortieAlbum
      */
-    public function getDateSortieAlbum(): string
+    public function getDateSortieAlbum(): ?string
     {
         return $this->dateSortieAlbum;
     }
@@ -56,7 +56,7 @@ class Album {
      * Set the value of dateSortieAlbum
      *
      */
-    public function setDateSortieAlbum(string $dateSortieAlbum): void
+    public function setDateSortieAlbum(?string $dateSortieAlbum): void
     {
         $this->dateSortieAlbum = $dateSortieAlbum;
     }

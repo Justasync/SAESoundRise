@@ -1,11 +1,11 @@
 <?php
 
-enum TypeProprietaireFichier: string
+enum TypeFichier: string
 {
     case Image = 'image';
     case Audio = 'audio';
 }
-enum TypeFichier: string
+enum FormatFichier: string
 {
     case JPG = 'jpg';
     case JPEG = 'jpeg';
@@ -16,23 +16,23 @@ enum TypeFichier: string
 }
 
 class Fichier {
-    private string $urlFichier;
-    private TypeProprietaireFichier $typeProprietaireFichier;
-    private TypeFichier $typeFichier;
-    private DateTime $dateAjout;
+    private string|null $urlFichier;
+    private TypeFichier|null $typeFichier;
+    private FormatFichier|null $formatFichier;
+    private DateTime|null $dateAjout;
 
-    public function __construct(string $urlFichier, TypeProprietaireFichier $typeProprietaireFichier, TypeFichier $typeFichier)
+    public function __construct(?string $urlFichier = null, ?TypeFichier $typeFichier = null, ?FormatFichier $formatFichier = null)
     {
         $this->urlFichier = $urlFichier;
-        $this->typeProprietaireFichier = $typeProprietaireFichier;
         $this->typeFichier = $typeFichier;
+        $this->formatFichier = $formatFichier;
         $this->dateAjout = new DateTime();
     }
 
     /**
      * Get the value of urlFichier
      */ 
-    public function getUrlFichier(): string
+    public function getUrlFichier(): ?string
     {
         return $this->urlFichier;
     }
@@ -40,33 +40,16 @@ class Fichier {
      * Set the value of urlFichier
      *
      */ 
-    public function setUrlFichier(string $urlFichier): void
+    public function setUrlFichier(?string $urlFichier): void
     {
         $this->urlFichier = $urlFichier;
 
     }
 
     /**
-     * Get the value of typeProprietaireFichier
-     */
-    public function getTypeProprietaireFichier(): TypeProprietaireFichier
-    {
-        return $this->typeProprietaireFichier;
-    }
-    /**
-     * Set the value of typeProprietaireFichier
-     *
-     */ 
-    public function setTypeProprietaireFichier(TypeProprietaireFichier $typeProprietaireFichier): void
-    {
-        $this->typeProprietaireFichier = $typeProprietaireFichier;
-
-    }
-
-    /**
      * Get the value of typeFichier
      */
-    public function getTypeFichier(): TypeFichier
+    public function getTypeFichier(): ?TypeFichier
     {
         return $this->typeFichier;
     }
@@ -74,16 +57,33 @@ class Fichier {
      * Set the value of typeFichier
      *
      */ 
-    public function setTypeFichier(TypeFichier $typeFichier): void
+    public function setTypeFichier(?TypeFichier $typeFichier): void
     {
         $this->typeFichier = $typeFichier;
 
     }
 
     /**
+     * Get the value of formatFichier
+     */
+    public function getFormatFichier(): ?FormatFichier
+    {
+        return $this->formatFichier;
+    }
+    /**
+     * Set the value of formatFichier
+     *
+     */ 
+    public function setFormatFichier(?FormatFichier $formatFichier): void
+    {
+        $this->formatFichier = $formatFichier;
+
+    }
+
+    /**
      * Get the value of dateAjout
      */
-    public function getDateAjout(): DateTime
+    public function getDateAjout(): ?DateTime
     {
         return $this->dateAjout;
     }
@@ -91,7 +91,7 @@ class Fichier {
      * Set the value of dateAjout
      *
      */ 
-    public function setDateAjout(DateTime $dateAjout): void 
+    public function setDateAjout(?DateTime $dateAjout): void 
     {
         $this->dateAjout = $dateAjout;
     }

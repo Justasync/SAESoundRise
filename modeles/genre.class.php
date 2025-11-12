@@ -1,10 +1,10 @@
 <?php
 
 class Genre {
-    private int $idGenre;
+    private int|null $idGenre;
     private string|null $nomgenre;
 
-    public function __construct(int $idGenre, ?string $nomgenre) {
+    public function __construct(?int $idGenre = null, ?string $nomgenre = null) {
         $this->idGenre = $idGenre;
         $this->nomgenre = $nomgenre;
     }
@@ -14,7 +14,7 @@ class Genre {
     /**
      * Get the value of idGenre
      */ 
-    public function getIdGenre(): int
+    public function getIdGenre(): ?int
     {
         return $this->idGenre;
     }
@@ -23,7 +23,7 @@ class Genre {
      * Set the value of idGenre
      *
      */ 
-    public function setIdGenre($idGenre): void
+    public function setIdGenre(?int $idGenre): void
     {
         $this->idGenre = $idGenre;
     }

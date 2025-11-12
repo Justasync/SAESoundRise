@@ -1,16 +1,16 @@
 <?php
 
 class Playlist {
-    private int $idPlaylist;
-    private string $nomPlaylist;
-    private bool $estPubliquePlaylist;
-    private DateTime $dateCreationPlaylist;
-    private DateTime $dateDerniereModification;
-    private string $emailProprietaire;
-
+    private int|null $idPlaylist;
+    private string|null $nomPlaylist;
+    private bool|null $estPubliquePlaylist;
+    private DateTime|null $dateCreationPlaylist;
+    private DateTime|null $dateDerniereModification;
+    private string|null $emailProprietaire;
+    
     public function __construct(
-        int $idPlaylist, string $nomPlaylist, bool $estPubliquePlaylist, DateTime $dateCreationPlaylist,
-        DateTime $dateDerniereModification, string $emailProprietaire
+        ?int $idPlaylist = null, ?string $nomPlaylist = null, ?bool $estPubliquePlaylist = null, ?DateTime $dateCreationPlaylist = null,
+        ?DateTime $dateDerniereModification = null, ?string $emailProprietaire = null
     ) {
         $this->idPlaylist = $idPlaylist;
         $this->nomPlaylist = $nomPlaylist;

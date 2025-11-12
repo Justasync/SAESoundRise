@@ -1,35 +1,36 @@
 <?php
 
 class Chanson {
-    private int $idChanson;
-    private string $titreChanson;
+    private int|null $idChanson;
+    private string|null $titreChanson;
     private string|null $descriptionChanson;
-    private int $dureeChanson;
-    private string $dateTeleversementChanson; //Le type dans la bdd est DATE
+    private int|null $dureeChanson;
+    private string|null $dateTeleversementChanson; //Le type dans la bdd est DATE
     private string|null $compositeurChanson;
     private string|null $parolierChanson;
     private bool|null $estPublieeChanson;
     private int|null $nbEcouteChanson;
-    private int $albumChanson;
-    private int $genreChanson;
-    //private $idPlaylist; // Sera implementé plus tard
-    private string $emailPublicateur;
-    private string $urlFichierAudioChanson;
+    private Album|null $albumChanson;
+    private Genre|null $genreChanson;
+    private Playlist|null $idPlaylist;
+    private Utilisateur|null $emailPublicateur;
+    private string|null $urlFichierAudioChanson;
 
 
     //Constructeur
 
-    public function __construct( int $idChanson, string $titreChanson, int $dureeChanson, string $dateTeleversementChanson, 
-        int $albumChanson, int $genreChanson, string $emailPublicateur, string $urlFichierAudioChanson,
-        ?string $descriptionChanson = null, ?string $compositeurChanson = null, ?string $parolierChanson = null,
-        ?bool $estPublieeChanson = null, ?int $nbEcouteChanson = null
+    public function __construct( ?int $idChanson = null, ?string $titreChanson = null, ?int $dureeChanson = null, 
+        ?string $dateTeleversementChanson = null, ?Album $albumChanson = null, ?Genre $genreChanson = null, 
+        ?Utilisateur $emailPublicateur = null, ?string $urlFichierAudioChanson = null, ?string $descriptionChanson = null, 
+        ?string $compositeurChanson = null, ?string $parolierChanson = null,
+        ?bool $estPublieeChanson = null, ?int $nbEcouteChanson = null, ?Playlist $idPlaylist = null
     ) {
         $this->idChanson = $idChanson;
         $this->titreChanson = $titreChanson;
         $this->dureeChanson = $dureeChanson;
         $this->dateTeleversementChanson = $dateTeleversementChanson;
-        $this->idAlbum = $albumChanson;
-        $this->idGenre = $genreChanson;
+        $this->albumChanson = $albumChanson;
+        $this->genreChanson = $genreChanson;
         $this->emailPublicateur = $emailPublicateur;
         $this->urlFichierAudioChanson = $urlFichierAudioChanson;
         $this->descriptionChanson = $descriptionChanson;
@@ -37,6 +38,7 @@ class Chanson {
         $this->parolierChanson = $parolierChanson;
         $this->estPublieeChanson = $estPublieeChanson;
         $this->nbEcouteChanson = $nbEcouteChanson;
+        $this->idPlaylist = $idPlaylist;
     }
 
     //Getteurs et Setteurs
@@ -44,7 +46,7 @@ class Chanson {
     /**
      * Get the value of idChanson
      */ 
-    public function getIdChanson(): int
+    public function getIdChanson(): ?int
     {
         return $this->idChanson;
     }
@@ -53,7 +55,7 @@ class Chanson {
      * Set the value of idChanson
      *
      */ 
-    public function setIdChanson($idChanson): void
+    public function setIdChanson(?int $idChanson): void
     {
         $this->idChanson = $idChanson;
     }
@@ -61,7 +63,7 @@ class Chanson {
     /**
      * Get the value of titreChanson
      */ 
-    public function getTitreChanson(): string
+    public function getTitreChanson(): ?string
     {
         return $this->titreChanson;
     }
@@ -70,7 +72,7 @@ class Chanson {
      * Set the value of titreChanson
      *
      */ 
-    public function setTitreChanson($titreChanson): void
+    public function setTitreChanson(?string $titreChanson): void
     {
         $this->titreChanson = $titreChanson;
     }
@@ -87,7 +89,7 @@ class Chanson {
      * Set the value of descriptionChanson
      *
      */ 
-    public function setDescriptionChanson($descriptionChanson): void
+    public function setDescriptionChanson(?string $descriptionChanson): void
     {
         $this->descriptionChanson = $descriptionChanson;
     }
@@ -104,7 +106,7 @@ class Chanson {
      * Set the value of dureeChanson
      *
      */ 
-    public function setDureeChanson($dureeChanson): void
+    public function setDureeChanson(?int $dureeChanson): void
     {
         $this->dureeChanson = $dureeChanson;
     }
@@ -121,7 +123,7 @@ class Chanson {
      * Set the value of dateTeleversementChanson
      *
      */ 
-    public function setDateTeleversementChanson($dateTeleversementChanson): void
+    public function setDateTeleversementChanson(?string $dateTeleversementChanson): void
     {
         $this->dateTeleversementChanson = $dateTeleversementChanson;
     }
@@ -138,7 +140,7 @@ class Chanson {
      * Set the value of compositeurChanson
      *
      */ 
-    public function setCompositeurChanson($compositeurChanson): void
+    public function setCompositeurChanson(?string $compositeurChanson): void
     {
         $this->compositeurChanson = $compositeurChanson;
     }
@@ -155,7 +157,7 @@ class Chanson {
      * Set the value of parolierChanson
      *
      */ 
-    public function setParolierChanson($parolierChanson): void
+    public function setParolierChanson(?string $parolierChanson): void
     {
         $this->parolierChanson = $parolierChanson;
     }
@@ -172,7 +174,7 @@ class Chanson {
      * Set the value of estPublieeChanson
      *
      */ 
-    public function setEstPublieeChanson($estPublieeChanson): void
+    public function setEstPublieeChanson(?bool $estPublieeChanson): void
     {
         $this->estPublieeChanson = $estPublieeChanson;
     }
@@ -189,43 +191,43 @@ class Chanson {
      * Set the value of nbEcouteChanson
      *
      */ 
-    public function setNbEcouteChanson($nbEcouteChanson): void
+    public function setNbEcouteChanson(?int $nbEcouteChanson): void
     {
         $this->nbEcouteChanson = $nbEcouteChanson;
     }
 
     /**
-     * Get the value of idAlbum
+     * Get the value of albumChanson
      */
-    public function getIdAlbum(): int
+    public function getAlbumChanson(): ?Album
     {
-        return $this->idAlbum;
+        return $this->albumChanson;
     }
 
     /**
-     * Set the value of idAlbum
+     * Set the value of albumChanson
      *
      */
-    public function setIdAlbum($idAlbum): void
+    public function setAlbumChanson(?Album $albumChanson): void
     {
-        $this->idAlbum = $idAlbum;
+        $this->albumChanson = $albumChanson;
     }
 
     /**
-     * Get the value of idGenre
+     * Get the value of genreChanson
      */
-    public function getIdGenre(): int
+    public function getGenreChanson(): ?Genre
     {
-        return $this->idGenre;
+        return $this->genreChanson;
     }
 
     /**
-     * Set the value of idGenre
+     * Set the value of genreChanson
      *
      */
-    public function setIdGenre($idGenre): void
+    public function setGenreChanson(?Genre $genreChanson): void
     {
-        $this->idGenre = $idGenre;
+        $this->genreChanson = $genreChanson;
     }
 
     /**
@@ -240,7 +242,7 @@ class Chanson {
      * Set the value of emailPublicateur
      *
      */
-    public function setEmailPublicateur($emailPublicateur): void
+    public function setEmailPublicateur(?Utilisateur $emailPublicateur): void
     {
         $this->emailPublicateur = $emailPublicateur;
     }
@@ -257,8 +259,24 @@ class Chanson {
      * Set the value of urlFichierAudioChanson
      *
      */
-    public function setUrlFichierAudioChanson($urlFichierAudioChanson): void
+    public function setUrlFichierAudioChanson(?string $urlFichierAudioChanson): void
     {
         $this->urlFichierAudioChanson = $urlFichierAudioChanson;
+    }
+
+    /** Get the value of idPlaylist
+     */
+    public function getIdPlaylist(): ?int
+    {
+        return $this->idPlaylist;
+    }
+
+    /**
+     * Set the value of idPlaylist
+     *
+     */
+    public function setIdPlaylist(?Playlist $idPlaylist): void
+    {
+        $this->idPlaylist = $idPlaylist;
     }
 }
