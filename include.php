@@ -1,18 +1,23 @@
 <?php
 
-//ajout de l’autoload de composer
+// Ajout de l'autoload de composer
 include_once 'vendor/autoload.php';
 
-//Ajout des constantes de configuration
+// Ajout du fichier constantes qui permet de configurer le site
 include_once 'config/constantes.php';
 
-//Ajout de la configuration de Twig
+// Ajout du code pour initialiser Twig
 include_once 'config/twig.php';
 
-//Ajout du modele qui gere la connexion mysql
-include_once 'models/bd.class.php';
+// Ajout du modèle qui gère la connexion mysql
+include_once 'modeles/bd.class.php';
 
-//Ajout des modeles
+// Ajout des contrôleurs
+include_once 'controller/controller.class.php';
+
+// Ajout des modèles
+include_once 'modeles/role.class.php';
+include_once 'modeles/role.dao.php';
 include_once 'models/chanson.class.php';
 include_once 'models/chanson.dao.php';
 include_once 'models/album.class.php';
