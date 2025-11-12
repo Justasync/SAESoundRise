@@ -221,6 +221,14 @@ CREATE TABLE paiement (
     ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+-- ===================== NEWSLETTER =====================
+CREATE TABLE newsletter (
+  idNewsletter INT PRIMARY KEY AUTO_INCREMENT,
+  email VARCHAR(191) NOT NULL,
+  dateInscription DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT uqNewsletterEmail UNIQUE (email)
+);
+
 -- ===================== BATTLE =====================
 CREATE TABLE battle (
   idBattle INT PRIMARY KEY AUTO_INCREMENT,

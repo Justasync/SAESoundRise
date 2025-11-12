@@ -12,7 +12,7 @@ class RoleDao
 
     public function findAll(): array
     {
-        $sql = "SELECT * FROM Role";
+        $sql = "SELECT * FROM role";
         $pdoStatement = $this->pdo->prepare($sql);
         $pdoStatement->execute();
         $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
@@ -23,11 +23,12 @@ class RoleDao
 
     public function find(int $id): Role
     {
-        $sql = "SELECT * FROM Role WHERE idRole = :id";
+        $sql = "SELECT * FROM role WHERE idRole = :id";
         $pdoStatement = $this->pdo->prepare($sql);
         $pdoStatement->execute(array(
             ':id' => $id
         ));
+
         $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
         $tableau = $pdoStatement->fetch();
         $role = $this->hydrate($tableau);

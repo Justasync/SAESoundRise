@@ -1,17 +1,27 @@
 {% extends 'base_template.html.twig' %}
-{% block header %}
-	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
-{% endblock %}
 {% block content %}
 	<div class="container py-5">
 		<form action="newsletter.php" method="post" class="form-newsletter">
 			<h2>🎶 Abonnez-vous à la newsletter Paaxio!</h2>
 			<p>Recevez les dernières actualités de Paaxio directement dans votre boîte mail.
 			</p>
+			{% if success %}
+				<div class="alert alert-success" role="alert">
+					{{ success }}
+				</div>
+			{% endif %}
+			{% if errors is defined and errors|length > 0 %}
+				<div class="alert alert-danger" role="alert">
+					<ul class="mb-0">
+						{% for error in errors %}
+							<li>{{ error }}</li>
+						{% endfor %}
+					</ul>
+				</div>
+			{% endif %}
 			<label for="email">Adresse e-mail:
 			</label>
-			<input type="email" id="email" name="email" required placeholder="Votre adresse e-mail">
-			<div class="g-recaptcha" data-sitekey="6LdWwMcqAAAAAPnJF11cxwa3uksmHplFz3jAr1Wa"></div>
+			<input type="email" id="email" name="email" required placeholder="Votre adresse e-mail" value="{{ form.email|default('') }}">
 			<button type="submit">S'abonner</button>
 		</form>
 	</div>

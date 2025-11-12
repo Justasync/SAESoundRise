@@ -1,13 +1,43 @@
 <?php
 require_once 'include.php';
 
-$pdo = bd::getInstance()->getConnexion();
+try {
+    if (isset($_GET['controller'])) {
+        $controllerName = $_GET['controller'];
+    } else {
+        $controllerName = '';
+    }
 
-$template = $twig->load('index.html.twig');
-echo $template->render([
-    'page' => [
-        'title' => "Accueil",
-        'name' => "accueil",
-        'description' => "Page d'accueil de Paaxio"
-    ],
-]);
+    if (isset($_GET['method'])) {
+        $method = $_GET['method'];
+    } else {
+        $method = '';
+    }
+
+    // Gestion de la page d'accueil par défaut
+    if ($controllerName == '' && $method == '') {
+        $template = $twig->load('index.html.twig');
+        echo $template->render([
+            'page' => [
+                'title' => "Accueil",
+                'name' => "accueil",
+                'description' => "Page d'accueil de Paaxio"
+            ],
+        ]);
+        exit;
+    }
+
+    if ($controllerName == '') {
+        throw new Exception('Le controller n\'est pas défini');
+    }
+
+    if ($method == '') {
+        throw new Exception('La méthode n\'est pas définie');
+    }
+
+    $controller = ControllerFactory::getController($controllerName, $loader, $twig);
+
+    $controller->call($method);
+} catch (Exception $e) {
+    die('Erreur : ' . $e->getMessage());
+}

@@ -7,7 +7,7 @@
 Date de dernière mise à jour : **5 novembre 2025**  
 Contact :
 
-- [BOIX Yohan](https://github.com/) — `yboix@iutbayonne.univ-pau.fr`
+- BOIX Yohan — `yboix@iutbayonne.univ-pau.fr`
 - [BOUSSOU MOUYABI Jarlin](https://github.com/clevaYann) — `jbmouyabi@iutbayonne.univ-pau.fr`
 - [CECILIA URRA Christopher](https://github.com/Justasync) — `ccurra@iutbayonne.univ-pau.fr`
 - [DIDELOT Tim](https://github.com/xFufly) — `tdidelot@iutbayonne.univ-pau.fr`
@@ -40,8 +40,8 @@ Avant de commencer, assurez-vous d’avoir installé :
 1. **Cloner le dépôt**
 
    ```bash
-   git clone https://github.com/Justasync/SAESoundRise.git
-   cd SAESoundRise
+   git clone https://github.com/Justasync/SAEPaaxio.git
+   cd SAEPaaxio
    ```
 
 2. **Installer les dépendances PHP**
