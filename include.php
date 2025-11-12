@@ -16,6 +16,12 @@ require_once 'modeles/bd.class.php';
 require_once 'controller/controller.class.php';
 require_once 'controller/controller_factory.class.php';
 require_once 'controller/controller_role.class.php';
+require_once 'controller/controller_chanson.class.php';
+require_once 'controller/controller_album.class.php';
+require_once 'controller/controller_genre.class.php';
+require_once 'controller/controller_playlist.class.php';
+require_once 'controller/controller_battle.class.php';
+require_once 'controller/controller_fichier.class.php';
 
 // Ajout des modèles
 require_once 'modeles/role.class.php';
