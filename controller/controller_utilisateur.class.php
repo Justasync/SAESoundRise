@@ -7,60 +7,137 @@ class ControllerUtilisateur extends Controller
         parent::__construct($loader, $twig);
     }
 
-    public function afficher()
+    public function signin()
     {
-        $emailUtilisateur = isset($_GET['emailUtilisateur']) ? $_GET['emailUtilisateur'] : null;
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => false,
+                'message' => 'Méthode non autorisée'
+            ]);
+            return;
+        }
 
-        //Récupération de la catégorie
-        $managerUtilisateur = new UtilisateurDAO($this->getPdo());
-        $utilisateur = $managerUtilisateur->find($emailUtilisateur);
+        $post = $this->getPost();
+        $email = trim($post['email'] ?? '');
+        $password = $post['password'] ?? '';
 
-        $template = $this->getTwig()->load('test.html.twig');
-        echo $template->render(array(
-            'page' => [
-                'title' => "Utilisateur",
-                'name' => "utilisateur",
-                'description' => "Détails de l'utilisateur"
-            ],
-            'testing' => $utilisateur,
-        ));
+        $errors = [];
+        if (empty($email)) {
+            $errors[] = 'L\'adresse e-mail est requise.';
+        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors[] = 'L\'adresse e-mail n\'est pas valide.';
+        }
+
+        if (empty($password)) {
+            $errors[] = 'Le mot de passe est requis.';
+        }
+
+        if (!empty($errors)) {
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => false,
+                'message' => implode(' ', $errors)
+            ]);
+            return;
+        }
+
+        try {
+            $utilisateurDAO = new UtilisateurDAO($this->getPDO());
+            $utilisateur = $utilisateurDAO->find($email);
+
+            if (!$utilisateur) {
+                header('Content-Type: application/json');
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Adresse e-mail ou mot de passe incorrect.'
+                ]);
+                return;
+            }
+
+            $hashedPassword = $utilisateur->getMotDePasseUtilisateur();
+
+            if (!password_verify($password, $hashedPassword)) {
+                header('Content-Type: application/json');
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Adresse e-mail ou mot de passe incorrect.'
+                ]);
+                return;
+            }
+
+            $statut = $utilisateur->getStatutUtilisateur();
+            if ($statut && $statut !== StatutUtilisateur::Actif) {
+                header('Content-Type: application/json');
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Votre compte est ' . ($statut === StatutUtilisateur::Suspendu ? 'suspendu' : 'supprimé') . '.'
+                ]);
+                return;
+            }
+
+            // session
+            $_SESSION['user_email'] = $utilisateur->getEmailUtilisateur();
+            $_SESSION['user_pseudo'] = $utilisateur->getPseudoUtilisateur();
+            $_SESSION['user_role'] = $utilisateur->getRoleUtilisateur()?->getIdRole();
+            $_SESSION['user_logged_in'] = true;
+
+            // Log connection
+
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => true,
+                'message' => 'Connexion réussie!',
+                'user' => [
+                    'email' => $utilisateur->getEmailUtilisateur(),
+                    'pseudo' => $utilisateur->getPseudoUtilisateur()
+                ]
+            ]);
+        } catch (Exception $e) {
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => false,
+                'message' => 'Une erreur est survenue lors de la connexion. Veuillez réessayer plus tard (' . $e->getMessage() . ').'
+            ]);
+        }
     }
 
-    public function lister()
+    public function signup()
     {
-        //recupération des catégories
-        $managerUtilisateur = new UtilisateurDAO($this->getPdo());
-        $utilisateurs = $managerUtilisateur->findAll();
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => false,
+                'message' => 'Méthode non autorisée'
+            ]);
+            return;
+        }
 
-        //Choix du template
-        $template = $this->getTwig()->load('test.html.twig');
-
-        //Affichage de la page
-        echo $template->render(array(
-            'page' => [
-                'title' => "Utilisateurs",
-                'name' => "utilisateurs",
-                'description' => "Liste des utilisateurs"
-            ],
-            'testing' => $utilisateurs,
-        ));
+        $post = $this->getPost();
     }
 
-    public function listerTableau()
+    public function signout()
     {
-        $managerUtilisateur = new UtilisateurDAO($this->getPdo());
-        $utilisateurs = $managerUtilisateur->findAll();
+        $_SESSION = [];
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(
+                session_name(),
+                '',
+                time() - 42000,
+                $params["path"],
+                $params["domain"],
+                $params["secure"],
+                $params["httponly"]
+            );
+        }
 
-        //Génération de la vue
-        $template = $this->getTwig()->load('test.html.twig');
-        echo $template->render(array(
-            'page' => [
-                'title' => "Utilisateurs tableau",
-                'name' => "utilisateursTableau",
-                'description' => "Tableau des utilisateurs"
-            ],
-            'testing' => $utilisateurs,
-        ));
+        session_destroy();
+
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => true,
+            'message' => 'Déconnexion réussie.'
+        ]);
     }
-
 }
