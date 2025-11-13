@@ -16,8 +16,8 @@
 							Contrairement aux plateformes de streaming classiques, Paaxio repose sur un modèle basé sur une mise en avant équitable des talents émergents, indépendamment de leur notoriété initiale.
 						</p>
 						<div class="d-flex flex-wrap gap-3">
-							<a href="#" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#signupModal">S'inscrire</a>
-							<a href="#" class="btn btn-lg btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#signinModal">Se connecter</a>
+							<a class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#signupModal">S'inscrire</a>
+							<a class="btn btn-lg btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#signinModal">Se connecter</a>
 						</div>
 					</div>
 
@@ -314,17 +314,17 @@
 {% block script %}
 	{% if show == 'login' %}
 		<script>
-			document.addEventListener('DOMContentLoaded', function() {
-				var signinModal = new bootstrap.Modal(document.getElementById('signinModal'));
-				signinModal.show();
-			});
+			document.addEventListener('DOMContentLoaded', function () {
+var signinModal = new bootstrap.Modal(document.getElementById('signinModal'));
+signinModal.show();
+});
 		</script>
 	{% elseif show == 'signup' %}
 		<script>
-			document.addEventListener('DOMContentLoaded', function() {
-				var signupModal = new bootstrap.Modal(document.getElementById('signupModal'));
-				signupModal.show();
-			});
+			document.addEventListener('DOMContentLoaded', function () {
+var signupModal = new bootstrap.Modal(document.getElementById('signupModal'));
+signupModal.show();
+});
 		</script>
 	{% endif %}
 	<script src="assets/js/signup-modal.js"></script>
