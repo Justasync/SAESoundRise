@@ -20,6 +20,7 @@ require_once 'modeles/bd.class.php';
 // Ajout des contrôleurs
 require_once 'controller/controller.class.php';
 require_once 'controller/controller_factory.class.php';
+require_once 'controller/controller_home.class.php';
 require_once 'controller/controller_utilisateur.class.php';
 require_once 'controller/controller_role.class.php';
 require_once 'controller/controller_chanson.class.php';
