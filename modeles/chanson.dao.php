@@ -110,6 +110,34 @@ class ChansonDAO {
         return $chansons;
     }
 
+    public function filtrerChanson(?int $idGenre = null, ?int $idAlbum = null, string $colonne = 'titreChanson', string $ordre = 'ASC'): array
+    {
+        $sql = "SELECT * FROM chanson WHERE 1=1";
+        
+        if ($idGenre !== null) {
+            $sql .= " AND genreChanson = :idGenre";
+        }
+        if ($idAlbum !== null) {
+            $sql .= " AND albumChanson = :idAlbum";
+        }
+
+        $sql .= " ORDER BY $colonne $ordre";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        if ($idGenre !== null) {
+            $stmt->bindValue(':idGenre', $idGenre, PDO::PARAM_INT);
+        }
+        if ($idAlbum !== null) {
+            $stmt->bindValue(':idAlbum', $idAlbum, PDO::PARAM_INT);
+        }
+
+        $stmt->execute();
+        $tableau = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $this->hydrateMany($tableau);
+    }
+
 
     /**
      * Get the value of pdo

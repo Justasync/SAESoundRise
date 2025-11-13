@@ -83,6 +83,7 @@ class ControllerChanson extends Controller
             'testing' => $chansons,
         ));
     }
+
     public function listerTableau()
     {
         $managerChanson = new ChansonDao($this->getPdo());
@@ -98,5 +99,36 @@ class ControllerChanson extends Controller
             ],
             'testing' => $chansons,
         ));
+    }
+
+   public function filtrerChanson()
+    {
+        // Récupération des filtres depuis l'URL
+        $idGenre = $_GET['idGenre'] ?? null;
+        $idAlbum = $_GET['idAlbum'] ?? null;
+        
+        // Récupération de l'ordre (asc ou desc) et de la colonne de tri
+        $ordre = isset($_GET['ordre']) && in_array(strtolower($_GET['ordre']), ['asc', 'desc']) 
+                ? strtoupper($_GET['ordre']) 
+                : 'ASC';
+                
+        $tri = $_GET['tri'] ?? 'titreChanson';
+        $colonnesValides = ['titreChanson', 'dateTeleversementChanson', 'nbEcouteChanson'];
+        $colonne = in_array($tri, $colonnesValides) ? $tri : 'titreChanson';
+
+        // Récupération des chansons filtrées via le DAO
+        $managerChanson = new ChansonDao($this->getPdo());
+        $chansons = $managerChanson->filtrerChanson($idGenre, $idAlbum, $colonne, $ordre);
+
+        // Génération de la vue
+        $template = $this->getTwig()->load('test.html.twig');
+        echo $template->render([
+            'page' => [
+                'title' => "Chansons filtrées",
+                'name' => "chansons_filtrees",
+                'description' => "Chansons filtrées dans Paaxio"
+            ],
+            'testing' => $chansons,
+        ]);
     }
 }
