@@ -9,19 +9,22 @@
  * @brief Classe Utilisateur pour représenter un compte utilisateur
  */
 
-enum StatutUtilisateur: string{
+enum StatutUtilisateur: string
+{
     case Actif = 'actif';
     case Suspendu = 'suspendu';
     case Supprimee = 'supprimee';
 }
 
-enum StatutAbonnement: string{
+enum StatutAbonnement: string
+{
     case Actif = 'actif';
     case Expire = 'expire';
     case Annule = 'annule';
 }
 
-class Utilisateur{
+class Utilisateur
+{
     /**
      * @brief Adresse email de l'utilisateur.
      */
@@ -32,6 +35,8 @@ class Utilisateur{
     private null|DateTime $dateInscriptionUtilisateur;
     private null|StatutUtilisateur $statutUtilisateur;
     private null|bool $estAbonnee;
+    private null|string $descriptionUtilisateur;
+    private null|string $siteWebUtilisateur;
     private null|StatutAbonnement $statutAbonnement;
     private null|DateTime $dateDebutAbonnement;
     private null|DateTime $dateFinAbonnement;
@@ -40,7 +45,7 @@ class Utilisateur{
     private ?Fichier $photoProfilUtilisateur;
     private ?Role $roleUtilisateur;
 
-    public function __construct(?string $emailUtilisateur=null, ?string $pseudoUtilisateur=null, ?string $motDePasseUtilisateur=null, ?DateTime $dateDeNaissanceUtilisateur=null, ?DateTime $dateInscriptionUtilisateur=null, ?StatutUtilisateur $statutUtilisateur=null, ?bool $estAbonnee=null, ?StatutAbonnement $statutAbonnement=null, ?DateTime $dateDebutAbonnement=null, ?DateTime $dateFinAbonnement=null, ?int $pointsDeRenommeeArtiste=null, ?int $nbAbonnesArtiste=null, ?Fichier $photoProfilUtilisateur=null, ?Role $roleUtilisateur=null)
+    public function __construct(?string $emailUtilisateur = null, ?string $pseudoUtilisateur = null, ?string $motDePasseUtilisateur = null, ?DateTime $dateDeNaissanceUtilisateur = null, ?DateTime $dateInscriptionUtilisateur = null, ?StatutUtilisateur $statutUtilisateur = null, ?bool $estAbonnee = null, ?string $descriptionUtilisateur = null, ?string $siteWebUtilisateur = null, ?StatutAbonnement $statutAbonnement = null, ?DateTime $dateDebutAbonnement = null, ?DateTime $dateFinAbonnement = null, ?int $pointsDeRenommeeArtiste = null, ?int $nbAbonnesArtiste = null, ?Fichier $photoProfilUtilisateur = null, ?Role $roleUtilisateur = null)
     {
         $this->setEmailUtilisateur($emailUtilisateur);
         $this->setPseudoUtilisateur($pseudoUtilisateur);
@@ -49,6 +54,8 @@ class Utilisateur{
         $this->setDateInscriptionUtilisateur($dateInscriptionUtilisateur);
         $this->setStatutUtilisateur($statutUtilisateur);
         $this->setEstAbonnee($estAbonnee);
+        $this->setDescriptionUtilisateur($descriptionUtilisateur);
+        $this->setSiteWebUtilisateur($siteWebUtilisateur);
         $this->setStatutAbonnement($statutAbonnement);
         $this->setDateDebutAbonnement($dateDebutAbonnement);
         $this->setDateFinAbonnement($dateFinAbonnement);
@@ -69,14 +76,10 @@ class Utilisateur{
 
     /**
      * Set the value of emailUtilisateur
-     *
-     * @return  self
      */
     public function setEmailUtilisateur($emailUtilisateur)
     {
         $this->emailUtilisateur = $emailUtilisateur;
-
-        return $this;
     }
 
     /**
@@ -89,14 +92,10 @@ class Utilisateur{
 
     /**
      * Set the value of pseudoUtilisateur
-     *
-     * @return  self
      */
     public function setPseudoUtilisateur($pseudoUtilisateur)
     {
         $this->pseudoUtilisateur = $pseudoUtilisateur;
-
-        return $this;
     }
 
     /**
@@ -109,14 +108,10 @@ class Utilisateur{
 
     /**
      * Set the value of motDePasseUtilisateur
-     *
-     * @return  self
      */
     public function setMotDePasseUtilisateur($motDePasseUtilisateur)
     {
         $this->motDePasseUtilisateur = $motDePasseUtilisateur;
-
-        return $this;
     }
 
     /**
@@ -129,14 +124,10 @@ class Utilisateur{
 
     /**
      * Set the value of dateDeNaissanceUtilisateur
-     *
-     * @return  self
      */
     public function setDateDeNaissanceUtilisateur($dateDeNaissanceUtilisateur)
     {
         $this->dateDeNaissanceUtilisateur = $dateDeNaissanceUtilisateur;
-
-        return $this;
     }
 
     /**
@@ -149,14 +140,10 @@ class Utilisateur{
 
     /**
      * Set the value of dateInscriptionUtilisateur
-     *
-     * @return  self
      */
     public function setDateInscriptionUtilisateur($dateInscriptionUtilisateur)
     {
         $this->dateInscriptionUtilisateur = $dateInscriptionUtilisateur;
-
-        return $this;
     }
 
     /**
@@ -169,14 +156,10 @@ class Utilisateur{
 
     /**
      * Set the value of statutUtilisateur
-     *
-     * @return  self
      */
     public function setStatutUtilisateur($statutUtilisateur)
     {
         $this->statutUtilisateur = $statutUtilisateur;
-
-        return $this;
     }
 
     /**
@@ -189,14 +172,42 @@ class Utilisateur{
 
     /**
      * Set the value of estAbonnee
-     *
-     * @return  self
      */
     public function setEstAbonnee($estAbonnee)
     {
         $this->estAbonnee = $estAbonnee;
+    }
 
-        return $this;
+    /**
+     * Get the value of descriptionUtilisateur
+     */
+    public function getDescriptionUtilisateur()
+    {
+        return $this->descriptionUtilisateur;
+    }
+
+    /**
+     * Set the value of descriptionUtilisateur
+     */
+    public function setDescriptionUtilisateur($descriptionUtilisateur)
+    {
+        $this->descriptionUtilisateur = $descriptionUtilisateur;
+    }
+
+    /**
+     * Get the value of siteWebUtilisateur
+     */
+    public function getSiteWebUtilisateur()
+    {
+        return $this->siteWebUtilisateur;
+    }
+
+    /**
+     * Set the value of siteWebUtilisateur
+     */
+    public function setSiteWebUtilisateur($siteWebUtilisateur)
+    {
+        $this->siteWebUtilisateur = $siteWebUtilisateur;
     }
 
     /**
@@ -209,14 +220,10 @@ class Utilisateur{
 
     /**
      * Set the value of statutAbonnement
-     *
-     * @return  self
      */
     public function setStatutAbonnement($statutAbonnement)
     {
         $this->statutAbonnement = $statutAbonnement;
-
-        return $this;
     }
 
     /**
@@ -229,14 +236,10 @@ class Utilisateur{
 
     /**
      * Set the value of dateDebutAbonnement
-     *
-     * @return  self
      */
     public function setDateDebutAbonnement($dateDebutAbonnement)
     {
         $this->dateDebutAbonnement = $dateDebutAbonnement;
-
-        return $this;
     }
 
     /**
@@ -249,14 +252,10 @@ class Utilisateur{
 
     /**
      * Set the value of dateFinAbonnement
-     *
-     * @return  self
      */
     public function setDateFinAbonnement($dateFinAbonnement)
     {
         $this->dateFinAbonnement = $dateFinAbonnement;
-
-        return $this;
     }
 
     /**
@@ -269,14 +268,10 @@ class Utilisateur{
 
     /**
      * Set the value of pointsDeRenommeeArtiste
-     *
-     * @return  self
      */
     public function setPointsDeRenommeeArtiste($pointsDeRenommeeArtiste)
     {
         $this->pointsDeRenommeeArtiste = $pointsDeRenommeeArtiste;
-
-        return $this;
     }
 
     /**
@@ -289,14 +284,10 @@ class Utilisateur{
 
     /**
      * Set the value of nbAbonnesArtiste
-     *
-     * @return  self
      */
     public function setNbAbonnesArtiste($nbAbonnesArtiste)
     {
         $this->nbAbonnesArtiste = $nbAbonnesArtiste;
-
-        return $this;
     }
 
     /**
@@ -309,14 +300,10 @@ class Utilisateur{
 
     /**
      * Set the value of photoProfilUtilisateur
-     *
-     * @return  self
      */
     public function setPhotoProfilUtilisateur($photoProfilUtilisateur)
     {
         $this->photoProfilUtilisateur = $photoProfilUtilisateur;
-
-        return $this;
     }
 
     /**
@@ -324,18 +311,14 @@ class Utilisateur{
      */
     public function getRoleUtilisateur()
     {
-            return $this->roleUtilisateur;
+        return $this->roleUtilisateur;
     }
 
     /**
      * Set the value of roleUtilisateur
-     *
-     * @return  self
      */
     public function setRoleUtilisateur($roleUtilisateur)
     {
-            $this->roleUtilisateur = $roleUtilisateur;
-
-            return $this;
+        $this->roleUtilisateur = $roleUtilisateur;
     }
 }
