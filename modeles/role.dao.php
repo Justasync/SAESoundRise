@@ -35,6 +35,23 @@ class RoleDao
         return $role;
     }
 
+    public function findByType(string $typeRole): ?Role
+    {
+        $sql = "SELECT * FROM role WHERE typeRole = :typeRole LIMIT 1";
+        $pdoStatement = $this->pdo->prepare($sql);
+        $pdoStatement->execute([
+            ':typeRole' => $typeRole
+        ]);
+        $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
+        $tableau = $pdoStatement->fetch();
+
+        if (!$tableau) {
+            return null;
+        }
+
+        return $this->hydrate($tableau);
+    }
+
     public function hydrate(array $tableaAssoc): Role
     {
         $role = new Role();
