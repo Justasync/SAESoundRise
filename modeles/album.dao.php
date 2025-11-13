@@ -37,7 +37,7 @@ class AlbumDAO {
     {
         $album = new Album();
         $album->setIdAlbum(isset($tableaAssoc['idAlbum']) ? (int)$tableaAssoc['idAlbum'] : null);
-        $album->setTitreAlbum($tableaAssoc['titreAlbum'] ?? null);
+        $album->setTitreAlbum($tableaAssoc['nomAlbum'] ?? null);
         $album->setDateSortieAlbum($tableaAssoc['dateSortieAlbum'] ?? null);
         $album->setPochetteAlbum($tableaAssoc['pochetteAlbum'] ?? null);
         return $album;
