@@ -37,6 +37,8 @@ CREATE TABLE utilisateur (
 
   statutUtilisateur ENUM('actif','suspendu','supprimee'),
   estAbonnee BOOLEAN NOT NULL DEFAULT 0,
+  descriptionUtilisateur TEXT DEFAULT NULL,
+  siteWebUtilisateur VARCHAR(255) DEFAULT NULL,
   statutAbonnement ENUM('actif','expire','annule'),
   dateDebutAbonnement DATE,
   dateFinAbonnement DATE,
@@ -223,8 +225,7 @@ CREATE TABLE paiement (
 
 -- ===================== NEWSLETTER =====================
 CREATE TABLE newsletter (
-  idNewsletter INT PRIMARY KEY AUTO_INCREMENT,
-  email VARCHAR(191) NOT NULL,
+  email VARCHAR(191) PRIMARY KEY,
   dateInscription DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT uqNewsletterEmail UNIQUE (email)
 );

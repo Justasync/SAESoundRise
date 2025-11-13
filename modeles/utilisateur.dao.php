@@ -21,6 +21,22 @@ class UtilisateurDAO
         return null;
     }
 
+    public function existsByEmail(string $emailUtilisateur): bool
+    {
+        $sql = "SELECT COUNT(*) FROM utilisateur WHERE emailUtilisateur = :emailUtilisateur";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':emailUtilisateur' => $emailUtilisateur]);
+        return (bool)$stmt->fetchColumn();
+    }
+
+    public function existsByPseudo(string $pseudoUtilisateur): bool
+    {
+        $sql = "SELECT COUNT(*) FROM utilisateur WHERE pseudoUtilisateur = :pseudoUtilisateur";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':pseudoUtilisateur' => $pseudoUtilisateur]);
+        return (bool)$stmt->fetchColumn();
+    }
+
     private function hydrate(array $row): Utilisateur
     {
         $dateDeNaissance = $row['dateDeNaissanceUtilisateur'] ? new DateTime($row['dateDeNaissanceUtilisateur']) : null;

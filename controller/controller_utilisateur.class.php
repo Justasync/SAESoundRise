@@ -102,6 +102,20 @@ class ControllerUtilisateur extends Controller
         }
     }
 
+    public function signup()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => false,
+                'message' => 'Méthode non autorisée'
+            ]);
+            return;
+        }
+
+        $post = $this->getPost();
+    }
+
     public function signout()
     {
         $_SESSION = [];
