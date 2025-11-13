@@ -5,25 +5,24 @@ class Chanson {
     private string|null $titreChanson;
     private string|null $descriptionChanson;
     private int|null $dureeChanson;
-    private string|null $dateTeleversementChanson; //Le type dans la bdd est DATE
+    private DateTime|null $dateTeleversementChanson; //Le type dans la bdd est DATE
     private string|null $compositeurChanson;
     private string|null $parolierChanson;
     private bool|null $estPublieeChanson;
     private int|null $nbEcouteChanson;
     private Album|null $albumChanson;
     private Genre|null $genreChanson;
-    private Playlist|null $idPlaylist;
-    private Utilisateur|null $emailPublicateur;
+    private string|null $emailPublicateur;
     private string|null $urlFichierAudioChanson;
 
 
     //Constructeur
 
     public function __construct( ?int $idChanson = null, ?string $titreChanson = null, ?int $dureeChanson = null, 
-        ?string $dateTeleversementChanson = null, ?Album $albumChanson = null, ?Genre $genreChanson = null, 
-        ?Utilisateur $emailPublicateur = null, ?string $urlFichierAudioChanson = null, ?string $descriptionChanson = null, 
+        ?DateTime $dateTeleversementChanson = null, ?Album $albumChanson = null, ?Genre $genreChanson = null, 
+        ?string $emailPublicateur = null, ?string $urlFichierAudioChanson = null, ?string $descriptionChanson = null, 
         ?string $compositeurChanson = null, ?string $parolierChanson = null,
-        ?bool $estPublieeChanson = null, ?int $nbEcouteChanson = null, ?Playlist $idPlaylist = null
+        ?bool $estPublieeChanson = null, ?int $nbEcouteChanson = null
     ) {
         $this->idChanson = $idChanson;
         $this->titreChanson = $titreChanson;
@@ -38,7 +37,6 @@ class Chanson {
         $this->parolierChanson = $parolierChanson;
         $this->estPublieeChanson = $estPublieeChanson;
         $this->nbEcouteChanson = $nbEcouteChanson;
-        $this->idPlaylist = $idPlaylist;
     }
 
     //Getteurs et Setteurs
@@ -97,7 +95,7 @@ class Chanson {
     /**
      * Get the value of dureeChanson
      */
-    public function getDureeChanson(): int
+    public function getDureeChanson(): ?int
     {
         return $this->dureeChanson;
     }
@@ -114,7 +112,7 @@ class Chanson {
     /**
      * Get the value of dateTeleversementChanson
      */
-    public function getDateTeleversementChanson(): string
+    public function getDateTeleversementChanson(): ?DateTime
     {
         return $this->dateTeleversementChanson;
     }
@@ -123,7 +121,7 @@ class Chanson {
      * Set the value of dateTeleversementChanson
      *
      */ 
-    public function setDateTeleversementChanson(?string $dateTeleversementChanson): void
+    public function setDateTeleversementChanson(?DateTime $dateTeleversementChanson): void
     {
         $this->dateTeleversementChanson = $dateTeleversementChanson;
     }
@@ -242,7 +240,7 @@ class Chanson {
      * Set the value of emailPublicateur
      *
      */
-    public function setEmailPublicateur(?Utilisateur $emailPublicateur): void
+    public function setEmailPublicateur(?string $emailPublicateur): void
     {
         $this->emailPublicateur = $emailPublicateur;
     }
@@ -262,21 +260,5 @@ class Chanson {
     public function setUrlFichierAudioChanson(?string $urlFichierAudioChanson): void
     {
         $this->urlFichierAudioChanson = $urlFichierAudioChanson;
-    }
-
-    /** Get the value of idPlaylist
-     */
-    public function getIdPlaylist(): ?int
-    {
-        return $this->idPlaylist;
-    }
-
-    /**
-     * Set the value of idPlaylist
-     *
-     */
-    public function setIdPlaylist(?Playlist $idPlaylist): void
-    {
-        $this->idPlaylist = $idPlaylist;
     }
 }

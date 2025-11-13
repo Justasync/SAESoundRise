@@ -36,21 +36,43 @@ class ChansonDAO {
     public function hydrate(array $tableaAssoc): chanson
     {
         $chanson = new chanson();
-        $chanson->setIdchanson(isset($tableaAssoc['idchanson']) ? (int)$tableaAssoc['idchanson'] : null);
-        $chanson->setTitrechanson($tableaAssoc['titrechanson'] ?? null);
-        $chanson->setDescriptionchanson($tableaAssoc['descriptionchanson'] ?? null);
-        $chanson->setDureechanson(isset($tableaAssoc['dureechanson']) ? (int)$tableaAssoc['dureechanson'] : null);
-        $chanson->setDateteleversementchanson($tableaAssoc['dateteleversementchanson'] ?? null);
-        $chanson->setCompositeurchanson($tableaAssoc['compositeurchanson'] ?? null);
-        $chanson->setParolierchanson($tableaAssoc['parolierchanson'] ?? null);
-        $chanson->setEstpublieechanson(isset($tableaAssoc['estpublieechanson']) ? (bool)$tableaAssoc['estpublieechanson'] : null);
-        $chanson->setNbecoutechanson(isset($tableaAssoc['nbecoutechanson']) ? (int)$tableaAssoc['nbecoutechanson'] : null);
+        $chanson->setIdchanson(isset($tableaAssoc['idChanson']) ? (int)$tableaAssoc['idChanson'] : null);
+        $chanson->setTitrechanson($tableaAssoc['titreChanson'] ?? null);
+        $chanson->setDescriptionchanson($tableaAssoc['descriptionChanson'] ?? null);
+        $chanson->setDureechanson(isset($tableaAssoc['dureeChanson']) ? (int)$tableaAssoc['dureeChanson'] : null);
+
+        // Conversion sécurisée des dates SQL → objets DateTime
+        $chanson->setDateTeleversementChanson(
+            !empty($tableaAssoc['dateTeleversementChanson']) ? new DateTime($tableaAssoc['dateTeleversementChanson']) : null
+        );
+
+        $chanson->setCompositeurchanson($tableaAssoc['compositeurChanson'] ?? null);
+        $chanson->setParolierchanson($tableaAssoc['parolierChanson'] ?? null);
+        $chanson->setEstpublieechanson(isset($tableaAssoc['estPublieeChanson']) ? (bool)$tableaAssoc['estPublieeChanson'] : null);
+        $chanson->setNbecoutechanson(isset($tableaAssoc['nbEcouteChanson']) ? (int)$tableaAssoc['nbEcouteChanson'] : null);
+        $chanson->setUrlfichieraudiochanson($tableaAssoc['urlFichierAudioChanson'] ?? null);
+        
         //albumChanson et genreChanson sont des objets, il faut les récupérer via leur DAO respectif
-        $chanson->setAlbumchanson($tableaAssoc['albumchanson'] ?? null);
-        $chanson->setGenrechanson($tableaAssoc['genrechanson'] ?? null);
-        $chanson->setIdplaylist($tableaAssoc['idplaylist'] ?? null);
-        $chanson->setEmailpublicateur($tableaAssoc['emailpublicateur'] ?? null);
-        $chanson->setUrlfichieraudiochanson($tableaAssoc['urlfichieraudiochanson'] ?? null);
+        // Album : création d’un objet minimal
+        if (!empty($tableaAssoc['albumChanson'])) {
+            $albumDAO = new AlbumDAO($this->pdo);
+            $album = $albumDAO->find((int)$tableaAssoc['albumChanson']);
+            $chanson->setAlbumChanson($album);
+        } else {
+            $chanson->setAlbumChanson(null);
+        }
+
+        // Genre : création d’un objet minimal
+        if (!empty($tableaAssoc['genreChanson'])) {
+            $genre = new GenreDAO($this->pdo);
+            $genre = $genre->find((int)$tableaAssoc['genreChanson']);
+            $chanson->setGenreChanson($genre);
+        } else {
+            $chanson->setGenreChanson(null);
+        }
+
+        $chanson->setEmailPublicateur($tableaAssoc['emailPublicateur'] ?? null);
+        
         return $chanson;
     }
 
@@ -60,6 +82,31 @@ class ChansonDAO {
         foreach ($tableauxAssoc as $tableauAssoc) {
             $chansons[] = $this->hydrate($tableauAssoc);
         }
+        return $chansons;
+    }
+
+    public function rechercherParTitre(string $titre): array
+    {
+        $sql = "SELECT * FROM chanson WHERE titreChanson LIKE :titre";
+        $pdoStatement = $this->pdo->prepare($sql);
+        $likeTitre = '%' . $titre . '%';
+        $pdoStatement->bindParam(':titre', $likeTitre, PDO::PARAM_STR);
+        $pdoStatement->execute();
+        $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
+        $tableau = $pdoStatement->fetchAll();
+        $chansons = $this->hydrateMany($tableau);
+        return $chansons;
+    }
+
+    public function rechercherParAlbum(int $idAlbum): array
+    {
+        $sql = "SELECT * FROM chanson WHERE albumChanson = :idAlbum";
+        $pdoStatement = $this->pdo->prepare($sql);
+        $pdoStatement->bindParam(':idAlbum', $idAlbum, PDO::PARAM_INT);
+        $pdoStatement->execute();
+        $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
+        $tableau = $pdoStatement->fetchAll();
+        $chansons = $this->hydrateMany($tableau);
         return $chansons;
     }
 

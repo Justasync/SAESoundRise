@@ -25,6 +25,44 @@ class ControllerChanson extends Controller
             'testing' => $chanson,
         ));
     }
+
+    public function rechercherParTitre()
+    {
+        $titreChanson = isset($_GET['titreChanson']) ? $_GET['titreChanson'] : null;
+
+        //Récupération de la catégorie
+        $managerChanson = new ChansonDao($this->getPdo());
+        $chanson = $managerChanson->rechercherParTitre($titreChanson);
+
+        $template = $this->getTwig()->load('test.html.twig');
+        echo $template->render(array(
+            'page' => [
+                'title' => "Chanson",
+                'name' => "chanson",
+                'description' => "Chanson dans Paaxio"
+            ],
+            'testing' => $chanson,
+        ));
+    }
+
+    public function rechercherParAlbum()
+    {
+        $idAlbum = isset($_GET['idAlbum']) ? $_GET['idAlbum'] : null;
+
+        //Récupération de la catégorie
+        $managerChanson = new ChansonDao($this->getPdo());
+        $chanson = $managerChanson->rechercherParAlbum($idAlbum);
+
+        $template = $this->getTwig()->load('test.html.twig');
+        echo $template->render(array(
+            'page' => [
+                'title' => "Chanson",
+                'name' => "chanson",
+                'description' => "Chanson dans Paaxio"
+            ],
+            'testing' => $chanson,
+        ));
+    }
     
     public function lister()
     {
