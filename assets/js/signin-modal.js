@@ -104,6 +104,19 @@ document.addEventListener('DOMContentLoaded', () => {
 	signinModal.addEventListener('shown.bs.modal', () => {
 		hideMessages();
 		signinForm.reset();
+		// Change the URL to /?controller=home&method=login without reloading
+		const newUrl = '/?controller=home&method=login';
+		if (window.location.search !== '?controller=home&method=login') {
+			window.history.replaceState({}, '', newUrl);
+		}
+	});
+
+	// when close the modal change to /?controller=home&method=afficer
+	signinModal.addEventListener('hidden.bs.modal', () => {
+		const newUrl = '/?controller=home&method=afficher';
+		if (window.location.search !== '?controller=home&method=afficher') {
+			window.history.replaceState({}, '', newUrl);
+		}
 	});
 });
 
