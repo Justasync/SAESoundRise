@@ -1,5 +1,10 @@
 <?php
 
+// Démarrage de la session
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 // Ajout de l'autoload de composer
 require_once 'vendor/autoload.php';
 
@@ -15,6 +20,7 @@ require_once 'modeles/bd.class.php';
 // Ajout des contrôleurs
 require_once 'controller/controller.class.php';
 require_once 'controller/controller_factory.class.php';
+require_once 'controller/controller_utilisateur.class.php';
 require_once 'controller/controller_role.class.php';
 require_once 'controller/controller_chanson.class.php';
 require_once 'controller/controller_album.class.php';
@@ -26,6 +32,8 @@ require_once 'controller/controller_fichier.class.php';
 // Ajout des modèles
 require_once 'modeles/role.class.php';
 require_once 'modeles/role.dao.php';
+require_once 'modeles/utilisateur.class.php';
+require_once 'modeles/utilisateur.dao.php';
 require_once 'modeles/chanson.class.php';
 require_once 'modeles/chanson.dao.php';
 require_once 'modeles/album.class.php';

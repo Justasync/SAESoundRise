@@ -2,6 +2,7 @@
 
 {% block header %}
 	<link rel="stylesheet" href="assets/css/signup-modal.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
 {% endblock %}
 
 
@@ -285,14 +286,16 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
+						<div class="alert alert-danger d-none" role="alert" data-signin-error></div>
+						<div class="alert alert-success d-none" role="alert" data-signin-success></div>
 						<form id="signinForm">
 							<div class="mb-3">
 								<label for="signinEmail" class="form-label">Adresse e-mail</label>
-								<input type="email" class="form-control" id="signinEmail" placeholder="votre@email.com" required autocomplete="email">
+								<input type="email" class="form-control" id="signinEmail" name="email" placeholder="votre@email.com" required autocomplete="email">
 							</div>
 							<div class="mb-3">
 								<label for="signinPassword" class="form-label">Mot de passe</label>
-								<input type="password" class="form-control" id="signinPassword" placeholder="Entrez votre mot de passe" required autocomplete="current-password">
+								<input type="password" class="form-control" id="signinPassword" name="password" placeholder="Entrez votre mot de passe" required autocomplete="current-password">
 							</div>
 							<div class="mb-3 d-flex justify-content-end">
 								<button type="button" class="btn btn-link p-0" id="forgotPasswordBtn">Mot de passe oublié ?</button>
@@ -311,6 +314,6 @@
 
 {% block script %}
 	{{ parent() }}
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.js"></script>
 	<script src="assets/js/signup-modal.js"></script>
+	<script src="assets/js/signin-modal.js"></script>
 {% endblock %}
