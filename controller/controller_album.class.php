@@ -86,10 +86,8 @@ class ControllerAlbum extends Controller
             $dateSortie = $_POST['dateSortieAlbum'] ?? null;
             $urlPochetteAlbum = $_POST['urlPochetteAlbum'] ?? null;
             $artisteAlbum = $_SESSION['user_email'] ?? null;
-=======
             $pochetteFile = $_FILES['urlPochetteAlbum'] ?? null;
             $urlPochetteAlbum = null;
->>>>>>> 7be73c3 (Sauvegarde de mes changements en cours avant la fusion de main)
 
             // --- Gestion de l'upload de fichier ---
             if (isset($pochetteFile) && $pochetteFile['error'] === UPLOAD_ERR_OK) {
@@ -119,11 +117,7 @@ class ControllerAlbum extends Controller
 
             // On vérifie que toutes les données nécessaires sont présentes
             if (!empty($titre) && !empty($dateSortie) && !empty($urlPochetteAlbum)) {
-<<<<<<< HEAD
-                $album = new Album(null, $titre, $dateSortie, trim($urlPochetteAlbum), trim($artisteAlbum));
-=======
-                $album = new Album(null, $titre, $dateSortie, $urlPochetteAlbum);
->>>>>>> 7be73c3 (Sauvegarde de mes changements en cours avant la fusion de main)
+                $album = new Album(null, $titre, $dateSortie, $urlPochetteAlbum, $artisteAlbum);
 
                 $managerAlbum = new AlbumDao($this->getPdo());
                 $success = $managerAlbum->create($album);
