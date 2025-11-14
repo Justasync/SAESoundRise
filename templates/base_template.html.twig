@@ -6,9 +6,9 @@
 		<link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.css">
 		<link rel="stylesheet" href="/assets/css/styles.css">
 		<script src="/assets/js/bootstrap.bundle.js"></script>
-		<script src="/tarteaucitron/tarteaucitron.min.js"></script>
+		<script src="tarteaucitron/tarteaucitron.min.js"></script>
 		<link rel="icon" type="image/x-icon" href="/assets/images/logos/paaxio_logo_noir.ico">
-		<script src="/tarteaucitron_init.js"></script>
+		<script src="tarteaucitron_init.js"></script>
 		{% block header %}{% endblock %}
 		<title>
 			{% if page.title is defined %}
@@ -57,14 +57,14 @@
 		<footer class="py-3 my-4">
 			<ul class="nav justify-content-center border-bottom pb-3 mb-3">
 				<li class="nav-item">
-					<a href="?controller=newsletter&method=afficher" class="nav-link px-2 text-body-secondary">Newsletter</a>
+					<a href="/?controller=newsletter&method=afficher" class="nav-link px-2 text-body-secondary">Newsletter</a>
 				</li>
 				<li class="nav-item">
-					<a href="paaxio/saepaaxio/?controller=legales&method=afficher" class="nav-link px-2 text-body-secondary">Mentions légales</a>
+					<a href="/?controller=legales&method=afficher" class="nav-link px-2 text-body-secondary">Mentions légales</a>
 				</li>
 			</ul>
 			<div class="d-flex justify-content-center">
-				<a href="paaxio/saepaaxio/?controller=home&method=afficher" class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none" aria-label="Paaxio">
+				<a href="/?controller=home&method=afficher" class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none" aria-label="Paaxio">
 					<img src="assets/images/logos/paaxio_logo_noir.svg" alt="Paaxio" height="50">
 				</a>
 			</div>
