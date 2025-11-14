@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				
 				setTimeout(() => {
 					bootstrapModal.hide();
-					window.location.reload();
+					window.location.href = '/?controller=home&method=afficher';
 				}, 1000);
 			} else {
 				showError(data.message || 'Une erreur est survenue lors de la connexion.');
