@@ -10,7 +10,7 @@
         <div class="alert alert-danger">Une erreur est survenue lors de l'ajout de l'album.</div>
     {% endif %}
 
-    <form action="index.php?controller=album&method=ajouterAlbum" method="post">
+    <form action="index.php?controller=album&method=ajouterAlbum" method="post" enctype="multipart/form-data">
         <div class="mb-3">
             <label for="titreAlbum" class="form-label">Titre de l'album</label>
             <input type="text" class="form-control" id="titreAlbum" name="titreAlbum" required>
@@ -20,8 +20,8 @@
             <input type="date" class="form-control" id="dateSortieAlbum" name="dateSortieAlbum" required>
         </div>
         <div class="mb-3">
-            <label for="pochetteAlbum" class="form-label">URL de la pochette</label>
-            <input type="text" class="form-control" id="pochetteAlbum" name="urlPochetteAlbum">
+            <label for="pochetteAlbum" class="form-label">Pochette de l'album</label>
+            <input type="file" class="form-control" id="pochetteAlbum" name="urlPochetteAlbum" accept="image/png, image/jpeg, image/webp" required>
         </div>
         <button type="submit" class="btn btn-primary">Ajouter l'album</button>
     </form>
