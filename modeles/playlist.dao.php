@@ -33,6 +33,18 @@ class PlaylistDAO {
         return $playlist;
     }
 
+    public function findUser(?string $email = null): array {
+        if ($email) {
+            $sql = "SELECT * FROM playlist WHERE emailProprietaire = :email";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([':email' => $email]);
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $results;
+        } else {
+            return [];
+        }
+    }
+
     public function hydrate(array $tableaAssoc): playlist
     {
         $playlist = new Playlist();

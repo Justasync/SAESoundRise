@@ -20,7 +20,7 @@ class ChansonDAO
         return $chanson;
     }
 
-    public function find(int $id): Chanson
+    public function findId(int $id): Chanson
     {
         $sql = "SELECT * FROM chanson WHERE idChanson = :id";
         $pdoStatement = $this->pdo->prepare($sql);
@@ -32,6 +32,19 @@ class ChansonDAO
         $tableau = $pdoStatement->fetch();
         $chanson = $this->hydrate($tableau);
         return $chanson;
+    }
+
+    public function findUser(?string $email = null): array
+    {
+        if ($email) {
+            $sql = "SELECT * FROM chanson WHERE emailPublicateur = :email";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([':email' => $email]);
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $this->hydrateMany($results);
+        } else {
+            return [];
+        }
     }
 
     public function hydrate(array $tableaAssoc): chanson

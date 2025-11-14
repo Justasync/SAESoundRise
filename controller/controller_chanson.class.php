@@ -13,7 +13,7 @@ class ControllerChanson extends Controller
 
         //Récupération de la catégorie
         $managerChanson = new ChansonDao($this->getPdo());
-        $chanson = $managerChanson->find($idChanson);
+        $chanson = $managerChanson->findId($idChanson);
 
         $template = $this->getTwig()->load('test.html.twig');
         echo $template->render(array(
