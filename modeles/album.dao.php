@@ -70,6 +70,17 @@ class AlbumDAO
         return $pdoStatement->execute($params);
     }
 
+    public function findByArtiste(string $emailArtiste): array
+    {
+        $sql = "SELECT * FROM album WHERE artisteAlbum = :emailArtiste ORDER BY dateSortieAlbum DESC";
+        $pdoStatement = $this->pdo->prepare($sql);
+        $pdoStatement->execute([':emailArtiste' => $emailArtiste]);
+        $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
+        $tableau = $pdoStatement->fetchAll();
+        $albums = $this->hydrateMany($tableau);
+        return $albums;
+    }
+
 
     /**
      * Get the value of pdo
