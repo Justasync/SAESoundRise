@@ -5,38 +5,81 @@
 {% endblock %}
 
 {% block content %}
-   
-    <!-- Playlist  -->
+
+    <!-- Playlists -->
     <section class="text-center">
         <h2 class="fw-bold mb-4">Playlists</h2>
-        <div class="d-flex justify-content-center flex-wrap gap-4">
+
+        {% set premieresPlaylists = playlists|slice(0, 3) %}
+        <div class="d-flex justify-content-center flex-wrap gap-4 mb-4">
+
+            <!-- Chansons likées -->
             <div class="p-3 rounded-4 text-center" style="background-color:#E58E82; width:180px;">
-                <div class="rounded-4 bg-light mx-auto mb-2 d-flex justify-content-center align-items-center" 
-                    style="width:150px; height:150px;">
+                <div class="rounded-4 bg-light mx-auto mb-2 d-flex justify-content-center align-items-center"
+                     style="width:150px; height:150px;">
                     <i class="bi bi-heart-fill text-danger" style="font-size:3rem;"></i>
                 </div>
                 <p class="mb-0">Chansons likées</p>
             </div>
-            {% for i in 2..4 %}
-                <div class="p-3 rounded-4" style="background-color:#E58E82; width:180px;">
-                    <div class="rounded-4 bg-light mx-auto mb-2" style="width:150px; height:150px;"></div>
-                    <p class="mb-0">Nom de Album/Single</p>
+
+            <!-- 3 premières playlists -->
+            {% for playlist in premieresPlaylists %}
+                <div class="p-3 rounded-4 text-center" style="background-color:#E58E82; width:180px;">
+                    <div class="rounded-4 bg-light mx-auto mb-2 d-flex justify-content-center align-items-center"
+                         style="width:150px; height:150px;">
+                        {% if playlist.pochettePlaylist %}
+                            <img src="{{ playlist.pochettePlaylist }}" alt="Playlist" class="img-fluid rounded-4">
+                        {% else %}
+                            <i class="bi bi-music-note" style="font-size:3rem;"></i>
+                        {% endif %}
+                    </div>
+                    <p class="mb-0">{{ playlist.nomPlaylist }}</p>
                 </div>
             {% endfor %}
         </div>
+
+        <!-- Playlists restantes -->
+        {% set restantes = playlists|slice(3) %}
+        {% for ligne in restantes|batch(4) %}
+            <div class="d-flex justify-content-center flex-wrap gap-4 mb-4">
+                {% for playlist in ligne %}
+                    <div class="p-3 rounded-4 text-center" style="background-color:#E58E82; width:180px;">
+                        <div class="rounded-4 bg-light mx-auto mb-2 d-flex justify-content-center align-items-center"
+                             style="width:150px; height:150px;">
+                            {% if playlist.pochettePlaylist %}
+                                <img src="{{ playlist.pochettePlaylist }}" alt="Playlist" class="img-fluid rounded-4">
+                            {% else %}
+                                <i class="bi bi-music-note" style="font-size:3rem;"></i>
+                            {% endif %}
+                        </div>
+                        <p class="mb-0">{{ playlist.nomPlaylist }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
     </section>
 
     <!-- Récemment écoutées -->
     <section class="text-center">
         <h2 class="fw-bold my-4">Récemment écoutées</h2>
-        <div class="d-flex justify-content-center flex-wrap gap-4">
-            {% for i in 1..4 %}
-                <div class="p-3 rounded-4" style="background-color:#E58E82; width:180px;">
-                    <div class="rounded-4 bg-light mx-auto mb-2" style="width:150px; height:150px;"></div>
-                    <p class="mb-0">Nom de Album/Single</p>
-                </div>
-            {% endfor %}
-        </div>
+
+        {% for ligne in chansons|batch(4) %}
+            <div class="d-flex justify-content-center flex-wrap gap-4 mb-4">
+                {% for chanson in ligne %}
+                    <div class="p-3 rounded-4" style="background-color:#E58E82; width:180px;">
+                        <div class="rounded-4 bg-light mx-auto mb-2 d-flex justify-content-center align-items-center"
+                             style="width:150px; height:150px;">
+                            {% if chanson.albumChanson and chanson.albumChanson.pochetteAlbum %}
+                                <img src="{{ chanson.albumChanson.pochetteAlbum }}" alt="Album" class="img-fluid rounded-4">
+                            {% else %}
+                                <i class="bi bi-music-note" style="font-size:3rem;"></i>
+                            {% endif %}
+                        </div>
+                        <p class="mb-0">{{ chanson.titreChanson }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
     </section>
 
 {% endblock %}

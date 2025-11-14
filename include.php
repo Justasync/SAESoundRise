@@ -23,6 +23,7 @@ require_once 'controller/controller_factory.class.php';
 require_once 'controller/controller_home.class.php';
 require_once 'controller/controller_newsletter.class.php';
 require_once 'controller/controller_legales.class.php';
+require_once 'controller/controller_musique.class.php';
 require_once 'controller/controller_utilisateur.class.php';
 require_once 'controller/controller_role.class.php';
 require_once 'controller/controller_chanson.class.php';
