@@ -73,17 +73,17 @@ INSERT INTO utilisateur (
 ('curator@paaxio.com', 'Curateur Officiel', 'Cur8r', '$2y$10$cur8r', '1994-09-09', '2024-10-01 12:00:00', 'actif', 1, 'Curateur officiel, sélectionneur de playlists', 'https://paaxio.com/cur8r', 'actif', '2024-03-01', '2025-03-01', 0, 0, '/img/p10.webp', 1, 1);
 
 -- ===== album =====
-INSERT INTO album (idAlbum, nomAlbum, dateSortieAlbum, urlPochetteAlbum) VALUES
-(1, 'Horizons Électriques', '2024-09-20', '/img/p11.webp'),
-(2, 'Rue des Étoiles', '2024-07-11', '/img/p12.webp'),
-(3, 'Océan Indigo', '2024-05-30', '/img/p13.webp'),
-(4, 'Matin Folk', '2023-12-01', '/img/p14.webp'),
-(5, 'Nocturne Jazz', '2024-03-14', '/img/p15.webp'),
-(6, 'Rythmes Latins', '2024-08-05', '/img/p16.webp'),
-(7, 'Indie Hiver', '2024-10-01', '/img/p17.webp'),
-(8, 'Paroles du Quai', '2024-04-22', '/img/p18.webp'),
-(9, 'Classique Moderne', '2024-02-10', '/img/p19.webp'),
-(10, 'Vibes Urbaines', '2024-06-18', '/img/p20.webp');
+INSERT INTO album (idAlbum, nomAlbum, dateSortieAlbum, urlPochetteAlbum, artisteAlbum) VALUES
+(1, 'Horizons Électriques', '2024-09-20', '/img/p11.webp', 'yohan@paaxio.com'),
+(2, 'Rue des Étoiles', '2024-07-11', '/img/p12.webp', 'yohan@paaxio.com'),
+(3, 'Océan Indigo', '2024-05-30', '/img/p13.webp', 'christopher@paaxio.com'),
+(4, 'Matin Folk', '2023-12-01', '/img/p14.webp', 'jarlin@paaxio.com'),
+(5, 'Nocturne Jazz', '2024-03-14', '/img/p15.webp', 'jarlin@paaxio.com'),
+(6, 'Rythmes Latins', '2024-08-05', '/img/p16.webp', 'jarlin@paaxio.com'),
+(7, 'Indie Hiver', '2024-10-01', '/img/p17.webp', 'christopher@paaxio.com'),
+(8, 'Paroles du Quai', '2024-04-22', '/img/p18.webp', 'christopher@paaxio.com'),
+(9, 'Classique Moderne', '2024-02-10', '/img/p19.webp', 'yohan@paaxio.com'),
+(10, 'Vibes Urbaines', '2024-06-18', '/img/p20.webp', 'yohan@paaxio.com');
 
 -- ===== chanson =====
 INSERT INTO chanson (idChanson, titreChanson, descriptionChanson, dureeChanson, dateTeleversementChanson, compositeurChanson, parolierChanson, estPublieeChanson, nbEcouteChanson, albumChanson, genreChanson, urlAudioChanson, emailPublicateur) VALUES

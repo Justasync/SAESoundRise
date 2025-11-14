@@ -41,6 +41,7 @@ class AlbumDAO
         $album->setTitreAlbum($tableaAssoc['nomAlbum'] ?? null);
         $album->setDateSortieAlbum($tableaAssoc['dateSortieAlbum'] ?? null);
         $album->seturlPochetteAlbum($tableaAssoc['urlPochetteAlbum'] ?? null);
+        $album->setArtisteAlbum($tableaAssoc['artisteAlbum'] ?? null);
         return $album;
     }
 
@@ -55,13 +56,15 @@ class AlbumDAO
 
     public function create(Album $album): bool
     {
-        $sql = "INSERT INTO album (nomAlbum, dateSortieAlbum, urlPochetteAlbum) VALUES (:titre, :dateSortie, :urlPochetteAlbum)";
+        $sql = "INSERT INTO album (nomAlbum, dateSortieAlbum, urlPochetteAlbum, artisteAlbum) VALUES (:titre, :dateSortie, :urlPochetteAlbum, :artisteAlbum)";
         $pdoStatement = $this->pdo->prepare($sql);
 
         $params = [
             ':titre' => $album->getTitreAlbum(),
             ':dateSortie' => $album->getDateSortieAlbum(),
-            ':urlPochetteAlbum' => $album->geturlPochetteAlbum()
+            ':urlPochetteAlbum' => $album->geturlPochetteAlbum(),
+            ':artisteAlbum' => $album->getArtisteAlbum(),
+
         ];
 
         return $pdoStatement->execute($params);
