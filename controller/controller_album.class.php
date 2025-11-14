@@ -62,4 +62,44 @@ class ControllerAlbum extends Controller
             'testing' => $albums,
         ));
     }
+
+    public function ajouter()
+    {
+        $error = isset($_GET['error']);
+
+        //Génération de la vue
+        $template = $this->getTwig()->load('album_form.html.twig');
+        echo $template->render(array(
+            'page' => [
+                'title' => "Ajouter un album",
+                'name' => "album_add",
+                'description' => "Ajouter un nouvel album dans Paaxio"
+            ],
+            'error' => $error
+        ));
+    }
+
+    public function ajouterAlbum()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $titre = $_POST['titreAlbum'] ?? null;
+            $dateSortie = $_POST['dateSortieAlbum'] ?? null;
+            $urlPochetteAlbum = $_POST['urlPochetteAlbum'] ?? null;
+
+            if (!empty($titre) && !empty($dateSortie) && !empty($urlPochetteAlbum)) {
+                $album = new Album(null, $titre, $dateSortie, trim($urlPochetteAlbum));
+
+                $managerAlbum = new AlbumDao($this->getPdo());
+                $success = $managerAlbum->create($album);
+
+                if ($success) {
+                    header('Location: index.php?controller=album&method=lister'); // Redirection vers la liste des albums
+                    exit;
+                }
+            }
+        }
+        // Gérer l'échec ou l'accès direct ici, peut-être rediriger vers le formulaire avec un message d'erreur.
+        header('Location: index.php?controller=album&method=ajouter&error=1');
+        exit;
+    }
 }
