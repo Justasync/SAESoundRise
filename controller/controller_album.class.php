@@ -84,7 +84,6 @@ class ControllerAlbum extends Controller
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $titre = $_POST['titreAlbum'] ?? null;
             $dateSortie = $_POST['dateSortieAlbum'] ?? null;
-<<<<<<< HEAD
             $urlPochetteAlbum = $_POST['urlPochetteAlbum'] ?? null;
             $artisteAlbum = $_SESSION['user_email'] ?? null;
 =======
