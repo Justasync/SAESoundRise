@@ -85,7 +85,7 @@ class ControllerAlbum extends Controller
             $titre = $_POST['titreAlbum'] ?? null;
             $dateSortie = $_POST['dateSortieAlbum'] ?? null;
             $urlPochetteAlbum = $_POST['urlPochetteAlbum'] ?? null;
-            $artisteAlbum = $_POST['artisteAlbum'] ?? null;
+            $artisteAlbum = $_SESSION['user_email'] ?? null;
 
             if (!empty($titre) && !empty($dateSortie) && !empty($urlPochetteAlbum)) {
                 $album = new Album(null, $titre, $dateSortie, trim($urlPochetteAlbum), trim($artisteAlbum));
