@@ -61,6 +61,7 @@ class UtilisateurDAO
 
         return new Utilisateur(
             $row['emailUtilisateur'],
+            $row['nomUtilisateur'],
             $row['pseudoUtilisateur'],
             $row['motDePasseUtilisateur'],
             $dateDeNaissance,

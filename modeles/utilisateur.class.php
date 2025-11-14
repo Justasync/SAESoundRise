@@ -30,6 +30,7 @@ class Utilisateur
      * @brief Adresse email de l'utilisateur.
      */
     private ?string $emailUtilisateur;
+    private ?string $nomUtilisateur;
     private ?string $pseudoUtilisateur;
     private ?string $motDePasseUtilisateur;
     private ?DateTime $dateDeNaissanceUtilisateur;
@@ -49,6 +50,7 @@ class Utilisateur
 
     public function __construct(
         ?string $emailUtilisateur = null,
+        ?string $nomUtilisateur = null,
         ?string $pseudoUtilisateur = null,
         ?string $motDePasseUtilisateur = null,
         ?DateTime $dateDeNaissanceUtilisateur = null,
@@ -67,6 +69,7 @@ class Utilisateur
         ?Role $roleUtilisateur = null
     ) {
         $this->setEmailUtilisateur($emailUtilisateur);
+        $this->setNomUtilisateur($nomUtilisateur);
         $this->setPseudoUtilisateur($pseudoUtilisateur);
         $this->setMotDePasseUtilisateur($motDePasseUtilisateur);
         $this->setDateDeNaissanceUtilisateur($dateDeNaissanceUtilisateur);
@@ -99,6 +102,22 @@ class Utilisateur
     public function setGenreUtilisateur($genreUtilisateur)
     {
         $this->genreUtilisateur = $genreUtilisateur;
+    }
+
+    /**
+     * Get the value of nomUtilisateur
+     */
+    public function getNomUtilisateur()
+    {
+        return $this->nomUtilisateur;
+    }
+
+    /**
+     * Set the value of nomUtilisateur
+     */
+    public function setNomUtilisateur($nomUtilisateur)
+    {
+        $this->nomUtilisateur = $nomUtilisateur;
     }
 
     /**
