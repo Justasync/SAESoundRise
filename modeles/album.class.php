@@ -7,12 +7,15 @@ class Album
     private string|null $dateSortieAlbum;
     private string|null $urlPochetteAlbum;
 
-    public function __construct(?int $idAlbum = null, ?string $titreAlbum = null, ?string $dateSortieAlbum = null, ?string $urlPochetteAlbum = null)
+    private string|null $artisteAlbum;
+
+    public function __construct(?int $idAlbum = null, ?string $titreAlbum = null, ?string $dateSortieAlbum = null, ?string $urlPochetteAlbum = null, ?string $artisteAlbum = null)
     {
         $this->idAlbum = $idAlbum;
         $this->titreAlbum = $titreAlbum;
         $this->dateSortieAlbum = $dateSortieAlbum;
         $this->urlPochetteAlbum = $urlPochetteAlbum;
+        $this->artisteAlbum = $artisteAlbum;
     }
 
     /**
@@ -77,5 +80,23 @@ class Album
     public function seturlPochetteAlbum(?string $urlPochetteAlbum): void
     {
         $this->urlPochetteAlbum = $urlPochetteAlbum;
+    }
+
+    /**
+     * Get the value of artisteAlbum
+     */
+    public function getArtisteAlbum(): ?string
+    {
+        return $this->artisteAlbum;
+    }
+
+    /**
+     * Set the value of artisteAlbum
+     *
+     * @return  self
+     */
+    public function setArtisteAlbum(?string $artisteAlbum): void
+    {
+        $this->artisteAlbum = $artisteAlbum;
     }
 }

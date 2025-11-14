@@ -59,7 +59,13 @@ CREATE TABLE album (
   idAlbum INT PRIMARY KEY AUTO_INCREMENT,
   nomAlbum VARCHAR(255) NOT NULL,
   dateSortieAlbum DATE NOT NULL,
-  urlPochetteAlbum VARCHAR(191) NOT NULL
+  urlPochetteAlbum VARCHAR(191) NOT NULL,
+
+  artisteAlbum VARCHAR(191) NOT NULL,
+
+  CONSTRAINT fkArtisteAlbum
+    FOREIGN KEY (artisteAlbum) REFERENCES utilisateur(emailUtilisateur)
+    ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- ===================== CHANSON =====================
