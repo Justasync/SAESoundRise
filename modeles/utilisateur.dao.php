@@ -61,6 +61,7 @@ class UtilisateurDAO
 
         return new Utilisateur(
             $row['emailUtilisateur'],
+            $row['nomUtilisateur'],
             $row['pseudoUtilisateur'],
             $row['motDePasseUtilisateur'],
             $dateDeNaissance,
@@ -99,7 +100,7 @@ class UtilisateurDAO
 
     public function create(Utilisateur $utilisateur): bool
     {
-        $sql = "INSERT INTO utilisateur (emailUtilisateur, pseudoUtilisateur, motDePasseUtilisateur, dateDeNaissanceUtilisateur, dateInscriptionUtilisateur, statutUtilisateur, estAbonnee, statutAbonnement, dateDebutAbonnement, dateFinAbonnement, pointsDeRenommeeArtiste, nbAbonnesArtiste, urlPhotoUtilisateur, roleUtilisateur, descriptionUtilisateur, siteWebUtilisateur, genreUtilisateur) VALUES (:emailUtilisateur, :pseudoUtilisateur, :motDePasseUtilisateur, :dateDeNaissanceUtilisateur, :dateInscriptionUtilisateur, :statutUtilisateur, :estAbonnee, :statutAbonnement, :dateDebutAbonnement, :dateFinAbonnement, :pointsDeRenommeeArtiste, :nbAbonnesArtiste, :urlPhotoUtilisateur, :roleUtilisateur, :descriptionUtilisateur, :siteWebUtilisateur, :genreUtilisateur)";
+        $sql = "INSERT INTO utilisateur (emailUtilisateur, pseudoUtilisateur, motDePasseUtilisateur, dateDeNaissanceUtilisateur, dateInscriptionUtilisateur, statutUtilisateur, estAbonnee, statutAbonnement, dateDebutAbonnement, dateFinAbonnement, pointsDeRenommeeArtiste, nbAbonnesArtiste, urlPhotoUtilisateur, roleUtilisateur, descriptionUtilisateur, siteWebUtilisateur, genreUtilisateur, nomUtilisateur) VALUES (:emailUtilisateur, :pseudoUtilisateur, :motDePasseUtilisateur, :dateDeNaissanceUtilisateur, :dateInscriptionUtilisateur, :statutUtilisateur, :estAbonnee, :statutAbonnement, :dateDebutAbonnement, :dateFinAbonnement, :pointsDeRenommeeArtiste, :nbAbonnesArtiste, :urlPhotoUtilisateur, :roleUtilisateur, :descriptionUtilisateur, :siteWebUtilisateur, :genreUtilisateur, :nomUtilisateur)";
         $stmt = $this->pdo->prepare($sql);
 
         $dateDeNaissance = $utilisateur->getDateDeNaissanceUtilisateur()?->format('Y-m-d');
@@ -129,12 +130,13 @@ class UtilisateurDAO
             ':descriptionUtilisateur' => $utilisateur->getDescriptionUtilisateur(),
             ':siteWebUtilisateur' => $utilisateur->getSiteWebUtilisateur(),
             ':genreUtilisateur' => $genreId,
+            ':nomUtilisateur' => $utilisateur->getNomUtilisateur(),
         ]);
     }
 
     public function update(Utilisateur $utilisateur): bool
     {
-        $sql = "UPDATE utilisateur SET pseudoUtilisateur = :pseudoUtilisateur, motDePasseUtilisateur = :motDePasseUtilisateur, dateDeNaissanceUtilisateur = :dateDeNaissanceUtilisateur, dateInscriptionUtilisateur = :dateInscriptionUtilisateur, statutUtilisateur = :statutUtilisateur, estAbonnee = :estAbonnee, statutAbonnement = :statutAbonnement, dateDebutAbonnement = :dateDebutAbonnement, dateFinAbonnement = :dateFinAbonnement, pointsDeRenommeeArtiste = :pointsDeRenommeeArtiste, nbAbonnesArtiste = :nbAbonnesArtiste, urlPhotoUtilisateur = :urlPhotoUtilisateur, roleUtilisateur = :roleUtilisateur, descriptionUtilisateur = :descriptionUtilisateur, siteWebUtilisateur = :siteWebUtilisateur, genreUtilisateur = :genreUtilisateur WHERE emailUtilisateur = :emailUtilisateur";
+        $sql = "UPDATE utilisateur SET pseudoUtilisateur = :pseudoUtilisateur, motDePasseUtilisateur = :motDePasseUtilisateur, dateDeNaissanceUtilisateur = :dateDeNaissanceUtilisateur, dateInscriptionUtilisateur = :dateInscriptionUtilisateur, statutUtilisateur = :statutUtilisateur, estAbonnee = :estAbonnee, statutAbonnement = :statutAbonnement, dateDebutAbonnement = :dateDebutAbonnement, dateFinAbonnement = :dateFinAbonnement, pointsDeRenommeeArtiste = :pointsDeRenommeeArtiste, nbAbonnesArtiste = :nbAbonnesArtiste, urlPhotoUtilisateur = :urlPhotoUtilisateur, roleUtilisateur = :roleUtilisateur, descriptionUtilisateur = :descriptionUtilisateur, siteWebUtilisateur = :siteWebUtilisateur, genreUtilisateur = :genreUtilisateur, nomUtilisateur = :nomUtilisateur WHERE emailUtilisateur = :emailUtilisateur";
         $stmt = $this->pdo->prepare($sql);
 
         $dateDeNaissance = $utilisateur->getDateDeNaissanceUtilisateur()?->format('Y-m-d');
@@ -164,6 +166,7 @@ class UtilisateurDAO
             ':descriptionUtilisateur' => $utilisateur->getDescriptionUtilisateur(),
             ':siteWebUtilisateur' => $utilisateur->getSiteWebUtilisateur(),
             ':genreUtilisateur' => $genreId,
+            ':nomUtilisateur' => $utilisateur->getNomUtilisateur(),
         ]);
     }
 

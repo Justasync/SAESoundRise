@@ -123,6 +123,7 @@ class ControllerUtilisateur extends Controller
         ];
 
         $userType = strtolower(trim($post['type'] ?? ''));
+        $nom = trim($post['nom'] ?? '');
         $pseudo = trim($post['pseudo'] ?? '');
         $description = trim($post['description'] ?? '');
         $website = trim($post['website'] ?? '');
@@ -140,6 +141,15 @@ class ControllerUtilisateur extends Controller
 
         if ($pseudo === '' || mb_strlen($pseudo) < 3 || mb_strlen($pseudo) > 50) {
             $errors[] = 'Le nom ou pseudonyme doit contenir entre 3 et 50 caractères.';
+        }
+
+        // Le pseudo ne doit contenir que des lettres, chiffres et underscores, sans espaces.
+        if (!preg_match('/^[a-zA-Z0-9_]+$/', $pseudo)) {
+            $errors[] = 'Le pseudo ne doit contenir que des lettres, des chiffres et des underscores, sans espaces.';
+        }
+
+        if ($nom === '' || mb_strlen($nom) == 0 || mb_strlen($nom) > 255) {
+            $errors[] = 'Le nom ou pseudonyme doit contenir entre 1 et 255 caractères.';
         }
 
         if ($description === '' || mb_strlen($description) < 10) {
@@ -233,7 +243,8 @@ class ControllerUtilisateur extends Controller
             $utilisateur = new Utilisateur();
             // add all paramaters
             $utilisateur->setEmailUtilisateur($email); // adresse e-mail
-            $utilisateur->setPseudoUtilisateur($pseudo); // nom ou pseudonyme
+            $utilisateur->setNomUtilisateur($nom); // nom
+            $utilisateur->setPseudoUtilisateur($pseudo); // pseudonyme
             $utilisateur->setMotDePasseUtilisateur($hashedPassword); // mot de passe hashé
             $dateNaissance = !empty($birthdate) ? DateTime::createFromFormat('Y-m-d', $birthdate) : null;
             $utilisateur->setDateDeNaissanceUtilisateur($dateNaissance); // date de naissance

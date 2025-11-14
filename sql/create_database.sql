@@ -22,6 +22,7 @@ CREATE TABLE role (
 CREATE TABLE utilisateur (
   emailUtilisateur VARCHAR(191) PRIMARY KEY,
 
+  nomUtilisateur VARCHAR(255) NOT NULL,
   pseudoUtilisateur VARCHAR(191) NOT NULL,
   motDePasseUtilisateur VARCHAR(255) NOT NULL,
   dateDeNaissanceUtilisateur DATE NOT NULL,
