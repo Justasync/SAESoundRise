@@ -254,3 +254,21 @@ CREATE TABLE vote (
     FOREIGN KEY (idBattle) REFERENCES battle(idBattle)
     ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+-- ===================== Abonnement Artiste =====================
+CREATE TABLE abonnementArtiste (
+  emailAbonne VARCHAR(125) NOT NULL,
+  emailArtiste VARCHAR(125) NOT NULL,
+  dateAbonnement DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+  PRIMARY KEY (emailAbonne, emailArtiste),
+
+  CONSTRAINT fkAbonnementAbonne
+    FOREIGN KEY (emailAbonne) REFERENCES utilisateur(emailUtilisateur)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+
+  CONSTRAINT fkAbonnementArtiste
+    FOREIGN KEY (emailArtiste) REFERENCES utilisateur(emailUtilisateur)
+    ON DELETE CASCADE ON UPDATE CASCADE
+);
+

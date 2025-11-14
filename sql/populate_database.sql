@@ -13,6 +13,7 @@ DELETE FROM participation;
 DELETE FROM connexion;
 DELETE FROM chanson;
 DELETE FROM album;
+DELETE FROM abonnementArtiste;
 DELETE FROM utilisateur;
 DELETE FROM role;
 DELETE FROM genre;
@@ -317,3 +318,55 @@ INSERT INTO connexion (idConnexion, dateConnexion, adresseIpConnexion, emailUtil
 (8, '2024-10-10 05:00:00', '198.51.100.66', 'label@paaxio.com'),
 (9, '2024-10-11 06:00:00', '203.0.113.77', 'rteisseir@paaxio.com'),
 (10, '2024-10-12 07:00:00', '192.0.2.88', 'admin@paaxio.com');
+
+-- ===== abonnementArtiste =====
+INSERT INTO abonnementArtiste (emailAbonne, emailArtiste, dateAbonnement) VALUES
+-- L’admin suit les principaux artistes
+('admin@paaxio.com', 'yohan@paaxio.com',        '2024-10-01 09:00:00'),
+('admin@paaxio.com', 'angel@paaxio.com',        '2024-10-01 09:05:00'),
+('admin@paaxio.com', 'jarlin@paaxio.com',       '2024-10-01 09:10:00'),
+('admin@paaxio.com', 'christopher@paaxio.com',  '2024-10-01 09:15:00'),
+
+-- Yohan suit les autres créateurs
+('yohan@paaxio.com', 'angel@paaxio.com',        '2024-10-02 10:00:00'),
+('yohan@paaxio.com', 'jarlin@paaxio.com',       '2024-10-02 10:05:00'),
+('yohan@paaxio.com', 'christopher@paaxio.com',  '2024-10-02 10:10:00'),
+
+-- Angel suit les artistes électro / jazz / rock
+('angel@paaxio.com', 'yohan@paaxio.com',        '2024-10-03 11:00:00'),
+('angel@paaxio.com', 'jarlin@paaxio.com',       '2024-10-03 11:05:00'),
+('angel@paaxio.com', 'christopher@paaxio.com',  '2024-10-03 11:10:00'),
+
+-- Jarlin suit Yohan et Angel
+('jarlin@paaxio.com', 'yohan@paaxio.com',       '2024-10-04 12:00:00'),
+('jarlin@paaxio.com', 'angel@paaxio.com',       '2024-10-04 12:05:00'),
+
+-- Christopher suit les artistes plus “indie”
+('christopher@paaxio.com', 'angel@paaxio.com',  '2024-10-05 13:00:00'),
+('christopher@paaxio.com', 'yohan@paaxio.com',  '2024-10-05 13:05:00'),
+
+-- Tim (auditeur) suit un peu tout le monde
+('tim@paaxio.com', 'angel@paaxio.com',          '2024-10-06 14:00:00'),
+('tim@paaxio.com', 'yohan@paaxio.com',          '2024-10-06 14:05:00'),
+('tim@paaxio.com', 'jarlin@paaxio.com',         '2024-10-06 14:10:00'),
+('tim@paaxio.com', 'christopher@paaxio.com',    '2024-10-06 14:15:00'),
+
+-- Erwan suit surtout les artistes électro / jazz
+('erwan@paaxio.com', 'yohan@paaxio.com',        '2024-10-07 15:00:00'),
+('erwan@paaxio.com', 'christopher@paaxio.com',  '2024-10-07 15:05:00'),
+
+-- Le producteur suit les artistes “signables”
+('rteisseir@paaxio.com', 'angel@paaxio.com',    '2024-10-08 16:00:00'),
+('rteisseir@paaxio.com', 'yohan@paaxio.com',    '2024-10-08 16:05:00'),
+('rteisseir@paaxio.com', 'christopher@paaxio.com','2024-10-08 16:10:00'),
+
+-- Le label suit tout le roster
+('label@paaxio.com', 'angel@paaxio.com',        '2024-10-09 17:00:00'),
+('label@paaxio.com', 'yohan@paaxio.com',        '2024-10-09 17:05:00'),
+('label@paaxio.com', 'jarlin@paaxio.com',       '2024-10-09 17:10:00'),
+('label@paaxio.com', 'christopher@paaxio.com',  '2024-10-09 17:15:00'),
+
+-- Le curateur suit ceux qu’il met en avant
+('curator@paaxio.com', 'angel@paaxio.com',      '2024-10-10 18:00:00'),
+('curator@paaxio.com', 'yohan@paaxio.com',      '2024-10-10 18:05:00'),
+('curator@paaxio.com', 'christopher@paaxio.com','2024-10-10 18:10:00');
