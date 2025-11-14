@@ -39,13 +39,11 @@ class ChansonDAO {
             $sql = "SELECT * FROM chanson WHERE emailPublicateur = :email";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([':email' => $email]);
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $this->hydrateMany($results);
         } else {
-            $sql = "SELECT * FROM chanson";
-            $stmt = $this->pdo->query($sql);
+            return [];
         }
-
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $this->hydrateMany($results);
     }
 
     public function hydrate(array $tableaAssoc): chanson

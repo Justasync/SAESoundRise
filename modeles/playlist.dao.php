@@ -38,13 +38,11 @@ class PlaylistDAO {
             $sql = "SELECT * FROM playlist WHERE emailProprietaire = :email";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([':email' => $email]);
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $results;
         } else {
-            $sql = "SELECT * FROM playlist";
-            $stmt = $this->pdo->query($sql);
+            return [];
         }
-
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $results;
     }
 
     public function hydrate(array $tableaAssoc): playlist
