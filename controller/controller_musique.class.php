@@ -6,14 +6,18 @@ class ControllerMusique extends Controller
     {
         parent::__construct($loader, $twig);
     }
-
-    public function afficher()
+    public function afficher() 
     {
-        // Récupère les musiques
+        // Récupère l'utilisateur connecté
+        $emailUtilisateur = $_SESSION['user_email'] ?? null;
+
+        // Récupère les musiques de l'utilisateur connecté
         $managerChanson = new ChansonDao($this->getPdo());
-        $chansons = $managerChanson->findAll();
+        $chansons = $managerChanson->findUser($emailUtilisateur);
+
+        // Récupère les playlists de l'utilisateur connecté
         $managerPlaylist = new PlaylistDao($this->getPdo());
-        $playlists = $managerPlaylist->findAll();
+        $playlists = $managerPlaylist->findUser($emailUtilisateur);
 
         // Charge la page musique
         $template = $this->getTwig()->load('musique.html.twig');
