@@ -53,6 +53,21 @@ class AlbumDAO
         return $albums;
     }
 
+    public function create(Album $album): bool
+    {
+        $sql = "INSERT INTO album (nomAlbum, dateSortieAlbum, urlPochetteAlbum) VALUES (:titre, :dateSortie, :urlPochetteAlbum)";
+        $pdoStatement = $this->pdo->prepare($sql);
+
+        $params = [
+            ':titre' => $album->getTitreAlbum(),
+            ':dateSortie' => $album->getDateSortieAlbum(),
+            ':urlPochetteAlbum' => $album->geturlPochetteAlbum()
+        ];
+
+        return $pdoStatement->execute($params);
+    }
+
+
     /**
      * Get the value of pdo
      */
