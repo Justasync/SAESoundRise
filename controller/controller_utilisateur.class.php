@@ -288,7 +288,7 @@ class ControllerUtilisateur extends Controller
         }
     }
 
-    public function signout()
+    public function logout()
     {
         $_SESSION = [];
         if (ini_get("session.use_cookies")) {
@@ -303,13 +303,10 @@ class ControllerUtilisateur extends Controller
                 $params["httponly"]
             );
         }
-
         session_destroy();
 
-        header('Content-Type: application/json');
-        echo json_encode([
-            'success' => true,
-            'message' => 'Déconnexion réussie.'
-        ]);
+        // Redirection vers la page d'accueil (controller=home, method=afficher)
+        header('Location: /?controller=home&method=afficher');
+        exit;
     }
 }

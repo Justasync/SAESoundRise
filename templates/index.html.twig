@@ -19,6 +19,9 @@
 							<a class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#signupModal">S'inscrire</a>
 							<a class="btn btn-lg btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#signinModal">Se connecter</a>
 						</div>
+						{% if session.user_logged_in is defined and session.user_logged_in %}
+							<a class="btn btn-lg btn-danger" href="/?controller=utilisateur&method=logout">Se déconnecter</a>
+						{% endif %}
 					</div>
 
 					{# Optional right column for a future illustration/pattern #}

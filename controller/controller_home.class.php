@@ -21,7 +21,8 @@ class ControllerHome extends Controller
                 'description' => "Page d'accueil de Paaxio"
             ],
             'genres' => $genres,
-            'show' => $showModalName
+            'show' => $showModalName,
+            'session' => $_SESSION
         ]);
     }
 
