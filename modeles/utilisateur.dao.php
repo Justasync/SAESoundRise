@@ -47,15 +47,16 @@ class UtilisateurDAO
         $statutUtilisateur = $row['statutUtilisateur'] ? StatutUtilisateur::from($row['statutUtilisateur']) : null;
         $statutAbonnement = $row['statutAbonnement'] ? StatutAbonnement::from($row['statutAbonnement']) : null;
 
-        $photoProfil = null;
-        if ($row['photoProfilUtilisateur']) {
-            $photoProfil = $row['photoProfilUtilisateur'];
-        }
-
         $role = null;
         if ($row['roleUtilisateur']) {
             $roleDAO = new RoleDao($this->pdo);
             $role = $roleDAO->find((int)$row['roleUtilisateur']);
+        }
+
+        $genre = null;
+        if ($row['genreUtilisateur']) {
+            $genreDAO = new GenreDAO($this->pdo);
+            $genre = $genreDAO->find((int)$row['genreUtilisateur']);
         }
 
         return new Utilisateur(
@@ -65,13 +66,16 @@ class UtilisateurDAO
             $dateDeNaissance,
             $dateInscription,
             $statutUtilisateur,
+            $genre,
             (bool)$row['estAbonnee'],
+            $row['descriptionUtilisateur'],
+            $row['siteWebUtilisateur'],
             $statutAbonnement,
             $dateDebutAbonnement,
             $dateFinAbonnement,
             (int)$row['pointsDeRenommeeArtiste'],
             (int)$row['nbAbonnesArtiste'],
-            $photoProfil,
+            $row['urlPhotoUtilisateur'],
             $role,
         );
     }
@@ -95,7 +99,7 @@ class UtilisateurDAO
 
     public function create(Utilisateur $utilisateur): bool
     {
-        $sql = "INSERT INTO utilisateur (emailUtilisateur, pseudoUtilisateur, motDePasseUtilisateur, dateDeNaissanceUtilisateur, dateInscriptionUtilisateur, statutUtilisateur, estAbonnee, statutAbonnement, dateDebutAbonnement, dateFinAbonnement, pointsDeRenommeeArtiste, nbAbonnesArtiste, photoProfilUtilisateur, roleUtilisateur) VALUES (:emailUtilisateur, :pseudoUtilisateur, :motDePasseUtilisateur, :dateDeNaissanceUtilisateur, :dateInscriptionUtilisateur, :statutUtilisateur, :estAbonnee, :statutAbonnement, :dateDebutAbonnement, :dateFinAbonnement, :pointsDeRenommeeArtiste, :nbAbonnesArtiste, :photoProfilUtilisateur, :roleUtilisateur)";
+        $sql = "INSERT INTO utilisateur (emailUtilisateur, pseudoUtilisateur, motDePasseUtilisateur, dateDeNaissanceUtilisateur, dateInscriptionUtilisateur, statutUtilisateur, estAbonnee, statutAbonnement, dateDebutAbonnement, dateFinAbonnement, pointsDeRenommeeArtiste, nbAbonnesArtiste, urlPhotoUtilisateur, roleUtilisateur, descriptionUtilisateur, siteWebUtilisateur, genreUtilisateur) VALUES (:emailUtilisateur, :pseudoUtilisateur, :motDePasseUtilisateur, :dateDeNaissanceUtilisateur, :dateInscriptionUtilisateur, :statutUtilisateur, :estAbonnee, :statutAbonnement, :dateDebutAbonnement, :dateFinAbonnement, :pointsDeRenommeeArtiste, :nbAbonnesArtiste, :urlPhotoUtilisateur, :roleUtilisateur, :descriptionUtilisateur, :siteWebUtilisateur, :genreUtilisateur)";
         $stmt = $this->pdo->prepare($sql);
 
         $dateDeNaissance = $utilisateur->getDateDeNaissanceUtilisateur()?->format('Y-m-d');
@@ -104,8 +108,8 @@ class UtilisateurDAO
         $dateFinAbonnement = $utilisateur->getDateFinAbonnement()?->format('Y-m-d');
         $statutUtilisateur = $utilisateur->getStatutUtilisateur()?->value;
         $statutAbonnement = $utilisateur->getStatutAbonnement()?->value;
-        $photoProfil = $utilisateur->getPhotoProfilUtilisateur()?->getUrlFichier();
         $roleId = $utilisateur->getRoleUtilisateur()?->getIdRole();
+        $genreId = $utilisateur->getGenreUtilisateur()?->getIdGenre();
 
         return $stmt->execute([
             ':emailUtilisateur' => $utilisateur->getEmailUtilisateur(),
@@ -120,14 +124,17 @@ class UtilisateurDAO
             ':dateFinAbonnement' => $dateFinAbonnement,
             ':pointsDeRenommeeArtiste' => $utilisateur->getPointsDeRenommeeArtiste(),
             ':nbAbonnesArtiste' => $utilisateur->getNbAbonnesArtiste(),
-            ':photoProfilUtilisateur' => $photoProfil,
+            ':urlPhotoUtilisateur' => $utilisateur->geturlPhotoUtilisateur(),
             ':roleUtilisateur' => $roleId,
+            ':descriptionUtilisateur' => $utilisateur->getDescriptionUtilisateur(),
+            ':siteWebUtilisateur' => $utilisateur->getSiteWebUtilisateur(),
+            ':genreUtilisateur' => $genreId,
         ]);
     }
 
     public function update(Utilisateur $utilisateur): bool
     {
-        $sql = "UPDATE utilisateur SET pseudoUtilisateur = :pseudoUtilisateur, motDePasseUtilisateur = :motDePasseUtilisateur, dateDeNaissanceUtilisateur = :dateDeNaissanceUtilisateur, dateInscriptionUtilisateur = :dateInscriptionUtilisateur, statutUtilisateur = :statutUtilisateur, estAbonnee = :estAbonnee, statutAbonnement = :statutAbonnement, dateDebutAbonnement = :dateDebutAbonnement, dateFinAbonnement = :dateFinAbonnement, pointsDeRenommeeArtiste = :pointsDeRenommeeArtiste, nbAbonnesArtiste = :nbAbonnesArtiste, photoProfilUtilisateur = :photoProfilUtilisateur, roleUtilisateur = :roleUtilisateur WHERE emailUtilisateur = :emailUtilisateur";
+        $sql = "UPDATE utilisateur SET pseudoUtilisateur = :pseudoUtilisateur, motDePasseUtilisateur = :motDePasseUtilisateur, dateDeNaissanceUtilisateur = :dateDeNaissanceUtilisateur, dateInscriptionUtilisateur = :dateInscriptionUtilisateur, statutUtilisateur = :statutUtilisateur, estAbonnee = :estAbonnee, statutAbonnement = :statutAbonnement, dateDebutAbonnement = :dateDebutAbonnement, dateFinAbonnement = :dateFinAbonnement, pointsDeRenommeeArtiste = :pointsDeRenommeeArtiste, nbAbonnesArtiste = :nbAbonnesArtiste, urlPhotoUtilisateur = :urlPhotoUtilisateur, roleUtilisateur = :roleUtilisateur, descriptionUtilisateur = :descriptionUtilisateur, siteWebUtilisateur = :siteWebUtilisateur, genreUtilisateur = :genreUtilisateur WHERE emailUtilisateur = :emailUtilisateur";
         $stmt = $this->pdo->prepare($sql);
 
         $dateDeNaissance = $utilisateur->getDateDeNaissanceUtilisateur()?->format('Y-m-d');
@@ -136,8 +143,8 @@ class UtilisateurDAO
         $dateFinAbonnement = $utilisateur->getDateFinAbonnement()?->format('Y-m-d');
         $statutUtilisateur = $utilisateur->getStatutUtilisateur()?->value;
         $statutAbonnement = $utilisateur->getStatutAbonnement()?->value;
-        $photoProfil = $utilisateur->getPhotoProfilUtilisateur()?->getUrlFichier();
         $roleId = $utilisateur->getRoleUtilisateur()?->getIdRole();
+        $genreId = $utilisateur->getGenreUtilisateur()?->getIdGenre();
 
         return $stmt->execute([
             ':emailUtilisateur' => $utilisateur->getEmailUtilisateur(),
@@ -152,8 +159,11 @@ class UtilisateurDAO
             ':dateFinAbonnement' => $dateFinAbonnement,
             ':pointsDeRenommeeArtiste' => $utilisateur->getPointsDeRenommeeArtiste(),
             ':nbAbonnesArtiste' => $utilisateur->getNbAbonnesArtiste(),
-            ':photoProfilUtilisateur' => $photoProfil,
+            ':urlPhotoUtilisateur' => $utilisateur->geturlPhotoUtilisateur(),
             ':roleUtilisateur' => $roleId,
+            ':descriptionUtilisateur' => $utilisateur->getDescriptionUtilisateur(),
+            ':siteWebUtilisateur' => $utilisateur->getSiteWebUtilisateur(),
+            ':genreUtilisateur' => $genreId,
         ]);
     }
 

@@ -20,16 +20,36 @@ class GenreDAO
         return $genre;
     }
 
-    public function find(int $id): Genre
+    public function find(int $id): ?Genre
     {
         $sql = "SELECT * FROM genre WHERE idGenre = :id";
         $pdoStatement = $this->pdo->prepare($sql);
-        $pdoStatement->execute(array(
+        $pdoStatement->execute([
             ':id' => $id
-        ));
+        ]);
 
         $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
         $tableau = $pdoStatement->fetch();
+        if (!$tableau) {
+            return null;
+        }
+        $genre = $this->hydrate($tableau);
+        return $genre;
+    }
+
+    public function findByName(string $nomGenre): ?Genre
+    {
+        $sql = "SELECT * FROM genre WHERE nomGenre = :nomGenre";
+        $pdoStatement = $this->pdo->prepare($sql);
+        $pdoStatement->execute([
+            ':nomGenre' => $nomGenre
+        ]);
+
+        $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
+        $tableau = $pdoStatement->fetch();
+        if (!$tableau) {
+            return null;
+        }
         $genre = $this->hydrate($tableau);
         return $genre;
     }

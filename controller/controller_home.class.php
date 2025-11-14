@@ -25,6 +25,19 @@ class ControllerHome extends Controller
         ]);
     }
 
+    public function session()
+    {
+        $template = $this->getTwig()->load('test.html.twig');
+        echo $template->render(array(
+            'page' => [
+                'title' => "DATA SESSION",
+                'name' => "session",
+                'description' => "Session dans Paaxio"
+            ],
+            'testing' => $_SESSION,
+        ));
+    }
+
     public function login()
     {
         $this->afficher('login');

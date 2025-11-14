@@ -1,6 +1,7 @@
 <?php
 
-class AlbumDAO {
+class AlbumDAO
+{
     private ?PDO $pdo;
 
     public function __construct(?PDO $pdo = null)
@@ -39,7 +40,7 @@ class AlbumDAO {
         $album->setIdAlbum(isset($tableaAssoc['idAlbum']) ? (int)$tableaAssoc['idAlbum'] : null);
         $album->setTitreAlbum($tableaAssoc['nomAlbum'] ?? null);
         $album->setDateSortieAlbum($tableaAssoc['dateSortieAlbum'] ?? null);
-        $album->setPochetteAlbum($tableaAssoc['pochetteAlbum'] ?? null);
+        $album->seturlPochetteAlbum($tableaAssoc['urlPochetteAlbum'] ?? null);
         return $album;
     }
 

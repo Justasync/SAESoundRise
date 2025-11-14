@@ -5,14 +5,6 @@ USE paaxio_db;
 SET NAMES utf8mb4;
 SET time_zone = '+00:00';
 
--- ===================== FICHIER =====================
-CREATE TABLE fichier (
-  urlFichier VARCHAR(191) PRIMARY KEY,
-  typeFichier ENUM('image','audio') NOT NULL,
-  formatFichier ENUM('jpg','jpeg','png','webp','mp3','wav') NOT NULL,
-  dateAjoutFichier DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
 -- ===================== GENRE =====================
 CREATE TABLE genre (
   idGenre INT PRIMARY KEY AUTO_INCREMENT,
@@ -35,23 +27,26 @@ CREATE TABLE utilisateur (
   dateDeNaissanceUtilisateur DATE NOT NULL,
   dateInscriptionUtilisateur DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-  statutUtilisateur ENUM('actif','suspendu','supprimee'),
+  statutUtilisateur ENUM('actif','suspendu','supprimee') NOT NULL DEFAULT 'actif',
+  genreUtilisateur INT DEFAULT NULL,
   estAbonnee BOOLEAN NOT NULL DEFAULT 0,
   descriptionUtilisateur TEXT DEFAULT NULL,
   siteWebUtilisateur VARCHAR(255) DEFAULT NULL,
-  statutAbonnement ENUM('actif','expire','annule'),
+  urlPhotoUtilisateur VARCHAR(191) DEFAULT NULL,
+  statutAbonnement ENUM('actif','expire','annule','inactif') NOT NULL DEFAULT 'inactif',
   dateDebutAbonnement DATE,
   dateFinAbonnement DATE,
 
   pointsDeRenommeeArtiste INT DEFAULT 0,
   nbAbonnesArtiste INT DEFAULT 0,
 
-  photoProfilUtilisateur VARCHAR(191),
   roleUtilisateur INT NOT NULL,
 
-  CONSTRAINT fkUtilisateurPhoto
-    FOREIGN KEY (photoProfilUtilisateur) REFERENCES fichier(urlFichier)
-    ON DELETE SET NULL ON UPDATE CASCADE,
+  UNIQUE KEY uqUtilisateurPseudo (pseudoUtilisateur),
+
+  CONSTRAINT fkUtilisateurGenre
+  FOREIGN KEY (genreUtilisateur) REFERENCES genre(idGenre)
+  ON DELETE SET NULL ON UPDATE CASCADE,
 
   CONSTRAINT fkUtilisateurRole
     FOREIGN KEY (roleUtilisateur) REFERENCES role(idRole)
@@ -63,10 +58,7 @@ CREATE TABLE album (
   idAlbum INT PRIMARY KEY AUTO_INCREMENT,
   nomAlbum VARCHAR(255) NOT NULL,
   dateSortieAlbum DATE NOT NULL,
-  pochetteAlbum VARCHAR(191),
-  CONSTRAINT fkPochetteAlbum
-    FOREIGN KEY (pochetteAlbum) REFERENCES fichier(urlFichier)
-    ON DELETE SET NULL ON UPDATE CASCADE
+  urlPochetteAlbum VARCHAR(191) NOT NULL
 );
 
 -- ===================== CHANSON =====================
@@ -83,10 +75,10 @@ CREATE TABLE chanson (
 
   estPublieeChanson BOOLEAN DEFAULT 0,
   nbEcouteChanson INT DEFAULT 0,
+  urlAudioChanson VARCHAR(191) NOT NULL,
 
   albumChanson INT,
   genreChanson INT NOT NULL,
-  urlFichierAudioChanson VARCHAR(191) NOT NULL,
   emailPublicateur VARCHAR(191),
 
   CONSTRAINT fkAlbumChanson
@@ -95,10 +87,6 @@ CREATE TABLE chanson (
 
   CONSTRAINT fkGenreChanson
     FOREIGN KEY (genreChanson) REFERENCES genre(idGenre)
-    ON DELETE RESTRICT ON UPDATE CASCADE,
-
-  CONSTRAINT fkAudioChanson
-    FOREIGN KEY (urlFichierAudioChanson) REFERENCES fichier(urlFichier)
     ON DELETE RESTRICT ON UPDATE CASCADE,
 
   CONSTRAINT fkPublicateur

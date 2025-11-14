@@ -1,6 +1,7 @@
 <?php
 
-class Chanson {
+class Chanson
+{
     private int|null $idChanson;
     private string|null $titreChanson;
     private string|null $descriptionChanson;
@@ -13,16 +14,25 @@ class Chanson {
     private Album|null $albumChanson;
     private Genre|null $genreChanson;
     private string|null $emailPublicateur;
-    private string|null $urlFichierAudioChanson;
+    private string|null $urlAudioChanson;
 
 
     //Constructeur
 
-    public function __construct( ?int $idChanson = null, ?string $titreChanson = null, ?int $dureeChanson = null, 
-        ?DateTime $dateTeleversementChanson = null, ?Album $albumChanson = null, ?Genre $genreChanson = null, 
-        ?string $emailPublicateur = null, ?string $urlFichierAudioChanson = null, ?string $descriptionChanson = null, 
-        ?string $compositeurChanson = null, ?string $parolierChanson = null,
-        ?bool $estPublieeChanson = null, ?int $nbEcouteChanson = null
+    public function __construct(
+        ?int $idChanson = null,
+        ?string $titreChanson = null,
+        ?int $dureeChanson = null,
+        ?DateTime $dateTeleversementChanson = null,
+        ?Album $albumChanson = null,
+        ?Genre $genreChanson = null,
+        ?string $emailPublicateur = null,
+        ?string $urlAudioChanson = null,
+        ?string $descriptionChanson = null,
+        ?string $compositeurChanson = null,
+        ?string $parolierChanson = null,
+        ?bool $estPublieeChanson = null,
+        ?int $nbEcouteChanson = null
     ) {
         $this->idChanson = $idChanson;
         $this->titreChanson = $titreChanson;
@@ -31,7 +41,7 @@ class Chanson {
         $this->albumChanson = $albumChanson;
         $this->genreChanson = $genreChanson;
         $this->emailPublicateur = $emailPublicateur;
-        $this->urlFichierAudioChanson = $urlFichierAudioChanson;
+        $this->urlAudioChanson = $urlAudioChanson;
         $this->descriptionChanson = $descriptionChanson;
         $this->compositeurChanson = $compositeurChanson;
         $this->parolierChanson = $parolierChanson;
@@ -43,7 +53,7 @@ class Chanson {
 
     /**
      * Get the value of idChanson
-     */ 
+     */
     public function getIdChanson(): ?int
     {
         return $this->idChanson;
@@ -52,7 +62,7 @@ class Chanson {
     /**
      * Set the value of idChanson
      *
-     */ 
+     */
     public function setIdChanson(?int $idChanson): void
     {
         $this->idChanson = $idChanson;
@@ -60,7 +70,7 @@ class Chanson {
 
     /**
      * Get the value of titreChanson
-     */ 
+     */
     public function getTitreChanson(): ?string
     {
         return $this->titreChanson;
@@ -69,7 +79,7 @@ class Chanson {
     /**
      * Set the value of titreChanson
      *
-     */ 
+     */
     public function setTitreChanson(?string $titreChanson): void
     {
         $this->titreChanson = $titreChanson;
@@ -86,7 +96,7 @@ class Chanson {
     /**
      * Set the value of descriptionChanson
      *
-     */ 
+     */
     public function setDescriptionChanson(?string $descriptionChanson): void
     {
         $this->descriptionChanson = $descriptionChanson;
@@ -103,12 +113,12 @@ class Chanson {
     /**
      * Set the value of dureeChanson
      *
-     */ 
+     */
     public function setDureeChanson(?int $dureeChanson): void
     {
         $this->dureeChanson = $dureeChanson;
     }
-    
+
     /**
      * Get the value of dateTeleversementChanson
      */
@@ -120,7 +130,7 @@ class Chanson {
     /**
      * Set the value of dateTeleversementChanson
      *
-     */ 
+     */
     public function setDateTeleversementChanson(?DateTime $dateTeleversementChanson): void
     {
         $this->dateTeleversementChanson = $dateTeleversementChanson;
@@ -137,7 +147,7 @@ class Chanson {
     /**
      * Set the value of compositeurChanson
      *
-     */ 
+     */
     public function setCompositeurChanson(?string $compositeurChanson): void
     {
         $this->compositeurChanson = $compositeurChanson;
@@ -154,7 +164,7 @@ class Chanson {
     /**
      * Set the value of parolierChanson
      *
-     */ 
+     */
     public function setParolierChanson(?string $parolierChanson): void
     {
         $this->parolierChanson = $parolierChanson;
@@ -171,7 +181,7 @@ class Chanson {
     /**
      * Set the value of estPublieeChanson
      *
-     */ 
+     */
     public function setEstPublieeChanson(?bool $estPublieeChanson): void
     {
         $this->estPublieeChanson = $estPublieeChanson;
@@ -188,7 +198,7 @@ class Chanson {
     /**
      * Set the value of nbEcouteChanson
      *
-     */ 
+     */
     public function setNbEcouteChanson(?int $nbEcouteChanson): void
     {
         $this->nbEcouteChanson = $nbEcouteChanson;
@@ -246,19 +256,19 @@ class Chanson {
     }
 
     /**
-     * Get the value of urlFichierAudioChanson
+     * Get the value of urlAudioChanson
      */
-    public function getUrlFichierAudioChanson(): string
+    public function geturlAudioChanson(): string
     {
-        return $this->urlFichierAudioChanson;
+        return $this->urlAudioChanson;
     }
 
     /**
-     * Set the value of urlFichierAudioChanson
+     * Set the value of urlAudioChanson
      *
      */
-    public function setUrlFichierAudioChanson(?string $urlFichierAudioChanson): void
+    public function seturlAudioChanson(?string $urlAudioChanson): void
     {
-        $this->urlFichierAudioChanson = $urlFichierAudioChanson;
+        $this->urlAudioChanson = $urlAudioChanson;
     }
 }

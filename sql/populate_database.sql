@@ -16,51 +16,7 @@ DELETE FROM album;
 DELETE FROM utilisateur;
 DELETE FROM role;
 DELETE FROM genre;
-DELETE FROM fichier;
 SET FOREIGN_KEY_CHECKS = 1;
-
--- ===== fichier (images & audios) =====
-INSERT INTO fichier (urlFichier, typeFichier, formatFichier, dateAjoutFichier) VALUES
-('/img/p01.webp', 'image', 'webp', '2024-10-02 12:00:00'),
-('/img/p02.webp', 'image', 'webp', '2024-10-03 12:00:00'),
-('/img/p03.webp', 'image', 'webp', '2024-10-04 12:00:00'),
-('/img/p04.webp', 'image', 'webp', '2024-10-05 12:00:00'),
-('/img/p05.webp', 'image', 'webp', '2024-10-06 12:00:00'),
-('/img/p06.webp', 'image', 'webp', '2024-10-07 12:00:00'),
-('/img/p07.webp', 'image', 'webp', '2024-10-08 12:00:00'),
-('/img/p08.webp', 'image', 'webp', '2024-10-09 12:00:00'),
-('/img/p09.webp', 'image', 'webp', '2024-10-10 12:00:00'),
-('/img/p10.webp', 'image', 'webp', '2024-10-11 12:00:00'),
-('/img/p11.webp', 'image', 'webp', '2024-10-12 12:00:00'),
-('/img/p12.webp', 'image', 'webp', '2024-10-13 12:00:00'),
-('/img/p13.webp', 'image', 'webp', '2024-10-14 12:00:00'),
-('/img/p14.webp', 'image', 'webp', '2024-10-15 12:00:00'),
-('/img/p15.webp', 'image', 'webp', '2024-10-16 12:00:00'),
-('/img/p16.webp', 'image', 'webp', '2024-10-17 12:00:00'),
-('/img/p17.webp', 'image', 'webp', '2024-10-18 12:00:00'),
-('/img/p18.webp', 'image', 'webp', '2024-10-19 12:00:00'),
-('/img/p19.webp', 'image', 'webp', '2024-10-20 12:00:00'),
-('/img/p20.webp', 'image', 'webp', '2024-10-21 12:00:00'),
-('/audio/tr_01.mp3', 'audio', 'mp3', '2024-10-12 12:00:00'),
-('/audio/tr_02.mp3', 'audio', 'mp3', '2024-10-13 12:00:00'),
-('/audio/tr_03.mp3', 'audio', 'mp3', '2024-10-14 12:00:00'),
-('/audio/tr_04.mp3', 'audio', 'mp3', '2024-10-15 12:00:00'),
-('/audio/tr_05.mp3', 'audio', 'mp3', '2024-10-16 12:00:00'),
-('/audio/tr_06.mp3', 'audio', 'mp3', '2024-10-17 12:00:00'),
-('/audio/tr_07.mp3', 'audio', 'mp3', '2024-10-18 12:00:00'),
-('/audio/tr_08.mp3', 'audio', 'mp3', '2024-10-19 12:00:00'),
-('/audio/tr_09.mp3', 'audio', 'mp3', '2024-10-20 12:00:00'),
-('/audio/tr_10.mp3', 'audio', 'mp3', '2024-10-21 12:00:00'),
-('/audio/tr_11.mp3', 'audio', 'mp3', '2024-10-22 12:00:00'),
-('/audio/tr_12.mp3', 'audio', 'mp3', '2024-10-23 12:00:00'),
-('/audio/tr_13.mp3', 'audio', 'mp3', '2024-10-24 12:00:00'),
-('/audio/tr_14.mp3', 'audio', 'mp3', '2024-10-25 12:00:00'),
-('/audio/tr_15.mp3', 'audio', 'mp3', '2024-10-26 12:00:00'),
-('/audio/tr_16.mp3', 'audio', 'mp3', '2024-10-27 12:00:00'),
-('/audio/tr_17.mp3', 'audio', 'mp3', '2024-10-28 12:00:00'),
-('/audio/tr_18.mp3', 'audio', 'mp3', '2024-10-29 12:00:00'),
-('/audio/tr_19.mp3', 'audio', 'mp3', '2024-10-30 12:00:00'),
-('/audio/tr_20.mp3', 'audio', 'mp3', '2024-10-31 12:00:00');
 
 -- ===== genre =====
 INSERT INTO genre (idGenre, nomGenre) VALUES
@@ -99,22 +55,23 @@ INSERT INTO utilisateur (
   dateFinAbonnement,
   pointsDeRenommeeArtiste,
   nbAbonnesArtiste,
-  photoProfilUtilisateur,
-  roleUtilisateur
+  urlPhotoUtilisateur,
+  roleUtilisateur,
+  genreUtilisateur
 ) VALUES
-('admin@paaxio.com', 'AdminPaax', '$2y$10$adminhash', '1990-01-10', '2024-10-01 12:00:00', 'actif', 1, 'Super administrateur du site Paaxio', 'https://paaxio.com/admin', 'actif', '2024-07-01', '2025-07-01', 0, 0, '/img/p01.webp', 1),
-('yohan@paaxio.com', 'yohan', '$2y$10$morgan', '1999-03-16', '2024-10-01 12:00:00', 'actif', 1, 'Créateur électro et co-fondateur de Paaxio', 'https://yohanmusic.com', 'actif', '2024-08-01', '2025-08-01', 350, 980, '/img/p02.webp', 2),
-('angel@paaxio.com', 'angel', '$2y$10$angel', '2001-10-20', '2024-10-01 12:00:00', 'actif', 1, 'Artiste Indie basque et poète urbain', 'https://angelindigo.com', 'actif', '2024-08-15', '2025-08-15', 420, 1200, '/img/p03.webp', 1),
-('jarlin@paaxio.com', 'jarlin', '$2y$10$jean', '1995-04-04', '2024-10-01 12:00:00', 'actif', 0, 'Guitariste et saxophoniste virtuose', 'https://jarlinmusiques.fr', 'expire', '2023-09-01', '2024-09-01', 120, 300, '/img/p04.webp', 2),
-('christopher@paaxio.com', 'christopher', '$2y$10$alice', '1997-06-21', '2024-10-01 12:00:00', 'actif', 1, 'Passionné jazz et compositeur multi-instrumentiste', 'https://chrisjazz.com', 'actif', '2024-05-10', '2025-05-10', 210, 600, '/img/p05.webp', 2),
-('tim@paaxio.com', 'tim', '$2y$10$leo', '2000-11-12', '2024-10-01 12:00:00', 'actif', 0, 'Fan de folk et amateur de vibes acoustiques', 'https://timfolk.net', 'annule', NULL, NULL, 0, 0, '/img/p06.webp', 3),
-('erwan@paaxio.com', 'erwan', '$2y$10$sara', '1998-12-01', '2024-10-01 12:00:00', 'actif', 1, 'Rappeur et producteur hip-hop', 'https://erwanflow.fr', 'actif', '2024-01-01', '2025-01-01', 0, 0, '/img/p07.webp', 3),
-('rteisseir@paaxio.com', 'rteisseir', '$2y$10$mod', '1992-02-02', '2024-10-01 12:00:00', 'actif', 1, 'Producteur-exécutif et modérateur du site', 'https://prodteisseir.com', 'actif', '2024-06-01', '2025-06-01', 0, 0, '/img/p08.webp', 4),
-('label@paaxio.com', 'LabelRep', '$2y$10$label', '1988-08-08', '2024-10-01 12:00:00', 'actif', 1, 'Label indépendant partenaire de Paaxio', 'https://labelrep.com', 'actif', '2024-06-15', '2025-06-15', 0, 0, '/img/p09.webp', 5),
-('curator@paaxio.com', 'Cur8r', '$2y$10$cur8r', '1994-09-09', '2024-10-01 12:00:00', 'actif', 1, 'Curateur officiel, sélectionneur de playlists', 'https://paaxio.com/cur8r', 'actif', '2024-03-01', '2025-03-01', 0, 0, '/img/p10.webp', 1);
+('admin@paaxio.com', 'AdminPaax', '$2y$10$adminhash', '1990-01-10', '2024-10-01 12:00:00', 'actif', 1, 'Super administrateur du site Paaxio', 'https://paaxio.com/admin', 'actif', '2024-07-01', '2025-07-01', 0, 0, '/img/p01.webp', 1, 5),
+('yohan@paaxio.com', 'yohan', '$2y$10$morgan', '1999-03-16', '2024-10-01 12:00:00', 'actif', 1, 'Créateur électro et co-fondateur de Paaxio', 'https://yohanmusic.com', 'actif', '2024-08-01', '2025-08-01', 350, 980, '/img/p02.webp', 2, 7),
+('angel@paaxio.com', 'angel', '$2y$10$angel', '2001-10-20', '2024-10-01 12:00:00', 'actif', 1, 'Artiste Indie basque et poète urbain', 'https://angelindigo.com', 'actif', '2024-08-15', '2025-08-15', 420, 1200, '/img/p03.webp', 1, NULL),
+('jarlin@paaxio.com', 'jarlin', '$2y$10$jean', '1995-04-04', '2024-10-01 12:00:00', 'actif', 0, 'Guitariste et saxophoniste virtuose', 'https://jarlinmusiques.fr', 'expire', '2023-09-01', '2024-09-01', 120, 300, '/img/p04.webp', 2, 2),
+('christopher@paaxio.com', 'christopher', '$2y$10$alice', '1997-06-21', '2024-10-01 12:00:00', 'actif', 1, 'Passionné jazz et compositeur multi-instrumentiste', 'https://chrisjazz.com', 'actif', '2024-05-10', '2025-05-10', 210, 600, '/img/p05.webp', 2, NULL),
+('tim@paaxio.com', 'tim', '$2y$10$leo', '2000-11-12', '2024-10-01 12:00:00', 'actif', 0, 'Fan de folk et amateur de vibes acoustiques', 'https://timfolk.net', 'annule', NULL, NULL, 0, 0, '/img/p06.webp', 3, NULL),
+('erwan@paaxio.com', 'erwan', '$2y$10$sara', '1998-12-01', '2024-10-01 12:00:00', 'actif', 1, 'Rappeur et producteur hip-hop', 'https://erwanflow.fr', 'actif', '2024-01-01', '2025-01-01', 0, 0, '/img/p07.webp', 3, 6),
+('rteisseir@paaxio.com', 'rteisseir', '$2y$10$mod', '1992-02-02', '2024-10-01 12:00:00', 'actif', 1, 'Producteur-exécutif et modérateur du site', 'https://prodteisseir.com', 'actif', '2024-06-01', '2025-06-01', 0, 0, '/img/p08.webp', 4, NULL),
+('label@paaxio.com', 'LabelRep', '$2y$10$label', '1988-08-08', '2024-10-01 12:00:00', 'actif', 1, 'Label indépendant partenaire de Paaxio', 'https://labelrep.com', 'actif', '2024-06-15', '2025-06-15', 0, 0, '/img/p09.webp', 5, 8),
+('curator@paaxio.com', 'Cur8r', '$2y$10$cur8r', '1994-09-09', '2024-10-01 12:00:00', 'actif', 1, 'Curateur officiel, sélectionneur de playlists', 'https://paaxio.com/cur8r', 'actif', '2024-03-01', '2025-03-01', 0, 0, '/img/p10.webp', 1, 1);
 
 -- ===== album =====
-INSERT INTO album (idAlbum, nomAlbum, dateSortieAlbum, pochetteAlbum) VALUES
+INSERT INTO album (idAlbum, nomAlbum, dateSortieAlbum, urlPochetteAlbum) VALUES
 (1, 'Horizons Électriques', '2024-09-20', '/img/p11.webp'),
 (2, 'Rue des Étoiles', '2024-07-11', '/img/p12.webp'),
 (3, 'Océan Indigo', '2024-05-30', '/img/p13.webp'),
@@ -127,7 +84,7 @@ INSERT INTO album (idAlbum, nomAlbum, dateSortieAlbum, pochetteAlbum) VALUES
 (10, 'Vibes Urbaines', '2024-06-18', '/img/p20.webp');
 
 -- ===== chanson =====
-INSERT INTO chanson (idChanson, titreChanson, descriptionChanson, dureeChanson, dateTeleversementChanson, compositeurChanson, parolierChanson, estPublieeChanson, nbEcouteChanson, albumChanson, genreChanson, urlFichierAudioChanson, emailPublicateur) VALUES
+INSERT INTO chanson (idChanson, titreChanson, descriptionChanson, dureeChanson, dateTeleversementChanson, compositeurChanson, parolierChanson, estPublieeChanson, nbEcouteChanson, albumChanson, genreChanson, urlAudioChanson, emailPublicateur) VALUES
 (1, 'Lumière de Bayonne', 'Une balade indie au bord de l''Adour', 182, '2024-10-02', 'Angel', 'Angel', 1, 1520, 7, 9, '/audio/tr_01.mp3', 'angel@paaxio.com'),
 (2, 'Nuit Électrique', 'Beat électro moderne', 210, '2024-09-21', 'Morgan', 'Morgan', 1, 2310, 1, 4, '/audio/tr_02.mp3', 'yohan@paaxio.com'),
 (3, 'Plaza del Sol', 'Rythmes latins et guitares', 198, '2024-08-06', 'Alice', 'Alice', 1, 890, 6, 8, '/audio/tr_03.mp3', 'christopher@paaxio.com'),
