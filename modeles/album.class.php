@@ -1,16 +1,18 @@
 <?php
 
-class Album {
+class Album
+{
     private int|null $idAlbum;
     private string|null $titreAlbum;
     private string|null $dateSortieAlbum;
-    private string|null $pochetteAlbum;
+    private string|null $urlPochetteAlbum;
 
-    public function __construct(?int $idAlbum = null, ?string $titreAlbum = null, ?string $dateSortieAlbum = null, ?string $pochetteAlbum = null) {
+    public function __construct(?int $idAlbum = null, ?string $titreAlbum = null, ?string $dateSortieAlbum = null, ?string $urlPochetteAlbum = null)
+    {
         $this->idAlbum = $idAlbum;
         $this->titreAlbum = $titreAlbum;
         $this->dateSortieAlbum = $dateSortieAlbum;
-        $this->pochetteAlbum = $pochetteAlbum;
+        $this->urlPochetteAlbum = $urlPochetteAlbum;
     }
 
     /**
@@ -62,18 +64,18 @@ class Album {
     }
 
     /**
-     * Get the value of pochetteAlbum
+     * Get the value of urlPochetteAlbum
      */
-    public function getPochetteAlbum(): ?string
+    public function geturlPochetteAlbum(): ?string
     {
-        return $this->pochetteAlbum;
+        return $this->urlPochetteAlbum;
     }
     /**
-     * Set the value of pochetteAlbum
+     * Set the value of urlPochetteAlbum
      *
      */
-    public function setPochetteAlbum(?string $pochetteAlbum): void
+    public function seturlPochetteAlbum(?string $urlPochetteAlbum): void
     {
-        $this->pochetteAlbum = $pochetteAlbum;
+        $this->urlPochetteAlbum = $urlPochetteAlbum;
     }
 }

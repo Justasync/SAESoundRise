@@ -21,6 +21,7 @@ enum StatutAbonnement: string
     case Actif = 'actif';
     case Expire = 'expire';
     case Annule = 'annule';
+    case Inactif = 'inactif';
 }
 
 class Utilisateur
@@ -28,31 +29,53 @@ class Utilisateur
     /**
      * @brief Adresse email de l'utilisateur.
      */
-    private null|string $emailUtilisateur;
-    private null|string $pseudoUtilisateur;
-    private null|string $motDePasseUtilisateur;
-    private null|DateTime $dateDeNaissanceUtilisateur;
-    private null|DateTime $dateInscriptionUtilisateur;
-    private null|StatutUtilisateur $statutUtilisateur;
-    private null|bool $estAbonnee;
-    private null|string $descriptionUtilisateur;
-    private null|string $siteWebUtilisateur;
-    private null|StatutAbonnement $statutAbonnement;
-    private null|DateTime $dateDebutAbonnement;
-    private null|DateTime $dateFinAbonnement;
-    private null|int $pointsDeRenommeeArtiste;
-    private null|int $nbAbonnesArtiste;
-    private ?Fichier $photoProfilUtilisateur;
+    private ?string $emailUtilisateur;
+    private ?string $nomUtilisateur;
+    private ?string $pseudoUtilisateur;
+    private ?string $motDePasseUtilisateur;
+    private ?DateTime $dateDeNaissanceUtilisateur;
+    private ?DateTime $dateInscriptionUtilisateur;
+    private ?StatutUtilisateur $statutUtilisateur;
+    private ?Genre $genreUtilisateur;
+    private ?bool $estAbonnee;
+    private ?string $descriptionUtilisateur;
+    private ?string $siteWebUtilisateur;
+    private ?StatutAbonnement $statutAbonnement;
+    private ?DateTime $dateDebutAbonnement;
+    private ?DateTime $dateFinAbonnement;
+    private ?int $pointsDeRenommeeArtiste;
+    private ?int $nbAbonnesArtiste;
+    private ?string $urlPhotoUtilisateur;
     private ?Role $roleUtilisateur;
 
-    public function __construct(?string $emailUtilisateur = null, ?string $pseudoUtilisateur = null, ?string $motDePasseUtilisateur = null, ?DateTime $dateDeNaissanceUtilisateur = null, ?DateTime $dateInscriptionUtilisateur = null, ?StatutUtilisateur $statutUtilisateur = null, ?bool $estAbonnee = null, ?string $descriptionUtilisateur = null, ?string $siteWebUtilisateur = null, ?StatutAbonnement $statutAbonnement = null, ?DateTime $dateDebutAbonnement = null, ?DateTime $dateFinAbonnement = null, ?int $pointsDeRenommeeArtiste = null, ?int $nbAbonnesArtiste = null, ?Fichier $photoProfilUtilisateur = null, ?Role $roleUtilisateur = null)
-    {
+    public function __construct(
+        ?string $emailUtilisateur = null,
+        ?string $nomUtilisateur = null,
+        ?string $pseudoUtilisateur = null,
+        ?string $motDePasseUtilisateur = null,
+        ?DateTime $dateDeNaissanceUtilisateur = null,
+        ?DateTime $dateInscriptionUtilisateur = null,
+        ?StatutUtilisateur $statutUtilisateur = null,
+        ?Genre $genreUtilisateur = null,
+        ?bool $estAbonnee = null,
+        ?string $descriptionUtilisateur = null,
+        ?string $siteWebUtilisateur = null,
+        ?StatutAbonnement $statutAbonnement = null,
+        ?DateTime $dateDebutAbonnement = null,
+        ?DateTime $dateFinAbonnement = null,
+        ?int $pointsDeRenommeeArtiste = null,
+        ?int $nbAbonnesArtiste = null,
+        ?string $urlPhotoUtilisateur = null,
+        ?Role $roleUtilisateur = null
+    ) {
         $this->setEmailUtilisateur($emailUtilisateur);
+        $this->setNomUtilisateur($nomUtilisateur);
         $this->setPseudoUtilisateur($pseudoUtilisateur);
         $this->setMotDePasseUtilisateur($motDePasseUtilisateur);
         $this->setDateDeNaissanceUtilisateur($dateDeNaissanceUtilisateur);
         $this->setDateInscriptionUtilisateur($dateInscriptionUtilisateur);
         $this->setStatutUtilisateur($statutUtilisateur);
+        $this->setGenreUtilisateur($genreUtilisateur);
         $this->setEstAbonnee($estAbonnee);
         $this->setDescriptionUtilisateur($descriptionUtilisateur);
         $this->setSiteWebUtilisateur($siteWebUtilisateur);
@@ -61,10 +84,41 @@ class Utilisateur
         $this->setDateFinAbonnement($dateFinAbonnement);
         $this->setPointsDeRenommeeArtiste($pointsDeRenommeeArtiste);
         $this->setNbAbonnesArtiste($nbAbonnesArtiste);
-        $this->setPhotoProfilUtilisateur($photoProfilUtilisateur);
+        $this->seturlPhotoUtilisateur($urlPhotoUtilisateur);
         $this->setRoleUtilisateur($roleUtilisateur);
     }
 
+    /**
+     * Get the value of genreUtilisateur
+     */
+    public function getGenreUtilisateur()
+    {
+        return $this->genreUtilisateur;
+    }
+
+    /**
+     * Set the value of genreUtilisateur
+     */
+    public function setGenreUtilisateur($genreUtilisateur)
+    {
+        $this->genreUtilisateur = $genreUtilisateur;
+    }
+
+    /**
+     * Get the value of nomUtilisateur
+     */
+    public function getNomUtilisateur()
+    {
+        return $this->nomUtilisateur;
+    }
+
+    /**
+     * Set the value of nomUtilisateur
+     */
+    public function setNomUtilisateur($nomUtilisateur)
+    {
+        $this->nomUtilisateur = $nomUtilisateur;
+    }
 
     /**
      * Get the value of emailUtilisateur
@@ -291,19 +345,19 @@ class Utilisateur
     }
 
     /**
-     * Get the value of photoProfilUtilisateur
+     * Get the value of urlPhotoUtilisateur
      */
-    public function getPhotoProfilUtilisateur()
+    public function geturlPhotoUtilisateur()
     {
-        return $this->photoProfilUtilisateur;
+        return $this->urlPhotoUtilisateur;
     }
 
     /**
-     * Set the value of photoProfilUtilisateur
+     * Set the value of urlPhotoUtilisateur
      */
-    public function setPhotoProfilUtilisateur($photoProfilUtilisateur)
+    public function seturlPhotoUtilisateur($urlPhotoUtilisateur)
     {
-        $this->photoProfilUtilisateur = $photoProfilUtilisateur;
+        $this->urlPhotoUtilisateur = $urlPhotoUtilisateur;
     }
 
     /**

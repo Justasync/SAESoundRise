@@ -40,6 +40,8 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
+						<div class="alert alert-danger d-none" role="alert" data-signup-error aria-live="assertive"></div>
+						<div class="alert alert-success d-none" role="alert" data-signup-success aria-live="polite"></div>
 						<ol class="signup-progress-indicator mb-4">
 							<li class="active" data-step-indicator="1">Profil</li>
 							<li data-step-indicator="2">Informations</li>
@@ -73,7 +75,7 @@
 									</label>
 								</div>
 							</div>
-							<p class="text-danger smallmt-3 d-none" data-step-error>Choisissez un type de profil pour continuer.</p>
+							<p class="text-danger small mt-3 d-none" data-step-error>Choisissez un type de profil pour continuer.</p>
 						</div>
 
 						<div class="signup-step d-none" data-step="2">
@@ -81,16 +83,22 @@
 								<h2 class="fs-4 mb-3">Informations artiste</h2>
 								<div
 									class="row g-3">
-									<!-- Nom ou pseudonyme d'artiste -->
+									<!-- Nom -->
 									<div class="col-md-12">
-										<label for="artisteStageName" class="form-label">Nom ou pseudonyme d'artiste</label>
-										<input type="text" class="form-control" id="artisteStageName" placeholder="Entrez votre nom" required>
+										<label for="artisteNom" class="form-label">Nom</label>
+										<input type="text" class="form-control" id="artisteNom" name="nom" placeholder="Entrez votre nom" required minlength="1" maxlength="255" autocomplete="given-name">
+									</div>
+
+									<!-- Pseudonyme d'artiste -->
+									<div class="col-md-12">
+										<label for="artistePseudonyme" class="form-label">Pseudonyme</label>
+										<input type="text" class="form-control" id="artistePseudonyme" name="pseudo" placeholder="Entrez votre pseudonyme" required minlength="3" maxlength="50" autocomplete="nickname">
 									</div>
 
 									<!-- Description -->
 									<div class="col-md-12">
 										<label for="artisteDescription" class="form-label">Description</label>
-										<textarea class="form-control" id="artisteDescription" rows="2" required placeholder="Décrivez-vous en quelques mots."></textarea>
+										<textarea class="form-control" id="artisteDescription" name="description" rows="2" required placeholder="Décrivez-vous en quelques mots." minlength="10"></textarea>
 									</div>
 
 									<!-- Informations supplémentaires -->
@@ -101,48 +109,66 @@
 										<label for="artisteWebsite" class="form-label">Site web
 											<span class="text-secondary">(Facultatif)</span>
 										</label>
-										<input type="url" class="form-control" id="artisteWebsite" placeholder="https://votresite.com">
+										<input type="url" class="form-control" id="artisteWebsite" name="website" placeholder="https://votresite.com" autocomplete="url">
+									</div>
+
+									<!-- Genres -->
+									<div class="col-md-12">
+										<label for="artisteGenre" class="form-label">Genre musical</label>
+										<select class="form-select" id="artisteGenre" name="genre_id" required>
+											<option value="" selected disabled>Choisissez un genre</option>
+											{% for genre in genres %}
+												<option value="{{ genre.idGenre }}">{{ genre.nomGenre }}</option>
+											{% endfor %}
+										</select>
 									</div>
 
 									<!-- Courrier électronique -->
 									<div class="col-md-6">
 										<label for="artisteEmail" class="form-label">Courrier électronique</label>
-										<input type="email" class="form-control" id="artisteEmail" required>
+										<input type="email" class="form-control" id="artisteEmail" name="email" required autocomplete="email">
 									</div>
 
 									<!-- Date de naissance -->
 									<div class="col-md-6">
 										<label class="form-label">Date de naissance</label>
-										<input type="date" class="form-control" id="artisteBirthDay" required>
+										<input type="date" class="form-control" id="artisteBirthDay" name="birthdate" required autocomplete="bday">
 									</div>
 
 									<!-- Mot de passe -->
 									<div class="col-md-6">
 										<label for="artistePassword" class="form-label">Mot de passe</label>
-										<input type="password" class="form-control" id="artistePassword" required minlength="8">
+										<input type="password" class="form-control" id="artistePassword" name="password" required minlength="8" autocomplete="new-password">
 										<div class="form-text">8 caractères minimum.</div>
 									</div>
 
 									<!-- Réinsérez votre mot de passe -->
 									<div class="col-md-6">
 										<label for="artistePasswordRepeat" class="form-label">Réinsérez votre mot de passe</label>
-										<input type="password" class="form-control" id="artistePasswordRepeat" required minlength="8">
+										<input type="password" class="form-control" id="artistePasswordRepeat" name="password_repeat" required minlength="8" autocomplete="new-password">
 									</div>
 								</div>
 							</form>
 
 							<form class="signup-form d-none" data-user-type="auditeur">
 								<h2 class="fs-4 mb-3">Informations auditeur</h2>
-								<div class="row g-3">
+								<div
+									class="row g-3">
+									<!-- Nom -->
 									<div class="col-md-12">
-										<label for="auditeurStageName" class="form-label">Nom</label>
-										<input type="text" class="form-control" id="auditeurStageName" placeholder="Entrez votre nom" required>
+										<label for="auditeurNom" class="form-label">Nom</label>
+										<input type="text" class="form-control" id="auditeurNom" name="nom" placeholder="Entrez votre nom" required minlength="1" maxlength="255" autocomplete="given-name">
+									</div>
+
+									<div class="col-md-12">
+										<label for="auditeurPseudonyme" class="form-label">Pseudonyme</label>
+										<input type="text" class="form-control" id="auditeurPseudonyme" name="pseudo" placeholder="Entrez votre pseudonyme" required minlength="3" maxlength="50" autocomplete="nickname">
 									</div>
 
 									<!-- Description -->
 									<div class="col-md-12">
 										<label for="auditeurDescription" class="form-label">Description</label>
-										<textarea class="form-control" id="auditeurDescription" rows="2" required placeholder="Décrivez-vous en quelques mots."></textarea>
+										<textarea class="form-control" id="auditeurDescription" name="description" rows="2" required placeholder="Décrivez-vous en quelques mots." minlength="10"></textarea>
 									</div>
 
 									<!-- Informations supplémentaires -->
@@ -153,32 +179,32 @@
 										<label for="auditeurWebsite" class="form-label">Site web
 											<span class="text-secondary">(Facultatif)</span>
 										</label>
-										<input type="url" class="form-control" id="auditeurWebsite" placeholder="https://votresite.com">
+										<input type="url" class="form-control" id="auditeurWebsite" name="website" placeholder="https://votresite.com" autocomplete="url">
 									</div>
 
 									<!-- Courrier électronique -->
 									<div class="col-md-6">
 										<label for="auditeurEmail" class="form-label">Courrier électronique</label>
-										<input type="email" class="form-control" id="auditeurEmail" required>
+										<input type="email" class="form-control" id="auditeurEmail" name="email" required autocomplete="email">
 									</div>
 
 									<!-- Date de naissance -->
 									<div class="col-md-6">
 										<label class="form-label">Date de naissance</label>
-										<input type="date" class="form-control" id="auditeurBirthDay" required>
+										<input type="date" class="form-control" id="auditeurBirthDay" name="birthdate" required autocomplete="bday">
 									</div>
 
 									<!-- Mot de passe -->
 									<div class="col-md-6">
 										<label for="auditeurPassword" class="form-label">Mot de passe</label>
-										<input type="password" class="form-control" id="auditeurPassword" required minlength="8">
+										<input type="password" class="form-control" id="auditeurPassword" name="password" required minlength="8" autocomplete="new-password">
 										<div class="form-text">8 caractères minimum.</div>
 									</div>
 
 									<!-- Réinsérez votre mot de passe -->
 									<div class="col-md-6">
 										<label for="auditeurPasswordRepeat" class="form-label">Réinsérez votre mot de passe</label>
-										<input type="password" class="form-control" id="auditeurPasswordRepeat" required minlength="8">
+										<input type="password" class="form-control" id="auditeurPasswordRepeat" name="password_repeat" required minlength="8" autocomplete="new-password">
 									</div>
 								</div>
 							</form>
@@ -188,15 +214,22 @@
 								<div
 									class="row g-3">
 									<!-- Nom -->
+									<div class="col-md-12">
+										<label for="producteurNom" class="form-label">Nom</label>
+										<input type="text" class="form-control" id="producteurNom" name="nom" placeholder="Entrez votre nom" required minlength="1" maxlength="255" autocomplete="given-name">
+									</div>
+
+
+									<!-- Pseudonyme -->
 									<div class="col-md-6">
-										<label for="producteurStageName" class="form-label">Nom</label>
-										<input type="text" class="form-control" id="producteurStageName" placeholder="Entrez votre nom" required>
+										<label for="producteurPseudonyme" class="form-label">Pseudonyme</label>
+										<input type="text" class="form-control" id="producteurPseudonyme" name="pseudo" placeholder="Entrez votre pseudonyme" required minlength="3" maxlength="50" autocomplete="nickname">
 									</div>
 
 									<!-- Description -->
 									<div class="col-md-12">
 										<label for="producteurDescription" class="form-label">Description</label>
-										<textarea class="form-control" id="producteurDescription" rows="2" required placeholder="Décrivez-vous en quelques mots."></textarea>
+										<textarea class="form-control" id="producteurDescription" name="description" rows="2" required placeholder="Décrivez-vous en quelques mots." minlength="10"></textarea>
 									</div>
 
 									<!-- Informations supplémentaires -->
@@ -207,13 +240,13 @@
 										<label for="producteurWebsite" class="form-label">Site web
 											<span class="text-secondary">(Facultatif)</span>
 										</label>
-										<input type="url" class="form-control" id="producteurWebsite" placeholder="https://votresite.com">
+										<input type="url" class="form-control" id="producteurWebsite" name="website" placeholder="https://votresite.com" autocomplete="url">
 									</div>
 
 									<!-- Genres -->
 									<div class="col-md-12">
 										<label for="producteurGenre" class="form-label">Genre musical</label>
-										<select class="form-select" id="producteurGenre" required>
+										<select class="form-select" id="producteurGenre" name="genre_id" required>
 											<option value="" selected disabled>Choisissez un genre</option>
 											{% for genre in genres %}
 												<option value="{{ genre.idGenre }}">{{ genre.nomGenre }}</option>
@@ -224,26 +257,26 @@
 									<!-- Courrier électronique -->
 									<div class="col-md-6">
 										<label for="producteurEmail" class="form-label">Courrier électronique</label>
-										<input type="email" class="form-control" id="producteurEmail" required>
+										<input type="email" class="form-control" id="producteurEmail" name="email" required autocomplete="email">
 									</div>
 
 									<!-- Date de naissance -->
 									<div class="col-md-6">
 										<label class="form-label">Date de naissance</label>
-										<input type="date" class="form-control" id="producteurBirthDay" required>
+										<input type="date" class="form-control" id="producteurBirthDay" name="birthdate" required autocomplete="bday">
 									</div>
 
 									<!-- Mot de passe -->
 									<div class="col-md-6">
 										<label for="producteurPassword" class="form-label">Mot de passe</label>
-										<input type="password" class="form-control" id="producteurPassword" required minlength="8">
+										<input type="password" class="form-control" id="producteurPassword" name="password" required minlength="8" autocomplete="new-password">
 										<div class="form-text">8 caractères minimum.</div>
 									</div>
 
 									<!-- Réinsérez votre mot de passe -->
 									<div class="col-md-6">
 										<label for="producteurPasswordRepeat" class="form-label">Réinsérez votre mot de passe</label>
-										<input type="password" class="form-control" id="producteurPasswordRepeat" required minlength="8">
+										<input type="password" class="form-control" id="producteurPasswordRepeat" name="password_repeat" required minlength="8" autocomplete="new-password">
 									</div>
 								</div>
 							</form>

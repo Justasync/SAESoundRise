@@ -1,5 +1,8 @@
 <?php
 
+// set timezone paris
+date_default_timezone_set('Europe/Paris');
+
 // Démarrage de la session
 if (session_status() === PHP_SESSION_NONE) {
     session_start();

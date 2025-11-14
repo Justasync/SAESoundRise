@@ -1,6 +1,7 @@
 <?php
 
-class ChansonDAO {
+class ChansonDAO
+{
     private ?PDO $pdo;
 
     public function __construct(?PDO $pdo = null)
@@ -63,8 +64,8 @@ class ChansonDAO {
         $chanson->setParolierchanson($tableaAssoc['parolierChanson'] ?? null);
         $chanson->setEstpublieechanson(isset($tableaAssoc['estPublieeChanson']) ? (bool)$tableaAssoc['estPublieeChanson'] : null);
         $chanson->setNbecoutechanson(isset($tableaAssoc['nbEcouteChanson']) ? (int)$tableaAssoc['nbEcouteChanson'] : null);
-        $chanson->setUrlfichieraudiochanson($tableaAssoc['urlFichierAudioChanson'] ?? null);
-        
+        $chanson->seturlAudioChanson($tableaAssoc['urlAudioChanson'] ?? null);
+
         //albumChanson et genreChanson sont des objets, il faut les récupérer via leur DAO respectif
         // Album : création d’un objet minimal
         if (!empty($tableaAssoc['albumChanson'])) {
@@ -85,7 +86,7 @@ class ChansonDAO {
         }
 
         $chanson->setEmailPublicateur($tableaAssoc['emailPublicateur'] ?? null);
-        
+
         return $chanson;
     }
 
@@ -126,7 +127,7 @@ class ChansonDAO {
     public function filtrerChanson(?int $idGenre = null, ?int $idAlbum = null, string $colonne = 'titreChanson', string $ordre = 'ASC'): array
     {
         $sql = "SELECT * FROM chanson WHERE 1=1";
-        
+
         if ($idGenre !== null) {
             $sql .= " AND genreChanson = :idGenre";
         }
@@ -154,7 +155,7 @@ class ChansonDAO {
 
     /**
      * Get the value of pdo
-     */ 
+     */
     public function getPdo(): ?PDO
     {
         return $this->pdo;
@@ -163,7 +164,7 @@ class ChansonDAO {
     /**
      * Set the value of pdo
      *
-     */ 
+     */
     public function setPdo($pdo): void
     {
         $this->pdo = $pdo;

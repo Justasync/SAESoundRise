@@ -1,6 +1,7 @@
 <?php
 
-class AlbumDAO {
+class AlbumDAO
+{
     private ?PDO $pdo;
 
     public function __construct(?PDO $pdo = null)
@@ -39,7 +40,7 @@ class AlbumDAO {
         $album->setIdAlbum(isset($tableaAssoc['idAlbum']) ? (int)$tableaAssoc['idAlbum'] : null);
         $album->setTitreAlbum($tableaAssoc['nomAlbum'] ?? null);
         $album->setDateSortieAlbum($tableaAssoc['dateSortieAlbum'] ?? null);
-        $album->setPochetteAlbum($tableaAssoc['pochetteAlbum'] ?? null);
+        $album->seturlPochetteAlbum($tableaAssoc['urlPochetteAlbum'] ?? null);
         return $album;
     }
 
@@ -51,6 +52,21 @@ class AlbumDAO {
         }
         return $albums;
     }
+
+    public function create(Album $album): bool
+    {
+        $sql = "INSERT INTO album (nomAlbum, dateSortieAlbum, urlPochetteAlbum) VALUES (:titre, :dateSortie, :urlPochetteAlbum)";
+        $pdoStatement = $this->pdo->prepare($sql);
+
+        $params = [
+            ':titre' => $album->getTitreAlbum(),
+            ':dateSortie' => $album->getDateSortieAlbum(),
+            ':urlPochetteAlbum' => $album->geturlPochetteAlbum()
+        ];
+
+        return $pdoStatement->execute($params);
+    }
+
 
     /**
      * Get the value of pdo
