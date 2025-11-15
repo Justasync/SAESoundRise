@@ -138,6 +138,7 @@ class ControllerChanson extends Controller
         $success = $_GET['success'] ?? null;
         $albums = [];
         $genres = [];
+        $chansonsArtiste = [];
 
         // Récupérer l'email de l'artiste connecté
         $artisteEmail = $_SESSION['user_email'] ?? null;
@@ -146,6 +147,9 @@ class ControllerChanson extends Controller
             // Récupérer la liste des albums de l'artiste
             $managerAlbum = new AlbumDao($this->getPdo());
             $albums = $managerAlbum->findByArtiste($artisteEmail);
+            // Récupérer la liste des chansons de l'artiste
+            $managerChanson = new ChansonDao($this->getPdo());
+            $chansonsArtiste = $managerChanson->findUser($artisteEmail);
         }
 
         // Récupérer tous les genres
@@ -163,7 +167,8 @@ class ControllerChanson extends Controller
             'error' => $error,
             'success' => $success,
             'albums' => $albums,
-            'genres' => $genres
+            'genres' => $genres,
+            'chansonsArtiste' => $chansonsArtiste
         ));
     }
 
