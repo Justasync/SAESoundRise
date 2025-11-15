@@ -152,6 +152,35 @@ class ChansonDAO
         return $this->hydrateMany($tableau);
     }
 
+    public function create(Chanson $chanson): bool
+    {
+        $sql = "INSERT INTO chanson (titreChanson, descriptionChanson, dureeChanson, dateTeleversementChanson, compositeurChanson, parolierChanson, estPublieeChanson, nbEcouteChanson, albumChanson, genreChanson, emailPublicateur, urlAudioChanson) 
+                VALUES (:titre, :description, :duree, :dateTeleversement, :compositeur, :parolier, :estPubliee, :nbEcoute, :album, :genre, :emailPublicateur, :urlAudio)";
+
+        $stmt = $this->pdo->prepare($sql);
+
+        $albumId = $chanson->getAlbumChanson() ? $chanson->getAlbumChanson()->getIdAlbum() : null;
+        $genreId = $chanson->getGenreChanson() ? $chanson->getGenreChanson()->getIdGenre() : null;
+        $dateTeleversement = $chanson->getDateTeleversementChanson() ? $chanson->getDateTeleversementChanson()->format('Y-m-d H:i:s') : null;
+
+        $params = [
+            ':titre' => $chanson->getTitreChanson(),
+            ':description' => $chanson->getDescriptionChanson(),
+            ':duree' => $chanson->getDureeChanson(),
+            ':dateTeleversement' => $dateTeleversement,
+            ':compositeur' => $chanson->getCompositeurChanson(),
+            ':parolier' => $chanson->getParolierChanson(),
+            ':estPubliee' => $chanson->getEstPublieeChanson() ? 1 : 0,
+            ':nbEcoute' => $chanson->getNbEcouteChanson() ?? 0,
+            ':album' => $albumId,
+            ':genre' => $genreId,
+            ':emailPublicateur' => $chanson->getEmailPublicateur(),
+            ':urlAudio' => $chanson->getUrlAudioChanson(),
+        ];
+
+        return $stmt->execute($params);
+    }
+
 
     /**
      * Get the value of pdo

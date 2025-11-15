@@ -1,0 +1,58 @@
+{% extends "base_template.html.twig" %}
+
+{% block title %}{{ page.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>{{ page.title }}</h2>
+    <p>{{ page.description }}</p>
+
+    {% if error %}
+        <div class="alert alert-danger">Une erreur est survenue lors de l'ajout de la chanson. Veuillez vérifier les champs.</div>
+    {% endif %}
+    {% if success %}
+        <div class="alert alert-success">
+            {% if success == 'song_added' %}La chanson a été ajoutée avec succès ! Vous pouvez en ajouter une autre.{% endif %}
+        </div>
+    {% endif %}
+
+    <form action="index.php?controller=chanson&method=ajouterChanson" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="titreChanson" class="form-label">Titre de la chanson</label>
+            <input type="text" class="form-control" id="titreChanson" name="titreChanson" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="dureeChanson" class="form-label">Durée (en secondes)</label>
+            <input type="number" class="form-control" id="dureeChanson" name="dureeChanson" required min="1">
+        </div>
+
+        <div class="mb-3">
+            <label for="albumChanson" class="form-label">Album</label>
+            <select class="form-select" id="albumChanson" name="albumChanson" required>
+                <option value="">Sélectionnez un album</option>
+                {% for album in albums %}
+                    <option value="{{ album.idAlbum }}">{{ album.titreAlbum }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="genreChanson" class="form-label">Genre</label>
+            <select class="form-select" id="genreChanson" name="genreChanson" required>
+                <option value="">Sélectionnez un genre</option>
+                {% for genre in genres %}
+                    <option value="{{ genre.idGenre }}">{{ genre.nomGenre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="urlAudioChanson" class="form-label">Fichier audio (MP3, WAV)</label>
+            <input class="form-control" type="file" id="urlAudioChanson" name="urlAudioChanson" accept=".mp3,.wav" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Ajouter la chanson</button>
+    </form>
+</div>
+{% endblock %}
