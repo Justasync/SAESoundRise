@@ -65,17 +65,30 @@ class ControllerAlbum extends Controller
 
     public function ajouter()
     {
-        $error = isset($_GET['error']);
+        $error = $_GET['error'] ?? null;
+        $success = $_GET['success'] ?? null;
+        $albums = [];
+
+        // Récupérer l'email de l'artiste connecté
+        $artisteEmail = $_SESSION['user_email'] ?? null;
+
+        if ($artisteEmail) {
+            // Récupérer la liste des albums de l'artiste
+            $managerAlbum = new AlbumDao($this->getPdo());
+            $albums = $managerAlbum->findByArtiste($artisteEmail);
+        }
 
         //Génération de la vue
         $template = $this->getTwig()->load('album_form.html.twig');
         echo $template->render(array(
             'page' => [
                 'title' => "Ajouter un album",
-                'name' => "album_add",
+                'name' => "album_gestion",
                 'description' => "Ajouter un nouvel album dans Paaxio"
             ],
-            'error' => $error
+            'error' => $error,
+            'success' => $success,
+            'albums' => $albums
         ));
     }
 
@@ -86,21 +99,61 @@ class ControllerAlbum extends Controller
             $dateSortie = $_POST['dateSortieAlbum'] ?? null;
             $urlPochetteAlbum = $_POST['urlPochetteAlbum'] ?? null;
             $artisteAlbum = $_SESSION['user_email'] ?? null;
+            $pochetteFile = $_FILES['urlPochetteAlbum'] ?? null;
+            $urlPochetteAlbum = null;
 
+            // --- Gestion de l'upload de fichier ---
+            if (isset($pochetteFile) && $pochetteFile['error'] === UPLOAD_ERR_OK) {
+                // Utiliser le chemin de destination demandé
+                $uploadDir = 'assets/images/albums/';
+                if (!is_dir($uploadDir)) {
+                    // Crée le dossier s'il n'existe pas
+                    mkdir($uploadDir, 0777, true);
+                }
+
+                $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+                $fileType = mime_content_type($pochetteFile['tmp_name']);
+
+                if (in_array($fileType, $allowedTypes)) {
+                    // Générer un nom de fichier unique pour éviter les conflits
+                    $extension = pathinfo($pochetteFile['name'], PATHINFO_EXTENSION);
+                    $newFilename = uniqid('cover_', true) . '.' . $extension;
+                    $uploadFile = $uploadDir . $newFilename;
+
+                    if (move_uploaded_file($pochetteFile['tmp_name'], $uploadFile)) {
+                        // Le fichier a été uploadé avec succès, on stocke le chemin relatif
+                        $urlPochetteAlbum = '/' . $uploadFile;
+                    }
+                }
+            }
+            // --- Fin de la gestion de l'upload ---
+
+            // On vérifie que toutes les données nécessaires sont présentes
             if (!empty($titre) && !empty($dateSortie) && !empty($urlPochetteAlbum)) {
-                $album = new Album(null, $titre, $dateSortie, trim($urlPochetteAlbum), trim($artisteAlbum));
+                $album = new Album(null, $titre, $dateSortie, $urlPochetteAlbum, $artisteAlbum);
 
                 $managerAlbum = new AlbumDao($this->getPdo());
                 $success = $managerAlbum->create($album);
 
                 if ($success) {
-                    header('Location: index.php?controller=album&method=lister'); // Redirection vers la liste des albums
+                    // Redirection vers la même page avec un message de succès
+                    header('Location: index.php?controller=album&method=ajouter&success=1');
                     exit;
                 }
             }
         }
-        // Gérer l'échec ou l'accès direct ici, peut-être rediriger vers le formulaire avec un message d'erreur.
+        // En cas d'échec, rediriger avec un message d'erreur
         header('Location: index.php?controller=album&method=ajouter&error=1');
         exit;
+    }
+
+    public function modifierAlbum()
+    {
+        // Logique pour la modification
+    }
+
+    public function supprimerAlbum()
+    {
+        // Logique pour la suppression
     }
 }
