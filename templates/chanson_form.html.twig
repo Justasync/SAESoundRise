@@ -14,6 +14,18 @@
                 <div class="alert alert-danger">
                     {% if error == 'file_too_large' %}
                         Le fichier audio est trop volumineux.
+                    {% elseif error == 'update_missing_title' %}
+                        Erreur de modification : Le titre ne peut pas être vide.
+                    {% elseif error == 'update_invalid_duration' %}
+                        Erreur de modification : La durée doit être un nombre supérieur à zéro.
+                    {% elseif error == 'update_missing_genre' %}
+                        Erreur de modification : Veuillez sélectionner un genre.
+                    {% elseif error == 'update_failed' %}
+                        Erreur de modification : La mise à jour dans la base de données a échoué.
+                    {% elseif error == 'song_not_found' %}
+                        Erreur : La chanson que vous essayez de modifier n'a pas été trouvée.
+                    {% elseif error == 'invalid_form' %}
+                        Veuillez remplir tous les champs obligatoires du formulaire.
                     {% else %}
                         Une erreur est survenue. Veuillez vérifier tous les champs.
                     {% endif %}
@@ -22,6 +34,16 @@
             {% if success == 'song_added' %}
                 <div class="alert alert-success">
                     La chanson a été ajoutée avec succès ! Vous pouvez en ajouter une autre.
+                </div>
+            {% endif %}
+            {% if success == 'song_updated' %}
+                <div class="alert alert-success">
+                    La chanson a été modifiée avec succès !
+                </div>
+            {% endif %}
+            {% if success == 'song_deleted' %}
+                <div class="alert alert-success">
+                    La chanson a été supprimée avec succès.
                 </div>
             {% endif %}
 
@@ -88,8 +110,25 @@
                     <ul class="list-group">
                         {% for chanson in chansonsArtiste %}
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                {{ chanson.titreChanson }}
-                                <span class="badge bg-secondary">{{ chanson.albumChanson.titreAlbum }}</span>
+                                <div>
+                                    {{ chanson.titreChanson }}
+                                    <br>
+                                    <small class="text-muted">{{ chanson.albumChanson.titreAlbum }}</small>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-warning btn-sm btn-modifier" 
+                                            data-bs-toggle="modal" data-bs-target="#modalModifierChanson"
+                                            data-id="{{ chanson.idChanson }}"
+                                            data-titre="{{ chanson.titreChanson }}"
+                                            data-genre-id="{{ chanson.genreChanson.idGenre }}"
+                                            data-duree="{{ chanson.dureeChanson }}">
+                                        Modifier
+                                    </button>
+                                    <form action="index.php?controller=chanson&method=supprimerChanson" method="post" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette chanson ?');">
+                                        <input type="hidden" name="idChanson" value="{{ chanson.idChanson }}">
+                                        <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                                    </form>
+                                </div>
                             </li>
                         {% endfor %}
                     </ul>
@@ -100,4 +139,116 @@
         </div>
     </div>
 </div>
+
+<!-- Modal de modification -->
+<div class="modal fade" id="modalModifierChanson" tabindex="-1" aria-labelledby="modalModifierChansonLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalModifierChansonLabel">Modifier la chanson</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="formModifierChanson" action="index.php?controller=chanson&method=modifierChanson" method="post" enctype="multipart/form-data" novalidate>
+                <div class="modal-body">
+                    <!-- Zone pour afficher les erreurs de validation -->
+                    <div id="editErrorContainer" class="alert alert-danger" style="display: none;"></div>
+
+                    <input type="hidden" id="editIdChanson" name="idChanson">
+                    
+                    <div class="mb-3">
+                        <label for="editTitreChanson" class="form-label">Titre de la chanson</label>
+                        <input type="text" class="form-control" id="editTitreChanson" name="titreChanson" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editDureeChanson" class="form-label">Durée (en secondes)</label>
+                        <input type="number" class="form-control" id="editDureeChanson" name="dureeChanson" required min="1">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editGenreChanson" class="form-label">Genre</label>
+                        <select class="form-select" id="editGenreChanson" name="genreChanson" required>
+                            <option value="">Sélectionnez un genre</option>
+                            {% for genre in genres %}
+                                <option value="{{ genre.idGenre }}">{{ genre.nomGenre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="editUrlAudioChanson" class="form-label">Remplacer le fichier audio (optionnel)</label>
+                        <input class="form-control" type="file" id="editUrlAudioChanson" name="editUrlAudioChanson" accept=".mp3,.wav">
+                        <small class="form-text text-muted">Laissez vide pour conserver le fichier actuel.</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var modalModifierChanson = document.getElementById('modalModifierChanson');
+    modalModifierChanson.addEventListener('show.bs.modal', function (event) {
+        // Bouton qui a déclenché la modale
+        var button = event.relatedTarget;
+
+        // Extraction des informations des attributs data-*
+        var id = button.getAttribute('data-id');
+        var titre = button.getAttribute('data-titre');
+        var genreId = button.getAttribute('data-genre-id');
+        var duree = button.getAttribute('data-duree');
+
+        // Mise à jour du contenu de la modale
+        var modalTitle = modalModifierChanson.querySelector('.modal-title');
+        var inputId = modalModifierChanson.querySelector('#editIdChanson');
+        var inputTitre = modalModifierChanson.querySelector('#editTitreChanson');
+        var selectGenre = modalModifierChanson.querySelector('#editGenreChanson');
+        var inputDuree = modalModifierChanson.querySelector('#editDureeChanson');
+
+        modalTitle.textContent = 'Modifier la chanson : ' + titre;
+        inputId.value = id;
+        inputTitre.value = titre;
+        selectGenre.value = genreId;
+        inputDuree.value = duree;
+    });
+
+    // Validation du formulaire de modification avant soumission
+    var form = document.getElementById('formModifierChanson');
+    form.addEventListener('submit', function (event) {
+        var titre = document.getElementById('editTitreChanson').value.trim();
+        var duree = document.getElementById('editDureeChanson').value.trim();
+        var genre = document.getElementById('editGenreChanson').value.trim();
+        var errorContainer = document.getElementById('editErrorContainer');
+        var errors = [];
+
+        if (titre === '') {
+            errors.push('Le titre ne peut pas être vide.');
+        }
+        if (duree === '' || parseInt(duree, 10) <= 0) {
+            errors.push('La durée doit être un nombre supérieur à zéro.');
+        }
+        if (genre === '') {
+            errors.push('Veuillez sélectionner un genre.');
+        }
+
+        if (errors.length > 0) {
+            // Empêche l'envoi du formulaire
+            event.preventDefault();
+            // Affiche les erreurs
+            errorContainer.innerHTML = errors.join('<br>');
+            errorContainer.style.display = 'block';
+        } else {
+            // Cache les erreurs s'il n'y en a plus
+            errorContainer.style.display = 'none';
+        }
+    });
+});
+</script>
 {% endblock %}

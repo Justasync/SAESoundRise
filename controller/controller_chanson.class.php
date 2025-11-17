@@ -233,4 +233,100 @@ class ControllerChanson extends Controller
             exit;
         }
     }
+
+    public function modifierChanson()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $idChanson = isset($_POST['idChanson']) ? (int)$_POST['idChanson'] : null;
+            $titre = $_POST['titreChanson'] ?? null;
+            $genreId = $_POST['genreChanson'] ?? null;
+            $duree = isset($_POST['dureeChanson']) ? (int)$_POST['dureeChanson'] : null;
+            $audioFile = $_FILES['editUrlAudioChanson'] ?? null;
+
+            // --- Validation des champs ---
+            if (empty($idChanson) || empty($titre) || empty($duree) || $duree <= 0 || empty($genreId)) {
+                $error = 'invalid_form';
+                if (empty($titre)) $error = 'update_missing_title';
+                elseif (empty($duree) || $duree <= 0) $error = 'update_invalid_duration';
+                elseif (empty($genreId)) $error = 'update_missing_genre';
+                
+                header('Location: index.php?controller=chanson&method=ajouter&error=' . $error);
+                exit;
+            }
+            if (empty($titre)) { // This block is now redundant due to the check above, but we keep it for the specific error message.
+                header('Location: index.php?controller=chanson&method=ajouter&error=update_missing_title');
+                exit;
+            }
+            
+            $managerChanson = new ChansonDao($this->getPdo());
+            $chanson = $managerChanson->findId($idChanson);
+            
+            if (!$chanson) {
+                header('Location: index.php?controller=chanson&method=ajouter&error=song_not_found');
+                exit;
+            }
+
+            $chanson->setTitreChanson($titre);
+            $chanson->setDureeChanson($duree);
+            $chanson->setGenreChanson((new GenreDAO($this->getPdo()))->find($genreId));
+
+            // --- Gestion de l'upload de fichier audio (si un nouveau fichier est fourni) ---
+            if (isset($audioFile) && $audioFile['error'] === UPLOAD_ERR_OK) {
+                $uploadDir = 'assets/audio/';
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
+
+                // Supprimer l'ancien fichier si possible
+                $oldFilePath = ltrim($chanson->getUrlAudioChanson(), '/');
+                if (file_exists($oldFilePath)) {
+                    unlink($oldFilePath);
+                }
+
+                $extension = pathinfo($audioFile['name'], PATHINFO_EXTENSION);
+                $newFilename = uniqid('audio_', true) . '.' . $extension;
+                $uploadFile = $uploadDir . $newFilename;
+
+                if (move_uploaded_file($audioFile['tmp_name'], $uploadFile)) {
+                    $chanson->setUrlAudioChanson('/' . $uploadFile);
+                }
+            }
+
+            if ($managerChanson->update($chanson)) {
+                header('Location: index.php?controller=chanson&method=ajouter&success=song_updated');
+                exit;
+            } else {
+                header('Location: index.php?controller=chanson&method=ajouter&error=update_failed');
+                exit;
+            }
+        }
+    }
+
+    public function supprimerChanson()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $idChanson = $_POST['idChanson'] ?? null;
+
+            if (empty($idChanson)) {
+                header('Location: index.php?controller=chanson&method=ajouter&error=missing_id');
+                exit;
+            }
+
+            $managerChanson = new ChansonDao($this->getPdo());
+            $chanson = $managerChanson->findId($idChanson);
+
+            if (!$chanson) {
+                header('Location: index.php?controller=chanson&method=ajouter&error=song_not_found');
+                exit;
+            }
+
+            if ($managerChanson->delete($chanson)) {
+                header('Location: index.php?controller=chanson&method=ajouter&success=song_deleted');
+                exit;
+            } else {
+                header('Location: index.php?controller=chanson&method=ajouter&error=delete_failed');
+                exit;
+            }
+        }
+    }
 }

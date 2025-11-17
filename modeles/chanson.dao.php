@@ -181,6 +181,57 @@ class ChansonDAO
         return $stmt->execute($params);
     }
 
+    /**
+     * Met à jour une chanson dans la base de données.
+     * @param Chanson $chanson L'objet chanson à mettre à jour.
+     * @return bool True si la mise à jour a réussi, false sinon.
+     */
+    public function update(Chanson $chanson): bool
+    {
+        $sql = "UPDATE chanson SET 
+                    titreChanson = :titre, 
+                    dureeChanson = :duree, 
+                    urlAudioChanson = :urlAudio, 
+                    genreChanson = :idGenre 
+                WHERE idChanson = :idChanson";
+        
+        try {
+            $requete = $this->pdo->prepare($sql);
+            
+            $idGenre = $chanson->getGenreChanson() ? $chanson->getGenreChanson()->getIdGenre() : null;
+
+            $requete->bindValue(':titre', $chanson->getTitreChanson());
+            $requete->bindValue(':duree', $chanson->getDureeChanson(), PDO::PARAM_INT);
+            $requete->bindValue(':urlAudio', $chanson->getUrlAudioChanson());
+            $requete->bindValue(':idGenre', $idGenre, PDO::PARAM_INT);
+            $requete->bindValue(':idChanson', $chanson->getIdChanson(), PDO::PARAM_INT);
+            
+            return $requete->execute();
+        } catch (PDOException $e) {
+            // En environnement de développement, vous pourriez logger l'erreur.
+            // error_log($e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Supprime une chanson de la base de données.
+     * @param Chanson $chanson L'objet chanson à supprimer.
+     * @return bool True si la suppression a réussi, false sinon.
+     */
+    public function delete(Chanson $chanson): bool
+    {
+        $sql = "DELETE FROM chanson WHERE idChanson = :idChanson";
+        
+        try {
+            $requete = $this->pdo->prepare($sql);
+            $requete->bindValue(':idChanson', $chanson->getIdChanson(), PDO::PARAM_INT);
+            
+            return $requete->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 
     /**
      * Get the value of pdo
