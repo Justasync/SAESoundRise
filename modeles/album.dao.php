@@ -34,6 +34,33 @@ class AlbumDAO
         return $album;
     }
 
+    public function findByArtiste(string $artistePseudo): array
+    {
+        $sql = "SELECT * FROM album WHERE artisteAlbum = :artistePseudo ORDER BY dateSortieAlbum DESC";
+        $pdoStatement = $this->pdo->prepare($sql);
+        $pdoStatement->execute([':artistePseudo' => $artistePseudo]);
+        $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
+        $tableau = $pdoStatement->fetchAll();
+        $albums = $this->hydrateMany($tableau);
+        return $albums;
+    }
+
+
+    public function create(Album $album): int
+    {
+        $sql = "INSERT INTO album (nomAlbum, dateSortieAlbum, urlPochetteAlbum, artisteAlbum) VALUES (:titre, :dateSortie, :pochette, :artiste)";
+        $pdoStatement = $this->pdo->prepare($sql);
+        $pdoStatement->execute([
+            ':titre' => $album->getTitreAlbum(),
+            ':dateSortie' => $album->getDateSortieAlbum(),
+            ':pochette' => $album->geturlPochetteAlbum(),
+            ':artiste' => $album->getArtisteAlbum()
+        ]);
+
+        return (int)$this->pdo->lastInsertId();
+    }
+
+
     public function hydrate(array $tableaAssoc): Album
     {
         $album = new Album();
@@ -54,32 +81,8 @@ class AlbumDAO
         return $albums;
     }
 
-    public function create(Album $album): bool
-    {
-        $sql = "INSERT INTO album (nomAlbum, dateSortieAlbum, urlPochetteAlbum, artisteAlbum) VALUES (:titre, :dateSortie, :urlPochetteAlbum, :artisteAlbum)";
-        $pdoStatement = $this->pdo->prepare($sql);
+   
 
-        $params = [
-            ':titre' => $album->getTitreAlbum(),
-            ':dateSortie' => $album->getDateSortieAlbum(),
-            ':urlPochetteAlbum' => $album->geturlPochetteAlbum(),
-            ':artisteAlbum' => $album->getArtisteAlbum(),
-
-        ];
-
-        return $pdoStatement->execute($params);
-    }
-
-    public function findByArtiste(string $emailArtiste): array
-    {
-        $sql = "SELECT * FROM album WHERE artisteAlbum = :emailArtiste ORDER BY dateSortieAlbum DESC";
-        $pdoStatement = $this->pdo->prepare($sql);
-        $pdoStatement->execute([':emailArtiste' => $emailArtiste]);
-        $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
-        $tableau = $pdoStatement->fetchAll();
-        $albums = $this->hydrateMany($tableau);
-        return $albums;
-    }
 
 
     /**

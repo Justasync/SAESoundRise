@@ -62,5 +62,29 @@ class ControllerGenre extends Controller
             'testing' => $genres,
         ));
     }
+
+    public function rechercherAjax()
+    {
+        header('Content-Type: application/json');
+        $term = $_GET['term'] ?? '';
+
+        if (mb_strlen($term) < 2) {
+            echo json_encode([]);
+            return;
+        }
+
+        try {
+            $managerGenre = new GenreDao($this->getPdo());
+            $genres = $managerGenre->rechercherParNom($term);
+
+            $results = [];
+            foreach ($genres as $genre) {
+                $results[] = ['id' => $genre->getIdGenre(), 'text' => $genre->getNomGenre()];
+            }
+            echo json_encode($results);
+        } catch (Exception $e) {
+            echo json_encode(['error' => 'An error occurred.']);
+        }
+    }
     
 }
