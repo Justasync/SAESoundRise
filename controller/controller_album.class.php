@@ -73,7 +73,7 @@ class ControllerAlbum extends Controller
 
         // Récupérer les albums de l'artiste
         $managerAlbum = new AlbumDAO($this->getPdo());
-        $albumsArtiste = $managerAlbum->findByArtiste($_SESSION['user_pseudo']);
+        $albumsArtiste = $managerAlbum->findByArtiste($_SESSION['user_email']);
 
         $template = $this->getTwig()->load('album_ajout.html.twig');
         echo $template->render([
@@ -140,8 +140,8 @@ class ControllerAlbum extends Controller
             $album = new Album();
             $album->setTitreAlbum($commentaires['title'][0] ?? 'Single');
             $album->setDateSortieAlbum(date('Y-m-d'));
-            $album->setArtisteAlbum($_SESSION['user_pseudo']); // Ou un autre champ de l'utilisateur
-            
+            $album->setArtisteAlbum($_SESSION['user_email']); // Ou un autre champ de l'utilisateur
+
             // Gérer la pochette si elle existe dans les métadonnées
             if (!empty($infoChanson['comments']['picture'][0])) {
                 $pochetteData = $infoChanson['comments']['picture'][0]['data'];
@@ -181,7 +181,6 @@ class ControllerAlbum extends Controller
             $managerChanson->create($chanson);
 
             header('Location: index.php?controller=album&method=afficher&idAlbum=' . $idAlbum);
-
         } elseif (count($chansonsValides) > 1) {
             // Proposer de créer un album
             $template = $this->getTwig()->load('album_ajout.html.twig');
@@ -215,7 +214,7 @@ class ControllerAlbum extends Controller
         $album = new Album();
         $album->setTitreAlbum($_POST['titre_album']);
         $album->setDateSortieAlbum($_POST['date_sortie']);
-        $album->setArtisteAlbum($_SESSION['user_pseudo']);
+        $album->setArtisteAlbum($_SESSION['user_email']);
 
         // Gérer la pochette
         if (isset($_FILES['pochette_album']) && $_FILES['pochette_album']['error'] === UPLOAD_ERR_OK) {
@@ -263,7 +262,4 @@ class ControllerAlbum extends Controller
 
         header('Location: index.php?controller=album&method=afficher&idAlbum=' . $idAlbum);
     }
-
-    
-  
 }
