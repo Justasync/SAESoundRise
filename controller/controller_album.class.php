@@ -197,28 +197,28 @@ class ControllerAlbum extends Controller
         $albumCree = $managerAlbum->find($idAlbum);
 
         // Gérer les chansons
-        if (isset($_POST['chansons']) && isset($_FILES['chansons_files'])) {
+        if (isset($_POST['tracks']) && isset($_FILES['tracks'])) {
             $uploadDirMusique = 'assets/audio/';
             if (!is_dir($uploadDirMusique)) {
                 mkdir($uploadDirMusique, 0777, true);
             }
 
-            foreach ($_POST['chansons'] as $index => $chansonData) {
+            foreach ($_POST['tracks'] as $index => $chansonData) {
                 // Vérifier si le fichier correspondant a été uploadé
-                if (!isset($_FILES['chansons_files']['tmp_name'][$index]) || $_FILES['chansons_files']['error'][$index] !== UPLOAD_ERR_OK) {
+                if (!isset($_FILES['tracks']['tmp_name'][$index]['file']) || $_FILES['tracks']['error'][$index]['file'] !== UPLOAD_ERR_OK) {
                     continue; // Passer à la chanson suivante si le fichier est manquant ou a une erreur
                 }
 
-                $nomFichierOriginal = basename($_FILES['chansons_files']['name'][$index]);
+                $nomFichierOriginal = basename($_FILES['tracks']['name'][$index]['file']);
                 $cheminCible = $uploadDirMusique . uniqid() . '-' . $nomFichierOriginal;
 
-                if (!move_uploaded_file($_FILES['chansons_files']['tmp_name'][$index], $cheminCible)) {
+                if (!move_uploaded_file($_FILES['tracks']['tmp_name'][$index]['file'], $cheminCible)) {
                     continue; // Erreur lors du déplacement du fichier
                 }
 
                 $chanson = new Chanson();
-                $chanson->setTitreChanson($chansonData['titre']);
-                $chanson->setDureeChanson((int)$chansonData['duree']);
+                $chanson->setTitreChanson($chansonData['title']);
+                $chanson->setDureeChanson((int)$chansonData['duration']);
                 $chanson->setDateTeleversementChanson(new DateTime());
                 $chanson->setAlbumChanson($albumCree);
                 $chanson->setEmailPublicateur($_SESSION['user_email']);

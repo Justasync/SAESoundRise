@@ -48,10 +48,10 @@ class AlbumDAO
 
     public function create(Album $album): int
     {
-        $sql = "INSERT INTO album (nomAlbum, dateSortieAlbum, urlPochetteAlbum, artisteAlbum) VALUES (:titre, :dateSortie, :pochette, :artiste)";
+        $sql = "INSERT INTO album (nomAlbum, dateSortieAlbum, urlPochetteAlbum, artisteAlbum) VALUES (:nomAlbum, :dateSortie, :pochette, :artiste)";
         $pdoStatement = $this->pdo->prepare($sql);
         $pdoStatement->execute([
-            ':titre' => $album->getTitreAlbum(),
+            ':nomAlbum' => $album->getTitreAlbum(),
             ':dateSortie' => $album->getDateSortieAlbum(),
             ':pochette' => $album->geturlPochetteAlbum(),
             ':artiste' => $album->getArtisteAlbum()
