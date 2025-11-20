@@ -163,7 +163,7 @@ class ControllerAlbum extends Controller
         }
     }
 
-    public function creerAlbum()
+    public function ajouterAlbum()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_SESSION['user_role']) || $_SESSION['user_role'] != 2) {
             header('Location: index.php?controller=home&method=afficher');
@@ -174,15 +174,15 @@ class ControllerAlbum extends Controller
         $managerChanson = new ChansonDAO($this->getPdo());
         $managerGenre = new GenreDAO($this->getPdo());
 
-        // Créer l'album
+        // Gérer l'album
         $album = new Album();
-        $album->setTitreAlbum($_POST['titre_album']);
-        $album->setDateSortieAlbum($_POST['date_sortie']);
+        $album->setTitreAlbum($_POST['titre_album'] ?? '');
+        $album->setDateSortieAlbum($_POST['date_sortie'] ?? '');
         $album->setArtisteAlbum($_SESSION['user_email']);
 
-        // Gérer la pochette
+        // Gérer la pochette de l'album
         if (isset($_FILES['pochette_album']) && $_FILES['pochette_album']['error'] === UPLOAD_ERR_OK) {
-            $uploadDir = 'uploads/pochettes/';
+            $uploadDir = 'assets/images/albums/';
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
@@ -196,19 +196,35 @@ class ControllerAlbum extends Controller
         $idAlbum = $managerAlbum->create($album);
         $albumCree = $managerAlbum->find($idAlbum);
 
-        // Créer les chansons et les lier à l'album
-        if (isset($_POST['chansons'])) {
+        // Gérer les chansons
+        if (isset($_POST['chansons']) && isset($_FILES['chansons_files'])) {
+            $uploadDirMusique = 'assets/audio/';
+            if (!is_dir($uploadDirMusique)) {
+                mkdir($uploadDirMusique, 0777, true);
+            }
+
             foreach ($_POST['chansons'] as $index => $chansonData) {
+                // Vérifier si le fichier correspondant a été uploadé
+                if (!isset($_FILES['chansons_files']['tmp_name'][$index]) || $_FILES['chansons_files']['error'][$index] !== UPLOAD_ERR_OK) {
+                    continue; // Passer à la chanson suivante si le fichier est manquant ou a une erreur
+                }
+
+                $nomFichierOriginal = basename($_FILES['chansons_files']['name'][$index]);
+                $cheminCible = $uploadDirMusique . uniqid() . '-' . $nomFichierOriginal;
+
+                if (!move_uploaded_file($_FILES['chansons_files']['tmp_name'][$index], $cheminCible)) {
+                    continue; // Erreur lors du déplacement du fichier
+                }
+
                 $chanson = new Chanson();
                 $chanson->setTitreChanson($chansonData['titre']);
                 $chanson->setDureeChanson((int)$chansonData['duree']);
                 $chanson->setDateTeleversementChanson(new DateTime());
                 $chanson->setAlbumChanson($albumCree);
                 $chanson->setEmailPublicateur($_SESSION['user_email']);
-                $chanson->setUrlAudioChanson($chansonData['chemin']);
+                $chanson->setUrlAudioChanson($cheminCible);
                 $chanson->setEstPublieeChanson(true);
 
-                // Associer le genre
                 $nomGenre = $chansonData['genre'] ?? null;
                 if ($nomGenre) {
                     $genreExistant = $managerGenre->findByName($nomGenre);
@@ -224,6 +240,7 @@ class ControllerAlbum extends Controller
             }
         }
 
-        header('Location: index.php?controller=album&method=afficherFormulaireAjout');
+        // Rediriger avec un message de succès
+        header('Location: index.php?controller=album&method=afficherFormulaireAjout&success=1');
     }
 }
