@@ -12,7 +12,7 @@
             <form action="index.php?controller=album&method=ajouterChansons" method="post" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="chansons" class="form-label">Sélectionnez une ou plusieurs chansons (MP3) :</label>
-                    <input class="form-control" type="file" id="chansons" name="chansons[]" multiple accept=".mp3">
+                    <input class="form-control" type="file" id="chansons" name="chansons[]" multiple accept=".mp3" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Téléverser</button>
             </form>
@@ -62,7 +62,7 @@
         <form action="index.php?controller=album&method=creerAlbum" method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="titre_album" class="form-label">Titre de l'album</label>
-                <input type="text" class="form-control" id="titre_album" name="titre_album" required>
+                <input type="text" class="form-control" id="titre_album" name="titre_album" value="{{ default_album_title | default('') }}" required>
             </div>
             <div class="mb-3">
                 <label for="date_sortie" class="form-label">Date de sortie</label>
@@ -70,22 +70,31 @@
             </div>
             <div class="mb-3">
                 <label for="pochette_album" class="form-label">Pochette de l'album</label>
-                <input class="form-control" type="file" id="pochette_album" name="pochette_album" accept="image/*">
+                <input class="form-control" type="file" id="pochette_album" name="pochette_album" accept="image/*" required>
             </div>
 
             <hr>
             <h5>Chansons à inclure :</h5>
-            <ul class="list-group mb-3">
-            {% for chanson in chansons_televersees %}
-                <li class="list-group-item">
-                    {{ chanson.info.comments_html.title[0] | default('Titre inconnu') }}
-                    <input type="hidden" name="chansons[{{ loop.index0 }}][chemin]" value="{{ chanson.chemin }}">
-                    <input type="hidden" name="chansons[{{ loop.index0 }}][titre]" value="{{ chanson.info.comments_html.title[0] | default('Titre inconnu') }}">
-                    <input type="hidden" name="chansons[{{ loop.index0 }}][duree]" value="{{ chanson.info.playtime_seconds | round }}">
-                    <input type="hidden" name="chansons[{{ loop.index0 }}][genre]" value="{{ chanson.info.comments_html.genre[0] | default(null) }}">
-                </li>
+            {# Boucle sur les chansons téléversées pour créer les champs modifiables #}
+            {% for index, chanson in chansons_televersees %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h6 class="card-title">Chanson {{ loop.index }}</h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="chanson_{{ index }}_titre" class="form-label">Titre</label>
+                                <input type="text" class="form-control" id="chanson_{{ index }}_titre" name="chansons[{{ index }}][titre]" value="{{ chanson.titre }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="chanson_{{ index }}_genre" class="form-label">Genre</label>
+                                <input type="text" class="form-control" id="chanson_{{ index }}_genre" name="chansons[{{ index }}][genre]" value="{{ chanson.genre }}" required>
+                            </div>
+                        </div>
+                        <input type="hidden" name="chansons[{{ index }}][chemin]" value="{{ chanson.chemin }}">
+                        <input type="hidden" name="chansons[{{ index }}][duree]" value="{{ chanson.duree }}">
+                    </div>
+                </div>
             {% endfor %}
-            </ul>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>

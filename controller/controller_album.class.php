@@ -120,9 +120,18 @@ class ControllerAlbum extends Controller
                     $infoFichier = $getID3->analyze($cheminCible);
                     getid3_lib::CopyTagsToComments($infoFichier);
 
+                    $commentaires = $infoFichier['comments_html'] ?? [];
+                    $titre = $commentaires['title'][0] ?? pathinfo($nomFichier, PATHINFO_FILENAME);
+                    $genre = $commentaires['genre'][0] ?? '';
+                    $duree = (int)($infoFichier['playtime_seconds'] ?? 0);
+
                     $chansonsValides[] = [
                         'chemin' => $cheminCible,
-                        'info' => $infoFichier
+                        'titre' => $titre,
+                        'genre' => $genre,
+                        'duree' => $duree,
+                        // On garde les infos complètes au cas où
+                        'info' => $infoFichier 
                     ];
                 }
             }
@@ -132,68 +141,22 @@ class ControllerAlbum extends Controller
         $managerChanson = new ChansonDAO($this->getPdo());
         $managerGenre = new GenreDAO($this->getPdo());
 
-        if (count($chansonsValides) === 1) {
-            // Création d'un single
-            $infoChanson = $chansonsValides[0]['info'];
-            $commentaires = $infoChanson['comments_html'] ?? [];
-
-            $album = new Album();
-            $album->setTitreAlbum($commentaires['title'][0] ?? 'Single');
-            $album->setDateSortieAlbum(date('Y-m-d'));
-            $album->setArtisteAlbum($_SESSION['user_pseudo']); // Ou un autre champ de l'utilisateur
-            
-            // Gérer la pochette si elle existe dans les métadonnées
-            if (!empty($infoChanson['comments']['picture'][0])) {
-                $pochetteData = $infoChanson['comments']['picture'][0]['data'];
-                $pochetteMime = $infoChanson['comments']['picture'][0]['image_mime'];
-                $pochetteExt = str_replace('image/', '', $pochetteMime);
-                $pochetteNom = 'uploads/pochettes/' . uniqid() . '.' . $pochetteExt;
-                if (!is_dir('uploads/pochettes/')) {
-                    mkdir('uploads/pochettes/', 0777, true);
-                }
-                file_put_contents($pochetteNom, $pochetteData);
-                $album->seturlPochetteAlbum($pochetteNom);
+        if (count($chansonsValides) > 0) {
+            $defaultAlbumTitle = '';
+            if (count($chansonsValides) === 1) {
+                $defaultAlbumTitle = $chansonsValides[0]['titre'];
             }
-
-            $idAlbum = $managerAlbum->create($album);
-
-            $chanson = new Chanson();
-            $chanson->setTitreChanson($commentaires['title'][0] ?? 'Titre inconnu');
-            $chanson->setDureeChanson((int)($infoChanson['playtime_seconds'] ?? 0));
-            $chanson->setDateTeleversementChanson(new DateTime());
-            $chanson->setAlbumChanson($managerAlbum->find($idAlbum));
-            $chanson->setEmailPublicateur($_SESSION['user_email']);
-            $chanson->setUrlAudioChanson($chansonsValides[0]['chemin']);
-
-            $nomGenre = $commentaires['genre'][0] ?? null;
-            if ($nomGenre) {
-                $genreExistant = $managerGenre->findByName($nomGenre);
-                if ($genreExistant) {
-                    $chanson->setGenreChanson($genreExistant);
-                } else {
-                    // Le genre n'existe pas, on le crée
-                    $idNouveauGenre = $managerGenre->create($nomGenre);
-                    $chanson->setGenreChanson($managerGenre->find($idNouveauGenre));
-                }
-            }
-            $chanson->setEstPublieeChanson(true);
-
-            $managerChanson->create($chanson);
-
-            header('Location: index.php?controller=album&method=afficher&idAlbum=' . $idAlbum);
-
-        } elseif (count($chansonsValides) > 1) {
-            // Proposer de créer un album
             $template = $this->getTwig()->load('album_ajout.html.twig');
             echo $template->render([
                 'page' => [
                     'title' => "Créer un nouvel album",
                     'name' => "album_ajout",
-                    'description' => "Plusieurs chansons ont été téléversées. Veuillez fournir les détails de l'album."
+                    'description' => "Veuillez fournir les détails de l'album/single."
                 ],
                 'session' => $_SESSION,
                 'chansons_televersees' => $chansonsValides,
-                'show_album_modal' => true
+                'show_album_modal' => true,
+                'default_album_title' => $defaultAlbumTitle
             ]);
         } else {
             echo "Aucune chanson valide n'a été téléversée.";
@@ -261,7 +224,7 @@ class ControllerAlbum extends Controller
             }
         }
 
-        header('Location: index.php?controller=album&method=afficher&idAlbum=' . $idAlbum);
+        header('Location: index.php?controller=album&method=afficherFormulaireAjout');
     }
 
     
