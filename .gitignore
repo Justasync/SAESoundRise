@@ -1,7 +1,7 @@
 # Environment files
 .env
 .env.*
-/config/constantes.php
+/config/config.json
 
 # Dependencies
 /node_modules/

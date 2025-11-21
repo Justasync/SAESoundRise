@@ -12,7 +12,7 @@ if (session_status() === PHP_SESSION_NONE) {
 require_once 'vendor/autoload.php';
 
 // Ajout du fichier constantes qui permet de configurer le site
-require_once 'config/constantes.php';
+require_once 'modeles/constantes.class.php';
 
 // Ajout du code pour initialiser Twig
 require_once 'config/twig.php';

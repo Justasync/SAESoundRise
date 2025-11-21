@@ -58,16 +58,9 @@ Avant de commencer, assurez-vous d’avoir installé :
 
 4. **Créer le fichier de configuration `constantes.php`**
 
-   Vous devez créer un fichier `constantes.php` dans le dossier `/config/`.  
-   Exemple de contenu pour `/config/constantes.php` :
-
-   ```php
-   <?php
-   define('DB_HOST', 'localhost');
-   define('DB_NAME', 'paaxio_db');
-   define('DB_USER', 'root');
-   define('DB_PASS', '!Paaxio123@');
-   ```
+   Vous devez modifier le fichier `config.example.json` dans le dossier `/config/`.  
+   Vous devez ensuite supprimer le example du nom pour avoir `config.json`.
+   Modifier également le contenue en suivant ce qui est marqué dans le fichier `config.json`.
 
 5. **Créer et remplir la base de données**
 
