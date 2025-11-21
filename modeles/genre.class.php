@@ -2,11 +2,11 @@
 
 class Genre {
     private int|null $idGenre;
-    private string|null $nomgenre;
+    private string|null $nomGenre;
 
-    public function __construct(?int $idGenre = null, ?string $nomgenre = null) {
+    public function __construct(?int $idGenre = null, ?string $nomGenre = null) {
         $this->idGenre = $idGenre;
-        $this->nomgenre = $nomgenre;
+        $this->nomGenre = $nomGenre;
     }
 
 
@@ -29,19 +29,19 @@ class Genre {
     }
 
     /**
-     * Get the value of nomgenre
+     * Get the value of nomGenre
      */ 
-    public function getNomgenre(): ?string
+    public function getNomGenre(): ?string
     {
-        return $this->nomgenre;
+        return $this->nomGenre;
     }
 
     /**
-     * Set the value of nomgenre
+     * Set the value of nomGenre
      *
      */ 
-    public function setNomgenre(?string $nomgenre): void
+    public function setNomGenre(?string $nomGenre): void
     {
-        $this->nomgenre = $nomgenre;
+        $this->nomGenre = $nomGenre;
     }
 }

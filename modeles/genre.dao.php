@@ -54,6 +54,30 @@ class GenreDAO
         return $genre;
     }
 
+    public function create(string $nomGenre): int
+    {
+        $sql = "INSERT INTO genre (nomGenre) VALUES (:nomGenre)";
+        $pdoStatement = $this->pdo->prepare($sql);
+        $pdoStatement->execute([
+            ':nomGenre' => $nomGenre
+        ]);
+
+        return (int)$this->pdo->lastInsertId();
+    }
+
+    public function rechercherParNom(string $nom): array
+    {
+        $sql = "SELECT * FROM genre WHERE nomGenre LIKE :nom";
+        $pdoStatement = $this->pdo->prepare($sql);
+        $likeNom = '%' . $nom . '%';
+        $pdoStatement->bindParam(':nom', $likeNom, PDO::PARAM_STR);
+        $pdoStatement->execute();
+        $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
+        $tableau = $pdoStatement->fetchAll();
+        $genres = $this->hydrateMany($tableau);
+        return $genres;
+    }
+
     public function hydrate(array $tableaAssoc): genre
     {
         $genre = new Genre();

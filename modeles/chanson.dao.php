@@ -154,16 +154,16 @@ class ChansonDAO
 
     public function create(Chanson $chanson): bool
     {
-        $sql = "INSERT INTO chanson (titreChanson, descriptionChanson, dureeChanson, dateTeleversementChanson, compositeurChanson, parolierChanson, estPublieeChanson, nbEcouteChanson, albumChanson, genreChanson, emailPublicateur, urlAudioChanson) 
-                VALUES (:titre, :description, :duree, :dateTeleversement, :compositeur, :parolier, :estPubliee, :nbEcoute, :album, :genre, :emailPublicateur, :urlAudio)";
+        $sql = "INSERT INTO chanson (titreChanson, descriptionChanson, dureeChanson, dateTeleversementChanson, compositeurChanson, parolierChanson, estPublieeChanson, nbEcouteChanson, urlAudioChanson, albumChanson, genreChanson, emailPublicateur) 
+                VALUES (:titre, :description, :duree, :dateTeleversement, :compositeur, :parolier, :estPubliee, :nbEcoute, :urlAudio, :idAlbum, :idGenre, :email)";
+        
+        $pdoStatement = $this->pdo->prepare($sql);
 
-        $stmt = $this->pdo->prepare($sql);
+        $idAlbum = $chanson->getAlbumChanson() ? $chanson->getAlbumChanson()->getIdAlbum() : null;
+        $idGenre = $chanson->getGenreChanson() ? $chanson->getGenreChanson()->getIdGenre() : null;
+        $dateTeleversement = $chanson->getDateTeleversementChanson() ? $chanson->getDateTeleversementChanson()->format('Y-m-d H:i:s') : date('Y-m-d H:i:s');
 
-        $albumId = $chanson->getAlbumChanson() ? $chanson->getAlbumChanson()->getIdAlbum() : null;
-        $genreId = $chanson->getGenreChanson() ? $chanson->getGenreChanson()->getIdGenre() : null;
-        $dateTeleversement = $chanson->getDateTeleversementChanson() ? $chanson->getDateTeleversementChanson()->format('Y-m-d H:i:s') : null;
-
-        $params = [
+        return $pdoStatement->execute([
             ':titre' => $chanson->getTitreChanson(),
             ':description' => $chanson->getDescriptionChanson(),
             ':duree' => $chanson->getDureeChanson(),
@@ -172,15 +172,17 @@ class ChansonDAO
             ':parolier' => $chanson->getParolierChanson(),
             ':estPubliee' => $chanson->getEstPublieeChanson() ? 1 : 0,
             ':nbEcoute' => $chanson->getNbEcouteChanson() ?? 0,
-            ':album' => $albumId,
-            ':genre' => $genreId,
-            ':emailPublicateur' => $chanson->getEmailPublicateur(),
-            ':urlAudio' => $chanson->getUrlAudioChanson(),
-        ];
-
-        return $stmt->execute($params);
+            ':urlAudio' => $chanson->geturlAudioChanson(),
+            ':idAlbum' => $idAlbum,
+            ':idGenre' => $idGenre,
+            ':email' => $chanson->getEmailPublicateur()
+        ]);
     }
 
+    public function findByTitreExact(string $titre, int $idAlbum): ?Chanson {
+        // Implémentation future si nécessaire pour éviter les doublons
+        return null;
+    }
 
     /**
      * Get the value of pdo
