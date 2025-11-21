@@ -4,12 +4,8 @@ class Chanson
 {
     private int|null $idChanson;
     private string|null $titreChanson;
-    private string|null $descriptionChanson;
     private int|null $dureeChanson;
     private DateTime|null $dateTeleversementChanson; //Le type dans la bdd est DATE
-    private string|null $compositeurChanson;
-    private string|null $parolierChanson;
-    private bool|null $estPublieeChanson;
     private int|null $nbEcouteChanson;
     private Album|null $albumChanson;
     private Genre|null $genreChanson;
@@ -28,10 +24,6 @@ class Chanson
         ?Genre $genreChanson = null,
         ?string $emailPublicateur = null,
         ?string $urlAudioChanson = null,
-        ?string $descriptionChanson = null,
-        ?string $compositeurChanson = null,
-        ?string $parolierChanson = null,
-        ?bool $estPublieeChanson = null,
         ?int $nbEcouteChanson = null
     ) {
         $this->idChanson = $idChanson;
@@ -42,10 +34,6 @@ class Chanson
         $this->genreChanson = $genreChanson;
         $this->emailPublicateur = $emailPublicateur;
         $this->urlAudioChanson = $urlAudioChanson;
-        $this->descriptionChanson = $descriptionChanson;
-        $this->compositeurChanson = $compositeurChanson;
-        $this->parolierChanson = $parolierChanson;
-        $this->estPublieeChanson = $estPublieeChanson;
         $this->nbEcouteChanson = $nbEcouteChanson;
     }
 
@@ -86,23 +74,6 @@ class Chanson
     }
 
     /**
-     * Get the value of descriptionChanson
-     */
-    public function getDescriptionChanson(): ?string
-    {
-        return $this->descriptionChanson;
-    }
-
-    /**
-     * Set the value of descriptionChanson
-     *
-     */
-    public function setDescriptionChanson(?string $descriptionChanson): void
-    {
-        $this->descriptionChanson = $descriptionChanson;
-    }
-
-    /**
      * Get the value of dureeChanson
      */
     public function getDureeChanson(): ?int
@@ -134,57 +105,6 @@ class Chanson
     public function setDateTeleversementChanson(?DateTime $dateTeleversementChanson): void
     {
         $this->dateTeleversementChanson = $dateTeleversementChanson;
-    }
-
-    /**
-     * Get the value of compositeurChanson
-     */
-    public function getCompositeurChanson(): ?string
-    {
-        return $this->compositeurChanson;
-    }
-
-    /**
-     * Set the value of compositeurChanson
-     *
-     */
-    public function setCompositeurChanson(?string $compositeurChanson): void
-    {
-        $this->compositeurChanson = $compositeurChanson;
-    }
-
-    /**
-     * Get the value of parolierChanson
-     */
-    public function getParolierChanson(): ?string
-    {
-        return $this->parolierChanson;
-    }
-
-    /**
-     * Set the value of parolierChanson
-     *
-     */
-    public function setParolierChanson(?string $parolierChanson): void
-    {
-        $this->parolierChanson = $parolierChanson;
-    }
-
-    /**
-     * Get the value of estPublieeChanson
-     */
-    public function getEstPublieeChanson(): ?bool
-    {
-        return $this->estPublieeChanson;
-    }
-
-    /**
-     * Set the value of estPublieeChanson
-     *
-     */
-    public function setEstPublieeChanson(?bool $estPublieeChanson): void
-    {
-        $this->estPublieeChanson = $estPublieeChanson;
     }
 
     /**
