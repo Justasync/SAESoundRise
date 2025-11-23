@@ -86,7 +86,8 @@ document.addEventListener('DOMContentLoaded', () => {
 				
 				setTimeout(() => {
 					bootstrapModal.hide();
-					window.location.href = '/?controller=home&method=afficher';
+					// Rediriger vers l'URL fournie par le serveur, ou la page d'accueil par défaut
+					window.location.href = data.redirectUrl || '/?controller=home&method=afficher';
 				}, 1000);
 			} else {
 				showError(data.message || 'Une erreur est survenue lors de la connexion.');
@@ -119,4 +120,3 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 	});
 });
-
