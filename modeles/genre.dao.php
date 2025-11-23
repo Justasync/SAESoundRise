@@ -65,6 +65,27 @@ class GenreDAO
         return (int)$this->pdo->lastInsertId();
     }
 
+    public function findOrCreateByName(string $nomGenre): ?Genre
+    {
+        // Si le nom du genre est vide, on ne fait rien et on retourne null.
+        if (trim($nomGenre) === '') {
+            return null;
+        }
+
+        // On cherche d'abord si le genre existe.
+        $genre = $this->findByName($nomGenre);
+
+        if ($genre) {
+            // S'il existe, on le retourne.
+            return $genre;
+        } else {
+            // Sinon, on le crée...
+            $idNouveauGenre = $this->create($nomGenre);
+            // ...et on retourne le nouvel objet Genre.
+            return $this->find($idNouveauGenre);
+        }
+    }
+
     public function rechercherParNom(string $nom): array
     {
         $sql = "SELECT * FROM genre WHERE nomGenre LIKE :nom";

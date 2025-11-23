@@ -184,6 +184,24 @@ class ChansonDAO
         return null;
     }
 
+    public function update(Chanson $chanson): bool
+    {
+        $sql = "UPDATE chanson SET 
+                    titreChanson = :titre, 
+                    genreChanson = :idGenre
+                WHERE idChanson = :idChanson";
+
+        $pdoStatement = $this->pdo->prepare($sql);
+
+        $idGenre = $chanson->getGenreChanson() ? $chanson->getGenreChanson()->getIdGenre() : null;
+
+        return $pdoStatement->execute([
+            ':titre' => $chanson->getTitreChanson(),
+            ':idGenre' => $idGenre,
+            ':idChanson' => $chanson->getIdChanson()
+        ]);
+    }
+
     /**
      * Get the value of pdo
      */

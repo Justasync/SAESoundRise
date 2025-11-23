@@ -1,0 +1,195 @@
+{% extends "base_template.html.twig" %}
+
+{% block header %}
+	{{ parent() }}
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+	<style>
+		body {
+			font-family: 'Inter', sans-serif;
+			background-color: #f0f0f0;
+		}
+		.content-bg {
+			background: linear-gradient(135deg, #a36666 0%, #d4a373 100%);
+		}
+		.track-row:nth-child(even) {
+			background-color: rgba(0, 0, 0, 0.05);
+		}
+		.table {
+			--bs-table-bg: transparent;
+			--bs-table-border-color: rgba(0, 0, 0, 0.1);
+			--bs-table-color: var(--bs-white);
+			--bs-table-hover-color: var(--bs-white);
+		}
+		.table-hover > tbody > tr:hover > * {
+			--bs-table-hover-bg: rgba(0, 0, 0, 0.15);
+		}
+	</style>
+{% endblock %}
+
+{% block content %}
+	{% set totalDuration = 0 %}
+	{% for chanson in chansons %}
+		{% set totalDuration = totalDuration + chanson.getDureeChanson() %}
+	{% endfor %}
+	{% set totalMinutes = (totalDuration / 60)|round(0, 'floor') %}
+	{% set totalSeconds = totalDuration % 60 %}
+
+	<main class="container my-4 my-lg-5">
+		<div class="content-bg rounded-3 shadow-lg p-3 p-lg-5 text-white">
+
+			<div class="d-flex flex-column flex-md-row align-items-start gap-4">
+				<div class="flex-shrink-0">
+					<img src="{{ album.getUrlImageAlbum() ?: 'https://placehold.co/160x160/7b4343/ffffff?text=' ~ (album.getTitreAlbum()|replace({' ': '+'})|slice(0, 20)) }}" alt="Couverture de l'album {{ album.getTitreAlbum() }}" class="rounded-2 shadow-lg" style="width: 160px; height: 160px; object-fit: cover;">
+				</div>
+
+				<div class="flex-grow-1">
+					<span class="text-sm fw-light text-uppercase" style="letter-spacing: 0.1em; opacity: 0.8;">Album</span>
+					<h2 class="display-4 fw-bolder mt-1 mb-2">{{ album.getTitreAlbum() }}</h2>
+					<p class="fs-5 fw-light" style="opacity: 0.9;">
+						{{ album.getArtisteAlbum() }}
+						{% if album.getDateSortieAlbum() %}
+							·
+							{{ album.getDateSortieAlbum()|date('Y') }}
+						{% endif %}
+						·
+						{{ chansons|length }}
+						titre{{ chansons|length > 1 ? 's' : '' }},
+						{{ totalMinutes }}
+						min
+						{{ totalSeconds|number_format(0, '', '02') }}
+						s
+					</p>
+
+					<button type="button" class="btn btn-light text-dark fw-semibold py-2 px-4 rounded-pill shadow-lg mt-3" data-bs-toggle="modal" data-bs-target="#ajoutChansonModal">
+						Ajouter Titre
+					</button>
+				</div>
+			</div>
+
+			<div class="mt-5 overflow-x-auto">
+				<table class="table table-hover align-middle">
+					<thead style="background-color: rgba(0,0,0,0.2);">
+						<tr class="text-sm text-uppercase fw-semibold" style="color: rgba(255,255,255,0.9); letter-spacing: 0.05em;">
+							<th scope="col" class="py-3 px-4" style="width: 5%;">#</th>
+							<th scope="col" class="py-3 px-4" style="width: 55%;">Titre</th>
+							<th scope="col" class="py-3 px-4 d-none d-sm-table-cell" style="width: 20%;">Nombre d'écoutes</th>
+							<th scope="col" class="py-3 px-4" style="width: 10%;">Durée</th>
+							<th scope="col" class="py-3 px-4" style="width: 10%;"></th>
+						</tr>
+					</thead>
+					<tbody>
+						{% if chansons is not empty %}
+							{% for chanson in chansons %}
+								<tr class="track-row" style="color: rgba(255,255,255,0.9);">
+									<td class="py-3 px-4 fw-bold">{{ loop.index|number_format(2, '.', ',') }}</td>
+									<td class="py-3 px-4">{{ chanson.getTitreChanson() }}</td>
+									<td class="py-3 px-4 d-none d-sm-table-cell">0</td>
+									<td class="py-3 px-4">{{ (chanson.getDureeChanson() / 60)|round(0, 'floor') }}:{{ (chanson.getDureeChanson() % 60)|number_format(0, '', '02') }}</td>
+									<td class="py-3 px-4 text-center">
+                                        <button type="button" class="btn btn-sm btn-link p-1" 
+                                                title="Modifier"
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#modifierChansonModal"
+                                                data-song-id="{{ chanson.getIdChanson() }}"
+                                                data-song-title="{{ chanson.getTitreChanson() }}"
+                                                data-song-genre="{{ chanson.getGenreChanson() ? chanson.getGenreChanson().getNomGenre() : '' }}">
+                                            <svg class="bi" width="16" height="16" fill="currentColor" style="color: rgba(255,255,255,0.7);">
+                                                <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                                            </svg>
+                                        </button>
+										<button title="Supprimer" class="btn btn-sm btn-link p-1">
+											<svg class="bi" width="16" height="16" fill="currentColor" style="color: rgba(255,255,255,0.7);">
+												<path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+												<path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+											</svg>
+										</button>
+									</td>
+								</tr>
+							{% endfor %}
+						{% else %}
+							<tr>
+								<td colspan="5" class="text-center py-4" style="opacity: 0.8;">Cet album ne contient aucune chanson pour le moment.</td>
+							</tr>
+						{% endif %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</main>
+
+    <!-- Fenêtre Modale pour l'ajout de chanson -->
+    <div class="modal fade" id="ajoutChansonModal" tabindex="-1" aria-labelledby="ajoutChansonModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ajoutChansonModalLabel">Ajouter une chanson à "{{ album.getTitreAlbum() }}"</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {# Inclusion du formulaire partiel #}
+                    {% include '_song_upload_form.html.twig' with {'album_existant': album} %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fenêtre Modale pour la modification de chanson -->
+    <div class="modal fade" id="modifierChansonModal" tabindex="-1" aria-labelledby="modifierChansonModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form method="post"> {# L'action sera définie par le JS #}
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modifierChansonModalLabel">Modifier la chanson</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="id_album" value="{{ album.getIdAlbum() }}">
+                        <div class="mb-3">
+                            <label for="edit-song-title" class="form-label">Titre de la chanson</label>
+                            <input type="text" class="form-control" id="edit-song-title" name="titre_chanson" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit-song-genre" class="form-label">Genre</label>
+                            <input type="text" class="form-control" id="edit-song-genre" name="genre_chanson">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const modifierModal = document.getElementById('modifierChansonModal');
+    if (modifierModal) {
+        modifierModal.addEventListener('show.bs.modal', function (event) {
+            // Bouton qui a déclenché la modale
+            const button = event.relatedTarget;
+
+            // Extraire les informations des attributs data-*
+            const songId = button.getAttribute('data-song-id');
+            const songTitle = button.getAttribute('data-song-title');
+            const songGenre = button.getAttribute('data-song-genre');
+
+            // Mettre à jour le contenu de la modale
+            const modalTitle = modifierModal.querySelector('.modal-title');
+            const modalForm = modifierModal.querySelector('form');
+            const titleInput = modifierModal.querySelector('#edit-song-title');
+            const genreInput = modifierModal.querySelector('#edit-song-genre');
+
+            modalTitle.textContent = 'Modifier : ' + songTitle;
+            titleInput.value = songTitle;
+            genreInput.value = songGenre;
+            
+            // Mettre à jour l'action du formulaire pour inclure l'ID de la chanson
+            modalForm.action = `/?controller=album&method=modifierChanson&idChanson=${songId}`;
+        });
+    }
+});
+</script>
+{% endblock %}
