@@ -52,17 +52,12 @@ class ChansonDAO
         $chanson = new chanson();
         $chanson->setIdchanson(isset($tableaAssoc['idChanson']) ? (int)$tableaAssoc['idChanson'] : null);
         $chanson->setTitrechanson($tableaAssoc['titreChanson'] ?? null);
-        $chanson->setDescriptionchanson($tableaAssoc['descriptionChanson'] ?? null);
         $chanson->setDureechanson(isset($tableaAssoc['dureeChanson']) ? (int)$tableaAssoc['dureeChanson'] : null);
 
         // Conversion sécurisée des dates SQL → objets DateTime
         $chanson->setDateTeleversementChanson(
             !empty($tableaAssoc['dateTeleversementChanson']) ? new DateTime($tableaAssoc['dateTeleversementChanson']) : null
         );
-
-        $chanson->setCompositeurchanson($tableaAssoc['compositeurChanson'] ?? null);
-        $chanson->setParolierchanson($tableaAssoc['parolierChanson'] ?? null);
-        $chanson->setEstpublieechanson(isset($tableaAssoc['estPublieeChanson']) ? (bool)$tableaAssoc['estPublieeChanson'] : null);
         $chanson->setNbecoutechanson(isset($tableaAssoc['nbEcouteChanson']) ? (int)$tableaAssoc['nbEcouteChanson'] : null);
         $chanson->seturlAudioChanson($tableaAssoc['urlAudioChanson'] ?? null);
 
@@ -154,10 +149,10 @@ class ChansonDAO
 
     public function create(Chanson $chanson): bool
     {
-        $sql = "INSERT INTO chanson (titreChanson, descriptionChanson, dureeChanson, dateTeleversementChanson, compositeurChanson, parolierChanson, estPublieeChanson, nbEcouteChanson, urlAudioChanson, albumChanson, genreChanson, emailPublicateur) 
-                VALUES (:titre, :description, :duree, :dateTeleversement, :compositeur, :parolier, :estPubliee, :nbEcoute, :urlAudio, :idAlbum, :idGenre, :email)";
-        
-        $pdoStatement = $this->pdo->prepare($sql);
+        $sql = "INSERT INTO chanson (titreChanson, dureeChanson, dateTeleversementChanson, nbEcouteChanson, albumChanson, genreChanson, emailPublicateur, urlAudioChanson)
+                VALUES (:titre, :duree, :dateTeleversement, :nbEcoute, :album, :genre, :emailPublicateur, :urlAudio)";
+
+        $stmt = $this->pdo->prepare($sql);
 
         $idAlbum = $chanson->getAlbumChanson() ? $chanson->getAlbumChanson()->getIdAlbum() : null;
         $idGenre = $chanson->getGenreChanson() ? $chanson->getGenreChanson()->getIdGenre() : null;
@@ -165,12 +160,8 @@ class ChansonDAO
 
         return $pdoStatement->execute([
             ':titre' => $chanson->getTitreChanson(),
-            ':description' => $chanson->getDescriptionChanson(),
             ':duree' => $chanson->getDureeChanson(),
             ':dateTeleversement' => $dateTeleversement,
-            ':compositeur' => $chanson->getCompositeurChanson(),
-            ':parolier' => $chanson->getParolierChanson(),
-            ':estPubliee' => $chanson->getEstPublieeChanson() ? 1 : 0,
             ':nbEcoute' => $chanson->getNbEcouteChanson() ?? 0,
             ':urlAudio' => $chanson->geturlAudioChanson(),
             ':idAlbum' => $idAlbum,
