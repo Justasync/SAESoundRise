@@ -15,10 +15,12 @@
 						<p class="lead mb-4">
 							Contrairement aux plateformes de streaming classiques, Paaxio repose sur un modèle basé sur une mise en avant équitable des talents émergents, indépendamment de leur notoriété initiale.
 						</p>
-						<div class="d-flex flex-wrap gap-3">
-							<a class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#signupModal">S'inscrire</a>
-							<a class="btn btn-lg btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#signinModal">Se connecter</a>
-						</div>
+						{% if session.user_logged_in is not defined %}
+							<div class="d-flex flex-wrap gap-3">
+								<a class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#signupModal">S'inscrire</a>
+								<a class="btn btn-lg btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#signinModal">Se connecter</a>
+							</div>
+						{% endif %}
 						{% if session.user_logged_in is defined and session.user_logged_in %}
 							<a class="btn btn-lg btn-danger" href="/?controller=utilisateur&method=logout">Se déconnecter</a>
 						{% endif %}
@@ -88,7 +90,7 @@
 									class="row g-3">
 									<!-- Nom -->
 									<div class="col-md-12">
-										<label for="artisteNom" class="form-label">Nom</label>
+										<label for="artisteNom" class="form-label">Nom complet</label>
 										<input type="text" class="form-control" id="artisteNom" name="nom" placeholder="Entrez votre nom" required minlength="1" maxlength="255" autocomplete="given-name">
 									</div>
 

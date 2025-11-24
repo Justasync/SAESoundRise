@@ -145,7 +145,7 @@ class ControllerAlbum extends Controller
                         'genre' => $genre,
                         'duree' => $duree,
                         // On garde les infos complètes au cas où
-                        'info' => $infoFichier 
+                        'info' => $infoFichier
                     ];
                 }
             }
@@ -249,7 +249,6 @@ class ControllerAlbum extends Controller
                 $chanson->setAlbumChanson($albumCree);
                 $chanson->setEmailPublicateur($_SESSION['user_email']);
                 $chanson->setUrlAudioChanson($cheminCible);
-                $chanson->setEstPublieeChanson(true);
 
                 $nomGenre = $chansonData['genre'] ?? null;
                 if ($nomGenre) {

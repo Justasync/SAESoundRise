@@ -73,14 +73,8 @@ CREATE TABLE chanson (
   idChanson INT PRIMARY KEY AUTO_INCREMENT,
 
   titreChanson VARCHAR(255) NOT NULL,
-  descriptionChanson VARCHAR(255),
   dureeChanson INT NOT NULL,
   dateTeleversementChanson DATE NOT NULL,
-
-  compositeurChanson VARCHAR(255),
-  parolierChanson VARCHAR(255),
-
-  estPublieeChanson BOOLEAN DEFAULT 0,
   nbEcouteChanson INT DEFAULT 0,
   urlAudioChanson VARCHAR(191) NOT NULL,
 
