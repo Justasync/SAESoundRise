@@ -3,6 +3,7 @@
       "host": "HOST_DE_VOTRE_BD",
       "dbname": "VOTRE_NOM_DE_BD",
       "username": "VOTRE_USERNAME",
-      "password": "VOTRE_MOT_DE_PASSE"
+      "password": "VOTRE_MOT_DE_PASSE",
+      "port": 3306
    }
 }
