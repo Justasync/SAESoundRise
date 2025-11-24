@@ -154,24 +154,26 @@ class ChansonDAO
 
         $stmt = $this->pdo->prepare($sql);
 
-        $albumId = $chanson->getAlbumChanson() ? $chanson->getAlbumChanson()->getIdAlbum() : null;
-        $genreId = $chanson->getGenreChanson() ? $chanson->getGenreChanson()->getIdGenre() : null;
-        $dateTeleversement = $chanson->getDateTeleversementChanson() ? $chanson->getDateTeleversementChanson()->format('Y-m-d H:i:s') : null;
+        $idAlbum = $chanson->getAlbumChanson() ? $chanson->getAlbumChanson()->getIdAlbum() : null;
+        $idGenre = $chanson->getGenreChanson() ? $chanson->getGenreChanson()->getIdGenre() : null;
+        $dateTeleversement = $chanson->getDateTeleversementChanson() ? $chanson->getDateTeleversementChanson()->format('Y-m-d H:i:s') : date('Y-m-d H:i:s');
 
-        $params = [
+        return $pdoStatement->execute([
             ':titre' => $chanson->getTitreChanson(),
             ':duree' => $chanson->getDureeChanson(),
             ':dateTeleversement' => $dateTeleversement,
             ':nbEcoute' => $chanson->getNbEcouteChanson() ?? 0,
-            ':album' => $albumId,
-            ':genre' => $genreId,
-            ':emailPublicateur' => $chanson->getEmailPublicateur(),
-            ':urlAudio' => $chanson->getUrlAudioChanson(),
-        ];
-
-        return $stmt->execute($params);
+            ':urlAudio' => $chanson->geturlAudioChanson(),
+            ':idAlbum' => $idAlbum,
+            ':idGenre' => $idGenre,
+            ':email' => $chanson->getEmailPublicateur()
+        ]);
     }
 
+    public function findByTitreExact(string $titre, int $idAlbum): ?Chanson {
+        // Implémentation future si nécessaire pour éviter les doublons
+        return null;
+    }
 
     /**
      * Get the value of pdo

@@ -17,6 +17,8 @@ l'extension debug*/
     //... 
 ]);
 
+$twig->addGlobal('config', Constantes::getInstance()->getConfig());
+
 //Définition de la timezone pour que les filtres date tiennent compte du fuseau horaire français. 
 $twig->getExtension(\Twig\Extension\CoreExtension::class)->setTimezone('Europe/Paris');
 
