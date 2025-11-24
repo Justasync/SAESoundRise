@@ -149,8 +149,8 @@ class ChansonDAO
 
     public function create(Chanson $chanson): bool
     {
-        $sql = "INSERT INTO chanson (titreChanson, dureeChanson, dateTeleversementChanson, estPublieeChanson, nbEcouteChanson, albumChanson, genreChanson, emailPublicateur, urlAudioChanson)
-                VALUES (:titre, :duree, :dateTeleversement, :estPubliee, :nbEcoute, :album, :genre, :emailPublicateur, :urlAudio)";
+        $sql = "INSERT INTO chanson (titreChanson, dureeChanson, dateTeleversementChanson, nbEcouteChanson, albumChanson, genreChanson, emailPublicateur, urlAudioChanson)
+                VALUES (:titre, :duree, :dateTeleversement, :nbEcoute, :album, :genre, :emailPublicateur, :urlAudio)";
 
         $stmt = $this->pdo->prepare($sql);
 
