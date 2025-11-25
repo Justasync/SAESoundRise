@@ -12,7 +12,7 @@ Contact :
 - [CECILIA URRA Christopher](https://github.com/Justasync) — `ccurra@iutbayonne.univ-pau.fr`
 - [DIDELOT Tim](https://github.com/xFufly) — `contact@timdidelot.fr`
 - [HOARAU Erwan](https://github.com/ErwanH7) — `ehoarau003@iutbayonne.univ-pau.fr`
-- [RAMIREZ BATALLA Angel David](https://github.com/batallio) — `adrbatalla@iutbayonne.univ-pau.fr`
+- [RAMIREZ BATALLA Angel David](https://github.com/batallio) — `contact@angelbatalla.com`
 - [TEISSEIRE Raphaël](https://github.com/rTeisseire) — `rteisseir001@iutbayonne.univ-pau.fr`
 
 ---
