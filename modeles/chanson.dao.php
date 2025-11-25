@@ -149,16 +149,28 @@ class ChansonDAO
 
     public function create(Chanson $chanson): bool
     {
+        $idAlbum = $chanson->getAlbumChanson() ? $chanson->getAlbumChanson()->getIdAlbum() : null;
+
+        // Vérifier si une chanson avec le même titre existe déjà dans cet album
+        if ($idAlbum !== null) {
+            $existingChanson = $this->findByTitreExact($chanson->getTitreChanson(), $idAlbum);
+            if ($existingChanson) {
+                // La chanson existe déjà, on ne la crée pas.
+                // On pourrait retourner false ou l'ID existant, ou même mettre à jour la chanson existante.
+                // Pour l'instant, on retourne false pour indiquer que la création n'a pas eu lieu.
+                return false;
+            }
+        }
+
         $sql = "INSERT INTO chanson (titreChanson, dureeChanson, dateTeleversementChanson, nbEcouteChanson, albumChanson, genreChanson, emailPublicateur, urlAudioChanson)
-                VALUES (:titre, :duree, :dateTeleversement, :nbEcoute, :album, :genre, :emailPublicateur, :urlAudio)";
+                VALUES (:titre, :duree, :dateTeleversement, :nbEcoute, :idAlbum, :idGenre, :email, :urlAudio)";
 
         $stmt = $this->pdo->prepare($sql);
 
-        $idAlbum = $chanson->getAlbumChanson() ? $chanson->getAlbumChanson()->getIdAlbum() : null;
         $idGenre = $chanson->getGenreChanson() ? $chanson->getGenreChanson()->getIdGenre() : null;
         $dateTeleversement = $chanson->getDateTeleversementChanson() ? $chanson->getDateTeleversementChanson()->format('Y-m-d H:i:s') : date('Y-m-d H:i:s');
 
-        return $pdoStatement->execute([
+        return $stmt->execute([
             ':titre' => $chanson->getTitreChanson(),
             ':duree' => $chanson->getDureeChanson(),
             ':dateTeleversement' => $dateTeleversement,
@@ -166,13 +178,22 @@ class ChansonDAO
             ':urlAudio' => $chanson->geturlAudioChanson(),
             ':idAlbum' => $idAlbum,
             ':idGenre' => $idGenre,
-            ':email' => $chanson->getEmailPublicateur()
+            ':email' => $chanson->getEmailPublicateur(),
         ]);
     }
 
     public function findByTitreExact(string $titre, int $idAlbum): ?Chanson {
-        // Implémentation future si nécessaire pour éviter les doublons
-        return null;
+        $sql = "SELECT * FROM chanson WHERE titreChanson = :titre AND albumChanson = :idAlbum";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':titre' => $titre,
+            ':idAlbum' => $idAlbum
+        ]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($row) {
+            return $this->hydrate($row);
+        }
+        return null; // Retourne null si aucune chanson n'est trouvée
     }
 
     public function update(Chanson $chanson): bool
