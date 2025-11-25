@@ -24,6 +24,7 @@ require_once 'modeles/bd.class.php';
 require_once 'controller/controller.class.php';
 require_once 'controller/controller_factory.class.php';
 require_once 'controller/controller_home.class.php';
+require_once 'controller/controller_admin.class.php';
 require_once 'controller/controller_newsletter.class.php';
 require_once 'controller/controller_legales.class.php';
 require_once 'controller/controller_musique.class.php';

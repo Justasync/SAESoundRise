@@ -79,7 +79,7 @@ class ControllerUtilisateur extends Controller
             // session
             $_SESSION['user_email'] = $utilisateur->getEmailUtilisateur();
             $_SESSION['user_pseudo'] = $utilisateur->getPseudoUtilisateur();
-            $_SESSION['user_role'] = $utilisateur->getRoleUtilisateur()?->getIdRole();
+            $_SESSION['user_role'] = $utilisateur->getRoleUtilisateur()?->getTypeRole();
             $_SESSION['user_logged_in'] = true;
 
             // Log connection
@@ -101,7 +101,6 @@ class ControllerUtilisateur extends Controller
                     'pseudo' => $utilisateur->getPseudoUtilisateur()
                 ]
             ]);
-
         } catch (Exception $e) {
             header('Content-Type: application/json');
             echo json_encode([
@@ -341,7 +340,4 @@ class ControllerUtilisateur extends Controller
             'albums' => $albums,
         ]);
     }
-
-    
-    
-    }
+}
