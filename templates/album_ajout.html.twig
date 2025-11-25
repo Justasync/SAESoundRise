@@ -6,6 +6,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <!-- Font Awesome (for headphones, gear, and plus icons) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="/node_modules/datatables.net/js/dataTables.min.js"></script>
 
     <style>
         /* --- Paaxio Color & Font Variables --- */
@@ -161,6 +164,28 @@
             font-weight: 700;
             padding: 0.75rem 1.5rem;
         }
+
+        /* Ensure DataTables header cells use the same background/color */
+        #tracklist thead th {
+            background-color: var(--paaxio-salmon-light) !important;
+            color: white !important;
+            font-weight: 700;
+            padding: 0.75rem 1.5rem;
+            border-bottom: none;
+        }
+
+        /* Column widths to match design and keep DataTables alignment */
+        #tracklist {
+            width: 100%;
+            table-layout: fixed;
+        }
+        #tracklist thead th:nth-child(1) { width: 5%; }
+        #tracklist thead th:nth-child(2) { width: 55%; }
+        #tracklist thead th:nth-child(3) { width: 20%; }
+        #tracklist thead th:nth-child(4) { width: 15%; }
+        #tracklist thead th:nth-child(5) { width: auto; }
+        /* prevent long titles from breaking the layout too much */
+        #tracklist td:nth-child(2) { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         
         .tracklist-body {
             max-height: 16rem; /* max-h-64 */
@@ -174,15 +199,18 @@
         .tracklist-body::-webkit-scrollbar-track { background-color: #f1f1f1; }
         */
 
+        /* table row should remain a table-row for DataTables alignment */
         .track-row {
-            display: grid;
-            grid-template-columns: 8% 70% 15% 7%; /* Adjusted to match the 12-column template logic */
-            gap: 1rem;
-            align-items: center;
-            padding: 0.75rem 1.5rem;
+            display: table-row;
+            vertical-align: middle;
             border-bottom: 1px solid #f3f4f6; /* light divider */
             cursor: pointer;
             transition: background-color 0.15s;
+        }
+        /* cell styling to mimic previous spacing */
+        #tracklist td {
+            padding: 0.75rem 1.5rem;
+            vertical-align: middle;
         }
         .track-row:last-child {
             border-bottom: none;
@@ -197,13 +225,30 @@
         }
         .track-actions i {
             cursor: pointer;
-            transition: color 0.15s;
+            transition: background-color 0.12s, color 0.12s, transform 0.12s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            color: #6b7280; /* gray-500 */
+            background: rgba(255,255,255,0.6);
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+        .track-actions i:hover {
+            transform: translateY(-1px);
+            color: white;
         }
         .track-actions .fa-pen-to-square:hover {
-            color: var(--paaxio-green);
+            background-color: var(--paaxio-green);
         }
         .track-actions .fa-trash:hover {
-            color: #ef4444; /* Red */
+            background-color: #ef4444; /* Red */
+        }
+        /* smaller gap for smaller screens */
+        @media (max-width: 576px) {
+            .track-actions i { width: 30px; height: 30px; }
         }
         
         /* --- Action Buttons (Ajouter titre(s) / Enregistrer) --- */
@@ -230,6 +275,11 @@
         .animate-fade-in {
             animation: fadeIn 0.3s ease-out forwards;
             opacity: 0;
+        }
+        /* If animation doesn't run for any reason, ensure modal content is visible when Bootstrap adds .show */
+        .modal.show .modal-content.animate-fade-in {
+            opacity: 1;
+            transform: none;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.95); }
@@ -306,24 +356,29 @@
             </div>
 
             <!-- Tracklist Table -->
+            <p class="text-center">Liste des titres</p>
             <div class="w-100 mx-auto tracklist-container mb-5" style="max-width: 800px;">
-                <p class="text-center">Liste des titres</p>
-                <div class="tracklist-header d-grid" style="grid-template-columns: 8% 70% 15% 7%; gap: 1rem;">
-                    <div>#</div>
-                    <div>Titre</div>
-                    <div class="text-end">Duree</div>
-                </div>
-                
-                <div id="trackList" class="tracklist-body">
-                    <div id="no-tracks" class="text-center py-4 text-secondary">Aucun titre ajouté.</div>
-                </div>
+                        <table id="tracklist" class="w-100" style="border-collapse: separate; border-spacing: 0 1rem;">
+                    <thead>
+                        <tr class="tracklist-header">
+                            <th>#</th>
+                            <th>Titre</th>
+                            <th>Genre</th>
+                            <th class="text-end">Durée</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="trackList" class="tracklist-body">
+                        <!-- Rows will be injected by JavaScript (renderTrackList) -->
+                    </tbody>
+                </table>
             </div>
 
             <!-- Action Buttons -->
             <div class="w-100 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 mb-5 mx-auto" style="max-width: 800px;">
                 <!-- Utilisation de data-bs-toggle pour une meilleure gestion Bootstrap -->
                 <button type="button" 
-                        onclick="openAddTrackModal()" 
                         class="btn-paaxio-action w-100 w-md-auto"
                         data-bs-toggle="modal" 
                         data-bs-target="#addTrackModal">
@@ -349,7 +404,6 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="trackFiles" class="form-label">Fichier(s) audio</label>
                         <input type="file" id="trackFiles" name="trackFiles" class="form-control" accept="audio/mpeg, audio/wav, audio/ogg" multiple required>
                     </div>
                     
@@ -456,13 +510,27 @@
         // --- Modals Handlers ---
 
         function openAddTrackModal() {
-            // Réinitialisation des champs pour une nouvelle piste
-            const trackFilesInput = document.getElementById('trackFiles');
-            trackFilesInput.value = '';
-            const metadataContainer = document.getElementById('track-metadata-container');
-            metadataContainer.innerHTML = '';
-            
-            // Le bouton est toujours actif par défaut
+            // Réinitialisation des champs pour une nouvelle saisie
+            const modalEl = document.getElementById('addTrackModal');
+            if (!modalEl) return;
+
+            const trackFiles = modalEl.querySelector('#trackFiles');
+            const metadataContainer = modalEl.querySelector('#track-metadata-container');
+            const saveBtn = document.getElementById('saveTrackButton');
+
+            // Clear previous selected files and metadata so the user always sees a fresh form
+            if (trackFiles) trackFiles.value = '';
+            if (metadataContainer) metadataContainer.innerHTML = '';
+            if (saveBtn) saveBtn.disabled = false;
+
+            // Reset animation so it plays each time the modal opens
+            const modalContent = modalEl.querySelector('.modal-content');
+            if (modalContent) {
+                modalContent.classList.remove('animate-fade-in');
+                // Force reflow so the animation class can be re-applied
+                void modalContent.offsetWidth;
+                modalContent.classList.add('animate-fade-in');
+            }
         }
 
         function openEditTrackModal(index) {
@@ -503,66 +571,100 @@
 
         // --- Track List Rendering ---
 
-        function renderTrackList() {
-            const trackListContainer = document.getElementById('trackList');
-            
-            // Vider complètement le conteneur
-            trackListContainer.innerHTML = '';
+        // DataTable instance holder
+        let dataTableInstance = null;
 
-            if (tracks.length === 0) {
-                // Si aucune piste, afficher le message par défaut
-                trackListContainer.innerHTML = '<div id="no-tracks" class="text-center py-4 text-secondary">Aucun titre ajouté.</div>';
-                return; // Sortir de la fonction
-            }
+        function ensureDataTable() {
+            if (dataTableInstance) return;
+            try {
+                const dtOptions = {
+                    columnDefs: [{ orderable: false, targets: -1, className: 'dt-center' }],
+                    searching: true,
+                    paging: true,
+                    info: true,
+                    language: { url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json' }
+                };
+                if (window.jQuery && $.fn && $.fn.dataTable) {
+                    dataTableInstance = $('#tracklist').DataTable(dtOptions);
+                } else if (typeof DataTable !== 'undefined') {
+                    dataTableInstance = new DataTable('#tracklist', dtOptions);
+                }
+            } catch (err) {
+                console.warn('DataTable init failed:', err);
+                dataTableInstance = null;
+            }
+        }
 
-            tracks.forEach((track, index) => {
-                const row = document.createElement('div');
-                row.className = 'track-row';
-                row.setAttribute('data-index', index);
-                
-                // Track Number
-                const num = document.createElement('div');
-                num.textContent = (index + 1).toString().padStart(2, '0');
-                
-                // Track Title
-                const title = document.createElement('div');
-                title.textContent = track.title;
-                
-                // Track Duration
-                const duration = document.createElement('div');
-                duration.className = 'text-end';
-                // La durée est affichée par défaut à 00:00
-                duration.textContent = formatDuration(track.duration);
+        function renderTrackList() {
+            // If a jQuery DataTable instance exists, destroy it first to avoid column/row mismatches
+            if (window.jQuery && $.fn && $.fn.dataTable && $.fn.dataTable.isDataTable && $.fn.dataTable.isDataTable('#tracklist')) {
+                try {
+                    const inst = $('#tracklist').DataTable();
+                    inst.clear();
+                    inst.destroy();
+                } catch (e) { /* ignore */ }
+                dataTableInstance = null;
+            }
+            // Build tbody DOM first (always) then initialize DataTable on top of it
+            const trackListContainer = document.getElementById('trackList');
+            trackListContainer.innerHTML = '';
+            tracks.forEach((track, index) => {
+                const row = document.createElement('tr');
+                row.className = 'track-row';
+                row.setAttribute('data-index', index);
 
-                // Track Actions
-                const actions = document.createElement('div');
-                actions.className = 'track-actions';
+                const num = document.createElement('td');
+                num.textContent = (index + 1).toString().padStart(2, '0');
 
-                const editIcon = document.createElement('i');
-                editIcon.className = 'fas fa-pen-to-square text-secondary';
-                editIcon.onclick = (e) => {
-                    e.stopPropagation();
-                    openEditTrackModal(index);
-                };
+                const title = document.createElement('td');
+                title.textContent = track.title;
 
-                const deleteIcon = document.createElement('i');
-                deleteIcon.className = 'fas fa-trash text-secondary';
-                deleteIcon.onclick = (e) => {
-                    e.stopPropagation();
-                    deleteTrack(index);
-                };
+                const genre = document.createElement('td');
+                genre.textContent = track.genre;
 
-                actions.appendChild(editIcon);
-                actions.appendChild(deleteIcon);
+                const duration = document.createElement('td');
+                duration.className = 'text-end';
+                duration.textContent = formatDuration(track.duration);
 
-                row.appendChild(num);
-                row.appendChild(title);
-                row.appendChild(duration);
-                row.appendChild(actions);
+                const actions = document.createElement('td');
+                actions.className = 'track-actions';
+                actions.innerHTML = `<i class="fas fa-pen-to-square text-secondary" data-action="edit" data-index="${index}"></i><i class="fas fa-trash text-secondary ms-2" data-action="delete" data-index="${index}"></i>`;
 
-                trackListContainer.appendChild(row);
-            });
-        }
+                row.appendChild(num);
+                row.appendChild(title);
+                row.appendChild(genre);
+                row.appendChild(duration);
+                row.appendChild(actions);
+
+                trackListContainer.appendChild(row);
+            });
+
+            // Now initialize DataTable on the final DOM
+            if (tracks.length > 0) {
+                ensureDataTable();
+            } else {
+                // No tracks: ensure no DataTable instance remains
+                if (window.jQuery && $.fn && $.fn.dataTable && $.fn.dataTable.isDataTable && $.fn.dataTable.isDataTable('#tracklist')) {
+                    try { $('#tracklist').DataTable().destroy(); } catch (e) { /* ignore */ }
+                    dataTableInstance = null;
+                }
+            }
+
+            // Delegated handler on table for actions (works with DataTables DOM changes)
+            const tableEl = document.getElementById('tracklist');
+            if (tableEl && !tableEl.__trackHandlerAttached) {
+                tableEl.addEventListener('click', function (e) {
+                    const target = e.target.closest('[data-action]');
+                    if (!target) return;
+                    const action = target.getAttribute('data-action');
+                    const idx = parseInt(target.getAttribute('data-index'));
+                    if (action === 'edit') openEditTrackModal(idx);
+                    if (action === 'delete') deleteTrack(idx);
+                });
+                tableEl.__trackHandlerAttached = true;
+            }
+        }
+
         
         // CORRECTION PRINCIPALE : Ajout de la vérification de l'objet File pour éviter le crash.
         function updateHiddenInputs() {
@@ -636,27 +738,27 @@
                 return;
             }
 
-            trackForms.forEach(form => {
-                const title = form.querySelector('.track-title').value.trim();
-                const genre = form.querySelector('.track-genre').value.trim();
-                const file = form.file; // Le fichier est attaché à l'élément de formulaire
+            trackForms.forEach((form, i) => {
+                const title = form.querySelector('.track-title').value.trim();
+                const genre = form.querySelector('.track-genre').value.trim();
+                const file = form.file; // Le fichier est attaché à l'élément de formulaire
 
-                if (!title) {
-                    allValid = false;
-                }
+                if (!title || !genre) {
+                    allValid = false;
+                }
 
-                tracksToAdd.push({
-                    file: file,
-                    title: title,
-                    genre: genre,
-                    duration: 0 // Durée fixée
-                });
-            });
+                tracksToAdd.push({
+                    file: file,
+                    title: title,
+                    genre: genre,
+                    duration: 0 // Durée fixée
+                });
+            });
 
-            if (!allValid) {
-                showToast("Veuillez renseigner un titre pour chaque chanson.", false);
-                return;
-            }
+            if (!allValid) {
+                showToast("Veuillez renseigner un titre ET un genre pour chaque chanson.", false);
+                return;
+            }
 
             tracks.push(...tracksToAdd);
 
@@ -783,6 +885,8 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             renderTrackList();
+
+            // DataTable initialization handled by renderTrackList via initOrRefreshDataTable()
             
             // Correction pour s'assurer que le bouton d'ouverture réinitialise les champs avant que Bootstrap n'ouvre la modale
             const addTrackButton = document.querySelector('[data-bs-target="#addTrackModal"]');
@@ -812,6 +916,28 @@
                     metadataContainer.appendChild(clone);
                 });
             });
+
+            // Ensure modal resets when hidden and animation restarts on show
+            const addTrackModalEl = document.getElementById('addTrackModal');
+            if (addTrackModalEl) {
+                addTrackModalEl.addEventListener('hidden.bs.modal', function () {
+                    const tf = addTrackModalEl.querySelector('#trackFiles');
+                    const meta = addTrackModalEl.querySelector('#track-metadata-container');
+                    const saveBtn = document.getElementById('saveTrackButton');
+                    if (tf) tf.value = '';
+                    if (meta) meta.innerHTML = '';
+                    if (saveBtn) saveBtn.disabled = false;
+                });
+
+                addTrackModalEl.addEventListener('show.bs.modal', function () {
+                    const modalContent = addTrackModalEl.querySelector('.modal-content');
+                    if (modalContent) {
+                        modalContent.classList.remove('animate-fade-in');
+                        void modalContent.offsetWidth;
+                        modalContent.classList.add('animate-fade-in');
+                    }
+                });
+            }
         });
     </script>
 {% endblock %}
