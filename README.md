@@ -7,7 +7,7 @@
 Date de dernière mise à jour : **5 novembre 2025**  
 Contact :
 
-- BOIX Yohan — `yboix@iutbayonne.univ-pau.fr`
+- [BOIX Yohan](https://github.com/Vendettass) — `yboix@iutbayonne.univ-pau.fr`
 - [BOUSSOU MOUYABI Jarlin](https://github.com/clevaYann) — `jbmouyabi@iutbayonne.univ-pau.fr`
 - [CECILIA URRA Christopher](https://github.com/Justasync) — `ccurra@iutbayonne.univ-pau.fr`
 - [DIDELOT Tim](https://github.com/xFufly) — `tdidelot@iutbayonne.univ-pau.fr`
@@ -56,11 +56,11 @@ Avant de commencer, assurez-vous d’avoir installé :
    npm install
    ```
 
-4. **Créer le fichier de configuration `constantes.php`**
+4. **Créer le fichier de configuration `config.json`**
 
    Vous devez modifier le fichier `config.example.json` dans le dossier `/config/`.  
    Vous devez ensuite supprimer le example du nom pour avoir `config.json`.
-   Modifier également le contenue en suivant ce qui est marqué dans le fichier `config.json`.
+   Modifier également le contenu en suivant ce qui est marqué dans votre nouveau fichier `config.json`.
 
 5. **Créer et remplir la base de données**
 
