@@ -152,7 +152,7 @@ class ChansonDAO
         $sql = "INSERT INTO chanson (titreChanson, dureeChanson, dateTeleversementChanson, nbEcouteChanson, albumChanson, genreChanson, emailPublicateur, urlAudioChanson)
                 VALUES (:titre, :duree, :dateTeleversement, :nbEcoute, :album, :genre, :emailPublicateur, :urlAudio)";
 
-        $stmt = $this->pdo->prepare($sql);
+        $pdoStatement = $this->pdo->prepare($sql);
 
         $idAlbum = $chanson->getAlbumChanson() ? $chanson->getAlbumChanson()->getIdAlbum() : null;
         $idGenre = $chanson->getGenreChanson() ? $chanson->getGenreChanson()->getIdGenre() : null;
@@ -164,9 +164,9 @@ class ChansonDAO
             ':dateTeleversement' => $dateTeleversement,
             ':nbEcoute' => $chanson->getNbEcouteChanson() ?? 0,
             ':urlAudio' => $chanson->geturlAudioChanson(),
-            ':idAlbum' => $idAlbum,
-            ':idGenre' => $idGenre,
-            ':email' => $chanson->getEmailPublicateur()
+            ':album' => $idAlbum,
+            ':genre' => $idGenre,
+            ':emailPublicateur' => $chanson->getEmailPublicateur()
         ]);
     }
 

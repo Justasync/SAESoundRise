@@ -22,7 +22,8 @@
   },
   "homepage": "https://github.com/Justasync/SAESoundRise#readme",
   "dependencies": {
-    "bootstrap": "^5.3.8"
+    "bootstrap": "^5.3.8",
+    "datatables.net-dt": "^2.3.5"
   },
   "devDependencies": {
     "sass": "^1.93.3"

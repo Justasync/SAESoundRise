@@ -3,6 +3,13 @@
 .env.*
 /config/config.json
 
+# File to take notes of what's done
+COMMIT
+
+# Albums tests files
+assets/audio
+assets/images/albums
+
 # Dependencies
 /node_modules/
 /vendor/
