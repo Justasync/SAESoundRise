@@ -193,4 +193,55 @@ class UtilisateurDAO
     {
         $this->pdo = $pdo;
     }
+    
+    public function findAllArtistes(string $excludeEmail): array
+    {
+        // First, get the current user to find their genre
+        $currentUser = $this->find($excludeEmail);
+        $genreId = $currentUser?->getGenreUtilisateur()?->getIdGenre();
+
+        $params = [':excludeEmail' => $excludeEmail];
+
+        // Prioritize artists from the same genre if the current user has a genre
+        if ($genreId) {
+            $sql = "SELECT u.* 
+                    FROM utilisateur u
+                    JOIN role r ON u.roleUtilisateur = r.idRole
+                    WHERE r.typeRole = 'artiste' 
+                      AND u.emailUtilisateur != :excludeEmail
+                      AND u.genreUtilisateur = :genreId
+                    ORDER BY u.pointsDeRenommeeArtiste DESC, u.dateInscriptionUtilisateur DESC
+                    LIMIT 10";
+            $params[':genreId'] = $genreId;
+
+            try {
+                $requete = $this->pdo->prepare($sql);
+                $requete->execute($params);
+                $artistes = $this->hydrateAll($requete->fetchAll(PDO::FETCH_ASSOC));
+                if (!empty($artistes)) {
+                    return $artistes;
+                }
+            } catch (PDOException $e) {
+                error_log('Erreur DAO lors de la récupération des artistes : ' . $e->getMessage());
+            }
+        }
+
+        // Fallback: if no artists in the same genre, or user has no genre, suggest most popular artists
+        $sql = "SELECT u.* 
+                FROM utilisateur u
+                JOIN role r ON u.roleUtilisateur = r.idRole
+                WHERE r.typeRole = 'artiste' 
+                  AND u.emailUtilisateur != :excludeEmail
+                ORDER BY u.pointsDeRenommeeArtiste DESC, u.dateInscriptionUtilisateur DESC
+                LIMIT 10";
+
+        try {
+            $requete = $this->pdo->prepare($sql);
+            $requete->execute([':excludeEmail' => $excludeEmail]);
+            return $this->hydrateAll($requete->fetchAll(PDO::FETCH_ASSOC));
+        } catch (PDOException $e) {
+            error_log('Erreur DAO lors de la récupération des artistes populaires : ' . $e->getMessage());
+            return [];
+        }
+    }
 }

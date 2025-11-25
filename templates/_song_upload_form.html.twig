@@ -1,0 +1,123 @@
+{#
+    Ce template partiel contient le formulaire pour téléverser des chansons.
+    Il attend une variable `album_existant` qui peut être null.
+    Si `album_existant` est fourni, le formulaire est configuré pour ajouter
+    des chansons à cet album. Sinon, il fait partie de la création d'un nouvel album.
+#}
+<form action="/?controller=album&method=ajouterAlbum" method="post" enctype="multipart/form-data" id="album-form">
+
+    {# Champ caché pour l'ID de l'album existant, si applicable #}
+    {% if album_existant %}
+        <input type="hidden" name="id_album_existant" value="{{ album_existant.getIdAlbum() }}">
+    {% endif %}
+
+    {# Section pour ajouter des chansons #}
+    <div class="mb-4">
+        <label for="chansons-input" class="form-label fw-semibold">Fichiers audio</label>
+        <input type="file" class="form-control" id="chansons-input" name="tracks_files[]" accept="audio/mpeg,audio/wav" required multiple>
+        <div class="form-text">Sélectionnez un ou plusieurs fichiers audio (MP3, WAV).</div>
+    </div>
+
+    {# Conteneur pour les détails des chansons qui seront pré-remplis par JavaScript #}
+    <div id="tracks-details-container">
+        {# Le JS insérera les champs pour chaque chanson ici #}
+    </div>
+
+    <div class="d-flex justify-content-end mt-4">
+        <button type="submit" class="btn btn-primary fw-semibold px-4">
+            {% if album_existant %}
+                Ajouter les chansons
+            {% else %}
+                Créer l'album
+            {% endif %}
+        </button>
+    </div>
+</form>
+
+{# Le script est inclus ici pour être autonome, mais pourrait être externalisé #}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('chansons-input');
+    const form = document.getElementById('album-form');
+    const container = document.getElementById('tracks-details-container'); 
+
+    // Renommer l'input file pour correspondre au premier champ attendu par le backend
+    if (input) {
+        input.name = 'tracks[0][file]';
+    }
+
+    input.addEventListener('change', function(e) {
+        container.innerHTML = ''; // Vider le conteneur
+        const files = e.target.files;
+
+        // Ajuster le nom du premier input file
+        input.name = files.length > 0 ? 'tracks[0][file]' : 'tracks_files[]';
+
+        Array.from(files).forEach((file, index) => {
+            // Pour le premier fichier, les champs de métadonnées sont déjà là.
+            // Pour les fichiers suivants, nous devons créer un nouvel input file et les champs de métadonnées.
+            if (index > 0) {
+                // Créer un nouvel input file caché pour chaque fichier supplémentaire
+                const newInput = document.createElement('input');
+                newInput.type = 'file';
+                newInput.name = `tracks[${index}][file]`;
+                newInput.style.display = 'none';
+                // Il faut attacher les fichiers au nouvel input
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                newInput.files = dataTransfer.files;
+                form.appendChild(newInput);
+            }
+
+             // Créer une carte pour les détails de la chanson
+             const trackCard = document.createElement('div');
+             trackCard.className = 'card mb-3';
+             trackCard.innerHTML = `
+                 <div class="card-body">
+                     <h5 class="card-title small text-muted">Piste ${index + 1} : ${file.name}</h5>
+                     <div class="mb-2">
+                         <label for="track-title-${index}" class="form-label small">Titre</label>
+                         <input type="text" class="form-control form-control-sm" id="track-title-${index}" name="tracks[${index}][title]" value="${file.name.replace(/\.[^/.]+$/, "")}" required>
+                     </div>
+                     <div class="row gx-2">
+                         <div class="col-md-6">
+                             <label for="track-genre-${index}" class="form-label small">Genre</label>
+                             <input type="text" class="form-control form-control-sm" id="track-genre-${index}" name="tracks[${index}][genre]" placeholder="Ex: Pop, Rock...">
+                         </div>
+                         <div class="col-md-6">
+                             <label for="track-duration-${index}" class="form-label small">Durée (secondes)</label>
+                             <input type="number" class="form-control form-control-sm" id="track-duration-${index}" name="tracks[${index}][duration]" value="0" required readonly>
+                             <input type="hidden" name="tracks[${index}][path]" value="">
+                         </div>
+                     </div>
+                 </div>
+             `;
+             container.appendChild(trackCard);
+ 
+             // Extraire la durée et la mettre dans le champ correspondant
+             const audioElement = new Audio(URL.createObjectURL(file));
+             audioElement.addEventListener('loadedmetadata', function() {
+                 const durationInput = document.getElementById(`track-duration-${index}`);
+                 if (durationInput) {
+                     durationInput.value = Math.round(audioElement.duration);
+                 }
+             });
+        });
+    });
+
+    // Nettoyer les inputs de fichiers créés dynamiquement lors de la fermeture de la modale
+    const modal = document.getElementById('ajoutChansonModal');
+    if(modal) {
+        modal.addEventListener('hidden.bs.modal', function () {
+            container.innerHTML = '';
+            input.value = ''; // Réinitialiser le champ de fichier principal
+            const dynamicInputs = form.querySelectorAll('input[type="file"][name^="tracks["]');
+            dynamicInputs.forEach((dynInput, index) => {
+                if (index > 0) { // Ne pas supprimer le premier
+                    dynInput.remove();
+                }
+            });
+        });
+    }
+});
+</script>

@@ -45,6 +45,21 @@ class AlbumDAO
         return $albums;
     }
 
+    public function findAllByArtistEmail(string $email): array
+    {
+        $sql = "SELECT a.* 
+                FROM album a
+                JOIN utilisateur u ON a.artisteAlbum = u.pseudoUtilisateur
+                WHERE u.emailUtilisateur = :email
+                ORDER BY a.dateSortieAlbum DESC";
+        $pdoStatement = $this->pdo->prepare($sql);
+        $pdoStatement->execute([':email' => $email]);
+        $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
+        $tableau = $pdoStatement->fetchAll();
+        $albums = $this->hydrateMany($tableau);
+        return $albums;
+    }
+
 
     public function create(Album $album): int
     {

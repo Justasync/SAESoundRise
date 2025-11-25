@@ -84,15 +84,24 @@ class ControllerUtilisateur extends Controller
 
             // Log connection
 
+            // Déterminer l'URL de redirection en fonction du rôle
+            $roleId = $utilisateur->getRoleUtilisateur()?->getIdRole();
+            $redirectUrl = '/?controller=home&method=afficher'; // URL par défaut
+            if ($roleId === 2) { // Supposons que l'ID du rôle artiste est 2
+                $redirectUrl = '/?controller=utilisateur&method=artisteDashboard';
+            }
+
             header('Content-Type: application/json');
             echo json_encode([
                 'success' => true,
                 'message' => 'Connexion réussie!',
+                'redirectUrl' => $redirectUrl,
                 'user' => [
                     'email' => $utilisateur->getEmailUtilisateur(),
                     'pseudo' => $utilisateur->getPseudoUtilisateur()
                 ]
             ]);
+
         } catch (Exception $e) {
             header('Content-Type: application/json');
             echo json_encode([
@@ -309,4 +318,30 @@ class ControllerUtilisateur extends Controller
         header('Location: /?controller=home&method=afficher');
         exit;
     }
-}
+
+    public function artisteDashboard()
+    {
+        // Vérifier si l'utilisateur est un artiste connecté
+        if (!isset($_SESSION['user_logged_in']) || !isset($_SESSION['user_role']) || $_SESSION['user_role'] != 2) {
+            header('Location: /?controller=home&method=afficher');
+            exit();
+        }
+
+        $utilisateurDAO = new UtilisateurDAO($this->getPDO());
+        $artistesSuggere = $utilisateurDAO->findAllArtistes($_SESSION['user_email']);
+
+        // On récupère les albums de l'artiste
+        $albumDAO = new AlbumDAO($this->getPDO());
+        $albums = $albumDAO->findAllByArtistEmail($_SESSION['user_email']);
+
+        $template = $this->getTwig()->load('artiste_dashboard.html.twig');
+        echo $template->render([
+            'session' => $_SESSION,
+            'artistes' => $artistesSuggere,
+            'albums' => $albums,
+        ]);
+    }
+
+    
+    
+    }
