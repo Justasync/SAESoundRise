@@ -95,9 +95,50 @@ class AlbumDAO
         }
         return $albums;
     }
+    // Dans un fichier comme modeles/album.dao.php
 
-   
+    /**
+     * Récupère les albums les plus écoutés.
+     *
+     * @param int $limit Le nombre d'albums à récupérer.
+     * @return array Une liste d'albums.
+     */
+    public function findMostListened(int $limit = 8): array
+    {
+        // Cette requête calcule la somme des écoutes de toutes les chansons d'un album
+        // pour déterminer la popularité de cet album.
+        $sql = "SELECT 
+                    a.*,
+                    u.pseudoUtilisateur,
+                    SUM(c.nbEcouteChanson) as totalEcoutes
+                FROM album a
+                JOIN chanson c ON a.idAlbum = c.albumChanson
+                JOIN utilisateur u ON a.artisteAlbum = u.emailUtilisateur
+                GROUP BY a.idAlbum
+                ORDER BY totalEcoutes DESC
+                LIMIT :limit";
 
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+            $stmt->execute();
+            
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $albums = [];
+
+            foreach ($results as $row) {
+                $album = $this->hydrate($row);
+                // Utiliser le setter pour définir le pseudo de l'artiste
+                $album->setPseudoArtiste($row['pseudoUtilisateur']);
+                $albums[] = $album;
+            }
+            return $albums;
+
+        } catch (PDOException $e) {
+            error_log('Erreur DAO lors de la récupération des albums les plus écoutés : ' . $e->getMessage());
+            return [];
+        }
+    }
 
 
     /**

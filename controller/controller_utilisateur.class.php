@@ -85,10 +85,13 @@ class ControllerUtilisateur extends Controller
             // Log connection
 
             // Déterminer l'URL de redirection en fonction du rôle
-            $roleId = $utilisateur->getRoleUtilisateur()?->getIdRole();
+            $roleType = $utilisateur->getRoleUtilisateur()?->getTypeRole();
             $redirectUrl = '/?controller=home&method=afficher'; // URL par défaut
-            if ($roleId === 2) { // Supposons que l'ID du rôle artiste est 2
+            if ($roleType === 'artiste') { //  rôle artiste est 'artiste'
                 $redirectUrl = '/?controller=utilisateur&method=artisteDashboard';
+            }
+            else if($roleType === 'auditeur'){ //  rôle artiste est 'auditeur'
+                $redirectUrl = '/?controller=utilisateur&method=auditeurDashboard';
             }
 
             header('Content-Type: application/json');
@@ -321,7 +324,7 @@ class ControllerUtilisateur extends Controller
     public function artisteDashboard()
     {
         // Vérifier si l'utilisateur est un artiste connecté
-        if (!isset($_SESSION['user_logged_in']) || !isset($_SESSION['user_role']) || $_SESSION['user_role'] != 2) {
+        if (!isset($_SESSION['user_logged_in']) || !isset($_SESSION['user_role']) || $_SESSION['user_role'] != 'artiste') {
             header('Location: /?controller=home&method=afficher');
             exit();
         }
@@ -338,6 +341,30 @@ class ControllerUtilisateur extends Controller
             'session' => $_SESSION,
             'artistes' => $artistesSuggere,
             'albums' => $albums,
+        ]);
+    }
+
+    public function auditeurDashboard()
+    {
+        // Vérifier si l'utilisateur est un auditeur connecté
+        if (!isset($_SESSION['user_logged_in']) || !isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'auditeur') {
+            header('Location: /?controller=home&method=afficher');
+            exit();
+        }
+
+        $utilisateurDAO = new UtilisateurDAO($this->getPDO());
+        // Récupérer des artistes suggérés pour l'auditeur
+        $artistesSuggere = $utilisateurDAO->findAllArtistes($_SESSION['user_email']);
+        
+        // Récupérer les albums les plus écoutés
+        $albumDAO = new AlbumDAO($this->getPDO());
+        $albumsPopulaires = $albumDAO->findMostListened(8); // On récupère les 8 plus populaires
+
+        $template = $this->getTwig()->load('auditeur_dashboard.html.twig');
+        echo $template->render([
+            'session' => $_SESSION,
+            'artistes' => $artistesSuggere,
+            'albums' => $albumsPopulaires,
         ]);
     }
 }
