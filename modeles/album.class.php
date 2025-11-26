@@ -2,101 +2,86 @@
 
 class Album
 {
-    private int|null $idAlbum;
-    private string|null $titreAlbum;
-    private string|null $dateSortieAlbum;
-    private string|null $urlPochetteAlbum;
-
-    private string|null $artisteAlbum;
-
-    public function __construct(?int $idAlbum = null, ?string $titreAlbum = null, ?string $dateSortieAlbum = null, ?string $urlPochetteAlbum = null, ?string $artisteAlbum = null)
-    {
-        $this->idAlbum = $idAlbum;
-        $this->titreAlbum = $titreAlbum;
-        $this->dateSortieAlbum = $dateSortieAlbum;
-        $this->urlPochetteAlbum = $urlPochetteAlbum;
-        $this->artisteAlbum = $artisteAlbum;
-    }
+    private ?int $idAlbum = null;
+    private ?string $nomAlbum = null;
+    private ?string $dateSortieAlbum = null;
+    private ?string $urlPochetteAlbum = null;
+    private ?string $artisteAlbum = null;
 
     /**
-     * Get the value of idAlbum
+     * @var string|null Le pseudo de l'artiste, qui n'est pas une colonne de la table 'album'.
      */
+    private ?string $pseudoArtiste = null;
+
     public function getIdAlbum(): ?int
     {
         return $this->idAlbum;
     }
-    /**
-     * Set the value of idAlbum
-     *
-     */
+
     public function setIdAlbum(?int $idAlbum): void
     {
         $this->idAlbum = $idAlbum;
     }
 
-    /**
-     * Get the value of titreAlbum
-     */
-    public function getTitreAlbum(): ?string
+    public function getNomAlbum(): ?string
     {
-        return $this->titreAlbum;
-    }
-    /**
-     * Set the value of titreAlbum
-     *
-     */
-    public function setTitreAlbum(?string $titreAlbum): void
-    {
-        $this->titreAlbum = $titreAlbum;
+        return $this->nomAlbum;
     }
 
-    /**
-     * Get the value of dateSortieAlbum
-     */
+    public function setNomAlbum(?string $nomAlbum): void
+    {
+        $this->nomAlbum = $nomAlbum;
+    }
+
+    // Alias pour la compatibilité avec le template
+    public function getTitreAlbum(): ?string
+    {
+        return $this->getNomAlbum();
+    }
+
+    // Alias pour la compatibilité avec le template
+    public function setTitreAlbum(?string $titreAlbum): void
+    {
+        $this->setNomAlbum($titreAlbum);
+    }
+
     public function getDateSortieAlbum(): ?string
     {
         return $this->dateSortieAlbum;
     }
-    /**
-     * Set the value of dateSortieAlbum
-     *
-     */
+
     public function setDateSortieAlbum(?string $dateSortieAlbum): void
     {
         $this->dateSortieAlbum = $dateSortieAlbum;
     }
 
-    /**
-     * Get the value of urlPochetteAlbum
-     */
-    public function geturlPochetteAlbum(): ?string
+    public function getUrlPochetteAlbum(): ?string
     {
         return $this->urlPochetteAlbum;
     }
-    /**
-     * Set the value of urlPochetteAlbum
-     *
-     */
-    public function seturlPochetteAlbum(?string $urlPochetteAlbum): void
+
+    public function setUrlPochetteAlbum(?string $urlPochetteAlbum): void
     {
         $this->urlPochetteAlbum = $urlPochetteAlbum;
     }
 
-    /**
-     * Get the value of artisteAlbum
-     */
     public function getArtisteAlbum(): ?string
     {
         return $this->artisteAlbum;
     }
 
-    /**
-     * Set the value of artisteAlbum
-     *
-     * @return  self
-     */
     public function setArtisteAlbum(?string $artisteAlbum): void
     {
         $this->artisteAlbum = $artisteAlbum;
+    }
+
+    public function getPseudoArtiste(): ?string
+    {
+        return $this->pseudoArtiste;
+    }
+
+    public function setPseudoArtiste(?string $pseudoArtiste): void
+    {
+        $this->pseudoArtiste = $pseudoArtiste;
     }
 }
