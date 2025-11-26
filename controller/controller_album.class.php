@@ -274,7 +274,8 @@ class ControllerAlbum extends Controller
         }
     }
 
-    public function afficherDetails()
+
+        public function afficherDetails()
     {
         // Vérifier si l'utilisateur est connecté
         if (!isset($_SESSION['user_logged_in'])) {
@@ -295,7 +296,27 @@ class ControllerAlbum extends Controller
         $chansonDAO = new ChansonDAO($this->getPDO());
         $chansons = $chansonDAO->rechercherParAlbum((int)$idAlbum);
 
-        $template = $this->getTwig()->load('album_details.html.twig');
+        // Déterminer le rôle de l'utilisateur à partir de la session
+        $userRole = $_SESSION['user_role'] ?? null;
+        $template = '';
+
+        // Choisir le template en fonction du rôle
+        // 2 pour artiste, 1 (ou autre) pour auditeur
+        if ($userRole == 'artiste' && $album->getArtisteAlbum() === $_SESSION['user_pseudo']) {
+            // C'est un artiste et il regarde son propre album
+            $template = 'album_details_artiste.html.twig';
+        } else {
+            // C'est un auditeur ou un artiste regardant l'album de quelqu'un d'autre
+            $template = 'album_details_auditeur.html.twig';
+        }
+
+        if (empty($template)) {
+            // Sécurité : si aucun template n'est défini, rediriger
+            header('Location: /?controller=home&method=afficher');
+            exit();
+        }
+
+        $template = $this->getTwig()->load($template);
         echo $template->render([
             'album' => $album,
             'chansons' => $chansons,
