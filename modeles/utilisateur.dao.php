@@ -226,7 +226,7 @@ class UtilisateurDAO
             }
         }
 
-        // Fallback: if no artists in the same genre, or user has no genre, suggest most popular artists
+        // Fallback: 
         $sql = "SELECT u.* 
                 FROM utilisateur u
                 JOIN role r ON u.roleUtilisateur = r.idRole
