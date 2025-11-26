@@ -66,7 +66,7 @@ class ControllerAlbum extends Controller
     public function afficherFormulaireAjout()
     {
         // Vérifier si l'utilisateur est un artiste connecté
-        if (!isset($_SESSION['user_logged_in']) || !isset($_SESSION['user_role']) || $_SESSION['user_role'] != 2) {
+        if (!isset($_SESSION['user_logged_in']) || !isset($_SESSION['user_role']) || ($_SESSION['user_role'] != 2 && $_SESSION['user_role'] !== 'artiste')) {
             header('Location: index.php?controller=home&method=afficher');
             exit();
         }
@@ -104,7 +104,7 @@ class ControllerAlbum extends Controller
     public function ajouterChansons()
     {
         // Vérifier si l'utilisateur est un artiste
-        if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] != 2) {
+        if (!isset($_SESSION['user_role']) || ($_SESSION['user_role'] != 2 && $_SESSION['user_role'] !== 'artiste')) {
             echo "Accès non autorisé.";
             return;
         }
@@ -179,7 +179,7 @@ class ControllerAlbum extends Controller
 
     public function ajouterAlbum()
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_SESSION['user_role']) || $_SESSION['user_role'] != 2) {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_SESSION['user_role']) || ($_SESSION['user_role'] != 2 && $_SESSION['user_role'] !== 'artiste')) {
             header('Location: index.php?controller=home&method=afficher');
             return;
         }
@@ -217,6 +217,9 @@ class ControllerAlbum extends Controller
                 if (move_uploaded_file($_FILES['pochette_album']['tmp_name'], $cheminPochette)) {
                     $album->seturlPochetteAlbum($cheminPochette);
                 }
+            } else {
+                // Fournir une URL de pochette par défaut si aucune n'est téléchargée
+                $album->seturlPochetteAlbum('assets/images/albums/default.png');
             }
             $idAlbum = $managerAlbum->create($album);
             $albumCree = $managerAlbum->find($idAlbum);
@@ -225,6 +228,10 @@ class ControllerAlbum extends Controller
         // Gérer les chansons
         if (isset($_POST['tracks']) && isset($_FILES['tracks'])) {
             $uploadDirMusique = 'assets/audio/';
+            // Inclure getID3 pour analyser les fichiers audio
+            require_once 'vendor/james-heinrich/getid3/getid3/getid3.php';
+            $getID3 = new getID3;
+
             if (!is_dir($uploadDirMusique)) {
                 mkdir($uploadDirMusique, 0777, true);
             }
@@ -242,9 +249,13 @@ class ControllerAlbum extends Controller
                     continue; // Erreur lors du déplacement du fichier
                 }
 
+                // Analyser le fichier pour obtenir les métadonnées, y compris la durée
+                $infoFichier = $getID3->analyze($cheminCible);
+                $duree = (int)($infoFichier['playtime_seconds'] ?? 0);
+
                 $chanson = new Chanson();
                 $chanson->setTitreChanson($chansonData['title']);
-                $chanson->setDureeChanson((int)$chansonData['duration']);
+                $chanson->setDureeChanson($duree);
                 $chanson->setDateTeleversementChanson(new DateTime());
                 $chanson->setAlbumChanson($albumCree);
                 $chanson->setEmailPublicateur($_SESSION['user_email']);
@@ -327,7 +338,7 @@ class ControllerAlbum extends Controller
     public function modifierChanson()
     {
         // Sécurité : vérifier la méthode, la session et le rôle
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_SESSION['user_logged_in']) || $_SESSION['user_role'] != 2) {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_SESSION['user_logged_in']) || ($_SESSION['user_role'] != 2 && $_SESSION['user_role'] != 'artiste')) {
             header('Location: /?controller=home&method=afficher');
             exit();
         }

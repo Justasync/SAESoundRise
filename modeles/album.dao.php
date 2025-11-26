@@ -113,7 +113,7 @@ class AlbumDAO
                     SUM(c.nbEcouteChanson) as totalEcoutes
                 FROM album a
                 JOIN chanson c ON a.idAlbum = c.albumChanson
-                JOIN utilisateur u ON a.artisteAlbum = u.emailUtilisateur
+                JOIN utilisateur u ON a.artisteAlbum = u.pseudoUtilisateur
                 GROUP BY a.idAlbum
                 ORDER BY totalEcoutes DESC
                 LIMIT :limit";

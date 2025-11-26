@@ -290,6 +290,24 @@
         #toast {
             z-index: 1060; /* Higher than modals */
         }
+
+        /* --- Upload Progress Bar --- */
+        #uploadProgressBar {
+            background-color: var(--paaxio-salmon);
+            font-weight: 700;
+            color: white;
+            transition: width 0.3s ease-in-out; /* Smooth transition */
+        }
+        .progress {
+            height: 25px;
+            font-size: 1rem;
+            background-color: var(--paaxio-input-bg);
+            border: 1px solid var(--paaxio-salmon-light);
+        }
+        /* Hide buttons during upload */
+        .uploading #actionButtons {
+            display: none !important;
+        }
     </style>
 {% endblock %}
 
@@ -375,10 +393,23 @@
                 </table>
             </div>
 
+            <!-- Upload Progress Bar -->
+            <div id="uploadProgressContainer" class="w-100 mx-auto mb-5 d-none" style="max-width: 800px;">
+                <p class="text-center mb-2 fw-bold">Téléchargement en cours...</p>
+                <div class="progress">
+                    <div id="uploadProgressBar" 
+                         class="progress-bar" 
+                         role="progressbar" 
+                         style="width: 0%;" 
+                         aria-valuenow="0" 
+                         aria-valuemin="0" 
+                         aria-valuemax="100">0%</div>
+                </div>
+            </div>
+
             <!-- Action Buttons -->
-            <div class="w-100 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 mb-5 mx-auto" style="max-width: 800px;">
-                <!-- Utilisation de data-bs-toggle pour une meilleure gestion Bootstrap -->
-                <button type="button" 
+            <div id="actionButtons" class="w-100 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 mb-5 mx-auto" style="max-width: 800px;">
+                <button type="button"
                         class="btn-paaxio-action w-100 w-md-auto"
                         data-bs-toggle="modal" 
                         data-bs-target="#addTrackModal">
@@ -418,8 +449,13 @@
                             <div class="mb-2">
                                 <input type="text" class="form-control form-control-sm track-title" placeholder="Titre de la chanson" required>
                             </div>
-                            <div>
-                                <input type="text" class="form-control form-control-sm track-genre" placeholder="Genre musical">
+                            <div class="row gx-2">
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control form-control-sm track-genre" placeholder="Genre musical">
+                                </div>
+                                <div class="col-sm-4 d-flex align-items-center justify-content-end">
+                                    <small class="text-muted fw-bold track-duration">00:00</small>
+                                </div>
                             </div>
                         </div>
                     </template>
@@ -495,12 +531,18 @@
         // Array to store track objects (file objects and metadata)
         let tracks = [];
 
+        // --- Constantes de configuration pour la taille des fichiers ---
+        const MAX_COVER_SIZE_MB = 5; // 5 MB pour la pochette
+        const MAX_TRACK_SIZE_MB = 64; // 64 MB par piste audio (doit correspondre à php.ini)
+        const MAX_COVER_SIZE_BYTES = MAX_COVER_SIZE_MB * 1024 * 1024;
+        const MAX_TRACK_SIZE_BYTES = MAX_TRACK_SIZE_MB * 1024 * 1024;
+
         // --- Fonctions utilitaires ---
 
-        // Puisque la durée n'est plus lue, nous utilisons une durée par défaut ou l'indication d'absence.
+        // Formats duration from seconds to a MM:SS string.
         function formatDuration(seconds) {
             if (seconds === 0 || isNaN(seconds)) {
-                return '00:00'; // Durée par défaut
+                return '00:00';
             }
             const minutes = Math.floor(seconds / 60);
             const remainingSeconds = Math.round(seconds % 60);
@@ -742,6 +784,7 @@
                 const title = form.querySelector('.track-title').value.trim();
                 const genre = form.querySelector('.track-genre').value.trim();
                 const file = form.file; // Le fichier est attaché à l'élément de formulaire
+                const duration = form.duration || 0; // La durée est attachée à l'élément
 
                 if (!title || !genre) {
                     allValid = false;
@@ -751,7 +794,7 @@
                     file: file,
                     title: title,
                     genre: genre,
-                    duration: 0 // Durée fixée
+                    duration: duration
                 });
             });
 
@@ -805,6 +848,14 @@
         document.getElementById('pochette_album').addEventListener('change', function(event) {
             const [file] = event.target.files;
             const preview = document.getElementById('pochettePreview');
+
+            // Validation de la taille du fichier
+            if (file && file.size > MAX_COVER_SIZE_BYTES) {
+                showToast(`Le fichier de la pochette est trop volumineux (max ${MAX_COVER_SIZE_MB} Mo).`, false);
+                event.target.value = ''; // Réinitialiser le champ de fichier
+                return; // Arrêter le traitement
+            }
+
             const plusIcon = document.querySelector('.album-art-box .fa-plus');
 
             if (file) {
@@ -853,31 +904,67 @@
         // --- Final Form Submission ---
 
         function submitForm() {
-            closeConfirmModal();
-            
-            const albumForm = document.getElementById('albumForm');
-            
-            // Update hidden inputs just before submission
-            updateHiddenInputs();
+            closeConfirmModal();
+            const albumForm = document.getElementById('albumForm');
+            
+            // Update hidden inputs just before submission
+            updateHiddenInputs();
 
-            // In a live environment, you would call: 
-            albumForm.submit(); 
-            
-            // For this environment, we just log and reset:
-            console.log("Form submission simulated. Data ready to be sent.");
-            
-            // Reset state
-            setTimeout(() => {
-                tracks = [];
-                document.getElementById('albumInput').value = '';
-                document.getElementById('dateSortieAlbum').value = '';
-                document.getElementById('pochette_album').value = '';
-                document.getElementById('pochettePreview').classList.add('d-none');
-                document.querySelector('.album-art-box .fa-plus').classList.remove('d-none');
-                document.getElementById('albumTitleDisplay').textContent = "Nom de l'album/single";
-                clearHiddenTrackInputs();
-                renderTrackList();
-            }, 1000);
+            const formData = new FormData(albumForm);
+            const xhr = new XMLHttpRequest();
+
+            const progressContainer = document.getElementById('uploadProgressContainer');
+            const progressBar = document.getElementById('uploadProgressBar');
+            
+            // Add 'uploading' class to form to hide buttons
+            albumForm.classList.add('uploading');
+            progressContainer.classList.remove('d-none');
+
+            xhr.upload.addEventListener('progress', function(event) {
+                if (event.lengthComputable) {
+                    const percentComplete = Math.round((event.loaded / event.total) * 100);
+                    progressBar.style.width = percentComplete + '%';
+                    progressBar.textContent = percentComplete + '%';
+                    progressBar.setAttribute('aria-valuenow', percentComplete);
+                }
+            });
+
+            xhr.addEventListener('load', function() {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    showToast("Album enregistré avec succès !", true);
+                    // Reset form after a short delay
+                    setTimeout(resetFullForm, 1000);
+                } else {
+                    showToast(`Erreur lors de l'enregistrement: ${xhr.statusText}`, false);
+                }
+            });
+
+            xhr.addEventListener('error', function() {
+                showToast("Une erreur réseau est survenue.", false);
+                // Restore UI on error
+                albumForm.classList.remove('uploading');
+                progressContainer.classList.add('d-none');
+            });
+
+            xhr.open('POST', albumForm.action);
+            xhr.send(formData);
+        }
+
+        function resetFullForm() {
+            const albumForm = document.getElementById('albumForm');
+            tracks = [];
+            albumForm.reset(); // Resets all form fields
+
+            // Manually reset UI elements not covered by form.reset()
+            document.getElementById('pochettePreview').classList.add('d-none');
+            document.querySelector('.album-art-box .fa-plus').classList.remove('d-none');
+            document.getElementById('albumTitleDisplay').textContent = "Nom de l'album/single";
+            clearHiddenTrackInputs();
+            renderTrackList();
+
+            // Restore UI
+            document.getElementById('uploadProgressContainer').classList.add('d-none');
+            albumForm.classList.remove('uploading');
         }
 
 
@@ -897,13 +984,31 @@
             // Gestionnaire pour la sélection de plusieurs fichiers
             document.getElementById('trackFiles').addEventListener('change', function(event) {
                 const files = event.target.files;
+                const validFiles = [];
+                const oversizedFiles = [];
+
+                // Filtrer les fichiers par taille
+                Array.from(files).forEach(file => {
+                    if (file.size > MAX_TRACK_SIZE_BYTES) {
+                        oversizedFiles.push(file.name);
+                    } else {
+                        validFiles.push(file);
+                    }
+                });
+
+                // Notifier l'utilisateur si des fichiers sont trop volumineux
+                if (oversizedFiles.length > 0) {
+                    showToast(`Certains fichiers ont été ignorés car trop volumineux (max ${MAX_TRACK_SIZE_MB} Mo): ${oversizedFiles.join(', ')}`, false);
+                }
+
                 const metadataContainer = document.getElementById('track-metadata-container');
                 const template = document.getElementById('track-metadata-template');
                 metadataContainer.innerHTML = ''; // Vider le conteneur
 
-                Array.from(files).forEach(file => {
+                validFiles.forEach(file => {
                     const clone = template.content.cloneNode(true);
                     const formElement = clone.querySelector('.p-3');
+                    const durationElement = clone.querySelector('.track-duration');
                     
                     clone.querySelector('.filename').textContent = file.name;
                     
@@ -912,6 +1017,20 @@
                     clone.querySelector('.track-title').value = defaultTitle;
 
                     formElement.file = file; // Attacher l'objet fichier à l'élément DOM
+                    formElement.duration = 0; // Initialiser la durée
+
+                    // Lire la durée du fichier audio
+                    const audio = new Audio(URL.createObjectURL(file));
+                    durationElement.textContent = '...'; // Placeholder
+                    audio.addEventListener('loadedmetadata', function() {
+                        formElement.duration = audio.duration;
+                        durationElement.textContent = formatDuration(audio.duration);
+                        URL.revokeObjectURL(audio.src); // Libérer la mémoire
+                    });
+                    audio.addEventListener('error', function() {
+                        durationElement.textContent = 'Erreur';
+                        URL.revokeObjectURL(audio.src);
+                    });
 
                     metadataContainer.appendChild(clone);
                 });
