@@ -67,7 +67,7 @@ class ControllerAlbum extends Controller
     {
         // Vérifier si l'utilisateur est un artiste connecté
         if (!isset($_SESSION['user_logged_in']) || !isset($_SESSION['user_role']) || ($_SESSION['user_role'] != 2 && $_SESSION['user_role'] !== 'artiste')) {
-            header('Location: index.php?controller=home&method=afficher');
+            header('Location: /?controller=home&method=afficher');
             exit();
         }
 
@@ -79,7 +79,7 @@ class ControllerAlbum extends Controller
             $albumExistant = $managerAlbum->find((int)$idAlbum);
             // Vérifier que l'album appartient bien à l'artiste connecté
             if (!$albumExistant || $albumExistant->getArtisteAlbum() !== $_SESSION['user_pseudo']) {
-                header('Location: /?controller=utilisateur&method=artisteDashboard');
+                header('Location: /?controller=home&method=afficher');
                 exit();
             }
         }
@@ -110,7 +110,7 @@ class ControllerAlbum extends Controller
         }
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_FILES['chansons'])) {
-            header('Location: index.php?controller=album&method=afficherFormulaireAjout');
+            header('Location: /?controller=album&method=afficherFormulaireAjout');
             return;
         }
 
@@ -180,7 +180,7 @@ class ControllerAlbum extends Controller
     public function ajouterAlbum()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_SESSION['user_role']) || ($_SESSION['user_role'] != 2 && $_SESSION['user_role'] !== 'artiste')) {
-            header('Location: index.php?controller=home&method=afficher');
+            header('Location: /?controller=home&method=afficher');
             return;
         }
 
@@ -195,7 +195,7 @@ class ControllerAlbum extends Controller
             $albumCree = $managerAlbum->find((int)$idAlbumExistant);
             if (!$albumCree || $albumCree->getArtisteAlbum() !== $_SESSION['user_pseudo']) {
                 // Gérer l'erreur : l'album n'existe pas ou n'appartient pas à l'utilisateur
-                header('Location: index.php?controller=utilisateur&method=artisteDashboard');
+                header('Location: /?controller=home&method=afficher');
                 return;
             }
             $idAlbum = $albumCree->getIdAlbum();
@@ -278,15 +278,15 @@ class ControllerAlbum extends Controller
 
         if ($idAlbumExistant) {
             // Rediriger vers la page de détails de l'album mis à jour
-            header('Location: index.php?controller=album&method=afficherDetails&idAlbum=' . $idAlbumExistant . '&success=1');
+            header('Location: /?controller=album&method=afficherDetails&idAlbum=' . $idAlbumExistant . '&success=1');
         } else {
             // Rediriger vers le tableau de bord après la création d'un nouvel album
-            header('Location: index.php?controller=utilisateur&method=artisteDashboard&success=1');
+            header('Location: /?controller=home&method=afficher&success=1');
         }
     }
 
 
-        public function afficherDetails()
+    public function afficherDetails()
     {
         // Vérifier si l'utilisateur est connecté
         if (!isset($_SESSION['user_logged_in'])) {
@@ -297,7 +297,7 @@ class ControllerAlbum extends Controller
         $idAlbum = $_GET['idAlbum'] ?? null;
         if (!$idAlbum) {
             // Gérer l'erreur, par exemple rediriger
-            header('Location: /?controller=utilisateur&method=artisteDashboard');
+            header('Location: /?controller=home&method=afficher');
             exit();
         }
 
@@ -348,7 +348,7 @@ class ControllerAlbum extends Controller
 
         if (!$idChanson || !$idAlbum) {
             // Rediriger si les IDs sont manquants
-            header('Location: /?controller=utilisateur&method=artisteDashboard&error=1');
+            header('Location: /?controller=home&method=afficher&error=1');
             exit();
         }
 
@@ -357,7 +357,7 @@ class ControllerAlbum extends Controller
 
         // Vérifier que la chanson existe et appartient bien à un album de l'artiste
         if (!$chanson || $chanson->getAlbumChanson()->getArtisteAlbum() !== $_SESSION['user_pseudo']) {
-            header('Location: /?controller=utilisateur&method=artisteDashboard&error=unauthorized');
+            header('Location: /?controller=home&method=afficher&error=unauthorized');
             exit();
         }
 
