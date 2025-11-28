@@ -23,6 +23,14 @@ class Role
         $this->idRole = $idRole;
     }
 
+    public function getRoleEnum(): ?RoleEnum
+    {
+        if ($this->typeRole !== null) {
+            return RoleEnum::from($this->typeRole);
+        }
+        return null;
+    }
+
     public function getTypeRole(): ?string
     {
         return $this->typeRole;

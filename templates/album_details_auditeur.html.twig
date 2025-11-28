@@ -1,0 +1,543 @@
+{% extends "base_template.html.twig" %}
+
+{% block header %}
+	{{ parent() }}
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+	<!-- Importation des icônes Bootstrap (assumé) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+	<style>
+		body {
+			font-family: 'Inter', sans-serif;
+			background-color: #f0f0f0;
+		}
+		.content-bg {
+			/* Couleurs de la palette Terre Cuite adaptées au gradient Twig */
+			background: linear-gradient(135deg, #A5604E 0%, #E5A88E 100%);
+		}
+		
+		/* --- Styles de la Playlist --- */
+		.track-row {
+			cursor: pointer;
+			transition: background-color 0.2s;
+			--bs-table-bg: transparent; /* Permet au gradient de background de s'appliquer */
+			color: rgba(255,255,255,0.9);
+		}
+		.track-row:nth-child(even) {
+			background-color: rgba(0, 0, 0, 0.05);
+		}
+		.table-hover > tbody > tr:hover > * {
+			--bs-table-hover-bg: rgba(0, 0, 0, 0.15);
+		}
+
+        /* --- Style de la piste active --- */
+		.track-row.active-track {
+			background-color: rgba(255, 255, 255, 0.2);
+			font-weight: 600;
+		}
+
+        /* --- Styles de la Barre de Progression --- */
+		.progress-bar-container {
+			height: 6px;
+			background-color: rgba(255, 255, 255, 0.3);
+			cursor: pointer;
+		}
+		.progress-bar {
+			height: 100%;
+			background-color: white;
+			transition: width 0.1s linear;
+		}
+
+		/* --- Styles du Contrôle de Volume --- */
+		#volume-slider {
+			-webkit-appearance: none;
+			appearance: none;
+			width: 80px;
+			height: 5px;
+			background: rgba(255, 255, 255, 0.3);
+			border-radius: 5px;
+			outline: none;
+			transition: opacity 0.2s;
+			cursor: pointer;
+		}
+		#volume-slider::-webkit-slider-thumb {
+			-webkit-appearance: none;
+			appearance: none;
+			width: 14px;
+			height: 14px;
+			background: white;
+			border-radius: 50%;
+			cursor: pointer;
+		}
+
+		/* --- Styles pour la rotation de la pochette --- */
+		@keyframes spin {
+			from {
+				transform: rotate(0deg);
+			}
+			to {
+				transform: rotate(360deg);
+			}
+		}
+		#album-cover.rotating {
+			animation: spin 12s linear infinite;
+			border-radius: 50%; /* Pour un effet "vinyle" */
+		}
+		#album-cover {
+			transition: border-radius 0.5s ease-out; /* Transition douce vers la forme circulaire */
+		}
+
+        /* --- Styles de la navigation --- */
+        .nav-link-custom {
+            color: rgba(255, 255, 255, 0.7);
+            transition: color 0.2s;
+        }
+        .nav-link-custom:hover,
+        .nav-link-custom.active {
+            color: white;
+            font-weight: 600;
+        }
+        .navbar-custom {
+            background-color: #3A1E18; /* Brun profond pour l'en-tête (équivalent de var(--color-earth-deep) */
+        }
+	</style>
+{% endblock %}
+
+{% block content %}
+	{% set totalDuration = 0 %}
+	{% for chanson in chansons %}
+		{% set totalDuration = totalDuration + chanson.getDureeChanson() %}
+	{% endfor %}
+	{% set totalMinutes = (totalDuration / 60)|round(0, 'floor') %}
+	{% set totalSeconds = totalDuration % 60 %}
+
+    <!-- L'en-tête de navigation a été retiré, laissant la page commencer par le conteneur principal (main) -->
+
+	<main class="container my-4 my-lg-5">
+		<div class="content-bg rounded-3 shadow-lg p-3 p-lg-5 text-white">
+
+			<div class="d-flex flex-column flex-md-row align-items-start gap-4">
+				<div class="flex-shrink-0">
+					<img id="album-cover" src="{{ album.getUrlImageAlbum() ?: 'https://placehold.co/160x160/7b4343/ffffff?text=' ~ (album.getTitreAlbum()|replace({' ': '+'})|slice(0, 20)) }}" alt="Couverture de l'album {{ album.getTitreAlbum() }}" class="rounded-2 shadow-lg" style="width: 160px; height: 160px; object-fit: cover;">
+				</div>
+
+				<div class="flex-grow-1">
+					<span class="text-sm fw-light text-uppercase" style="letter-spacing: 0.1em; opacity: 0.8;">Album</span>
+					<h2 class="display-4 fw-bolder mt-1 mb-2" id="album-title">{{ album.getTitreAlbum() }}</h2>
+					<p class="fs-5 fw-light" id="album-meta" style="opacity: 0.9;">
+						{{ album.getArtisteAlbum() }}
+						{% if album.getDateSortieAlbum() %}
+							·
+							{{ album.getDateSortieAlbum()|date('Y') }}
+						{% endif %}
+						·
+						{{ chansons|length }}
+						titre{{ chansons|length > 1 ? 's' : '' }},
+						{{ totalMinutes }}
+						min
+						{{ totalSeconds|number_format(0, '', '02') }}
+						s
+					</p>
+
+					<!-- Lecteur Audio/Contrôles -->
+					<div class="mt-4 pt-4 border-top border-light border-opacity-50">
+						
+						<!-- Titre de la piste en cours -->
+						<p class="fs-6 fw-bold mb-2" id="current-track-title">Piste en cours : Aucune</p>
+
+						<!-- Barre de Progression -->
+						<div id="progress-bar-container" class="progress-bar-container rounded-pill">
+							<div id="progress-bar" class="progress-bar rounded-pill w-0"></div>
+						</div>
+						
+						<!-- Temps Écoulé / Durée Totale -->
+						<div class="d-flex justify-content-between text-xs mt-1" style="opacity: 0.8;">
+							<span id="current-time">0:00</span>
+							<span id="duration">0:00</span>
+						</div>
+
+						<!-- Boutons de Contrôle -->
+						<div class="mt-3 d-flex gap-3 align-items-center">
+							<button id="play-pause-btn" type="button" onclick="playPause()" class="btn btn-light text-dark rounded-circle shadow-sm" style="width: 48px; height: 48px;">
+								<i id="play-pause-icon" class="bi bi-play-fill" style="font-size: 1.5rem; line-height: 1;"></i>
+							</button>
+
+                            <!-- NOUVEAU: Bouton Aléatoire (Shuffle) -->
+                            <button type="button" class="btn btn-link p-0" title="Aléatoire">
+                                <i class="bi bi-shuffle" style="font-size: 1.8rem; color: rgba(255, 255, 255, 0.9);"></i>
+                            </button>
+                            
+                            <!-- Bouton "Aimer l'album" agrandi -->
+							<button type="button" class="btn btn-link p-0" title="Aimer l'album">
+								<i class="bi bi-heart-fill" style="font-size: 1.8rem; color: rgba(255, 255, 255, 0.9);"></i>
+							</button>
+
+							<!-- NOUVEAU: Contrôle du volume -->
+							<div class="d-flex align-items-center ms-auto gap-2">
+								<button id="volume-btn" type="button" class="btn btn-link p-0">
+									<i id="volume-icon" class="bi bi-volume-up-fill" style="font-size: 1.8rem; color: rgba(255, 255, 255, 0.9);"></i>
+								</button>
+								<input type="range" id="volume-slider" min="0" max="100" value="75" class="align-self-center">
+							</div>
+
+						</div>
+					</div>
+					<!-- Fin Lecteur Audio/Contrôles -->
+				</div>
+			</div>
+
+			<div class="mt-5 overflow-x-auto">
+				<table id="track-table" class="table table-hover align-middle">
+					<thead style="background-color: rgba(0,0,0,0.2);">
+						<tr class="text-sm text-uppercase fw-semibold" style="color: rgba(255,255,255,0.9); letter-spacing: 0.05em;">
+							<th scope="col" class="py-3 px-4" style="width: 5%;">#</th>
+							<th scope="col" class="py-3 px-4" style="width: 55%;">Titre</th>
+							<th scope="col" class="py-3 px-4 d-none d-sm-table-cell" style="width: 20%;">Nombre d'écoutes</th>
+							<th scope="col" class="py-3 px-4" style="width: 10%;">Durée</th>
+							<th scope="col" class="py-3 px-4" style="width: 10%;"></th>
+						</tr>
+					</thead>
+					<tbody>
+						{% if chansons is not empty %}
+							{% for chanson in chansons %}
+								<tr class="track-row" data-index="{{ loop.index0 }}" style="color: rgba(255,255,255,0.9);">
+									<td class="py-3 px-4 fw-bold track-index">{{ loop.index }}</td>
+									<td class="py-3 px-4 track-title">{{ chanson.getTitreChanson() }}</td>
+									<td class="py-3 px-4 d-none d-sm-table-cell track-listens">0</td>
+									<td class="py-3 px-4 track-duration">{{ (chanson.getDureeChanson() / 60)|round(0, 'floor') }}:{{ (chanson.getDureeChanson() % 60)|number_format(0, '', '02') }}</td>
+									<td class="py-3 px-4 text-center">
+										<!-- Bouton pour la lecture de la piste spécifique -->
+										<button title="Lire la musique" class="btn btn-sm btn-link p-1 play-track-btn" data-index="{{ loop.index0 }}" onclick="loadTrack({{ loop.index0 }})">
+											<i class="bi bi-play-fill track-play-icon" style="color: rgba(255,255,255,0.7); font-size: 1.2rem;"></i>
+										</button>
+										<button title="Aimer la musique" class="btn btn-sm btn-link p-1">
+											<i class="bi bi-heart" style="color: rgba(255,255,255,0.7); font-size: 1rem;"></i>
+										</button>
+									</td>
+								</tr>
+							{% endfor %}
+						{% else %}
+							<tr>
+								<td colspan="5" class="text-center py-4" style="opacity: 0.8;">Cet album ne contient aucune chanson pour le moment.</td>
+							</tr>
+						{% endif %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</main>
+    
+    <!-- L'élément audio réel (invisible) -->
+    <audio id="audio-player"></audio>
+
+{% endblock %}
+
+{% block script %}
+    {{ parent() }}
+    
+    <script>
+        const audioPlayer = document.getElementById('audio-player');
+        const playPauseIcon = document.getElementById('play-pause-icon');
+        const progressBar = document.getElementById('progress-bar');
+        const progressBarContainer = document.getElementById('progress-bar-container');
+        const currentTimeEl = document.getElementById('current-time');
+        const durationEl = document.getElementById('duration');
+        const currentTrackTitleEl = document.getElementById('current-track-title');
+        const trackRows = document.querySelectorAll('.track-row');
+		const albumCover = document.getElementById('album-cover');
+		const volumeSlider = document.getElementById('volume-slider');
+        const volumeIcon = document.getElementById('volume-icon');
+
+        let currentTrackIndex = -1;
+        let isScrubbing = false;
+        let isDragging = false;
+        let wasPlayingBeforeScrub = false;
+
+        let isPlaying = false;
+        
+        // 1. CRÉATION DYNAMIQUE DE LA PLAYLIST À PARTIR DES DONNÉES TWIG
+        const playlist = [];
+        {% for chanson in chansons %}
+            playlist.push({
+                title: "{{ chanson.getTitreChanson()|e('js') }}",
+                src: "{{ chanson.geturlAudioChanson()|default('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3')|e('js') }}", 
+                durationFormatted: "{{ (chanson.getDureeChanson() / 60)|round(0, 'floor') }}:{{ (chanson.getDureeChanson() % 60)|number_format(0, '', '02') }}",
+            });
+        {% endfor %}
+
+        /**
+         * Convertit un nombre de secondes en format MM:SS
+         */
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = Math.floor(seconds % 60);
+            return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+        }
+
+        /**
+         * Met à jour l'affichage de la barre de progression et des temps.
+         */
+        function updateProgress() {
+            if (audioPlayer.duration && !isScrubbing) {
+                const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                progressBar.style.width = `${progressPercent}%`;
+                currentTimeEl.textContent = formatTime(audioPlayer.currentTime);
+            }
+        }
+
+        /**
+         * Gère le déplacement (clic ou glisser) sur la barre de progression.
+         */
+        function handleScrubbing(event) {
+            if (!audioPlayer.src) return;
+            const rect = progressBarContainer.getBoundingClientRect();
+            const offsetX = event.clientX - rect.left;
+            const width = progressBarContainer.offsetWidth;
+            const newTimeFraction = Math.max(0, Math.min(1, offsetX / width));
+
+            if (audioPlayer.duration) {
+                const newTime = newTimeFraction * audioPlayer.duration;
+                audioPlayer.currentTime = newTime;
+                progressBar.style.width = `${newTimeFraction * 100}%`;
+                currentTimeEl.textContent = formatTime(newTime);
+            }
+        }
+        
+        /**
+         * Gère la lecture et la pause de l'audio.
+         */
+        window.playPause = function() {
+            if (currentTrackIndex === -1 && playlist.length > 0) {
+                loadTrack(0);
+                return;
+            }
+            if (isPlaying) {
+                audioPlayer.pause();
+            } else {
+                audioPlayer.play().catch(e => console.error("Erreur de lecture : ", e));
+            }
+        }
+
+        progressBarContainer.addEventListener('mousedown', (e) => {
+            if (!audioPlayer.src) return;
+            isScrubbing = true;
+            wasPlayingBeforeScrub = isPlaying;
+            if (wasPlayingBeforeScrub) {
+                audioPlayer.pause();
+            }
+            handleScrubbing(e);
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (isScrubbing) {
+                e.preventDefault(); // Empêche la sélection de texte pendant le drag
+                handleScrubbing(e);
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (isScrubbing) {
+                // Si la musique jouait avant le début du scrubbing (clic ou glisser),
+                // on la relance depuis la nouvelle position.
+                if (wasPlayingBeforeScrub) {
+                    audioPlayer.play().catch(e => console.error("Erreur de lecture post-scrubbing : ", e));
+                }
+                // Si la musique était en pause, elle le reste à la nouvelle position,
+                // ce qui est le comportement attendu.
+                isScrubbing = false;
+            }
+        });
+
+        /**
+         * Gère la lecture et la pause de l'audio.
+         */
+        window.playPause = function() {
+            if (currentTrackIndex === -1 && playlist.length > 0) {
+                // Si aucune piste n'est sélectionnée, lance la première
+                loadTrack(0);
+                return; // loadTrack va appeler play()
+            }
+
+            if (isPlaying) {
+                audioPlayer.pause();
+                playPauseIcon.classList.replace('bi-pause-fill', 'bi-play-fill');
+            } else {
+                audioPlayer.play().catch(e => console.error("Erreur de lecture : ", e));
+                playPauseIcon.classList.replace('bi-play-fill', 'bi-pause-fill');
+            }
+            isPlaying = !isPlaying;
+            updateTrackRowVisuals();
+        }
+
+        /**
+         * Charge une piste spécifique de la playlist et démarre la lecture.
+         * @param {number} index - L'index de la piste à charger.
+         */
+        window.loadTrack = function(index) {
+            if (index < 0 || index >= playlist.length) {
+                console.error("Index de piste invalide.");
+                return;
+            }
+            
+            const track = playlist[index];
+            
+            // Si c'est la même piste et qu'elle est en pause, on la relance
+            if (index === currentTrackIndex && !isPlaying) {
+                 audioPlayer.play().catch(e => console.error("Erreur de lecture : ", e));
+                 isPlaying = true;
+                 playPauseIcon.classList.replace('bi-play-fill', 'bi-pause-fill');
+                 updateTrackRowVisuals();
+                 return;
+            }
+            
+            // Si c'est une nouvelle piste, on la charge et la joue
+            currentTrackIndex = index;
+            audioPlayer.src = track.src;
+            currentTrackTitleEl.textContent = `Piste en cours : ${index + 1}. ${track.title}`;
+            durationEl.textContent = track.durationFormatted;
+
+            // Joue la piste immédiatement après le chargement
+            audioPlayer.play().catch(e => {
+                console.error("Lecture automatique bloquée. Veuillez interagir.", e);
+                isPlaying = false;
+                playPauseIcon.classList.replace('bi-pause-fill', 'bi-play-fill');
+            });
+            isPlaying = true;
+            playPauseIcon.classList.replace('bi-play-fill', 'bi-pause-fill');
+            
+            updateTrackRowVisuals();
+        }
+
+        /**
+         * Met à jour les classes visuelles des lignes de la table pour l'état actif/en cours de lecture.
+         */
+        function updateTrackRowVisuals() {
+            trackRows.forEach((row, index) => {
+                const playIcon = row.querySelector('.track-play-icon');
+                
+                // 1. Gestion de la classe 'active-track'
+                if (index === currentTrackIndex) {
+                    row.classList.add('active-track');
+                } else {
+                    row.classList.remove('active-track');
+                }
+                
+                // 2. Gestion de l'icône de lecture/pause dans la table
+                if (index === currentTrackIndex && isPlaying) {
+                     playIcon.classList.replace('bi-play-fill', 'bi-pause-fill');
+                } else {
+                    playIcon.classList.replace('bi-play-fill', 'bi-play-fill');
+                }
+            });
+        }
+
+
+        // --- Événements Audio ---
+
+		// NOUVEAU: Gère la rotation de la pochette
+        audioPlayer.addEventListener('play', () => {
+            albumCover.classList.add('rotating');
+        });
+
+        audioPlayer.addEventListener('pause', () => {
+            albumCover.classList.remove('rotating');
+        });
+
+
+        // Quand les métadonnées sont chargées (pour obtenir la durée réelle du fichier)
+        audioPlayer.addEventListener('loadedmetadata', () => {
+            // Met à jour la durée totale avec la valeur réelle si elle est disponible
+            if (audioPlayer.duration && !isNaN(audioPlayer.duration)) {
+                durationEl.textContent = formatTime(audioPlayer.duration);
+            }
+        });
+
+        // Pendant la lecture (pour la barre de progression)
+        audioPlayer.addEventListener('timeupdate', updateProgress);
+
+        // Quand la piste se termine, passe à la suivante
+        audioPlayer.addEventListener('ended', () => {
+            if (currentTrackIndex < playlist.length - 1) {
+                loadTrack(currentTrackIndex + 1);
+            } else {
+                // Arrête la lecture à la fin de la playlist
+                isPlaying = false;
+                playPauseIcon.classList.replace('bi-pause-fill', 'bi-play-fill');
+                audioPlayer.currentTime = 0;
+                progressBar.style.width = '0%';
+                currentTimeEl.textContent = '0:00';
+                currentTrackTitleEl.textContent = `Piste en cours : Aucune`;
+                updateTrackRowVisuals();
+            }
+        });
+
+        // Gestion des erreurs
+        audioPlayer.addEventListener('error', (e) => {
+            console.error("Erreur de l'élément audio:", audioPlayer.error, e);
+            currentTrackTitleEl.textContent = "Erreur de chargement de la piste.";
+            isPlaying = false;
+            playPauseIcon.classList.replace('bi-pause-fill', 'bi-play-fill');
+            updateTrackRowVisuals();
+        });
+
+        // --- Initialisation ---
+        window.onload = function() {
+             // Rend les lignes de la table cliquables (alternative au bouton)
+             trackRows.forEach((row) => {
+                 const index = parseInt(row.dataset.index);
+                 row.addEventListener('click', (e) => {
+                     // S'assurer que le clic n'est pas sur un bouton à l'intérieur
+                     if (!e.target.closest('button')) {
+                         loadTrack(index);
+                     }
+                 });
+             });
+            
+             // Charge la première piste par défaut si la playlist n'est pas vide
+             if (playlist.length > 0) {
+                currentTrackIndex = 0;
+                const track = playlist[0];
+                audioPlayer.src = track.src;
+                currentTrackTitleEl.textContent = `Piste en cours : ${currentTrackIndex + 1}. ${track.title}`;
+                durationEl.textContent = track.durationFormatted;
+                // L'état initial est toujours en pause, l'utilisateur doit cliquer sur play.
+                updateTrackRowVisuals();
+             }
+        };
+
+		// --- Gestion du Volume ---
+
+        function handleVolumeChange() {
+            const volume = volumeSlider.value / 100;
+            audioPlayer.volume = volume;
+            audioPlayer.muted = (volume === 0);
+
+            if (audioPlayer.muted || volume === 0) {
+                volumeIcon.classList.replace('bi-volume-up-fill', 'bi-volume-mute-fill');
+                volumeIcon.classList.replace('bi-volume-down-fill', 'bi-volume-mute-fill');
+            } else if (volume > 0.5) {
+                volumeIcon.classList.replace('bi-volume-mute-fill', 'bi-volume-up-fill');
+                volumeIcon.classList.replace('bi-volume-down-fill', 'bi-volume-up-fill');
+            } else {
+                volumeIcon.classList.replace('bi-volume-mute-fill', 'bi-volume-down-fill');
+                volumeIcon.classList.replace('bi-volume-up-fill', 'bi-volume-down-fill');
+            }
+        }
+
+        volumeSlider.addEventListener('input', handleVolumeChange);
+
+        document.getElementById('volume-btn').addEventListener('click', () => {
+            audioPlayer.muted = !audioPlayer.muted;
+            if (audioPlayer.muted) {
+                volumeSlider.value = 0;
+            } else {
+                // Rétablit le volume à 75% si on réactive le son depuis un état muet complet
+                volumeSlider.value = audioPlayer.volume > 0 ? audioPlayer.volume * 100 : 75;
+            }
+            handleVolumeChange();
+        });
+
+		// Initialisation du volume au chargement de la page
+		handleVolumeChange();
+    </script>
+{% endblock %}

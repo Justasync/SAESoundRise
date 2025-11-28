@@ -22,7 +22,7 @@ class ControllerNewsletter extends Controller
     public function ajouter()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: index.php?controller=newsletter&method=afficher');
+            header('Location: /?controller=newsletter&method=afficher');
             return;
         }
 
