@@ -7,26 +7,10 @@ class ControllerHome extends Controller
         parent::__construct($loader, $twig);
     }
 
-    public function afficher($showModalName = '')
+    public function afficher()
     {
-        $pdo = bd::getInstance()->getConnexion();
-
         if (!isset($_SESSION['user_logged_in']) || !isset($_SESSION['user_role'])) {
-
-            $genreDAO = new GenreDAO($pdo);
-            $genres = $genreDAO->findAll();
-
-            $template = $this->getTwig()->load('index.html.twig');
-            echo $template->render([
-                'page' => [
-                    'title' => "Accueil",
-                    'name' => "accueil",
-                    'description' => "Page d'accueil de Paaxio"
-                ],
-                'genres' => $genres,
-                'show' => $showModalName,
-                'session' => $_SESSION
-            ]);
+            $this->homeBienvenue();
             exit();
         }
 
@@ -36,22 +20,40 @@ class ControllerHome extends Controller
                 $this->artisteDashboard();
                 break;
             case RoleEnum::Admin:
-                // Actions spécifiques à l'administrateur
+                $this->homeBienvenue();
                 break;
             case RoleEnum::Auditeur:
-                // Actions spécifiques à l'auditeur
                 $this->auditeurDashboard();
                 break;
             case RoleEnum::Producteur:
-                // Actions spécifiques au producteur
+                $this->homeBienvenue();
                 break;
             case RoleEnum::Invite:
-                // Actions spécifiques à l'invité
+                $this->homeBienvenue();
                 break;
             default:
-                # code...
+                $this->homeBienvenue();
                 break;
         }
+    }
+
+    public function homeBienvenue($showModalName = '')
+    {
+        $pdo = bd::getInstance()->getConnexion();
+        $genreDAO = new GenreDAO($pdo);
+        $genres = $genreDAO->findAll();
+
+        $template = $this->getTwig()->load('index.html.twig');
+        echo $template->render([
+            'page' => [
+                'title' => "Accueil",
+                'name' => "accueil",
+                'description' => "Page d'accueil de Paaxio"
+            ],
+            'genres' => $genres,
+            'show' => $showModalName,
+            'session' => $_SESSION
+        ]);
     }
 
     private function artisteDashboard()
@@ -114,11 +116,11 @@ class ControllerHome extends Controller
 
     public function login()
     {
-        $this->afficher('login');
+        $this->homeBienvenue('login');
     }
 
     public function signup()
     {
-        $this->afficher('signup');
+        $this->homeBienvenue('signup');
     }
 }
