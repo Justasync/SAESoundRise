@@ -1,943 +1,997 @@
-
 {% extends "base_template.html.twig" %}
 
 {% block header %}
-    <!-- Bootstrap Icons (although Font Awesome is also used) -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <!-- Font Awesome (for headphones, gear, and plus icons) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-    <script src="/node_modules/datatables.net/js/dataTables.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+	<script src="/node_modules/datatables.net/js/dataTables.min.js"></script>
 
-    <style>
-        /* --- Paaxio Color & Font Variables --- */
-        :root {
-            --paaxio-bg: #FFF8F3; 
-            --paaxio-nav: #F0F8FF; 
-            --paaxio-green: #2AB7A9; 
-            --paaxio-salmon: #E6957B; 
-            --paaxio-salmon-light: #EBB6A6;
-            --paaxio-salmon-dark: #D67E63;
-            --paaxio-input-bg: #EBC4B5;
-        }
+	<style>
+	/* --- Paaxio Color & Font Variables --- */:root
+	{
+		--paaxio-bg: #FFF8F3;
+		--paaxio-nav: #F0F8FF;
+		--paaxio-green: #2AB7A9;
+		--paaxio-salmon: #E6957B;
+		--paaxio-salmon-light: #EBB6A6;
+		--paaxio-salmon-dark: #D67E63;
+		--paaxio-input-bg: #EBC4B5;
+	}
 
-        .upload-zone {
-            border: 3px dashed var(--paaxio-salmon-light);
-            border-radius: 1rem;
-            transition: all 0.3s ease;
-        }
-        .upload-zone.drag-over {
-            border-color: var(--paaxio-green);
-            background-color: #f0fff0;
-        }
-        /* --- Watermark (Filigrane) --- */
-        .watermark-container {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 0; /* Behind content */
-            opacity: 0.1; /* Very faint */
-            pointer-events: none;
-        }
+	.upload-zone {
+		border: 3px dashed var(--paaxio-salmon-light);
+		border-radius: 1rem;
+		transition: all 0.3s ease;
+	}
+	.upload-zone.drag-over {
+		border-color: var(--paaxio-green);
+		background-color: #f0fff0;
+	}
+	/* --- Watermark (Filigrane) --- */
+	.watermark-container {
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 0; /* Behind content */
+		opacity: 0.1; /* Very faint */
+		pointer-events: none;
+	}
 
-        .watermark-container .fa-headphones {
-            font-size: 600px;
-            color: white;
-            line-height: 1; /* Fix vertical alignment */
-        }
+	.watermark-container .fa-headphones {
+		font-size: 600px;
+		color: white;
+		line-height: 1; /* Fix vertical alignment */
+	}
 
-        .watermark-container .fa-gear {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 250px;
-            color: white;
-        }
-        
-        /* Custom animation for slow spin */
-        @keyframes spin-slow {
-            from { transform: translate(-50%, -50%) rotate(0deg); }
-            to { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-        .animate-spin-slow {
-            animation: spin-slow 20s linear infinite;
-        }
+	.watermark-container .fa-gear {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		font-size: 250px;
+		color: white;
+	}
 
-        /* --- Navigation Tabs (Replicating Tailwind look) --- */
-        .nav-btn {
-            border: none;
-            padding: 0.5rem 1.5rem;
-            border-radius: 0.5rem; /* rounded-lg */
-            font-weight: 700; /* font-bold */
-            transition: all 0.2s;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-        }
+	/* Custom animation for slow spin */
+	@keyframes spin-slow {
+		from {
+			transform: translate(-50%, -50%) rotate(0deg);
+		}
+		to {
+			transform: translate(-50%, -50%) rotate(360deg);
+		}
+	}
+	.animate-spin-slow {
+		animation: spin-slow 20s linear infinite;
+	}
 
-        .nav-btn-inactive {
-            background-color: var(--paaxio-salmon-light);
-            color: white;
-        }
-        .nav-btn-inactive:hover {
-            background-color: var(--paaxio-salmon);
-            color: white;
-        }
+	/* --- Navigation Tabs (Replicating Tailwind look) --- */
+	.nav-btn {
+		border: none;
+		padding: 0.5rem 1.5rem;
+		border-radius: 0.5rem; /* rounded-lg */
+		font-weight: 700; /* font-bold */
+		transition: all 0.2s;
+		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+	}
 
-        .nav-btn-active {
-            background-color: var(--paaxio-salmon);
-            color: white;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transform: scale(1.05);
-        }
+	.nav-btn-inactive {
+		background-color: var(--paaxio-salmon-light);
+		color: white;
+	}
+	.nav-btn-inactive:hover {
+		background-color: var(--paaxio-salmon);
+		color: white;
+	}
 
-        /* --- Album Input Field --- */
-        .paaxio-input {
-            background-color: var(--paaxio-input-bg);
-            border-color: var(--paaxio-salmon);
-            color: #1f2937;
-            font-weight: 500;
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06); /* shadow-inner */
-            text-align: center;
-        }
-        .paaxio-input:focus {
-            box-shadow: 0 0 0 0.25rem rgba(214, 126, 99, 0.5); /* focus:ring-2 with paaxio-salmonDark */
-            border-color: var(--paaxio-salmon-dark);
-            background-color: var(--paaxio-input-bg); /* Prevents Bootstrap default white background on focus */
-        }
+	.nav-btn-active {
+		background-color: var(--paaxio-salmon);
+		color: white;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		transform: scale(1.05);
+	}
 
-        /* --- Album Art Upload --- */
-        .album-art-box {
-            width: 192px; /* w-48 */
-            height: 192px; /* h-48 */
-            background-color: white;
-            border: 2px solid #D1D5DB; /* border-gray-300 */
-            border-radius: 1.5rem; /* rounded-3xl */
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* shadow-lg */
-            transition: all 0.2s;
-            position: relative;
-            margin: 0 auto;
-            cursor: pointer;
-        }
+	/* --- Album Input Field --- */
+	.paaxio-input {
+		background-color: var(--paaxio-input-bg);
+		border-color: var(--paaxio-salmon);
+		color: #1f2937;
+		font-weight: 500;
+		padding: 0.75rem 1rem;
+		border-radius: 0.5rem;
+		box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06); /* shadow-inner */
+		text-align: center;
+	}
+	.paaxio-input:focus {
+		box-shadow: 0 0 0 0.25rem rgba(214, 126, 99, 0.5); /* focus:ring-2 with paaxio-salmonDark */
+		border-color: var(--paaxio-salmon-dark);
+		background-color: var(--paaxio-input-bg); /* Prevents Bootstrap default white background on focus */
+	}
 
-        .album-art-box:hover {
-            transform: scale(1.05);
-            border-color: var(--paaxio-salmon);
-        }
+	/* --- Album Art Upload --- */
+	.album-art-box {
+		width: 192px; /* w-48 */
+		height: 192px; /* h-48 */
+		background-color: white;
+		border: 2px solid #D1D5DB; /* border-gray-300 */
+		border-radius: 1.5rem; /* rounded-3xl */
+		box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* shadow-lg */
+		transition: all 0.2s;
+		position: relative;
+		margin: 0 auto;
+		cursor: pointer;
+	}
 
-        .album-art-box .fa-plus {
-            font-size: 6rem;
-            color: black;
-            transition: color 0.2s;
-        }
+	.album-art-box:hover {
+		transform: scale(1.05);
+		border-color: var(--paaxio-salmon);
+	}
 
-        .album-art-box:hover .fa-plus {
-            color: var(--paaxio-salmon);
-        }
+	.album-art-box .fa-plus {
+		font-size: 6rem;
+		color: black;
+		transition: color 0.2s;
+	}
 
-        #pochettePreview {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 1.5rem;
-        }
+	.album-art-box:hover .fa-plus {
+		color: var(--paaxio-salmon);
+	}
 
-        /* --- Tracklist Table --- */
-        .tracklist-container {
-            background-color: rgba(255, 255, 255, 0.5); /* bg-white/50 */
-            -webkit-backdrop-filter: blur(4px);
-            backdrop-filter: blur(4px); /* backdrop-blur-sm */
-            border-radius: 0.75rem; /* rounded-xl */
-            overflow: hidden;
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* shadow-lg */
-        }
-        
-        .tracklist-header {
-            background-color: var(--paaxio-salmon-light);
-            color: white;
-            font-weight: 700;
-            padding: 0.75rem 1.5rem;
-        }
+	#pochettePreview {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		border-radius: 1.5rem;
+	}
 
-        /* Ensure DataTables header cells use the same background/color */
-        #tracklist thead th {
-            background-color: var(--paaxio-salmon-light) !important;
-            color: white !important;
-            font-weight: 700;
-            padding: 0.75rem 1.5rem;
-            border-bottom: none;
-        }
+	/* --- Tracklist Table --- */
+	.tracklist-container {
+		background-color: rgba(255, 255, 255, 0.5); /* bg-white/50 */
+		-webkit-backdrop-filter: blur(4px);
+		backdrop-filter: blur(4px); /* backdrop-blur-sm */
+		border-radius: 0.75rem; /* rounded-xl */
+		overflow: hidden;
+		box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* shadow-lg */
+	}
 
-        /* Column widths to match design and keep DataTables alignment */
-        #tracklist {
-            width: 100%;
-            table-layout: fixed;
-        }
-        #tracklist thead th:nth-child(1) { width: 5%; }
-        #tracklist thead th:nth-child(2) { width: 55%; }
-        #tracklist thead th:nth-child(3) { width: 20%; }
-        #tracklist thead th:nth-child(4) { width: 15%; }
-        #tracklist thead th:nth-child(5) { width: auto; }
-        /* prevent long titles from breaking the layout too much */
-        #tracklist td:nth-child(2) { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        
-        .tracklist-body {
-            max-height: 16rem; /* max-h-64 */
-            overflow-y: auto;
-        }
-        
-        /* Custom Scrollbar for tracklist-body (if needed, but default is often sufficient) */
-        /*
+	.tracklist-header {
+		background-color: var(--paaxio-salmon-light);
+		color: white;
+		font-weight: 700;
+		padding: 0.75rem 1.5rem;
+	}
+
+	/* Ensure DataTables header cells use the same background/color */
+	#tracklist thead th {
+		background-color: var(--paaxio-salmon-light) !important;
+		color: white !important;
+		font-weight: 700;
+		padding: 0.75rem 1.5rem;
+		border-bottom: none;
+	}
+
+	/* Column widths to match design and keep DataTables alignment */
+	#tracklist {
+		width: 100%;
+		table-layout: fixed;
+	}
+	#tracklist thead th:nth-child(1) {
+		width: 5%;
+	}
+	#tracklist thead th:nth-child(2) {
+		width: 55%;
+	}
+	#tracklist thead th:nth-child(3) {
+		width: 20%;
+	}
+	#tracklist thead th:nth-child(4) {
+		width: 15%;
+	}
+	#tracklist thead th:nth-child(5) {
+		width: auto;
+	}
+	/* prevent long titles from breaking the layout too much */
+	#tracklist td:nth-child(2) {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.tracklist-body {
+		max-height: 16rem; /* max-h-64 */
+		overflow-y: auto;
+	}
+
+	/* Custom Scrollbar for tracklist-body (if needed, but default is often sufficient) */
+	/*
         .tracklist-body::-webkit-scrollbar { width: 8px; }
         .tracklist-body::-webkit-scrollbar-thumb { background-color: var(--paaxio-salmon-light); border-radius: 4px; }
         .tracklist-body::-webkit-scrollbar-track { background-color: #f1f1f1; }
         */
 
-        /* table row should remain a table-row for DataTables alignment */
-        .track-row {
-            display: table-row;
-            vertical-align: middle;
-            border-bottom: 1px solid #f3f4f6; /* light divider */
-            cursor: pointer;
-            transition: background-color 0.15s;
-        }
-        /* cell styling to mimic previous spacing */
-        #tracklist td {
-            padding: 0.75rem 1.5rem;
-            vertical-align: middle;
-        }
-        .track-row:last-child {
-            border-bottom: none;
-        }
-        .track-row:hover {
-            background-color: #fef3f2; /* Very light background on hover */
-        }
-        .track-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 0.5rem;
-        }
-        .track-actions i {
-            cursor: pointer;
-            transition: background-color 0.12s, color 0.12s, transform 0.12s;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 36px;
-            height: 36px;
-            border-radius: 6px;
-            color: #6b7280; /* gray-500 */
-            background: rgba(255,255,255,0.6);
-            border: 1px solid rgba(0,0,0,0.04);
-        }
-        .track-actions i:hover {
-            transform: translateY(-1px);
-            color: white;
-        }
-        .track-actions .fa-pen-to-square:hover {
-            background-color: var(--paaxio-green);
-        }
-        .track-actions .fa-trash:hover {
-            background-color: #ef4444; /* Red */
-        }
-        /* smaller gap for smaller screens */
-        @media (max-width: 576px) {
-            .track-actions i { width: 30px; height: 30px; }
-        }
-        
-        /* --- Action Buttons (Ajouter titre(s) / Enregistrer) --- */
-        .btn-paaxio-action {
-            background-color: var(--paaxio-salmon);
-            color: white;
-            font-weight: 700;
-            padding: 1rem 3rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.2s;
-            border: none;
-        }
-        .btn-paaxio-action:hover {
-            background-color: var(--paaxio-salmon-dark);
-            transform: scale(1.05);
-            color: white;
-        }
-
-        /* --- Modal Styles --- */
-        .modal-backdrop {
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-        .animate-fade-in {
-            animation: fadeIn 0.3s ease-out forwards;
-            opacity: 0;
-        }
-        /* If animation doesn't run for any reason, ensure modal content is visible when Bootstrap adds .show */
-        .modal.show .modal-content.animate-fade-in {
-            opacity: 1;
-            transform: none;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        /* --- Toast Notification --- */
-        #toast {
-            z-index: 1060; /* Higher than modals */
-        }
-    </style>
-{% endblock %}
-
-{% block content %}
-    <!-- Filigrane (Background Logo) -->
-    <div class="watermark-container">
-        <div class="position-relative d-flex align-items-center justify-content-center">
-            <!-- Casque -->
-            <i class="fas fa-headphones text-white"></i>
-            <!-- Rouage/Onde au centre -->
-            <i class="fas fa-gear text-white position-absolute animate-spin-slow"></i>
-        </div>
-    </div>
-
-    <!-- Main Content -->
-    <main class="flex-grow-1 position-relative z-1 d-flex flex-column align-items-center pt-5 px-4 w-100 mx-auto" style="max-width: 900px;">
-        
-        <!-- Sub-Navigation Tabs -->
-        <div class="d-flex gap-3 mb-5">
-            <button class="nav-btn nav-btn-inactive">Bibliothèque</button>
-            <button class="nav-btn nav-btn-inactive">Téléchargée</button>
-            <button class="nav-btn nav-btn-active">Ajouter</button>
-        </div>
-
-        <!-- Headline -->
-        <h1 class="fs-4 fs-md-3 fw-bold text-center mb-4">
-            Vous souhaitez télécharger un album ou un single ?
-        </h1>
-
-        <form id="albumForm" action="index.php?controller=album&method=ajouterAlbum" method="post" enctype="multipart/form-data" class="w-100">
-            <!-- Album Art Upload -->
-            <div class="mb-4 text-center">
-                <p class="text-center">Télécharge ci-dessous la pochette</p>
-                <label for="pochette_album" class="cursor-pointer">
-                    <div class="album-art-box d-flex align-items-center justify-content-center shadow-sm">
-                        <i class="fas fa-plus"></i>
-                        <img id="pochettePreview" src="" alt="Aperçu de la pochette" class="d-none">
-                    </div>
-                </label>
-                <input type="file" id="pochette_album" name="pochette_album" class="d-none" accept="image/png, image/jpeg, image/webp" required>
-            </div>
-
-            <!-- Album Title Display -->
-            <h2 id="albumTitleDisplay" class="fs-5 fw-bold text-center mb-3">Nom de l'album/single</h2>
-
-            <!-- Album Input -->
-            <div class="w-100 mx-auto mb-4" style="max-width: 400px;">
-                <input type="text" 
-                       id="albumInput"
-                       name="titre_album"
-                       placeholder="Nom de l'album/Single" 
-                       class="form-control paaxio-input"
-                       required>
-            </div>
-
-            <!-- Album Release Date -->
-            <div class="w-100 mx-auto mb-5" style="max-width: 400px;">
-                <p class="text-center">Date de sortie de l'album</p>
-                <input type="date" 
-                       id="dateSortieAlbum"
-                       name="date_sortie"
-                       class="form-control paaxio-input"
-                       required>
-            </div>
-
-            <!-- Tracklist Table -->
-            <p class="text-center">Liste des titres</p>
-            <div class="w-100 mx-auto tracklist-container mb-5" style="max-width: 800px;">
-                        <table id="tracklist" class="w-100" style="border-collapse: separate; border-spacing: 0 1rem;">
-                    <thead>
-                        <tr class="tracklist-header">
-                            <th>#</th>
-                            <th>Titre</th>
-                            <th>Genre</th>
-                            <th class="text-end">Durée</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="trackList" class="tracklist-body">
-                        <!-- Rows will be injected by JavaScript (renderTrackList) -->
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="w-100 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 mb-5 mx-auto" style="max-width: 800px;">
-                <!-- Utilisation de data-bs-toggle pour une meilleure gestion Bootstrap -->
-                <button type="button" 
-                        class="btn-paaxio-action w-100 w-md-auto"
-                        data-bs-toggle="modal" 
-                        data-bs-target="#addTrackModal">
-                    Ajouter titre(s)
-                </button>
-                
-                <button type="button" 
-                        onclick="confirmSave()" 
-                        class="btn-paaxio-action w-100 w-md-auto">
-                    Enregistrer
-                </button>
-            </div>
-        </form>
-    </main>
-
-    <!-- Modale pour ajouter un titre -->
-    <div id="addTrackModal" class="modal fade" tabindex="-1" aria-labelledby="addTrackModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content animate-fade-in">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addTrackModalLabel">Ajouter un titre</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <input type="file" id="trackFiles" name="trackFiles" class="form-control" accept="audio/mpeg, audio/wav, audio/ogg" multiple required>
-                    </div>
-                    
-                    <!-- Conteneur pour les champs de métadonnées des pistes -->
-                    <div id="track-metadata-container" class="mt-4" style="max-height: 300px; overflow-y: auto;">
-                        <!-- Les champs pour chaque piste seront injectés ici par JS -->
-                    </div>
-
-                    <template id="track-metadata-template">
-                        <div class="p-3 mb-2 border rounded" style="background-color: #f8f9fa;">
-                            <p class="fw-bold text-truncate small mb-2">Nom du fichier : <span class="filename"></span></p>
-                            <div class="mb-2">
-                                <input type="text" class="form-control form-control-sm track-title" placeholder="Titre de la chanson" required>
-                            </div>
-                            <div>
-                                <input type="text" class="form-control form-control-sm track-genre" placeholder="Genre musical">
-                            </div>
-                        </div>
-                    </template>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <button type="button" id="saveTrackButton" class="btn btn-primary" style="background-color: var(--paaxio-salmon); border-color: var(--paaxio-salmon-dark);" onclick="addTracksToList()">Enregistrer les chansons</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modale pour modifier un titre -->
-    <div id="editTrackModal" class="modal fade" tabindex="-1" aria-labelledby="editTrackModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content animate-fade-in">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editTrackModalLabel">Modifier le titre</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" id="editTrackIndex">
-                    <div class="mb-3">
-                        <label for="trackTitleEdit" class="form-label">Titre</label>
-                        <input type="text" id="trackTitleEdit" placeholder="Titre de la chanson" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="trackGenreEdit" class="form-label">Genre</label>
-                        <input type="text" id="trackGenreEdit" placeholder="Genre musical" class="form-control">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-primary" style="background-color: var(--paaxio-salmon); border-color: var(--paaxio-salmon-dark);" onclick="saveTrackChanges()">Enregistrer les modifications</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modale de confirmation -->
-    <div id="confirmModal" class="modal fade" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-sm">
-            <div class="modal-content animate-fade-in text-center">
-                <div class="modal-header d-flex justify-content-center">
-                    <h5 class="modal-title fw-bold" id="confirmModalLabel">Confirmation</h5>
-                    <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p class="mb-4">Voulez-vous vraiment enregistrer cet album ?</p>
-                    <div class="d-flex justify-content-center gap-3">
-                        <button type="button" data-bs-dismiss="modal" class="btn btn-secondary px-4">Non</button>
-                        <button type="button" onclick="submitForm()" class="btn btn-primary px-4" style="background-color: var(--paaxio-salmon); border-color: var(--paaxio-salmon-dark);">Oui</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Notification Toast (Hidden by default) -->
-    <div id="toast" class="toast align-items-center text-white bg-dark border-0 position-fixed bottom-0 end-0 m-3" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="d-flex">
-        <div class="toast-body d-flex align-items-center">
-            <i class="fas fa-check-circle text-success me-2 fs-5"></i>
-            <span id="toastMessage">Action effectuée</span>
-        </div>
-        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-    </div>
-{% endblock %}
-
-{% block script %}
-    <script>
-        // Array to store track objects (file objects and metadata)
-        let tracks = [];
-
-        // --- Fonctions utilitaires ---
-
-        // Puisque la durée n'est plus lue, nous utilisons une durée par défaut ou l'indication d'absence.
-        function formatDuration(seconds) {
-            if (seconds === 0 || isNaN(seconds)) {
-                return '00:00'; // Durée par défaut
-            }
-            const minutes = Math.floor(seconds / 60);
-            const remainingSeconds = Math.round(seconds % 60);
-            return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
-        }
-
-        // --- Modals Handlers ---
-
-        function openAddTrackModal() {
-            // Réinitialisation des champs pour une nouvelle saisie
-            const modalEl = document.getElementById('addTrackModal');
-            if (!modalEl) return;
-
-            const trackFiles = modalEl.querySelector('#trackFiles');
-            const metadataContainer = modalEl.querySelector('#track-metadata-container');
-            const saveBtn = document.getElementById('saveTrackButton');
-
-            // Clear previous selected files and metadata so the user always sees a fresh form
-            if (trackFiles) trackFiles.value = '';
-            if (metadataContainer) metadataContainer.innerHTML = '';
-            if (saveBtn) saveBtn.disabled = false;
-
-            // Reset animation so it plays each time the modal opens
-            const modalContent = modalEl.querySelector('.modal-content');
-            if (modalContent) {
-                modalContent.classList.remove('animate-fade-in');
-                // Force reflow so the animation class can be re-applied
-                void modalContent.offsetWidth;
-                modalContent.classList.add('animate-fade-in');
-            }
-        }
-
-        function openEditTrackModal(index) {
-            const track = tracks[index];
-            if (!track) return;
-            
-            document.getElementById('editTrackIndex').value = index;
-            document.getElementById('trackTitleEdit').value = track.title;
-            document.getElementById('trackGenreEdit').value = track.genre;
-
-            const modal = new bootstrap.Modal(document.getElementById('editTrackModal'));
-            modal.show();
-        }
-        
-        function closeEditTrackModal() {
-            const modal = bootstrap.Modal.getInstance(document.getElementById('editTrackModal'));
-            if (modal) modal.hide();
-        }
-
-        function confirmSave() {
-             if (tracks.length === 0) {
-                showToast("Veuillez ajouter au moins un titre.", false);
-                return;
-            }
-            const form = document.getElementById('albumForm');
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
-            const modal = new bootstrap.Modal(document.getElementById('confirmModal'));
-            modal.show();
-        }
-
-        function closeConfirmModal() {
-            const modal = bootstrap.Modal.getInstance(document.getElementById('confirmModal'));
-            if (modal) modal.hide();
-        }
-
-        // --- Track List Rendering ---
-
-        // DataTable instance holder
-        let dataTableInstance = null;
-
-        function ensureDataTable() {
-            if (dataTableInstance) return;
-            try {
-                const dtOptions = {
-                    columnDefs: [{ orderable: false, targets: -1, className: 'dt-center' }],
-                    searching: true,
-                    paging: true,
-                    info: true,
-                    language: { url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json' }
-                };
-                if (window.jQuery && $.fn && $.fn.dataTable) {
-                    dataTableInstance = $('#tracklist').DataTable(dtOptions);
-                } else if (typeof DataTable !== 'undefined') {
-                    dataTableInstance = new DataTable('#tracklist', dtOptions);
-                }
-            } catch (err) {
-                console.warn('DataTable init failed:', err);
-                dataTableInstance = null;
-            }
-        }
-
-        function renderTrackList() {
-            // If a jQuery DataTable instance exists, destroy it first to avoid column/row mismatches
-            if (window.jQuery && $.fn && $.fn.dataTable && $.fn.dataTable.isDataTable && $.fn.dataTable.isDataTable('#tracklist')) {
-                try {
-                    const inst = $('#tracklist').DataTable();
-                    inst.clear();
-                    inst.destroy();
-                } catch (e) { /* ignore */ }
-                dataTableInstance = null;
-            }
-            // Build tbody DOM first (always) then initialize DataTable on top of it
-            const trackListContainer = document.getElementById('trackList');
-            trackListContainer.innerHTML = '';
-            tracks.forEach((track, index) => {
-                const row = document.createElement('tr');
-                row.className = 'track-row';
-                row.setAttribute('data-index', index);
-
-                const num = document.createElement('td');
-                num.textContent = (index + 1).toString().padStart(2, '0');
-
-                const title = document.createElement('td');
-                title.textContent = track.title;
-
-                const genre = document.createElement('td');
-                genre.textContent = track.genre;
-
-                const duration = document.createElement('td');
-                duration.className = 'text-end';
-                duration.textContent = formatDuration(track.duration);
-
-                const actions = document.createElement('td');
-                actions.className = 'track-actions';
-                actions.innerHTML = `<i class="fas fa-pen-to-square text-secondary" data-action="edit" data-index="${index}"></i><i class="fas fa-trash text-secondary ms-2" data-action="delete" data-index="${index}"></i>`;
-
-                row.appendChild(num);
-                row.appendChild(title);
-                row.appendChild(genre);
-                row.appendChild(duration);
-                row.appendChild(actions);
-
-                trackListContainer.appendChild(row);
-            });
-
-            // Now initialize DataTable on the final DOM
-            if (tracks.length > 0) {
-                ensureDataTable();
-            } else {
-                // No tracks: ensure no DataTable instance remains
-                if (window.jQuery && $.fn && $.fn.dataTable && $.fn.dataTable.isDataTable && $.fn.dataTable.isDataTable('#tracklist')) {
-                    try { $('#tracklist').DataTable().destroy(); } catch (e) { /* ignore */ }
-                    dataTableInstance = null;
-                }
-            }
-
-            // Delegated handler on table for actions (works with DataTables DOM changes)
-            const tableEl = document.getElementById('tracklist');
-            if (tableEl && !tableEl.__trackHandlerAttached) {
-                tableEl.addEventListener('click', function (e) {
-                    const target = e.target.closest('[data-action]');
-                    if (!target) return;
-                    const action = target.getAttribute('data-action');
-                    const idx = parseInt(target.getAttribute('data-index'));
-                    if (action === 'edit') openEditTrackModal(idx);
-                    if (action === 'delete') deleteTrack(idx);
-                });
-                tableEl.__trackHandlerAttached = true;
-            }
-        }
-
-        
-        // CORRECTION PRINCIPALE : Ajout de la vérification de l'objet File pour éviter le crash.
-        function updateHiddenInputs() {
-            const inputContainer = document.getElementById('albumForm');
-            // Supprime les anciens champs
-            document.querySelectorAll('#albumForm input[name^="tracks"]').forEach(input => input.remove());
-
-            tracks.forEach((track, index) => {
-                 // Vérification CRITIQUE : Si le fichier est manquant ou invalide, on saute.
-                 if (!track.file || !(track.file instanceof File)) {
-                    console.error(`Erreur: Le fichier pour la piste ${index + 1} est manquant ou invalide.`, track);
-                    showToast(`Erreur sur la piste ${index + 1} : Fichier audio manquant.`, false);
-                    return;
-                 }
-                 
-                 // Hidden field for the file itself
-                 const fileInput = document.createElement('input');
-                 fileInput.type = 'file';
-                 fileInput.name = `tracks[${index}][file]`;
-                 const dataTransfer = new DataTransfer();
-                 dataTransfer.items.add(track.file);
-                 fileInput.files = dataTransfer.files;
-                 fileInput.classList.add('d-none');
-                 inputContainer.appendChild(fileInput);
- 
-                 // Hidden field for title
-                 const titleInput = document.createElement('input');
-                 titleInput.type = 'hidden';
-                 titleInput.name = `tracks[${index}][title]`;
-                 titleInput.value = track.title;
-                 inputContainer.appendChild(titleInput);
- 
-                 // Hidden field for genre
-                 const genreInput = document.createElement('input');
-                 genreInput.type = 'hidden';
-                 genreInput.name = `tracks[${index}][genre]`;
-                 genreInput.value = track.genre;
-                 inputContainer.appendChild(genreInput);
- 
-                 // Hidden field for duration
-                 const durationInput = document.createElement('input');
-                 durationInput.type = 'hidden';
-                 durationInput.name = `tracks[${index}][duration]`;
-                 durationInput.value = track.duration || 0; 
-                 inputContainer.appendChild(durationInput);
-            });
-        }
-
-        function deleteTrack(index) {
-            tracks.splice(index, 1);
-            renderTrackList();
-            // Synchroniser les champs cachés après suppression
-            updateHiddenInputs(); 
-            showToast("Titre supprimé.", true);
-        }
-
-        function clearHiddenTrackInputs() {
-            document.querySelectorAll('#albumForm input[name^="tracks"]').forEach(input => input.remove());
-        }
-
-        // --- Track Addition Logic ---
-
-        function addTracksToList() {
-            const metadataContainer = document.getElementById('track-metadata-container');
-            const trackForms = metadataContainer.querySelectorAll('.p-3');
-            let allValid = true;
-            let tracksToAdd = [];
-
-            if (trackForms.length === 0) {
-                showToast("Veuillez sélectionner au moins un fichier audio.", false);
-                return;
-            }
-
-            trackForms.forEach((form, i) => {
-                const title = form.querySelector('.track-title').value.trim();
-                const genre = form.querySelector('.track-genre').value.trim();
-                const file = form.file; // Le fichier est attaché à l'élément de formulaire
-
-                if (!title || !genre) {
-                    allValid = false;
-                }
-
-                tracksToAdd.push({
-                    file: file,
-                    title: title,
-                    genre: genre,
-                    duration: 0 // Durée fixée
-                });
-            });
-
-            if (!allValid) {
-                showToast("Veuillez renseigner un titre ET un genre pour chaque chanson.", false);
-                return;
-            }
-
-            tracks.push(...tracksToAdd);
-
-            const modalInstance = bootstrap.Modal.getInstance(document.getElementById('addTrackModal'));
-            if (modalInstance) modalInstance.hide();
-
-            renderTrackList();
-            updateHiddenInputs(); // Synchroniser les champs cachés
-            showToast(`${tracksToAdd.length} titre(s) ajouté(s) avec succès.`, true);
-        }
-
-        // --- Track Editing Logic ---
-
-        function saveTrackChanges() {
-            const index = parseInt(document.getElementById('editTrackIndex').value);
-            const newTitle = document.getElementById('trackTitleEdit').value.trim();
-            const newGenre = document.getElementById('trackGenreEdit').value.trim();
-
-            if (!newTitle) {
-                showToast("Le titre ne peut pas être vide.", false);
-                return;
-            }
-
-            if (tracks[index]) {
-                tracks[index].title = newTitle;
-                tracks[index].genre = newGenre;
-                
-                renderTrackList();
-                // CORRECTION/AJOUT : Synchroniser les champs cachés immédiatement
-                updateHiddenInputs();
-                
-                // Déplacer le focus avant de fermer la modale pour éviter l'avertissement aria-hidden
-                document.activeElement.blur();
-
-                closeEditTrackModal();
-                showToast("Modifications enregistrées.", true);
-            } else {
-                showToast("Erreur: Impossible de trouver la piste à modifier.", false);
-            }
-        }
-        
-        // --- Album Art Preview ---
-
-        document.getElementById('pochette_album').addEventListener('change', function(event) {
-            const [file] = event.target.files;
-            const preview = document.getElementById('pochettePreview');
-            const plusIcon = document.querySelector('.album-art-box .fa-plus');
-
-            if (file) {
-                preview.src = URL.createObjectURL(file);
-                preview.classList.remove('d-none');
-                plusIcon.classList.add('d-none');
-            } else {
-                preview.classList.add('d-none');
-                preview.src = '';
-                plusIcon.classList.remove('d-none');
-            }
-        });
-
-        // --- Album Title Input Listener ---
-        
-        document.getElementById('albumInput').addEventListener('input', function(event) {
-            document.getElementById('albumTitleDisplay').textContent = event.target.value || "Nom de l'album/single";
-        });
-
-        // --- Toast Notification Logic ---
-
-        function showToast(message, isSuccess) {
-            const toastElement = document.getElementById('toast');
-            const toastBody = document.getElementById('toastMessage');
-            const icon = toastElement.querySelector('.fa-check-circle');
-
-            toastBody.textContent = message;
-            
-            if (isSuccess) {
-                toastElement.classList.remove('bg-danger');
-                toastElement.classList.add('bg-success');
-                icon.classList.remove('text-danger');
-                icon.classList.add('text-success');
-            } else {
-                toastElement.classList.remove('bg-success');
-                toastElement.classList.add('bg-danger');
-                icon.classList.remove('text-success');
-                icon.classList.add('text-danger');
-            }
-            
-            const toast = new bootstrap.Toast(toastElement);
-            toast.show();
-        }
-
-
-        // --- Final Form Submission ---
-
-        function submitForm() {
-            closeConfirmModal();
-            
-            const albumForm = document.getElementById('albumForm');
-            
-            // Update hidden inputs just before submission
-            updateHiddenInputs();
-
-            // In a live environment, you would call: 
-            albumForm.submit(); 
-            
-            // For this environment, we just log and reset:
-            console.log("Form submission simulated. Data ready to be sent.");
-            
-            // Reset state
-            setTimeout(() => {
-                tracks = [];
-                document.getElementById('albumInput').value = '';
-                document.getElementById('dateSortieAlbum').value = '';
-                document.getElementById('pochette_album').value = '';
-                document.getElementById('pochettePreview').classList.add('d-none');
-                document.querySelector('.album-art-box .fa-plus').classList.remove('d-none');
-                document.getElementById('albumTitleDisplay').textContent = "Nom de l'album/single";
-                clearHiddenTrackInputs();
-                renderTrackList();
-            }, 1000);
-        }
-
-
-        // --- Initialization ---
-
-        document.addEventListener('DOMContentLoaded', function() {
-            renderTrackList();
-
-            // DataTable initialization handled by renderTrackList via initOrRefreshDataTable()
-            
-            // Correction pour s'assurer que le bouton d'ouverture réinitialise les champs avant que Bootstrap n'ouvre la modale
-            const addTrackButton = document.querySelector('[data-bs-target="#addTrackModal"]');
-            if (addTrackButton) {
-                addTrackButton.addEventListener('click', openAddTrackModal);
-            }
-
-            // Gestionnaire pour la sélection de plusieurs fichiers
-            document.getElementById('trackFiles').addEventListener('change', function(event) {
-                const files = event.target.files;
-                const metadataContainer = document.getElementById('track-metadata-container');
-                const template = document.getElementById('track-metadata-template');
-                metadataContainer.innerHTML = ''; // Vider le conteneur
-
-                Array.from(files).forEach(file => {
-                    const clone = template.content.cloneNode(true);
-                    const formElement = clone.querySelector('.p-3');
-                    
-                    clone.querySelector('.filename').textContent = file.name;
-                    
-                    // Pré-remplir le titre en retirant l'extension du fichier
-                    const defaultTitle = file.name.replace(/\.[^/.]+$/, "");
-                    clone.querySelector('.track-title').value = defaultTitle;
-
-                    formElement.file = file; // Attacher l'objet fichier à l'élément DOM
-
-                    metadataContainer.appendChild(clone);
-                });
-            });
-
-            // Ensure modal resets when hidden and animation restarts on show
-            const addTrackModalEl = document.getElementById('addTrackModal');
-            if (addTrackModalEl) {
-                addTrackModalEl.addEventListener('hidden.bs.modal', function () {
-                    const tf = addTrackModalEl.querySelector('#trackFiles');
-                    const meta = addTrackModalEl.querySelector('#track-metadata-container');
-                    const saveBtn = document.getElementById('saveTrackButton');
-                    if (tf) tf.value = '';
-                    if (meta) meta.innerHTML = '';
-                    if (saveBtn) saveBtn.disabled = false;
-                });
-
-                addTrackModalEl.addEventListener('show.bs.modal', function () {
-                    const modalContent = addTrackModalEl.querySelector('.modal-content');
-                    if (modalContent) {
-                        modalContent.classList.remove('animate-fade-in');
-                        void modalContent.offsetWidth;
-                        modalContent.classList.add('animate-fade-in');
-                    }
-                });
-            }
-        });
-    </script>
-{% endblock %}
+	/* table row should remain a table-row for DataTables alignment */
+	.track-row {
+		display: table-row;
+		vertical-align: middle;
+		border-bottom: 1px solid #f3f4f6; /* light divider */
+		cursor: pointer;
+		transition: background-color 0.15s;
+	}
+	/* cell styling to mimic previous spacing */
+	#tracklist td {
+		padding: 0.75rem 1.5rem;
+		vertical-align: middle;
+	}
+	.track-row:last-child {
+		border-bottom: none;
+	}
+	.track-row:hover {
+		background-color: #fef3f2; /* Very light background on hover */
+	}
+	.track-actions {
+		display: flex;
+		justify-content: flex-end;
+		gap: 0.5rem;
+	}
+	.track-actions i {
+		cursor: pointer;
+		transition: background-color 0.12s, color 0.12s, transform 0.12s;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 36px;
+		height: 36px;
+		border-radius: 6px;
+		color: #6b7280; /* gray-500 */
+		background: rgba(255, 255, 255, 0.6);
+		border: 1px solid rgba(0, 0, 0, 0.04);
+	}
+	.track-actions i:hover {
+		transform: translateY(-1px);
+		color: white;
+	}
+	.track-actions .fa-pen-to-square:hover {
+		background-color: var(--paaxio-green);
+	}
+	.track-actions .fa-trash:hover {
+		background-color: #ef4444; /* Red */
+	}
+	/* smaller gap for smaller screens */
+	@media(max-width: 576px) {
+		.track-actions i {
+			width: 30px;
+			height: 30px;
+		}
+	}
+
+	/* --- Action Buttons (Ajouter titre(s) / Enregistrer) --- */
+	.btn-paaxio-action {
+		background-color: var(--paaxio-salmon);
+		color: white;
+		font-weight: 700;
+		padding: 1rem 3rem;
+		border-radius: 0.5rem;
+		box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+		transition: all 0.2s;
+		border: none;
+	}
+	.btn-paaxio-action:hover {
+		background-color: var(--paaxio-salmon-dark);
+		transform: scale(1.05);
+		color: white;
+	}
+
+	/* --- Modal Styles --- */
+	.modal-backdrop {
+		background-color: rgba(0, 0, 0, 0.5);
+	}
+	.animate-fade-in {
+		animation: fadeIn 0.3s ease-out forwards;
+		opacity: 0;
+	}
+	/* If animation doesn't run for any reason, ensure modal content is visible when Bootstrap adds .show */
+	.modal.show .modal-content.animate-fade-in {
+		opacity: 1;
+		transform: none;
+	}
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+			transform: scale(0.95);
+		}
+		to {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+
+	/* --- Toast Notification --- */
+	#toast {
+		z-index: 1060; /* Higher than modals */
+	}
+</style>{% endblock %}{% block content %}
+<!-- Filigrane (Background Logo) -->
+<div class="watermark-container">
+	<div
+		class="position-relative d-flex align-items-center justify-content-center">
+		<!-- Casque -->
+		<i class="fas fa-headphones text-white"></i>
+		<!-- Rouage/Onde au centre -->
+		<i class="fas fa-gear text-white position-absolute animate-spin-slow"></i>
+	</div>
+</div>
+
+<!-- Main Content -->
+<main
+	class="flex-grow-1 position-relative z-1 d-flex flex-column align-items-center pt-5 px-4 w-100 mx-auto" style="max-width: 900px;">
+
+	<!-- Sub-Navigation Tabs -->
+	<div class="d-flex gap-3 mb-5">
+		<button class="nav-btn nav-btn-inactive">Bibliothèque</button>
+		<button class="nav-btn nav-btn-inactive">Téléchargée</button>
+		<button class="nav-btn nav-btn-active">Ajouter</button>
+	</div>
+
+	<!-- Headline -->
+	<h1 class="fs-4 fs-md-3 fw-bold text-center mb-4">
+		Vous souhaitez télécharger un album ou un single ?
+	</h1>
+
+	<form
+		id="albumForm" action="index.php?controller=album&method=ajouterAlbum" method="post" enctype="multipart/form-data" class="w-100">
+		<!-- Album Art Upload -->
+		<div class="mb-4 text-center">
+			<p class="text-center">Télécharge ci-dessous la pochette</p>
+			<label for="pochette_album" class="cursor-pointer">
+				<div class="album-art-box d-flex align-items-center justify-content-center shadow-sm">
+					<i class="fas fa-plus"></i>
+					<img id="pochettePreview" src="" alt="Aperçu de la pochette" class="d-none">
+				</div>
+			</label>
+			<input type="file" id="pochette_album" name="pochette_album" class="d-none" accept="image/png, image/jpeg, image/webp" required>
+		</div>
+
+		<!-- Album Title Display -->
+		<h2 id="albumTitleDisplay" class="fs-5 fw-bold text-center mb-3">Nom de l'album/single</h2>
+
+		<!-- Album Input -->
+		<div class="w-100 mx-auto mb-4" style="max-width: 400px;">
+			<input type="text" id="albumInput" name="titre_album" placeholder="Nom de l'album/Single" class="form-control paaxio-input" required>
+		</div>
+
+		<!-- Album Release Date -->
+		<div class="w-100 mx-auto mb-5" style="max-width: 400px;">
+			<p class="text-center">Date de sortie de l'album</p>
+			<input type="date" id="dateSortieAlbum" name="date_sortie" class="form-control paaxio-input" required>
+		</div>
+
+		<!-- Tracklist Table -->
+		<p class="text-center">Liste des titres</p>
+		<div class="w-100 mx-auto tracklist-container mb-5" style="max-width: 800px;">
+			<table id="tracklist" class="w-100" style="border-collapse: separate; border-spacing: 0 1rem;">
+				<thead>
+					<tr class="tracklist-header">
+						<th>#</th>
+						<th>Titre</th>
+						<th>Genre</th>
+						<th class="text-end">Durée</th>
+						<th></th>
+					</tr>
+				</thead>
+
+				<tbody
+					id="trackList" class="tracklist-body"><!-- Rows will be injected by JavaScript (renderTrackList) -->
+				</tbody>
+			</table>
+		</div>
+
+		<!-- Action Buttons -->
+		<div
+			class="w-100 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 mb-5 mx-auto" style="max-width: 800px;">
+			<!-- Utilisation de data-bs-toggle pour une meilleure gestion Bootstrap -->
+			<button type="button" class="btn-paaxio-action w-100 w-md-auto" data-bs-toggle="modal" data-bs-target="#addTrackModal">
+				Ajouter titre(s)
+			</button>
+
+			<button type="button" onclick="confirmSave()" class="btn-paaxio-action w-100 w-md-auto">
+				Enregistrer
+			</button>
+		</div>
+	</form>
+</main>
+
+<!-- Modale pour ajouter un titre -->
+<div id="addTrackModal" class="modal fade" tabindex="-1" aria-labelledby="addTrackModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content animate-fade-in">
+			<div class="modal-header">
+				<h5 class="modal-title" id="addTrackModalLabel">Ajouter un titre</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="mb-3">
+					<input type="file" id="trackFiles" name="trackFiles" class="form-control" accept="audio/mpeg, audio/wav, audio/ogg" multiple required>
+				</div>
+
+				<!-- Conteneur pour les champs de métadonnées des pistes -->
+				<div
+					id="track-metadata-container" class="mt-4" style="max-height: 300px; overflow-y: auto;"><!-- Les champs pour chaque piste seront injectés ici par JS -->
+				</div>
+
+				<template id="track-metadata-template">
+					<div class="p-3 mb-2 border rounded" style="background-color: #f8f9fa;">
+						<p class="fw-bold text-truncate small mb-2">Nom du fichier :
+							<span class="filename"></span>
+						</p>
+						<div class="mb-2">
+							<input type="text" class="form-control form-control-sm track-title" placeholder="Titre de la chanson" required>
+						</div>
+						<div>
+							<input type="text" class="form-control form-control-sm track-genre" placeholder="Genre musical">
+						</div>
+					</div>
+				</template>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+				<button type="button" id="saveTrackButton" class="btn btn-primary" style="background-color: var(--paaxio-salmon); border-color: var(--paaxio-salmon-dark);" onclick="addTracksToList()">Enregistrer les chansons</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modale pour modifier un titre -->
+<div id="editTrackModal" class="modal fade" tabindex="-1" aria-labelledby="editTrackModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content animate-fade-in">
+			<div class="modal-header">
+				<h5 class="modal-title" id="editTrackModalLabel">Modifier le titre</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<input type="hidden" id="editTrackIndex">
+				<div class="mb-3">
+					<label for="trackTitleEdit" class="form-label">Titre</label>
+					<input type="text" id="trackTitleEdit" placeholder="Titre de la chanson" class="form-control">
+				</div>
+				<div class="mb-3">
+					<label for="trackGenreEdit" class="form-label">Genre</label>
+					<input type="text" id="trackGenreEdit" placeholder="Genre musical" class="form-control">
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+				<button type="button" class="btn btn-primary" style="background-color: var(--paaxio-salmon); border-color: var(--paaxio-salmon-dark);" onclick="saveTrackChanges()">Enregistrer les modifications</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modale de confirmation -->
+<div id="confirmModal" class="modal fade" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-sm">
+		<div class="modal-content animate-fade-in text-center">
+			<div class="modal-header d-flex justify-content-center">
+				<h5 class="modal-title fw-bold" id="confirmModalLabel">Confirmation</h5>
+				<button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<p class="mb-4">Voulez-vous vraiment enregistrer cet album ?</p>
+				<div class="d-flex justify-content-center gap-3">
+					<button type="button" data-bs-dismiss="modal" class="btn btn-secondary px-4">Non</button>
+					<button type="button" onclick="submitForm()" class="btn btn-primary px-4" style="background-color: var(--paaxio-salmon); border-color: var(--paaxio-salmon-dark);">Oui</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Notification Toast (Hidden by default) -->
+<div id="toast" class="toast align-items-center text-white bg-dark border-0 position-fixed bottom-0 end-0 m-3" role="alert" aria-live="assertive" aria-atomic="true">
+	<div class="d-flex">
+		<div class="toast-body d-flex align-items-center">
+			<i class="fas fa-check-circle text-success me-2 fs-5"></i>
+			<span id="toastMessage">Action effectuée</span>
+		</div>
+		<button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+	</div>
+</div>{% endblock %}{% block script %}
+<script>
+	// Array to store track objects (file objects and metadata)
+let tracks = [];
+
+// --- Fonctions utilitaires ---
+
+// Puisque la durée n'est plus lue, nous utilisons une durée par défaut ou l'indication d'absence.
+function formatDuration(seconds) {
+if (seconds === 0 || isNaN(seconds)) {
+return '00:00'; // Durée par défaut
+}
+const minutes = Math.floor(seconds / 60);
+const remainingSeconds = Math.round(seconds % 60);
+return `${minutes}:${
+remainingSeconds < 10 ? '0' : ''
+}${remainingSeconds}`;
+}
+
+// --- Modals Handlers ---
+
+function openAddTrackModal() {
+// Réinitialisation des champs pour une nouvelle saisie
+const modalEl = document.getElementById('addTrackModal');
+if (! modalEl) 
+return;
+
+
+const trackFiles = modalEl.querySelector('#trackFiles');
+const metadataContainer = modalEl.querySelector('#track-metadata-container');
+const saveBtn = document.getElementById('saveTrackButton');
+
+// Clear previous selected files and metadata so the user always sees a fresh form
+if (trackFiles) 
+trackFiles.value = '';
+
+if (metadataContainer) 
+metadataContainer.innerHTML = '';
+
+if (saveBtn) 
+saveBtn.disabled = false;
+
+
+// Reset animation so it plays each time the modal opens
+const modalContent = modalEl.querySelector('.modal-content');
+if (modalContent) {
+modalContent.classList.remove('animate-fade-in');
+// Force reflow so the animation class can be re-applied
+void modalContent.offsetWidth;
+modalContent.classList.add('animate-fade-in');
+}
+}
+
+function openEditTrackModal(index) {
+const track = tracks[index];
+if (! track) 
+return;
+
+
+document.getElementById('editTrackIndex').value = index;
+document.getElementById('trackTitleEdit').value = track.title;
+document.getElementById('trackGenreEdit').value = track.genre;
+
+const modal = new bootstrap.Modal(document.getElementById('editTrackModal'));
+modal.show();
+}
+
+function closeEditTrackModal() {
+const modal = bootstrap.Modal.getInstance(document.getElementById('editTrackModal'));
+if (modal) 
+modal.hide();
+
+}
+
+function confirmSave() {
+if (tracks.length === 0) {
+showToast("Veuillez ajouter au moins un titre.", false);
+return;
+}
+const form = document.getElementById('albumForm');
+if (! form.checkValidity()) {
+form.reportValidity();
+return;
+}
+const modal = new bootstrap.Modal(document.getElementById('confirmModal'));
+modal.show();
+}
+
+function closeConfirmModal() {
+const modal = bootstrap.Modal.getInstance(document.getElementById('confirmModal'));
+if (modal) 
+modal.hide();
+
+}
+
+// --- Track List Rendering ---
+
+// DataTable instance holder
+let dataTableInstance = null;
+
+function ensureDataTable() {
+if (dataTableInstance) 
+return;
+
+try {
+const dtOptions = {
+columnDefs: [
+{
+orderable: false,
+targets: -1,
+className: 'dt-center'
+}
+],
+searching: true,
+paging: true,
+info: true,
+language: {
+url: 'https://cdn.datatables.net/plug-ins/1.13.6/i18n/fr-FR.json'
+}
+};
+if (window.jQuery && $.fn && $.fn.dataTable) {
+dataTableInstance = $('#tracklist').DataTable(dtOptions);
+} else if (typeof DataTable !== 'undefined') {
+dataTableInstance = new DataTable('#tracklist', dtOptions);
+}
+} catch (err) {
+console.warn('DataTable init failed:', err);
+dataTableInstance = null;
+}
+}
+
+function renderTrackList() {
+// If a jQuery DataTable instance exists, destroy it first to avoid column/row mismatches
+if (window.jQuery && $.fn && $.fn.dataTable && $.fn.dataTable.isDataTable && $.fn.dataTable.isDataTable('#tracklist')) {
+try {
+const inst = $('#tracklist').DataTable();
+inst.clear();
+inst.destroy();
+} catch (e) { /* ignore */
+}
+dataTableInstance = null;
+}
+// Build tbody DOM first (always) then initialize DataTable on top of it
+const trackListContainer = document.getElementById('trackList');
+trackListContainer.innerHTML = '';
+tracks.forEach((track, index) => {
+const row = document.createElement('tr');
+row.className = 'track-row';
+row.setAttribute('data-index', index);
+
+const num = document.createElement('td');
+num.textContent = (index + 1).toString().padStart(2, '0');
+
+const title = document.createElement('td');
+title.textContent = track.title;
+
+const genre = document.createElement('td');
+genre.textContent = track.genre;
+
+const duration = document.createElement('td');
+duration.className = 'text-end';
+duration.textContent = formatDuration(track.duration);
+
+const actions = document.createElement('td');
+actions.className = 'track-actions';
+actions.innerHTML = `<i class="fas fa-pen-to-square text-secondary" data-action="edit" data-index="${index}"></i><i class="fas fa-trash text-secondary ms-2" data-action="delete" data-index="${index}"></i>`;
+
+row.appendChild(num);
+row.appendChild(title);
+row.appendChild(genre);
+row.appendChild(duration);
+row.appendChild(actions);
+
+trackListContainer.appendChild(row);
+});
+
+// Now initialize DataTable on the final DOM
+if (tracks.length > 0) {
+ensureDataTable();
+} else {
+// No tracks: ensure no DataTable instance remains
+if (window.jQuery && $.fn && $.fn.dataTable && $.fn.dataTable.isDataTable && $.fn.dataTable.isDataTable('#tracklist')) {
+try {
+$('#tracklist').DataTable().destroy();
+} catch (e) { /* ignore */
+}
+dataTableInstance = null;
+}
+}
+
+// Delegated handler on table for actions (works with DataTables DOM changes)
+const tableEl = document.getElementById('tracklist');
+if (tableEl && ! tableEl.__trackHandlerAttached) {
+tableEl.addEventListener('click', function (e) {
+const target = e.target.closest('[data-action]');
+if (! target) 
+return;
+
+const action = target.getAttribute('data-action');
+const idx = parseInt(target.getAttribute('data-index'));
+if (action === 'edit') 
+openEditTrackModal(idx);
+
+if (action === 'delete') 
+deleteTrack(idx);
+
+});
+tableEl.__trackHandlerAttached = true;
+}
+}
+
+
+// CORRECTION PRINCIPALE : Ajout de la vérification de l'objet File pour éviter le crash.
+function updateHiddenInputs() {
+const inputContainer = document.getElementById('albumForm');
+// Supprime les anciens champs
+document.querySelectorAll('#albumForm input[name^="tracks"]').forEach(input => input.remove());
+
+tracks.forEach((track, index) => {
+// Vérification CRITIQUE : Si le fichier est manquant ou invalide, on saute.
+if (!track.file || !(track.file instanceof File)) {
+console.error (`Erreur: Le fichier pour la piste ${
+index + 1
+} est manquant ou invalide.`, track);
+showToast (`Erreur sur la piste ${
+index + 1
+} : Fichier audio manquant.`, false);
+return;
+}
+
+// Hidden field for the file itself
+const fileInput = document.createElement('input');
+fileInput.type = 'file';
+fileInput.name = `tracks[${index}][file]`;
+const dataTransfer = new DataTransfer();
+dataTransfer.items.add(track.file);
+fileInput.files = dataTransfer.files;
+fileInput.classList.add('d-none');
+inputContainer.appendChild(fileInput);
+
+// Hidden field for title
+const titleInput = document.createElement('input');
+titleInput.type = 'hidden';
+titleInput.name = `tracks[${index}][title]`;
+titleInput.value = track.title;
+inputContainer.appendChild(titleInput);
+
+// Hidden field for genre
+const genreInput = document.createElement('input');
+genreInput.type = 'hidden';
+genreInput.name = `tracks[${index}][genre]`;
+genreInput.value = track.genre;
+inputContainer.appendChild(genreInput);
+
+// Hidden field for duration
+const durationInput = document.createElement('input');
+durationInput.type = 'hidden';
+durationInput.name = `tracks[${index}][duration]`;
+durationInput.value = track.duration || 0;
+inputContainer.appendChild(durationInput);
+});
+}
+
+function deleteTrack(index) {
+tracks.splice(index, 1);
+renderTrackList();
+// Synchroniser les champs cachés après suppression
+updateHiddenInputs();
+showToast("Titre supprimé.", true);
+}
+
+function clearHiddenTrackInputs() {
+document.querySelectorAll('#albumForm input[name^="tracks"]').forEach(input => input.remove());
+}
+
+// --- Track Addition Logic ---
+
+function addTracksToList() {
+const metadataContainer = document.getElementById('track-metadata-container');
+const trackForms = metadataContainer.querySelectorAll('.p-3');
+let allValid = true;
+let tracksToAdd = [];
+
+if (trackForms.length === 0) {
+showToast("Veuillez sélectionner au moins un fichier audio.", false);
+return;
+}
+
+trackForms.forEach((form, i) => {
+const title = form.querySelector('.track-title').value.trim();
+const genre = form.querySelector('.track-genre').value.trim();
+const file = form.file; // Le fichier est attaché à l'élément de formulaire
+
+if (! title || ! genre) {
+allValid = false;
+}
+
+tracksToAdd.push({
+file: file, title: title, genre: genre, duration: 0 // Durée fixée
+});
+});
+
+if (! allValid) {
+showToast("Veuillez renseigner un titre ET un genre pour chaque chanson.", false);
+return;
+}
+
+tracks.push(... tracksToAdd);
+
+const modalInstance = bootstrap.Modal.getInstance(document.getElementById('addTrackModal'));
+if (modalInstance) 
+modalInstance.hide();
+
+
+renderTrackList();
+updateHiddenInputs(); // Synchroniser les champs cachés
+showToast (`${
+tracksToAdd.length
+} titre(s) ajouté(s) avec succès.`, true);
+}
+
+// --- Track Editing Logic ---
+
+function saveTrackChanges() {
+const index = parseInt(document.getElementById('editTrackIndex').value);
+const newTitle = document.getElementById('trackTitleEdit').value.trim();
+const newGenre = document.getElementById('trackGenreEdit').value.trim();
+
+if (! newTitle) {
+showToast("Le titre ne peut pas être vide.", false);
+return;
+}
+
+if (tracks[index]) {
+tracks[index].title = newTitle;
+tracks[index].genre = newGenre;
+
+renderTrackList();
+// CORRECTION/AJOUT : Synchroniser les champs cachés immédiatement
+updateHiddenInputs();
+
+// Déplacer le focus avant de fermer la modale pour éviter l'avertissement aria-hidden
+document.activeElement.blur();
+
+closeEditTrackModal();
+showToast("Modifications enregistrées.", true);
+} else {
+showToast("Erreur: Impossible de trouver la piste à modifier.", false);
+}
+}
+
+// --- Album Art Preview ---
+
+document.getElementById('pochette_album').addEventListener('change', function (event) {
+const [file] = event.target.files;
+const preview = document.getElementById('pochettePreview');
+const plusIcon = document.querySelector('.album-art-box .fa-plus');
+
+if (file) {
+preview.src = URL.createObjectURL(file);
+preview.classList.remove('d-none');
+plusIcon.classList.add('d-none');
+} else {
+preview.classList.add('d-none');
+preview.src = '';
+plusIcon.classList.remove('d-none');
+}
+});
+
+// --- Album Title Input Listener ---
+
+document.getElementById('albumInput').addEventListener('input', function (event) {
+document.getElementById('albumTitleDisplay').textContent = event.target.value || "Nom de l'album/single";
+});
+
+// --- Toast Notification Logic ---
+
+function showToast(message, isSuccess) {
+const toastElement = document.getElementById('toast');
+const toastBody = document.getElementById('toastMessage');
+const icon = toastElement.querySelector('.fa-check-circle');
+
+toastBody.textContent = message;
+
+if (isSuccess) {
+toastElement.classList.remove('bg-danger');
+toastElement.classList.add('bg-success');
+icon.classList.remove('text-danger');
+icon.classList.add('text-success');
+} else {
+toastElement.classList.remove('bg-success');
+toastElement.classList.add('bg-danger');
+icon.classList.remove('text-success');
+icon.classList.add('text-danger');
+}
+
+const toast = new bootstrap.Toast(toastElement);
+toast.show();
+}
+
+
+// --- Final Form Submission ---
+
+function submitForm() {
+closeConfirmModal();
+
+const albumForm = document.getElementById('albumForm');
+
+// Update hidden inputs just before submission
+updateHiddenInputs();
+
+// In a live environment, you would call:
+albumForm.submit();
+
+// For this environment, we just log and reset:
+console.log("Form submission simulated. Data ready to be sent.");
+
+// Reset state
+setTimeout(() => {
+tracks = [];
+document.getElementById('albumInput').value = '';
+document.getElementById('dateSortieAlbum').value = '';
+document.getElementById('pochette_album').value = '';
+document.getElementById('pochettePreview').classList.add('d-none');
+document.querySelector('.album-art-box .fa-plus').classList.remove('d-none');
+document.getElementById('albumTitleDisplay').textContent = "Nom de l'album/single";
+clearHiddenTrackInputs();
+renderTrackList();
+}, 1000);
+}
+
+
+// --- Initialization ---
+
+document.addEventListener('DOMContentLoaded', function () {
+renderTrackList();
+
+// DataTable initialization handled by renderTrackList via initOrRefreshDataTable()
+
+// Correction pour s'assurer que le bouton d'ouverture réinitialise les champs avant que Bootstrap n'ouvre la modale
+const addTrackButton = document.querySelector('[data-bs-target="#addTrackModal"]');
+if (addTrackButton) {
+addTrackButton.addEventListener('click', openAddTrackModal);
+}
+
+// Gestionnaire pour la sélection de plusieurs fichiers
+document.getElementById('trackFiles').addEventListener('change', function (event) {
+const files = event.target.files;
+const metadataContainer = document.getElementById('track-metadata-container');
+const template = document.getElementById('track-metadata-template');
+metadataContainer.innerHTML = ''; // Vider le conteneur
+
+Array.from(files).forEach(file => {
+const clone = template.content.cloneNode(true);
+const formElement = clone.querySelector('.p-3');
+
+clone.querySelector('.filename').textContent = file.name;
+
+// Pré-remplir le titre en retirant l'extension du fichier
+const defaultTitle = file.name.replace(/\.[^/.]+$/, "");
+clone.querySelector('.track-title').value = defaultTitle;
+
+formElement.file = file; // Attacher l'objet fichier à l'élément DOM
+
+metadataContainer.appendChild(clone);
+});
+});
+
+// Ensure modal resets when hidden and animation restarts on show
+const addTrackModalEl = document.getElementById('addTrackModal');
+if (addTrackModalEl) {
+addTrackModalEl.addEventListener('hidden.bs.modal', function () {
+const tf = addTrackModalEl.querySelector('#trackFiles');
+const meta = addTrackModalEl.querySelector('#track-metadata-container');
+const saveBtn = document.getElementById('saveTrackButton');
+if (tf) 
+tf.value = '';
+
+if (meta) 
+meta.innerHTML = '';
+
+if (saveBtn) 
+saveBtn.disabled = false;
+
+});
+
+addTrackModalEl.addEventListener('show.bs.modal', function () {
+const modalContent = addTrackModalEl.querySelector('.modal-content');
+if (modalContent) {
+modalContent.classList.remove('animate-fade-in');
+void modalContent.offsetWidth;
+modalContent.classList.add('animate-fade-in');
+}
+});
+}
+});
+</script>{% endblock %}
