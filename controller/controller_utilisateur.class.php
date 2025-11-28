@@ -79,7 +79,7 @@ class ControllerUtilisateur extends Controller
             // session
             $_SESSION['user_email'] = $utilisateur->getEmailUtilisateur();
             $_SESSION['user_pseudo'] = $utilisateur->getPseudoUtilisateur();
-            $_SESSION['user_role'] = $utilisateur->getRoleUtilisateur()?->getTypeRole();
+            $_SESSION['user_role'] = $utilisateur->getRoleUtilisateur()?->getRoleEnum();
             $_SESSION['user_logged_in'] = true;
 
             // Log connection

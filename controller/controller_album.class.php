@@ -66,7 +66,7 @@ class ControllerAlbum extends Controller
     public function afficherFormulaireAjout()
     {
         // Vérifier si l'utilisateur est un artiste connecté
-        if (!isset($_SESSION['user_logged_in']) || !isset($_SESSION['user_role']) || ($_SESSION['user_role'] != 2 && $_SESSION['user_role'] !== 'artiste')) {
+        if (!isset($_SESSION['user_logged_in']) || !isset($_SESSION['user_role']) || ($_SESSION['user_role'] != RoleEnum::Artiste)) {
             header('Location: /?controller=home&method=afficher');
             exit();
         }
@@ -104,7 +104,7 @@ class ControllerAlbum extends Controller
     public function ajouterChansons()
     {
         // Vérifier si l'utilisateur est un artiste
-        if (!isset($_SESSION['user_role']) || ($_SESSION['user_role'] != 2 && $_SESSION['user_role'] !== 'artiste')) {
+        if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== RoleEnum::Artiste) {
             echo "Accès non autorisé.";
             return;
         }
@@ -179,7 +179,7 @@ class ControllerAlbum extends Controller
 
     public function ajouterAlbum()
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_SESSION['user_role']) || ($_SESSION['user_role'] != 2 && $_SESSION['user_role'] !== 'artiste')) {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_SESSION['user_role']) || $_SESSION['user_role'] != RoleEnum::Artiste) {
             header('Location: /?controller=home&method=afficher');
             return;
         }
@@ -338,7 +338,7 @@ class ControllerAlbum extends Controller
     public function modifierChanson()
     {
         // Sécurité : vérifier la méthode, la session et le rôle
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_SESSION['user_logged_in']) || ($_SESSION['user_role'] != 2 && $_SESSION['user_role'] != 'artiste')) {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_SESSION['user_logged_in']) || $_SESSION['user_role'] != RoleEnum::Artiste) {
             header('Location: /?controller=home&method=afficher');
             exit();
         }

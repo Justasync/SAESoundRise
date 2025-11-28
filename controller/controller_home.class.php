@@ -31,7 +31,7 @@ class ControllerHome extends Controller
         }
 
         // Transformation du rôle utilisateur de string vers enum Role
-        switch (RoleEnum::from($_SESSION['user_role'])) {
+        switch ($_SESSION['user_role']) {
             case RoleEnum::Artiste:
                 $this->artisteDashboard();
                 break;
