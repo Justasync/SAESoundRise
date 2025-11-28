@@ -193,7 +193,7 @@ class UtilisateurDAO
     {
         $this->pdo = $pdo;
     }
-    
+
     public function findAllArtistes(string $excludeEmail): array
     {
         // First, get the current user to find their genre
@@ -204,10 +204,10 @@ class UtilisateurDAO
 
         // Prioritize artists from the same genre if the current user has a genre
         if ($genreId) {
-            $sql = "SELECT u.* 
+            $sql = "SELECT u.*
                     FROM utilisateur u
                     JOIN role r ON u.roleUtilisateur = r.idRole
-                    WHERE r.typeRole = 'artiste' 
+                    WHERE r.typeRole = 'artiste'
                       AND u.emailUtilisateur != :excludeEmail
                       AND u.genreUtilisateur = :genreId
                     ORDER BY u.pointsDeRenommeeArtiste DESC, u.dateInscriptionUtilisateur DESC
@@ -227,10 +227,10 @@ class UtilisateurDAO
         }
 
         // Fallback: if no artists in the same genre, or user has no genre, suggest most popular artists
-        $sql = "SELECT u.* 
+        $sql = "SELECT u.*
                 FROM utilisateur u
                 JOIN role r ON u.roleUtilisateur = r.idRole
-                WHERE r.typeRole = 'artiste' 
+                WHERE r.typeRole = 'artiste'
                   AND u.emailUtilisateur != :excludeEmail
                 ORDER BY u.pointsDeRenommeeArtiste DESC, u.dateInscriptionUtilisateur DESC
                 LIMIT 10";

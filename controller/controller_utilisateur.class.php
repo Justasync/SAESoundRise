@@ -340,4 +340,32 @@ class ControllerUtilisateur extends Controller
             'albums' => $albums,
         ]);
     }
+
+    public function afficherProfilArtiste()
+    {
+        $email = $_GET['email'] ?? null;
+
+        if (!$email) {
+            header('Location: /?controller=home&method=afficher');
+            exit();
+        }
+
+        $utilisateurDAO = new UtilisateurDAO($this->getPDO());
+        $utilisateur = $utilisateurDAO->find($email);
+
+        if (!$utilisateur) {
+            header('Location: /?controller=home&method=afficher');
+            exit();
+        }
+
+        $albumDAO = new AlbumDAO($this->getPDO());
+        $albums = $albumDAO->findAllByArtistEmail($email);
+
+        $template = $this->getTwig()->load('artiste_profil.html.twig');
+        echo $template->render([
+            'session' => $_SESSION,
+            'utilisateur' => $utilisateur,
+            'albums' => $albums
+        ]);
+    }
 }

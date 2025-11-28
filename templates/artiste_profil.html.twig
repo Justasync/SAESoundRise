@@ -1,0 +1,50 @@
+{# filepath: c:\wamp64\www\SAEPaaxio\views\profil_artiste.html.twig #}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Profil de {{ utilisateur.getPseudoUtilisateur() ?? utilisateur.getNomUtilisateur() }}</title>
+</head>
+<body>
+    <section class="profil-artiste">
+        <header>
+            <div class="profil-image">
+                {% set photo = utilisateur.geturlPhotoUtilisateur() %}
+                {% if photo %}
+                    <img src="{{ photo }}" alt="Photo de profil de {{ utilisateur.getPseudoUtilisateur() }}">
+                {% else %}
+                    <img src="/assets/images/default_profile.png" alt="Photo de profil par défaut">
+                {% endif %}
+            </div>
+
+            <div class="profil-infos">
+                <h1>{{ utilisateur.getPseudoUtilisateur() ?? utilisateur.getNomUtilisateur() }}</h1>
+                <p>{{ utilisateur.getDescriptionUtilisateur() ?: 'Aucune description disponible.' }}</p>
+            </div>
+        </header>
+
+        <section class="albums-artiste">
+            <h2>Albums</h2>
+
+            {% if albums is empty %}
+                <p>Cet artiste n’a pas encore publié d’albums.</p>
+            {% else %}
+                <ul>
+                    {% for album in albums %}
+                        <li>
+                            <h3>{{ album.getTitreAlbum() }}</h3>
+                            {# adapte les getters selon ta classe Album #}
+                            {% if album.getImageCouverture() is defined and album.getImageCouverture() %}
+                                <img src="{{ album.getImageCouverture() }}" alt="Couverture de {{ album.getTitreAlbum() }}">
+                            {% endif %}
+                            {% if album.getDateSortie() is defined and album.getDateSortie() %}
+                                <p>Date de sortie : {{ album.getDateSortie()|date('d/m/Y') }}</p>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </section>
+    </section>
+</body>
+</html>
