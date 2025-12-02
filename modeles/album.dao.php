@@ -47,7 +47,7 @@ class AlbumDAO
 
     public function findAllByArtistEmail(string $email): array
     {
-        $sql = "SELECT a.* 
+        $sql = "SELECT a.*
                 FROM album a
                 JOIN utilisateur u ON a.artisteAlbum = u.pseudoUtilisateur
                 WHERE u.emailUtilisateur = :email
@@ -96,7 +96,7 @@ class AlbumDAO
         return $albums;
     }
 
-   
+
 
 
 

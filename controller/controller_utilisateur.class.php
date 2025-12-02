@@ -343,29 +343,35 @@ class ControllerUtilisateur extends Controller
 
     public function afficherProfilArtiste()
     {
-        $email = $_GET['email'] ?? null;
+        // On récupère le pseudo dans la query string
+        $pseudo = $_GET['pseudo'] ?? null;
 
-        if (!$email) {
+        if (!$pseudo) {
             header('Location: /?controller=home&method=afficher');
             exit();
         }
 
         $utilisateurDAO = new UtilisateurDAO($this->getPDO());
-        $utilisateur = $utilisateurDAO->find($email);
+        $albumDAO = new AlbumDAO($this->getPDO());
+
+        // Récupérer l'artiste à partir de son pseudo
+        $utilisateur = $utilisateurDAO->findByPseudo($pseudo);
 
         if (!$utilisateur) {
             header('Location: /?controller=home&method=afficher');
             exit();
         }
 
-        $albumDAO = new AlbumDAO($this->getPDO());
-        $albums = $albumDAO->findAllByArtistEmail($email);
+        // Récupérer les albums de l'artiste (via son email stocké dans l'entité)
+        $emailArtiste = $utilisateur->getEmailUtilisateur();
+
+        $albums = $albumDAO->findByArtiste($utilisateur->getPseudoUtilisateur());
 
         $template = $this->getTwig()->load('artiste_profil.html.twig');
         echo $template->render([
-            'session' => $_SESSION,
+            'session'     => $_SESSION,
             'utilisateur' => $utilisateur,
-            'albums' => $albums
+            'albums'      => $albums
         ]);
     }
 }

@@ -21,6 +21,18 @@ class UtilisateurDAO
         return null;
     }
 
+    public function findByPseudo(?string $pseudoUtilisateur): ?Utilisateur
+    {
+        $sql = "SELECT * FROM utilisateur WHERE pseudoUtilisateur = :pseudoUtilisateur";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':pseudoUtilisateur' => $pseudoUtilisateur]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($row) {
+            return $this->hydrate($row);
+        }
+        return null;
+    }
+
     public function existsByEmail(string $emailUtilisateur): bool
     {
         $sql = "SELECT COUNT(*) FROM utilisateur WHERE emailUtilisateur = :emailUtilisateur";
