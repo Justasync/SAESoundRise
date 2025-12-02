@@ -313,11 +313,11 @@ class ControllerAlbum extends Controller
 
         // Choisir le template en fonction du rôle
         // 2 pour artiste, 1 (ou autre) pour auditeur
-        if ($userRole == 'artiste' && $album->getArtisteAlbum() === $_SESSION['user_pseudo']) {
-            // C'est un artiste et il regarde son propre album
+        if ($userRole === RoleEnum::Artiste && $album->getArtisteAlbum() === $_SESSION['user_pseudo']) {
+            // Si l'utilisateur est l'artiste propriétaire de l'album, il voit la page d'édition.
             $template = 'album_details_artiste.html.twig';
         } else {
-            // C'est un auditeur ou un artiste regardant l'album de quelqu'un d'autre
+            // Sinon (auditeur, ou artiste regardant l'album d'un autre), il voit la page de lecture.
             $template = 'album_details_auditeur.html.twig';
         }
 
