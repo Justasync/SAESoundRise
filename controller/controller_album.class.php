@@ -101,81 +101,7 @@ class ControllerAlbum extends Controller
         ]);
     }
 
-    public function ajouterChansons()
-    {
-        // Vérifier si l'utilisateur est un artiste
-        if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== RoleEnum::Artiste) {
-            echo "Accès non autorisé.";
-            return;
-        }
 
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_FILES['chansons'])) {
-            header('Location: /?controller=album&method=afficherFormulaireAjout');
-            return;
-        }
-
-        $fichiersChansons = $_FILES['chansons'];
-        $chansonsValides = [];
-        $uploadDir = 'uploads/musique/';
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0777, true);
-        }
-
-        // Inclure getID3
-        require_once 'vendor/james-heinrich/getid3/getid3/getid3.php';
-        $getID3 = new getID3;
-
-        foreach ($fichiersChansons['tmp_name'] as $index => $tmpName) {
-            if ($fichiersChansons['error'][$index] === UPLOAD_ERR_OK) {
-                $nomFichier = basename($fichiersChansons['name'][$index]);
-                $cheminCible = $uploadDir . uniqid() . '-' . $nomFichier;
-
-                if (move_uploaded_file($tmpName, $cheminCible)) {
-                    $infoFichier = $getID3->analyze($cheminCible);
-                    getid3_lib::CopyTagsToComments($infoFichier);
-
-                    $commentaires = $infoFichier['comments_html'] ?? [];
-                    $titre = $commentaires['title'][0] ?? pathinfo($nomFichier, PATHINFO_FILENAME);
-                    $genre = $commentaires['genre'][0] ?? '';
-                    $duree = (int)($infoFichier['playtime_seconds'] ?? 0);
-
-                    $chansonsValides[] = [
-                        'chemin' => $cheminCible,
-                        'titre' => $titre,
-                        'genre' => $genre,
-                        'duree' => $duree,
-                        // On garde les infos complètes au cas où
-                        'info' => $infoFichier
-                    ];
-                }
-            }
-        }
-
-        $managerAlbum = new AlbumDAO($this->getPdo());
-        $managerChanson = new ChansonDAO($this->getPdo());
-        $managerGenre = new GenreDAO($this->getPdo());
-
-        if (count($chansonsValides) > 0) {
-            $defaultAlbumTitle = '';
-            if (count($chansonsValides) === 1) {
-                $defaultAlbumTitle = $chansonsValides[0]['titre'];
-            }
-            $template = $this->getTwig()->load('album_ajout.html.twig');
-            echo $template->render([
-                'page' => [
-                    'title' => "Créer un nouvel album",
-                    'name' => "album_ajout",
-                    'description' => "Veuillez fournir les détails de l'album/single."
-                ],
-                'session' => $_SESSION,
-                'chansons_televersees' => $chansonsValides,
-                'show_album_modal' => true,
-                'default_album_title' => $defaultAlbumTitle
-            ]);
-        } else {
-            echo "Aucune chanson valide n'a été téléversée.";
-        }
-    }
 
     public function ajouterAlbum()
     {
@@ -208,7 +134,7 @@ class ControllerAlbum extends Controller
 
             // Gérer la pochette de l'album
             if (isset($_FILES['pochette_album']) && $_FILES['pochette_album']['error'] === UPLOAD_ERR_OK) {
-                $uploadDir = 'assets/images/albums/';
+                $uploadDir = 'assets' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'albums' . DIRECTORY_SEPARATOR;
                 if (!is_dir($uploadDir)) {
                     mkdir($uploadDir, 0777, true);
                 }
@@ -219,7 +145,7 @@ class ControllerAlbum extends Controller
                 }
             } else {
                 // Fournir une URL de pochette par défaut si aucune n'est téléchargée
-                $album->seturlPochetteAlbum('assets/images/albums/default.png');
+                $album->seturlPochetteAlbum('assets' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'albums' . DIRECTORY_SEPARATOR . 'default.png');
             }
             $idAlbum = $managerAlbum->create($album);
             $albumCree = $managerAlbum->find($idAlbum);
@@ -227,7 +153,7 @@ class ControllerAlbum extends Controller
 
         // Gérer les chansons
         if (isset($_POST['tracks']) && isset($_FILES['tracks'])) {
-            $uploadDirMusique = 'assets/audio/';
+            $uploadDirMusique = 'assets' . DIRECTORY_SEPARATOR . 'audio' . DIRECTORY_SEPARATOR;
             // Inclure getID3 pour analyser les fichiers audio
             require_once 'vendor/james-heinrich/getid3/getid3/getid3.php';
             $getID3 = new getID3;
@@ -375,4 +301,5 @@ class ControllerAlbum extends Controller
         header('Location: /?controller=album&method=afficherDetails&idAlbum=' . $idAlbum . '&success_update=1');
         exit();
     }
+
 }
