@@ -78,7 +78,7 @@ class ControllerAlbum extends Controller
         if ($idAlbum) {
             $albumExistant = $managerAlbum->find((int)$idAlbum);
             // Vérifier que l'album appartient bien à l'artiste connecté
-            if (!$albumExistant || $albumExistant->getArtisteAlbum() !== $_SESSION['user_pseudo']) {
+            if (!$albumExistant || $albumExistant->getArtisteAlbum() !== $_SESSION['user_email']) {
                 header('Location: /?controller=home&method=afficher');
                 exit();
             }
@@ -86,7 +86,7 @@ class ControllerAlbum extends Controller
 
         // Récupérer les albums de l'artiste
         $managerAlbum = new AlbumDAO($this->getPdo());
-        $albumsArtiste = $managerAlbum->findByArtiste($_SESSION['user_email']);
+        $albumsArtiste = $managerAlbum->findAllByArtistEmail($_SESSION['user_email']);
 
         $template = $this->getTwig()->load('album_ajout.html.twig');
         echo $template->render([
@@ -119,7 +119,7 @@ class ControllerAlbum extends Controller
         if ($idAlbumExistant) {
             // Ajout de chansons à un album existant
             $albumCree = $managerAlbum->find((int)$idAlbumExistant);
-            if (!$albumCree || $albumCree->getArtisteAlbum() !== $_SESSION['user_pseudo']) {
+            if (!$albumCree || $albumCree->getArtisteAlbum() !== $_SESSION['user_email']) {
                 // Gérer l'erreur : l'album n'existe pas ou n'appartient pas à l'utilisateur
                 header('Location: /?controller=home&method=afficher');
                 return;
@@ -130,7 +130,7 @@ class ControllerAlbum extends Controller
             $album = new Album();
             $album->setTitreAlbum($_POST['titre_album'] ?? '');
             $album->setDateSortieAlbum($_POST['date_sortie'] ?? '');
-            $album->setArtisteAlbum($_SESSION['user_pseudo']);
+            $album->setArtisteAlbum($_SESSION['user_email']);
 
             // Gérer la pochette de l'album
             if (isset($_FILES['pochette_album']) && $_FILES['pochette_album']['error'] === UPLOAD_ERR_OK) {
@@ -239,7 +239,7 @@ class ControllerAlbum extends Controller
 
         // Choisir le template en fonction du rôle
         // 2 pour artiste, 1 (ou autre) pour auditeur
-        if ($userRole === RoleEnum::Artiste && $album->getArtisteAlbum() === $_SESSION['user_pseudo']) {
+        if ($userRole === RoleEnum::Artiste && $album->getArtisteAlbum() === $_SESSION['user_email']) {
             // Si l'utilisateur est l'artiste propriétaire de l'album, il voit la page d'édition.
             $template = 'album_details_artiste.html.twig';
         } else {
@@ -282,7 +282,7 @@ class ControllerAlbum extends Controller
         $chanson = $chansonDAO->findId((int)$idChanson);
 
         // Vérifier que la chanson existe et appartient bien à un album de l'artiste
-        if (!$chanson || $chanson->getAlbumChanson()->getArtisteAlbum() !== $_SESSION['user_pseudo']) {
+        if (!$chanson || $chanson->getAlbumChanson()->getArtisteAlbum() !== $_SESSION['user_email']) {
             header('Location: /?controller=home&method=afficher&error=unauthorized');
             exit();
         }
@@ -292,7 +292,7 @@ class ControllerAlbum extends Controller
 
         $genreDAO = new GenreDAO($this->getPDO());
         $nomGenre = $_POST['genre_chanson'] ?? '';
-        $genre = $genreDAO->findOrCreateByName($nomGenre); // Méthode à créer dans GenreDAO
+        $genre = $genreDAO->findOrCreateByName($nomGenre);
         $chanson->setGenreChanson($genre);
 
         $chansonDAO->update($chanson); // Méthode à créer dans ChansonDAO
