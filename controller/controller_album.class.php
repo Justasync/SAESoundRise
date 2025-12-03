@@ -275,9 +275,6 @@ public function ajouterAlbum()
             $maxFileSize = 50 * 1024 * 1024; // 50MB
             $allowedTypes = ['audio/mpeg', 'audio/mp3'];
 
-            require_once 'vendor/james-heinrich/getid3/getid3/getid3.php';
-            $getID3 = new getID3;
-
             if (!is_dir($uploadDirMusique)) {
                 mkdir($uploadDirMusique, 0777, true);
             }
@@ -314,8 +311,8 @@ public function ajouterAlbum()
                     continue;
                 }
 
-                $infoFichier = $getID3->analyze($cheminCible);
-                $duree = (int)($infoFichier['playtime_seconds'] ?? 0);
+                // La durée n'est plus extraite des métadonnées
+                $duree = 0;
 
                 $chanson = new Chanson();
                 $chanson->setTitreChanson($chansonData['title']);
