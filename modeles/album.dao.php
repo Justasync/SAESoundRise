@@ -24,9 +24,10 @@ class AlbumDAO
     {
         $sql = "SELECT * FROM album WHERE idAlbum = :id";
         $pdoStatement = $this->pdo->prepare($sql);
-        $pdoStatement->execute(array(
+        // Correction mineure : utilisation de la syntaxe [] au lieu de array()
+        $pdoStatement->execute([
             ':id' => $id
-        ));
+        ]);
 
         $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
         $tableau = $pdoStatement->fetch();
@@ -34,9 +35,16 @@ class AlbumDAO
         return $album;
     }
 
+    /**
+     * Récupère les albums d'un artiste en utilisant son pseudo.
+     * Correction: Nécessite une jointure car artisteAlbum stocke l'email, pas le pseudo.
+     */
     public function findByArtiste(string $artistePseudo): array
     {
-        $sql = "SELECT * FROM album WHERE artisteAlbum = :artistePseudo ORDER BY dateSortieAlbum DESC";
+        $sql = "SELECT a.* FROM album a
+                JOIN utilisateur u ON a.artisteAlbum = u.emailUtilisateur -- CORRECTION : Jointure sur l'email
+                WHERE u.pseudoUtilisateur = :artistePseudo 
+                ORDER BY a.dateSortieAlbum DESC";
         $pdoStatement = $this->pdo->prepare($sql);
         $pdoStatement->execute([':artistePseudo' => $artistePseudo]);
         $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
@@ -45,11 +53,13 @@ class AlbumDAO
         return $albums;
     }
 
+    /**
+     * Récupère les albums d'un artiste en utilisant son email.
+     */
     public function findAllByArtistEmail(string $email): array
     {
-        $sql = "SELECT a.* 
-                FROM album a
-                JOIN utilisateur u ON a.artisteAlbum = u.pseudoUtilisateur
+        $sql = "SELECT a.* FROM album a
+                JOIN utilisateur u ON a.artisteAlbum = u.emailUtilisateur -- CORRECTION : Jointure sur l'email (était sur u.pseudoUtilisateur)
                 WHERE u.emailUtilisateur = :email
                 ORDER BY a.dateSortieAlbum DESC";
         $pdoStatement = $this->pdo->prepare($sql);
@@ -95,8 +105,7 @@ class AlbumDAO
         }
         return $albums;
     }
-    // Dans un fichier comme modeles/album.dao.php
-
+    
     /**
      * Récupère les albums les plus écoutés.
      *
@@ -113,7 +122,7 @@ class AlbumDAO
                     SUM(c.nbEcouteChanson) as totalEcoutes
                 FROM album a
                 JOIN chanson c ON a.idAlbum = c.albumChanson
-                JOIN utilisateur u ON a.artisteAlbum = u.pseudoUtilisateur
+                JOIN utilisateur u ON a.artisteAlbum = u.emailUtilisateur -- CORRECTION : Jointure sur l'email (était sur u.pseudoUtilisateur)
                 GROUP BY a.idAlbum
                 ORDER BY totalEcoutes DESC
                 LIMIT :limit";
@@ -128,7 +137,7 @@ class AlbumDAO
 
             foreach ($results as $row) {
                 $album = $this->hydrate($row);
-                // Utiliser le setter pour définir le pseudo de l'artiste
+                // Le setter setPseudoArtiste doit exister dans votre classe Album
                 $album->setPseudoArtiste($row['pseudoUtilisateur']);
                 $albums[] = $album;
             }
