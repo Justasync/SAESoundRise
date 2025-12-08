@@ -11,6 +11,8 @@ class Chanson
     private Genre|null $genreChanson;
     private string|null $emailPublicateur;
     private string|null $urlAudioChanson;
+    private bool $isLiked = false;
+    private ?DateTime $dateLike = null;
 
 
     //Constructeur
@@ -178,7 +180,7 @@ class Chanson
     /**
      * Get the value of urlAudioChanson
      */
-    public function geturlAudioChanson(): string
+    public function getUrlAudioChanson(): ?string
     {
         return $this->urlAudioChanson;
     }
@@ -187,8 +189,40 @@ class Chanson
      * Set the value of urlAudioChanson
      *
      */
-    public function seturlAudioChanson(?string $urlAudioChanson): void
+    public function setUrlAudioChanson(?string $urlAudioChanson): void
     {
         $this->urlAudioChanson = $urlAudioChanson;
+    }
+
+    /**
+     * Get the value of isLiked
+     */
+    public function getIsLiked(): bool
+    {
+        return $this->isLiked;
+    }
+    /**
+     * Set the value of isLiked
+     *
+     */
+    public function setIsLiked(bool $isLiked): void
+    {
+        $this->isLiked = $isLiked;
+    }
+
+    /**
+     * Get the value of dateLike
+     */
+    public function getDateLike(): ?DateTime
+    {
+        return $this->dateLike;
+    }
+    /**
+     * Set the value of dateLike
+     *
+     */
+    public function setDateLike(?DateTime $dateLike): void
+    {
+        $this->dateLike = $dateLike;
     }
 }
