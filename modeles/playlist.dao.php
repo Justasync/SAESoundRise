@@ -21,7 +21,7 @@ class PlaylistDAO {
 
     public function find(int $id): playlist
     {
-        $sql = "SELECT * FROM playlist WHERE idplaylist = :id";
+        $sql = "SELECT * FROM playlist WHERE idPlaylist = :id";
         $pdoStatement = $this->pdo->prepare($sql);
         $pdoStatement->execute(array(
             ':id' => $id
@@ -39,7 +39,7 @@ class PlaylistDAO {
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([':email' => $email]);
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            return $results;
+            return $this->hydrateMany($results);
         } else {
             return [];
         }
@@ -72,6 +72,29 @@ class PlaylistDAO {
             $playlists[] = $this->hydrate($tableauAssoc);
         }
         return $playlists;
+    }
+
+    public function getChansonsByPlaylist(int $idPlaylist): array
+    {
+        $sql = "
+            SELECT c.* 
+            FROM chanson c
+            JOIN chansonPlaylist cp ON c.idChanson = cp.idChanson
+            WHERE cp.idPlaylist = :idPlaylist
+            ORDER BY cp.positionChanson ASC
+        ";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':idPlaylist' => $idPlaylist]);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $chansons = [];
+        foreach ($results as $row) {
+            $chansonDAO = new ChansonDAO($this->pdo);
+            $chansons[] = $chansonDAO->hydrate($row);
+        }
+
+        return $chansons;
     }
 
     /**
