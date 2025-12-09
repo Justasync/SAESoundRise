@@ -211,7 +211,7 @@
 											<i class="bi bi-play-fill track-play-icon" style="color: rgba(255,255,255,0.7); font-size: 1.2rem;"></i>
 										</button>
 										<!-- Bouton like -->
-                                        <button title="Aimer la musique" class="btn btn-sm btn-link p-1 like-btn" data-id="{{ chanson.getIdChanson() }}">
+                                        <button title="Aimer la musique" class="btn btn-sm btn-link p-1 like-btn" data-id="{{ chanson.getIdChanson() }}" onclick="toggleLikeInline(event, {{ chanson.getIdChanson() }})">
                                             <i class="bi {% if chanson.getIsLiked() %}bi-heart-fill text-danger{% else %}bi-heart{% endif %}" style="font-size: 1rem;"></i>
                                         </button>
 									</td>
@@ -235,7 +235,7 @@
 
 {% block script %}
     {{ parent() }}
-    
+    <script src="/assets/js/like-handler.js"></script>
     <script>
         const audioPlayer = document.getElementById('audio-player');
         const playPauseIcon = document.getElementById('play-pause-icon');
@@ -259,18 +259,17 @@
         // 1. CRÉATION DYNAMIQUE DE LA PLAYLIST À PARTIR DES DONNÉES TWIG
         const playlist = [];
         {% for chanson in chansons %}
-            const audioUrl = "{{ chanson.getUrlAudioChanson()|default('') }}";
-            console.log("Chanson: {{ chanson.getTitreChanson() }}, URL: " + audioUrl);
-            if (audioUrl && audioUrl.trim() !== '') {
+            {% set url = chanson.getUrlAudioChanson()|default('') %}
+            {% if url %}
                 playlist.push({
                     title: "{{ chanson.getTitreChanson()|e('js') }}",
-                    src: audioUrl, 
+                    src: "{{ url|e('js') }}", 
                     durationFormatted: "{{ (chanson.getDureeChanson() / 60)|round(0, 'floor') }}:{{ (chanson.getDureeChanson() % 60) < 10 ? '0' }}{{ chanson.getDureeChanson() % 60 }}",
                     id: {{ chanson.getIdChanson() }}
                 });
-            } else {
-                console.warn("Chanson {{ chanson.getTitreChanson() }} n'a pas d'URL audio valide");
-            }
+            {% else %}
+                console.warn("Chanson {{ chanson.getTitreChanson()|e('js') }} n'a pas d'URL audio valide");
+            {% endif %}
         {% endfor %}
 
         /**
@@ -545,36 +544,53 @@
             handleVolumeChange();
         });
 
-		// Initialisation du volume au chargement de la page
-		handleVolumeChange();
+        // Initialisation du volume au chargement de la page
+        handleVolumeChange();
 
-        document.querySelectorAll('.like-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation(); // évite de déclencher le clic sur la ligne
-                const chansonId = this.dataset.id;
-                const row = this.closest('tr'); // récupère la ligne de la table
-                const icon = this.querySelector('i');
+        // Log d'initialisation pour vérifier que le script est chargé
+        console.log('chanson_album script loaded');
 
-                fetch('/?controller=musique_likee&method=toggleLike', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: `idChanson=${chansonId}`
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.liked) {
-                        // coeur rempli + rouge
-                        icon.classList.remove('bi-heart');
-                        icon.classList.add('bi-heart-fill');
-                        icon.classList.add('text-danger');
-                    } else {
-                        // coeur vide + supprime rouge
-                        icon.classList.remove('bi-heart-fill');
-                        icon.classList.add('bi-heart');
-                        icon.classList.remove('text-danger');
+        // Délégation d'événements pour les boutons like (robuste et fonctionne pour éléments dynamiques)
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('.like-btn');
+            if (!btn) return;
 
-                        // Supprime la ligne de la table
-                        row.remove();
+            e.stopPropagation(); // évite de déclencher le clic sur la ligne
+            const chansonId = btn.dataset.id;
+            const row = btn.closest('tr'); // récupère la ligne de la table
+            const icon = btn.querySelector('i');
+
+            fetch('/?controller=chanson&method=toggleLike', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `idChanson=${encodeURIComponent(chansonId)}`
+            })
+            .then(async (res) => {
+                const text = await res.text();
+                try {
+                    const data = JSON.parse(text);
+                    return { ok: res.ok, status: res.status, data };
+                } catch (err) {
+                    console.error('Réponse non JSON du serveur pour toggleLike:', text);
+                    throw new Error('Réponse non JSON du serveur');
+                }
+            })
+            .then(({ ok, status, data }) => {
+                console.log('toggleLike response', status, data);
+                if (data.liked) {
+                    // coeur rempli + rouge
+                    icon.classList.remove('bi-heart');
+                    icon.classList.add('bi-heart-fill');
+                    icon.classList.add('text-danger');
+                } else {
+                    // coeur vide + supprime rouge
+                    icon.classList.remove('bi-heart-fill');
+                    icon.classList.add('bi-heart');
+                    icon.classList.remove('text-danger');
+
+                    // Supprime la ligne uniquement si on est sur la page des musiques likées
+                    if (window.location.search.includes('controller=utilisateur') && window.location.search.includes('method=afficherMesLikes')) {
+                        if (row) row.remove();
 
                         // Supprime la chanson de la playlist JS
                         const indexInPlaylist = playlist.findIndex(track => track.id == chansonId);
@@ -604,8 +620,11 @@
                         }
                     }
                 })
-                .catch(err => console.error('Erreur like:', err));
-            });
+                .catch(err => {
+                    console.error('Erreur like:', err);
+                    // Affiche une erreur visuelle minimale pour l'utilisateur
+                    if (icon) icon.classList.add('text-muted');
+                });
         });
 
     </script>

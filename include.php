@@ -47,6 +47,8 @@ require_once 'modeles/utilisateur.class.php';
 require_once 'modeles/utilisateur.dao.php';
 require_once 'modeles/newsletter.class.php';
 require_once 'modeles/newsletter.dao.php';
+require_once 'modeles/chanson_likee.class.php';
+require_once 'modeles/chanson_likee.dao.php';
 require_once 'modeles/chanson.class.php';
 require_once 'modeles/chanson.dao.php';
 require_once 'modeles/album.class.php';

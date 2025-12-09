@@ -88,10 +88,27 @@ class PlaylistDAO {
         $stmt->execute([':idPlaylist' => $idPlaylist]);
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+        // Récupérer l'utilisateur connecté
+        $emailUtilisateur = $_SESSION['user_email'] ?? null;
+        $chansonLikeeDAO = new ChansonLikeeDAO($this->pdo);
+
         $chansons = [];
         foreach ($results as $row) {
             $chansonDAO = new ChansonDAO($this->pdo);
-            $chansons[] = $chansonDAO->hydrate($row);
+            $chanson = $chansonDAO->hydrate($row);
+            // Vérifier si la chanson est likée par l'utilisateur connecté
+            $isLiked = false;
+            if ($emailUtilisateur) {
+                $sqlLike = "SELECT 1 FROM likechanson WHERE idChanson = :idChanson AND emailUtilisateur = :emailUtilisateur LIMIT 1";
+                $stmtLike = $this->pdo->prepare($sqlLike);
+                $stmtLike->execute([
+                    ':idChanson' => $chanson->getIdChanson(),
+                    ':emailUtilisateur' => $emailUtilisateur
+                ]);
+                $isLiked = $stmtLike->fetchColumn() ? true : false;
+            }
+            $chanson->setIsLiked($isLiked);
+            $chansons[] = $chanson;
         }
 
         return $chansons;

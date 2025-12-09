@@ -309,4 +309,38 @@ class ControllerUtilisateur extends Controller
         header('Location: /?controller=home&method=afficher');
         exit;
     }
+
+    public function afficherMesLikes()
+    {
+        // Vérifie la connexion
+        $emailUtilisateur = $_SESSION['user_email'] ?? null;
+        if (!$emailUtilisateur) {
+            header("Location: /?controller=auth&method=login");
+            exit;
+        }
+
+        // DAO → Récupération des chansons likées de l’utilisateur
+        $managerLike = new ChansonLikeeDAO($this->getPdo());
+        $chansonsLikees = $managerLike->findChansonsLikees($emailUtilisateur);
+
+        $albumVirtuel = (object) [
+            "getTitreAlbum" => function() { return "Chansons Likées"; },
+            "getUrlImageAlbum" => function() { return "public/assets/like_default.png"; },
+            "getArtisteAlbum" => function() { return "Moi"; },
+            "getDateSortieAlbum" => function() { return null; },
+        ];
+
+        // Chargement du template
+        $template = $this->getTwig()->load('chanson_album.html.twig');
+
+        echo $template->render([
+            'page' => [
+                'title' => "Chansons likées",
+                'name'  => "musique_likee",
+                'description' => "Chansons likées par l'utilisateur"
+            ],
+            'album' => $albumVirtuel,
+            'chansons' => $chansonsLikees
+        ]);
+    }
 }
