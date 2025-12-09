@@ -1,13 +1,6 @@
 {% extends 'base_template.html.twig' %}
 
-{% block content %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil de {{ utilisateur.getPseudoUtilisateur() ?? utilisateur.getNomUtilisateur() }}</title>
-
-    <link rel="stylesheet" href="/assets/css/bootstrap.css">
-    <link rel="stylesheet" href="/assets/css/styles.css">
-
+{% block header %}
     <style>
         :root {
             --paaxio-cream: #FDF5F0; /* Couleur de fond beige clair */
@@ -18,20 +11,15 @@
         body {
             background-color: var(--paaxio-cream);
             color: var(--paaxio-dark);
-            font-family: "Manrope", sans-serif; /* Défini dans ton styles.css */
+            font-family: "Manrope", sans-serif;
         }
-
-        /* Navbar simplifiée pour la démo */
-        .navbar-brand img { height: 30px; }
-        .nav-link { color: #000 !important; font-weight: 500; text-transform: uppercase; font-size: 0.9rem; }
-        .nav-link.active { color: #20c997 !important; /* Vert teal du design */ }
 
         /* Section Profil Haut */
         .profile-img-container img {
             width: 180px;
             height: 180px;
             object-fit: cover;
-            border: 4px solid #5c3b3b; /* Bordure marron foncé vue sur la maquette */
+            border: 4px solid #5c3b3b; /* Bordure marron foncé */
         }
 
         .description-box {
@@ -113,16 +101,10 @@
             font-size: 0.8rem;
             margin: 0;
         }
-
-        footer {
-            border-top: 1px solid #ccc;
-            margin-top: 4rem;
-            padding-top: 1rem;
-            font-size: 0.9rem;
-            color: #666;
-        }
     </style>
-</head>
+{% endblock %}
+
+{% block content %}
     <div class="container my-5">
         <div class="row align-items-center mb-5">
             <div class="col-md-3 text-center mb-4 mb-md-0">
@@ -139,7 +121,17 @@
 
             <div class="col-md-9">
                 <div class="description-box text-white">
-                    <h3 class="h4 fw-bold mb-3 text-dark">Description</h3>
+                    <div class="mb-2 text-dark">
+                    <span class="me-3">
+                        {{ utilisateur.getNbAbonnesArtiste() ?? 0 }} abonné(s)
+                    </span>
+                    <span class="me-3">
+                        Genre : {{ utilisateur.getGenreUtilisateur() ? utilisateur.getGenreUtilisateur().getNomGenre() : 'Non renseigné' }}
+                    </span>
+                    <span>
+                        Inscrit le : {{ utilisateur.getDateInscriptionUtilisateur() ? utilisateur.getDateInscriptionUtilisateur()|date('d/m/Y') : 'Date inconnue' }}
+                    </span>
+                </div>
                     <p class="mb-4 text-dark opacity-75">
                         {{ utilisateur.getDescriptionUtilisateur() ?: "Vous trouverez ici une description de l'artiste, qu'il s'agisse de son style musical, de ses sources d'inspiration ou de tout autre élément que vous souhaitez mettre en avant." }}
                     </p>
@@ -150,7 +142,8 @@
 
         <section class="albums-section text-center position-relative">
             <svg class="albums-bg-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M50 0 L60 10 L50 20 L40 10 Z" fill="#ccc" /> <circle cx="50" cy="50" r="40" stroke="#E0E0E0" stroke-width="10" stroke-dasharray="10 5"/>
+                <path d="M50 0 L60 10 L50 20 L40 10 Z" fill="#ccc" />
+                <circle cx="50" cy="50" r="40" stroke="#E0E0E0" stroke-width="10" stroke-dasharray="10 5"/>
             </svg>
 
             <h2 class="h3 fw-bold mb-5 position-relative z-1">Album/Singles les plus écoutés</h2>
@@ -181,6 +174,4 @@
             {% endif %}
         </section>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 {% endblock %}
