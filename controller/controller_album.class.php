@@ -288,7 +288,7 @@ class ControllerAlbum extends Controller
                     }
                 }
 
-                $managerChanson->create($chanson);
+                $managerChanson->createChanson($chanson);
             }
         }
 
@@ -385,7 +385,7 @@ class ControllerAlbum extends Controller
         $genre = $genreDAO->findOrCreateByName($nomGenre); // Méthode à créer dans GenreDAO
         $chanson->setGenreChanson($genre);
 
-        $chansonDAO->update($chanson); // Méthode à créer dans ChansonDAO
+        $chansonDAO->updateChanson($chanson); // Méthode à créer dans ChansonDAO
 
         // Rediriger vers la page de l'album avec un message de succès
         header('Location: /?controller=album&method=afficherDetails&idAlbum=' . $idAlbum . '&success_update=1');

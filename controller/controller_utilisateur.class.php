@@ -319,9 +319,14 @@ class ControllerUtilisateur extends Controller
             exit;
         }
 
-        // DAO → Récupération des chansons likées de l’utilisateur
-        $managerLike = new ChansonLikeeDAO($this->getPdo());
+        // DAO → Récupération des chansons likées de l'utilisateur
+        $managerLike = new ChansonDAO($this->getPdo());
         $chansonsLikees = $managerLike->findChansonsLikees($emailUtilisateur);
+        
+        // Marque toutes les chansons comme likées (puisqu'elles viennent de la liste des likes)
+        foreach ($chansonsLikees as $chanson) {
+            $chanson->setIsLiked(true);
+        }
 
         $albumVirtuel = (object) [
             "getTitreAlbum" => function() { return "Chansons Likées"; },

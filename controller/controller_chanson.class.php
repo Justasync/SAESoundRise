@@ -132,7 +132,7 @@ class ControllerChanson extends Controller
         ]);
     }
 
-   public function toggleLike()
+    public function toggleLike()
     {
         // Vérifie la connexion
         $emailUtilisateur = $_SESSION['user_email'] ?? null;
@@ -150,10 +150,10 @@ class ControllerChanson extends Controller
             exit;
         }
 
-        $likeDAO = new ChansonLikeeDAO($this->getPdo());
+        $chansonDAO = new ChansonDAO($this->getPdo());
 
-        // Vérifie si la chanson est déjà likée
-        $chansonsLikees = $likeDAO->findChansonsLikees($emailUtilisateur);
+        // Vérifie l'état actuel du like avant de basculer
+        $chansonsLikees = $chansonDAO->findChansonsLikees($emailUtilisateur);
         $estLikee = false;
         foreach ($chansonsLikees as $chanson) {
             if ($chanson->getIdChanson() == $idChanson) {
@@ -162,27 +162,12 @@ class ControllerChanson extends Controller
             }
         }
 
-        if ($estLikee) {
-            // Supprime le like
-            $sql = "DELETE FROM likechanson WHERE emailUtilisateur = :email AND idChanson = :id";
-            $stmt = $this->getPdo()->prepare($sql);
-            $stmt->execute([':email' => $emailUtilisateur, ':id' => $idChanson]);
-            $liked = false;
-        } else {
-            // Ajoute le like
-            $chansonLike = new ChansonLikee();
-            $chansonLike->setIdChanson($idChanson);
-            $chansonLike->setEmailUtilisateur($emailUtilisateur);
-            $chansonLike->setDateLike(new DateTime());
-            $likeDAO->create($chansonLike);
-            $liked = true;
-        }
+        // Bascule le like
+        $chansonDAO->toggleLike($emailUtilisateur, $idChanson);
 
-        // Renvoie le résultat en JSON
+        // Renvoie le nouvel état du like
         header('Content-Type: application/json');
-        echo json_encode(['liked' => $liked]);
+        echo json_encode(['liked' => !$estLikee]);
         exit;
-    }
-
-  
+    }  
 }

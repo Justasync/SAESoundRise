@@ -45,8 +45,12 @@ class PlaylistDAO {
         }
     }
 
-    public function hydrate(array $tableaAssoc): playlist
+    public function hydrate(array $tableaAssoc): ?playlist
     {
+        if (empty($tableaAssoc)) {
+            return null;
+        }
+        
         $playlist = new Playlist();
         $playlist->setIdPlaylist(isset($tableaAssoc['idPlaylist']) ? (int)$tableaAssoc['idPlaylist'] : null);
         $playlist->setNomPlaylist($tableaAssoc['nomPlaylist'] ?? null);
@@ -69,7 +73,10 @@ class PlaylistDAO {
     {
         $playlists = [];
         foreach ($tableauxAssoc as $tableauAssoc) {
-            $playlists[] = $this->hydrate($tableauAssoc);
+            $playlist = $this->hydrate($tableauAssoc);
+            if ($playlist !== null) {
+                $playlists[] = $playlist;
+            }
         }
         return $playlists;
     }
@@ -90,7 +97,6 @@ class PlaylistDAO {
 
         // Récupérer l'utilisateur connecté
         $emailUtilisateur = $_SESSION['user_email'] ?? null;
-        $chansonLikeeDAO = new ChansonLikeeDAO($this->pdo);
 
         $chansons = [];
         foreach ($results as $row) {
