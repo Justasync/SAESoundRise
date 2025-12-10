@@ -29,6 +29,76 @@ class UtilisateurDAO
         return (bool)$stmt->fetchColumn();
     }
 
+    public function findTrending(int $limit = 8, int $daysAgo = 7): array
+    {
+        // Requête SQL pour récupérer les artistes en tendance sur la plateforme
+        // Les artistes sont classés selon un "score de tendance" basé sur :
+        //    - le nombre de nouveaux abonnés (pondéré 5)
+        //    - les utilisateurs ayant liké leurs chansons (pondéré 1)
+        //    - les votes reçus lors des battles (pondéré 3)
+        // Le calcul s'effectue sur les 7 derniers jours uniquement
+        // On ne retient que les artistes actifs (statut = 'actif' et rôle = 2)
+        // Seuls les artistes avec un score de tendance strictement positif sont affichés (HAVING)
+        // La requête retourne au maximum 8 artistes, triés par leur score de tendance décroissant
+
+        $sql = "SELECT 
+                u.*,
+                -- Nombre d'abonnés récents (sur les X derniers jours)
+                COUNT(DISTINCT aa.emailAbonne) AS nouveaux_abonnes,
+                -- Nombre d'utilisateurs ayant liké une chanson de cet artiste (sur X jours)
+                COUNT(DISTINCT lc.emailUtilisateur) AS nouveaux_likes_chansons,
+                -- Nombre de votes reçus lors des battles (sur X jours)
+                COUNT(DISTINCT v.emailVotant) AS nouveaux_votes_battle,
+                -- Score de tendance global calculé avec pondération
+                (COUNT(DISTINCT aa.emailAbonne) * 5) + 
+                (COUNT(DISTINCT lc.emailUtilisateur) * 1) + 
+                (COUNT(DISTINCT v.emailVotant) * 3) AS score_tendence
+
+                FROM utilisateur u
+
+                /* Jointure avec les abonnements artistes : uniquement ceux très récents */
+                LEFT JOIN abonnementArtiste aa 
+                    ON u.emailUtilisateur = aa.emailArtiste 
+                    AND aa.dateAbonnement >= DATE_SUB(NOW(), INTERVAL :daysAgo DAY)
+
+                /* Jointure avec les chansons publiées par l'artiste */
+                LEFT JOIN chanson c 
+                    ON u.emailUtilisateur = c.emailPublicateur
+                /* Jointure pour récupérer les likes sur les chansons (sur les X derniers jours) */
+                LEFT JOIN likeChanson lc 
+                    ON c.idChanson = lc.idChanson 
+                    AND lc.dateLike >= DATE_SUB(NOW(), INTERVAL :daysAgo DAY)
+
+                /* Jointure pour les votes de battle reçus par l'artiste (sur X jours) */
+                LEFT JOIN vote v 
+                    ON u.emailUtilisateur = v.emailVotee 
+                    AND v.dateVote >= DATE_SUB(NOW(), INTERVAL :daysAgo DAY)
+
+                WHERE u.statutUtilisateur = 'actif'        -- Seulement les utilisateurs actifs
+                AND u.roleUtilisateur = 2                  -- Seulement les artistes
+
+                GROUP BY u.emailUtilisateur, u.pseudoUtilisateur, u.urlPhotoUtilisateur
+                HAVING score_tendence > 0                  -- Seulement les artistes ayant un score positif
+                ORDER BY score_tendence DESC               -- Tri par score décroissant
+                LIMIT :limit;                              -- Limite à N résultats
+                ";
+
+        if ($limit < 1) {
+            $limit = 8;
+        }
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':daysAgo', $daysAgo, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        $artistes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+        if ($artistes) {
+            return $this->hydrateAll($artistes);
+        }
+        return [];
+    }
+
     public function existsByPseudo(string $pseudoUtilisateur): bool
     {
         $sql = "SELECT COUNT(*) FROM utilisateur WHERE pseudoUtilisateur = :pseudoUtilisateur";
@@ -193,7 +263,7 @@ class UtilisateurDAO
     {
         $this->pdo = $pdo;
     }
-    
+
     public function findAllArtistes(string $excludeEmail): array
     {
         // First, get the current user to find their genre

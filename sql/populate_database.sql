@@ -61,44 +61,44 @@ INSERT INTO utilisateur (
   roleUtilisateur,
   genreUtilisateur
 ) VALUES
-('admin@paaxio.com', 'Paaxio Admin', 'AdminPaax', '$argon2id$v=19$m=65536,t=4,p=1$b3BNMmVpRy5MVjZCS0dlcg$bYAH2BvEB+GmEeCU2scK5eolODq4RopGBiXHmsanSm4', '1990-01-10', '2024-10-01 12:00:00', 'actif', 1, 'Super administrateur du site Paaxio', 'https://paaxio.com/admin', 'actif', '2024-07-01', '2025-07-01', 0, 0, '/img/p01.webp', 1, 5),
-('yohan@paaxio.com', 'Yohan Boix', 'yohan', '$argon2id$v=19$m=65536,t=4,p=1$b3BNMmVpRy5MVjZCS0dlcg$bYAH2BvEB+GmEeCU2scK5eolODq4RopGBiXHmsanSm4', '1999-03-16', '2024-10-01 12:00:00', 'actif', 1, 'Créateur électro et co-fondateur de Paaxio', 'https://yohanmusic.com', 'actif', '2024-08-01', '2025-08-01', 350, 980, '/img/p02.webp', 2, 7),
-('angel@paaxio.com', 'Angel David Ramirez Batalla', 'angel', '$argon2id$v=19$m=65536,t=4,p=1$b3BNMmVpRy5MVjZCS0dlcg$bYAH2BvEB+GmEeCU2scK5eolODq4RopGBiXHmsanSm4', '2001-10-20', '2024-10-01 12:00:00', 'actif', 1, 'Artiste Indie basque et poète urbain', 'https://angelindigo.com', 'actif', '2024-08-15', '2025-08-15', 420, 1200, '/img/p03.webp', 1, NULL),
-('jarlin@paaxio.com', 'Jarlin Boussou Mouyabi', 'jarlin', '$argon2id$v=19$m=65536,t=4,p=1$b3BNMmVpRy5MVjZCS0dlcg$bYAH2BvEB+GmEeCU2scK5eolODq4RopGBiXHmsanSm4', '1995-04-04', '2024-10-01 12:00:00', 'actif', 0, 'Guitariste et saxophoniste virtuose', 'https://jarlinmusiques.fr', 'expire', '2023-09-01', '2024-09-01', 120, 300, '/img/p04.webp', 2, 2),
-('christopher@paaxio.com', 'Christopher Cecilia Urra', 'christopher', '$argon2id$v=19$m=65536,t=4,p=1$b3BNMmVpRy5MVjZCS0dlcg$bYAH2BvEB+GmEeCU2scK5eolODq4RopGBiXHmsanSm4', '1997-06-21', '2024-10-01 12:00:00', 'actif', 1, 'Passionné jazz et compositeur multi-instrumentiste', 'https://chrisjazz.com', 'actif', '2024-05-10', '2025-05-10', 210, 600, '/img/p05.webp', 2, NULL),
-('tim@paaxio.com', 'Tim Didelot', 'tim', '$argon2id$v=19$m=65536,t=4,p=1$b3BNMmVpRy5MVjZCS0dlcg$bYAH2BvEB+GmEeCU2scK5eolODq4RopGBiXHmsanSm4', '2000-11-12', '2024-10-01 12:00:00', 'actif', 0, 'Fan de folk et amateur de vibes acoustiques', 'https://timfolk.net', 'annule', NULL, NULL, 0, 0, '/img/p06.webp', 3, NULL),
-('erwan@paaxio.com', 'Erwan Hoarau', 'erwan', '$argon2id$v=19$m=65536,t=4,p=1$b3BNMmVpRy5MVjZCS0dlcg$bYAH2BvEB+GmEeCU2scK5eolODq4RopGBiXHmsanSm4', '1998-12-01', '2024-10-01 12:00:00', 'actif', 1, 'Rappeur et producteur hip-hop', 'https://erwanflow.fr', 'actif', '2024-01-01', '2025-01-01', 0, 0, '/img/p07.webp', 3, 6),
-('rteisseir@paaxio.com', 'Raphaël Teisseire', 'rteisseir', '$argon2id$v=19$m=65536,t=4,p=1$b3BNMmVpRy5MVjZCS0dlcg$bYAH2BvEB+GmEeCU2scK5eolODq4RopGBiXHmsanSm4', '1992-02-02', '2024-10-01 12:00:00', 'actif', 1, 'Producteur-exécutif et modérateur du site', 'https://prodteisseir.com', 'actif', '2024-06-01', '2025-06-01', 0, 0, '/img/p08.webp', 4, NULL),
-('label@paaxio.com', 'Label Rep Paaxio', 'LabelRep', '$argon2id$v=19$m=65536,t=4,p=1$b3BNMmVpRy5MVjZCS0dlcg$bYAH2BvEB+GmEeCU2scK5eolODq4RopGBiXHmsanSm4', '1988-08-08', '2024-10-01 12:00:00', 'actif', 1, 'Label indépendant partenaire de Paaxio', 'https://labelrep.com', 'actif', '2024-06-15', '2025-06-15', 0, 0, '/img/p09.webp', 5, 8),
-('curator@paaxio.com', 'Curateur Officiel', 'Cur8r', '$argon2id$v=19$m=65536,t=4,p=1$b3BNMmVpRy5MVjZCS0dlcg$bYAH2BvEB+GmEeCU2scK5eolODq4RopGBiXHmsanSm4', '1994-09-09', '2024-10-01 12:00:00', 'actif', 1, 'Curateur officiel, sélectionneur de playlists', 'https://paaxio.com/cur8r', 'actif', '2024-03-01', '2025-03-01', 0, 0, '/img/p10.webp', 1, 1);
+('admin@paaxio.com', 'Paaxio Admin', 'AdminPaax', '$argon2id$v=19$m=65536,t=4,p=1$b3BNMmVpRy5MVjZCS0dlcg$bYAH2BvEB+GmEeCU2scK5eolODq4RopGBiXHmsanSm4', '1990-01-10', '2024-10-01 12:00:00', 'actif', 1, 'Super administrateur du site Paaxio', 'https://paaxio.com/admin', 'actif', '2024-07-01', '2025-07-01', 0, 0, '/assets/images/profile_pictures/user_exp1.jpeg', 1, 5),
+('yohan@paaxio.com', 'Yohan Boix', 'yohan', '$argon2id$v=19$m=65536,t=4,p=1$b3BNMmVpRy5MVjZCS0dlcg$bYAH2BvEB+GmEeCU2scK5eolODq4RopGBiXHmsanSm4', '1999-03-16', '2024-10-01 12:00:00', 'actif', 1, 'Créateur électro et co-fondateur de Paaxio', 'https://yohanmusic.com', 'actif', '2024-08-01', '2025-08-01', 350, 980, '/assets/images/profile_pictures/user_exp2.jpeg', 2, 7),
+('angel@paaxio.com', 'Angel David Ramirez Batalla', 'angel', '$argon2id$v=19$m=65536,t=4,p=1$b3BNMmVpRy5MVjZCS0dlcg$bYAH2BvEB+GmEeCU2scK5eolODq4RopGBiXHmsanSm4', '2001-10-20', '2024-10-01 12:00:00', 'actif', 1, 'Artiste Indie basque et poète urbain', 'https://angelindigo.com', 'actif', '2024-08-15', '2025-08-15', 420, 1200, '/assets/images/profile_pictures/user_exp3.jpeg', 1, NULL),
+('jarlin@paaxio.com', 'Jarlin Boussou Mouyabi', 'jarlin', '$argon2id$v=19$m=65536,t=4,p=1$b3BNMmVpRy5MVjZCS0dlcg$bYAH2BvEB+GmEeCU2scK5eolODq4RopGBiXHmsanSm4', '1995-04-04', '2024-10-01 12:00:00', 'actif', 0, 'Guitariste et saxophoniste virtuose', 'https://jarlinmusiques.fr', 'expire', '2023-09-01', '2024-09-01', 120, 300, '/assets/images/profile_pictures/user_exp4.jpeg', 2, 2),
+('christopher@paaxio.com', 'Christopher Cecilia Urra', 'christopher', '$argon2id$v=19$m=65536,t=4,p=1$b3BNMmVpRy5MVjZCS0dlcg$bYAH2BvEB+GmEeCU2scK5eolODq4RopGBiXHmsanSm4', '1997-06-21', '2024-10-01 12:00:00', 'actif', 1, 'Passionné jazz et compositeur multi-instrumentiste', 'https://chrisjazz.com', 'actif', '2024-05-10', '2025-05-10', 210, 600, '/assets/images/profile_pictures/user_exp5.jpeg', 2, NULL),
+('tim@paaxio.com', 'Tim Didelot', 'tim', '$argon2id$v=19$m=65536,t=4,p=1$b3BNMmVpRy5MVjZCS0dlcg$bYAH2BvEB+GmEeCU2scK5eolODq4RopGBiXHmsanSm4', '2000-11-12', '2024-10-01 12:00:00', 'actif', 0, 'Fan de folk et amateur de vibes acoustiques', 'https://timfolk.net', 'annule', NULL, NULL, 0, 0, '/assets/images/profile_pictures/user_exp6.jpeg', 3, NULL),
+('erwan@paaxio.com', 'Erwan Hoarau', 'erwan', '$argon2id$v=19$m=65536,t=4,p=1$b3BNMmVpRy5MVjZCS0dlcg$bYAH2BvEB+GmEeCU2scK5eolODq4RopGBiXHmsanSm4', '1998-12-01', '2024-10-01 12:00:00', 'actif', 1, 'Rappeur et producteur hip-hop', 'https://erwanflow.fr', 'actif', '2024-01-01', '2025-01-01', 0, 0, '/assets/images/profile_pictures/user_exp7.jpeg', 3, 6),
+('rteisseir@paaxio.com', 'Raphaël Teisseire', 'rteisseir', '$argon2id$v=19$m=65536,t=4,p=1$b3BNMmVpRy5MVjZCS0dlcg$bYAH2BvEB+GmEeCU2scK5eolODq4RopGBiXHmsanSm4', '1992-02-02', '2024-10-01 12:00:00', 'actif', 1, 'Producteur-exécutif et modérateur du site', 'https://prodteisseir.com', 'actif', '2024-06-01', '2025-06-01', 0, 0, '/assets/images/profile_pictures/user_exp8.jpeg', 4, NULL),
+('label@paaxio.com', 'Label Rep Paaxio', 'LabelRep', '$argon2id$v=19$m=65536,t=4,p=1$b3BNMmVpRy5MVjZCS0dlcg$bYAH2BvEB+GmEeCU2scK5eolODq4RopGBiXHmsanSm4', '1988-08-08', '2024-10-01 12:00:00', 'actif', 1, 'Label indépendant partenaire de Paaxio', 'https://labelrep.com', 'actif', '2024-06-15', '2025-06-15', 0, 0, '/assets/images/profile_pictures/user_exp9.jpeg', 5, 8),
+('curator@paaxio.com', 'Curateur Officiel', 'Cur8r', '$argon2id$v=19$m=65536,t=4,p=1$b3BNMmVpRy5MVjZCS0dlcg$bYAH2BvEB+GmEeCU2scK5eolODq4RopGBiXHmsanSm4', '1994-09-09', '2024-10-01 12:00:00', 'actif', 1, 'Curateur officiel, sélectionneur de playlists', 'https://paaxio.com/cur8r', 'actif', '2024-03-01', '2025-03-01', 0, 0, '/assets/images/profile_pictures/user_exp10.jpeg', 1, 1);
 
 -- ===== album =====
 INSERT INTO album (idAlbum, nomAlbum, dateSortieAlbum, urlPochetteAlbum, artisteAlbum) VALUES
-(1, 'Horizons Électriques', '2024-09-20', '/img/p11.webp', 'yohan@paaxio.com'),
-(2, 'Rue des Étoiles', '2024-07-11', '/img/p12.webp', 'yohan@paaxio.com'),
-(3, 'Océan Indigo', '2024-05-30', '/img/p13.webp', 'christopher@paaxio.com'),
-(4, 'Matin Folk', '2023-12-01', '/img/p14.webp', 'jarlin@paaxio.com'),
-(5, 'Nocturne Jazz', '2024-03-14', '/img/p15.webp', 'jarlin@paaxio.com'),
-(6, 'Rythmes Latins', '2024-08-05', '/img/p16.webp', 'jarlin@paaxio.com'),
-(7, 'Indie Hiver', '2024-10-01', '/img/p17.webp', 'christopher@paaxio.com'),
-(8, 'Paroles du Quai', '2024-04-22', '/img/p18.webp', 'christopher@paaxio.com'),
-(9, 'Classique Moderne', '2024-02-10', '/img/p19.webp', 'yohan@paaxio.com'),
-(10, 'Vibes Urbaines', '2024-06-18', '/img/p20.webp', 'yohan@paaxio.com');
+(1, 'Horizons Électriques', '2024-09-20', '/assets/images/albums/album_1.jpg', 'yohan@paaxio.com'),
+(2, 'Rue des Étoiles', '2024-07-11', '/assets/images/albums/album_2.jpg', 'yohan@paaxio.com'),
+(3, 'Océan Indigo', '2024-05-30', '/assets/images/albums/album_3.jpg', 'christopher@paaxio.com'),
+(4, 'Matin Folk', '2023-12-01', '/assets/images/albums/album_4.jpg', 'jarlin@paaxio.com'),
+(5, 'Nocturne Jazz', '2024-03-14', '/assets/images/albums/album_5.jpg', 'jarlin@paaxio.com'),
+(6, 'Rythmes Latins', '2024-08-05', '/assets/images/albums/album_6.jpg', 'jarlin@paaxio.com'),
+(7, 'Indie Hiver', '2024-10-01', '/assets/images/albums/album_7.jpg', 'christopher@paaxio.com'),
+(8, 'Paroles du Quai', '2024-04-22', '/assets/images/albums/album_8.jpg', 'christopher@paaxio.com'),
+(9, 'Classique Moderne', '2024-02-10', '/assets/images/albums/album_9.jpg', 'yohan@paaxio.com'),
+(10, 'Vibes Urbaines', '2024-06-18', '/assets/images/albums/album_10.jpg', 'yohan@paaxio.com');
 
 -- ===== chanson =====
 INSERT INTO chanson (idChanson, titreChanson, dureeChanson, dateTeleversementChanson, nbEcouteChanson, albumChanson, genreChanson, urlAudioChanson, emailPublicateur) VALUES
-(1, 'Lumière de Bayonne', 182, '2024-10-02', 1520, 7, 9, '/audio/tr_01.mp3', 'angel@paaxio.com'),
-(2, 'Nuit Électrique', 210, '2024-09-21', 2310, 1, 4, '/audio/tr_02.mp3', 'yohan@paaxio.com'),
-(3, 'Plaza del Sol', 198, '2024-08-06', 890, 6, 8, '/audio/tr_03.mp3', 'christopher@paaxio.com'),
-(4, 'Minuit Jazz', 245, '2024-03-15', 121, 5, 5, '/audio/tr_04.mp3', 'jarlin@paaxio.com'),
-(5, 'Folk du Matin', 174, '2023-12-05', 67, 4, 10, '/audio/tr_05.mp3', 'tim@paaxio.com'),
-(6, 'Rock sur la Nivelle', 203, '2024-07-12', 560, 2, 2, '/audio/tr_06.mp3', 'erwan@paaxio.com'),
-(7, 'Hip-Hop Indigo', 199, '2024-05-31', 1940, 3, 3, '/audio/tr_07.mp3', 'yohan@paaxio.com'),
-(8, 'Valse Moderne', 221, '2024-02-11', 83, 9, 6, '/audio/tr_08.mp3', 'christopher@paaxio.com'),
-(9, 'Reggae du Port', 207, '2024-06-20', 304, 10, 7, '/audio/tr_09.mp3', 'jarlin@paaxio.com'),
-(10, 'Urbain 64', 188, '2024-06-19', 1290, 10, 3, '/audio/tr_10.mp3', 'angel@paaxio.com'),
-(11, 'Étoiles sur l''Adour', 236, '2024-07-11', 640, 1, 4, '/audio/tr_11.mp3', 'yohan@paaxio.com'),
-(12, 'Quai des Paroles', 202, '2024-04-23', 220, 8, 9, '/audio/tr_12.mp3', 'erwan@paaxio.com');
+(1, 'Lumière de Bayonne', 182, '2024-10-02', 1520, 7, 9, '/assets/audio/tr_01.mp3', 'angel@paaxio.com'),
+(2, 'Nuit Électrique', 210, '2024-09-21', 2310, 1, 4, '/assets/audio/tr_02.mp3', 'yohan@paaxio.com'),
+(3, 'Plaza del Sol', 198, '2024-08-06', 890, 6, 8, '/assets/audio/tr_03.mp3', 'christopher@paaxio.com'),
+(4, 'Minuit Jazz', 245, '2024-03-15', 121, 5, 5, '/assets/audio/tr_04.mp3', 'jarlin@paaxio.com'),
+(5, 'Folk du Matin', 174, '2023-12-05', 67, 4, 10, '/assets/audio/tr_05.mp3', 'tim@paaxio.com'),
+(6, 'Rock sur la Nivelle', 203, '2024-07-12', 560, 2, 2, '/assets/audio/tr_06.mp3', 'erwan@paaxio.com'),
+(7, 'Hip-Hop Indigo', 199, '2024-05-31', 1940, 3, 3, '/assets/audio/tr_07.mp3', 'yohan@paaxio.com'),
+(8, 'Valse Moderne', 221, '2024-02-11', 83, 9, 6, '/assets/audio/tr_08.mp3', 'christopher@paaxio.com'),
+(9, 'Reggae du Port', 207, '2024-06-20', 304, 10, 7, '/assets/audio/tr_09.mp3', 'jarlin@paaxio.com'),
+(10, 'Urbain 64', 188, '2024-06-19', 1290, 10, 3, '/assets/audio/tr_10.mp3', 'angel@paaxio.com'),
+(11, 'Étoiles sur l''Adour', 236, '2024-07-11', 640, 1, 4, '/assets/audio/tr_11.mp3', 'yohan@paaxio.com'),
+(12, 'Quai des Paroles', 202, '2024-04-23', 220, 8, 9, '/assets/audio/tr_12.mp3', 'erwan@paaxio.com');
 
 -- ===== participation =====
 INSERT INTO participation (idChanson, emailArtisteParticipant, typeParticipation, ordreParticipation) VALUES

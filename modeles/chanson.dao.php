@@ -34,6 +34,11 @@ class ChansonDAO
         return $chanson;
     }
 
+    public function findTrending(int $limit = 8, int $daysAgo = 7): array
+    {
+        return [];
+    }
+
     public function findUser(?string $email = null): array
     {
         if ($email) {
@@ -170,7 +175,8 @@ class ChansonDAO
         ]);
     }
 
-    public function findByTitreExact(string $titre, int $idAlbum): ?Chanson {
+    public function findByTitreExact(string $titre, int $idAlbum): ?Chanson
+    {
         // Implémentation future si nécessaire pour éviter les doublons
         return null;
     }
