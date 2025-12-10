@@ -10,7 +10,7 @@ class ControllerHome extends Controller
     public function afficher()
     {
         if (!isset($_SESSION['user_logged_in']) || !isset($_SESSION['user_role'])) {
-            $this->homeBienvenue();
+            $this->openDashboard();
             exit();
         }
 
@@ -29,10 +29,10 @@ class ControllerHome extends Controller
                 $this->homeBienvenue();
                 break;
             case RoleEnum::Invite:
-                $this->homeBienvenue();
+                $this->openDashboard();
                 break;
             default:
-                $this->homeBienvenue();
+                $this->openDashboard();
                 break;
         }
     }
@@ -53,6 +53,33 @@ class ControllerHome extends Controller
             'genres' => $genres,
             'show' => $showModalName,
             'session' => $_SESSION
+        ]);
+    }
+
+    private function openDashboard()
+    {
+
+        $aristesDAO = new UtilisateurDAO($this->getPDO());
+        $artistesPopulaires = $aristesDAO->findTrending(8, 7);
+
+        $chansonsDAO = new ChansonDAO($this->getPDO());
+        $chansonsPopulaires = $chansonsDAO->findTrending(8, 7);
+
+        // Récupérer les albums les plus écoutés
+        $albumDAO = new AlbumDAO($this->getPDO());
+        $albumsPopulaires = $albumDAO->findMostListened(8); // On récupère les 8 plus populaires
+
+        $template = $this->getTwig()->load('open_dashboard.html.twig');
+        echo $template->render([
+            'page' => [
+                'title' => 'Paaxio',
+                'name' => "accueil",
+                'description' => "Découvrez de nouveaux artistes, chansons et albums en tendance sur Paaxio!"
+            ],
+            'session' => $_SESSION,
+            'artistes' => $artistesPopulaires,
+            'chansons' => $chansonsPopulaires,
+            'albums' => $albumsPopulaires,
         ]);
     }
 
@@ -122,5 +149,17 @@ class ControllerHome extends Controller
     public function signup()
     {
         $this->homeBienvenue('signup');
+    }
+
+    public function afficherLegales()
+    {
+        $template = $this->getTwig()->load('mentionsLegales.html.twig');
+        echo $template->render(array(
+            'page' => [
+                'title' => "Mentions légales",
+                'name' => "mentionsLegales",
+                'description' => "Mentions légales de Paaxio"
+            ],
+        ));
     }
 }
