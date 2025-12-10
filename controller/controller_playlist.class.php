@@ -9,21 +9,39 @@ class ControllerPlaylist extends Controller
 
     public function afficher()
     {
-        $idPlaylist = isset($_GET['idPlaylist']) ? $_GET['idPlaylist'] : null;
+        $idPlaylist = isset($_GET['idPlaylist']) ? (int)$_GET['idPlaylist'] : null;
 
-        //Récupération de la catégorie
-        $managerPlaylist = new PlaylistDao($this->getPdo());
+        // Récupération de la playlist
+        $managerPlaylist = new PlaylistDAO($this->getPdo());
         $playlist = $managerPlaylist->find($idPlaylist);
 
-        $template = $this->getTwig()->load('test.html.twig');
-        echo $template->render(array(
+        if (!$playlist || !$idPlaylist) {
+            header('Location: /?controller=home&method=afficher');
+            exit;
+        }
+
+        // Récupération des chansons de la playlist
+        $chansons = $managerPlaylist->getChansonsByPlaylist($idPlaylist);
+
+        // Conversion de la playlist en objet stdClass pour utiliser avec le template
+        $playlistObj = (object) [
+            "getTitreAlbum" => function() use ($playlist) { return $playlist->getNomPlaylist(); },
+            "getUrlImageAlbum" => function() { return null; },
+            "getArtisteAlbum" => function() { return "Ma Playlist"; },
+            "getDateSortieAlbum" => function() { return null; },
+        ];
+
+        // Chargement du template
+        $template = $this->getTwig()->load('chanson_album.html.twig');
+        echo $template->render([
             'page' => [
-                'title' => "Playlist",
+                'title' => $playlist->getNomPlaylist(),
                 'name' => "playlist",
                 'description' => "Playlist dans Paaxio"
             ],
-            'testing' => $playlist,
-        ));
+            'album' => $playlistObj,
+            'chansons' => $chansons
+        ]);
     }
 
     public function lister()

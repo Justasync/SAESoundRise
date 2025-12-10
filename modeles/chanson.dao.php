@@ -152,7 +152,7 @@ class ChansonDAO
         return $this->hydrateMany($tableau);
     }
 
-    public function create(Chanson $chanson): bool
+    public function createChanson(Chanson $chanson): bool
     {
         $sql = "INSERT INTO chanson (titreChanson, dureeChanson, dateTeleversementChanson, nbEcouteChanson, albumChanson, genreChanson, emailPublicateur, urlAudioChanson)
                 VALUES (:titre, :duree, :dateTeleversement, :nbEcoute, :album, :genre, :emailPublicateur, :urlAudio)";
@@ -181,7 +181,7 @@ class ChansonDAO
         return null;
     }
 
-    public function update(Chanson $chanson): bool
+    public function updateChanson(Chanson $chanson): bool
     {
         $sql = "UPDATE chanson SET 
                     titreChanson = :titre, 
@@ -197,6 +197,91 @@ class ChansonDAO
             ':idGenre' => $idGenre,
             ':idChanson' => $chanson->getIdChanson()
         ]);
+    }
+
+    /**
+     * Récupère les chansons likées par un utilisateur
+     */
+    public function findChansonsLikees(string $email): array
+    {
+        $sql = "
+            SELECT c.*, l.dateLike, l.emailUtilisateur
+            FROM likechanson l
+            JOIN chanson c ON c.idChanson = l.idChanson
+            WHERE l.emailUtilisateur = :email
+            ORDER BY l.dateLike DESC
+        ";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':email' => $email]);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $chansons = [];
+        foreach ($results as $row) {
+            $chansons[] = $this->hydrate($row);
+        }
+
+        return $chansons;
+    }
+
+    /**
+     * Ajoute un like pour une chanson (user + chanson)
+     */
+    public function addChansonLikee(string $emailUtilisateur, int $idChanson): bool
+    {
+        $sql = "INSERT INTO likechanson (emailUtilisateur, idChanson, dateLike)
+                VALUES (:emailUtilisateur, :idChanson, :dateLike)";
+
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            ':emailUtilisateur' => $emailUtilisateur,
+            ':idChanson' => $idChanson,
+            ':dateLike' => (new DateTime())->format('Y-m-d H:i:s')
+        ]);
+    }
+
+    /**
+     * Met à jour un like (change la date)
+     */
+    public function updateChansonLikee(string $emailUtilisateur, int $idChanson): bool
+    {
+        $sql = "UPDATE likechanson SET dateLike = :dateLike
+                WHERE emailUtilisateur = :emailUtilisateur AND idChanson = :idChanson";
+
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            ':emailUtilisateur' => $emailUtilisateur,
+            ':idChanson' => $idChanson,
+            ':dateLike' => (new DateTime())->format('Y-m-d H:i:s')
+        ]);
+    }
+
+    /**
+     * Bascule le like d'une chanson (ajoute ou supprime)
+     */
+    public function toggleLike(string $emailUtilisateur, int $idChanson): bool
+    {
+        // Vérifie si la chanson est déjà likée
+        $sql = "SELECT COUNT(*) FROM likechanson WHERE emailUtilisateur = :emailUtilisateur AND idChanson = :idChanson";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':emailUtilisateur' => $emailUtilisateur,
+            ':idChanson' => $idChanson
+        ]);
+        $isLiked = $stmt->fetchColumn() > 0;
+
+        if ($isLiked) {
+            // Supprime le like
+            $sql = "DELETE FROM likechanson WHERE emailUtilisateur = :emailUtilisateur AND idChanson = :idChanson";
+            $stmt = $this->pdo->prepare($sql);
+            return $stmt->execute([
+                ':emailUtilisateur' => $emailUtilisateur,
+                ':idChanson' => $idChanson
+            ]);
+        } else {
+            // Ajoute le like
+            return $this->addChansonLikee($emailUtilisateur, $idChanson);
+        }
     }
 
     /**

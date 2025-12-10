@@ -132,7 +132,42 @@ class ControllerChanson extends Controller
         ]);
     }
 
-   
+    public function toggleLike()
+    {
+        // Vérifie la connexion
+        $emailUtilisateur = $_SESSION['user_email'] ?? null;
+        if (!$emailUtilisateur) {
+            http_response_code(401);
+            echo json_encode(['error' => 'Utilisateur non connecté']);
+            exit;
+        }
 
-  
+        // Récupère l'ID de la chanson depuis POST
+        $idChanson = $_POST['idChanson'] ?? null;
+        if (!$idChanson) {
+            http_response_code(400);
+            echo json_encode(['error' => 'ID de chanson manquant']);
+            exit;
+        }
+
+        $chansonDAO = new ChansonDAO($this->getPdo());
+
+        // Vérifie l'état actuel du like avant de basculer
+        $chansonsLikees = $chansonDAO->findChansonsLikees($emailUtilisateur);
+        $estLikee = false;
+        foreach ($chansonsLikees as $chanson) {
+            if ($chanson->getIdChanson() == $idChanson) {
+                $estLikee = true;
+                break;
+            }
+        }
+
+        // Bascule le like
+        $chansonDAO->toggleLike($emailUtilisateur, $idChanson);
+
+        // Renvoie le nouvel état du like
+        header('Content-Type: application/json');
+        echo json_encode(['liked' => !$estLikee]);
+        exit;
+    }  
 }

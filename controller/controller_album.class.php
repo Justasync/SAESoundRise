@@ -9,21 +9,37 @@ class ControllerAlbum extends Controller
 
     public function afficher()
     {
-        $idAlbum = isset($_GET['idAlbum']) ? $_GET['idAlbum'] : null;
+        $idAlbum = isset($_GET['idAlbum']) ? (int)$_GET['idAlbum'] : null;
 
-        //Récupération de la catégorie
-        $managerAlbum = new AlbumDao($this->getPdo());
+        if (!$idAlbum) {
+            header('Location: /?controller=home&method=afficher');
+            exit;
+        }
+
+        // Récupération de l'album
+        $managerAlbum = new AlbumDAO($this->getPdo());
         $album = $managerAlbum->find($idAlbum);
 
-        $template = $this->getTwig()->load('test.html.twig');
-        echo $template->render(array(
+        if (!$album) {
+            header('Location: /?controller=home&method=afficher');
+            exit;
+        }
+
+        // Récupération des chansons de l'album
+        $managerChanson = new ChansonDAO($this->getPdo());
+        $chansons = $managerChanson->rechercherParAlbum($idAlbum);
+
+        // Chargement du template
+        $template = $this->getTwig()->load('chanson_album.html.twig');
+        echo $template->render([
             'page' => [
-                'title' => "Album",
+                'title' => $album->getTitreAlbum(),
                 'name' => "album",
                 'description' => "Album dans Paaxio"
             ],
-            'testing' => $album,
-        ));
+            'album' => $album,
+            'chansons' => $chansons
+        ]);
     }
 
     public function lister()
@@ -198,7 +214,7 @@ class ControllerAlbum extends Controller
                     }
                 }
 
-                $managerChanson->create($chanson);
+                $managerChanson->createChanson($chanson);
             }
         }
 
@@ -295,7 +311,7 @@ class ControllerAlbum extends Controller
         $genre = $genreDAO->findOrCreateByName($nomGenre);
         $chanson->setGenreChanson($genre);
 
-        $chansonDAO->update($chanson); // Méthode à créer dans ChansonDAO
+        $chansonDAO->updateChanson($chanson); // Méthode à créer dans ChansonDAO
 
         // Rediriger vers la page de l'album avec un message de succès
         header('Location: /?controller=album&method=afficherDetails&idAlbum=' . $idAlbum . '&success_update=1');
