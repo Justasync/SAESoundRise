@@ -187,7 +187,7 @@ foreach ($newArtistEmails as $artistEmail) {
     for ($a = 0; $a < $numAlbums; $a++) {
         $albumName = pick($albumAdjectives) . " " . pick($albumNouns);
         $imgNum = rand(1, 40);
-        $coverUrl = "/assets/images/album_{$imgNum}.jpg";
+        $coverUrl = "/assets/images/albums/album_{$imgNum}.jpg";
 
         $sqlAlb = "INSERT INTO album (nomAlbum, dateSortieAlbum, urlPochetteAlbum, artisteAlbum) VALUES (:nom, :date, :url, :artist)";
         $stmt = $pdo->prepare($sqlAlb);
