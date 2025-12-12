@@ -143,20 +143,48 @@
 
 			<div class="row mx-auto justify-content-center">
 				<div class="col-12">
-					<div class="artist-scroll-container">
-						<div class="artist-list-container">
-							{% if chansons is not empty %}
-								{% for chanson in chansons %}
-									<div class="artist-item">
-										<img src="{{ chanson.urlPhotoUtilisateur ?: 'https://placehold.co/80x80/cccccc/ffffff?text=' ~ chanson.pseudoUtilisateur|first }}" alt="Avatar de {{ chanson.pseudoUtilisateur }}" class="artist-avatar">
-										<p class="mt-2 mb-0 text-sm text-center fw-medium text-gray-700">{{ chanson.pseudoUtilisateur }}</p>
-									</div>
-								{% endfor %}
-							{% else %}
-								<p class="text-center text-gray-500 p-3">Aucun chanson en tendence.</p>
-							{% endif %}
+					{% if chansons is not empty %}
+						<div class="table-responsive">
+							<table class="table table-striped align-middle">
+								<thead class="table-light">
+									<tr>
+										<th scope="col">#</th>
+										<th scope="col">Titre</th>
+										<th scope="col">Artiste</th>
+										<th scope="col">Album</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for chanson in chansons %}
+										<tr>
+											<td>{{ loop.index }}</td>
+											<td>{{ chanson.titreChanson }}</td>
+											<td>
+												{{ chanson.artistePseudoUtilisateur ?: (chanson.getArtiste ? chanson.getArtiste.getPseudoUtilisateur() : 'Artiste inconnu') }}
+
+											</td>
+											<td>
+												{% if chanson.albumChanson is defined and chanson.albumChanson %}
+													<a href="/?controller=album&method=afficherDetails&idAlbum={{ chanson.albumChanson.idAlbum }}">
+														{{ chanson.albumChanson.nomAlbum }}
+													</a>
+												{% elseif chanson.getAlbumChanson is defined and chanson.getAlbumChanson() %}
+													{# fallback for hydrated DAO #}
+													<a href="/?controller=album&method=afficherDetails&idAlbum={{ chanson.getAlbumChanson().getIdAlbum() }}">
+														{{ chanson.getAlbumChanson().getNomAlbum() }}
+													</a>
+												{% else %}
+													<em>Single</em>
+												{% endif %}
+											</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
 						</div>
-					</div>
+					{% else %}
+						<p class="text-center text-gray-500 p-3">Aucune chanson en tendance.</p>
+					{% endif %}
 				</div>
 			</div>
 
