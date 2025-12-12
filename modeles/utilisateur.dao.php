@@ -21,6 +21,18 @@ class UtilisateurDAO
         return null;
     }
 
+    public function findByPseudo(?string $pseudoUtilisateur): ?Utilisateur
+    {
+        $sql = "SELECT * FROM utilisateur WHERE pseudoUtilisateur = :pseudoUtilisateur";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':pseudoUtilisateur' => $pseudoUtilisateur]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($row) {
+            return $this->hydrate($row);
+        }
+        return null;
+    }
+
     public function existsByEmail(string $emailUtilisateur): bool
     {
         $sql = "SELECT COUNT(*) FROM utilisateur WHERE emailUtilisateur = :emailUtilisateur";
@@ -274,10 +286,10 @@ class UtilisateurDAO
 
         // Prioritize artists from the same genre if the current user has a genre
         if ($genreId) {
-            $sql = "SELECT u.* 
+            $sql = "SELECT u.*
                     FROM utilisateur u
                     JOIN role r ON u.roleUtilisateur = r.idRole
-                    WHERE r.typeRole = 'artiste' 
+                    WHERE r.typeRole = 'artiste'
                       AND u.emailUtilisateur != :excludeEmail
                       AND u.genreUtilisateur = :genreId
                     ORDER BY u.pointsDeRenommeeArtiste DESC, u.dateInscriptionUtilisateur DESC
@@ -300,7 +312,7 @@ class UtilisateurDAO
         $sql = "SELECT u.* 
                 FROM utilisateur u
                 JOIN role r ON u.roleUtilisateur = r.idRole
-                WHERE r.typeRole = 'artiste' 
+                WHERE r.typeRole = 'artiste'
                   AND u.emailUtilisateur != :excludeEmail
                 ORDER BY u.pointsDeRenommeeArtiste DESC, u.dateInscriptionUtilisateur DESC
                 LIMIT 10";

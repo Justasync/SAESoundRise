@@ -1,0 +1,177 @@
+{% extends 'base_template.html.twig' %}
+
+{% block header %}
+    <style>
+        :root {
+            --paaxio-cream: #FDF5F0; /* Couleur de fond beige clair */
+            --paaxio-salmon: #E9967A; /* Couleur terracotta/saumon */
+            --paaxio-dark: #212529;
+        }
+
+        body {
+            background-color: var(--paaxio-cream);
+            color: var(--paaxio-dark);
+            font-family: "Manrope", sans-serif;
+        }
+
+        /* Section Profil Haut */
+        .profile-img-container img {
+            width: 180px;
+            height: 180px;
+            object-fit: cover;
+            border: 4px solid #5c3b3b; /* Bordure marron foncé */
+        }
+
+        .description-box {
+            background-color: var(--paaxio-salmon);
+            border-radius: 30px; /* Gros arrondis */
+            padding: 2rem;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .btn-subscribe {
+            border: 2px solid white;
+            color: white;
+            font-weight: 700;
+            padding: 0.5rem 1.5rem;
+            background: transparent;
+            transition: all 0.3s;
+        }
+        .btn-subscribe:hover {
+            background-color: white;
+            color: var(--paaxio-salmon);
+        }
+
+        /* Section Albums */
+        .albums-section {
+            position: relative;
+            padding-top: 3rem;
+        }
+
+        /* Simulation de la roue dentée en arrière plan */
+        .albums-bg-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: auto;
+            opacity: 0.05;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .card-album {
+            background-color: var(--paaxio-salmon);
+            border-radius: 30px;
+            border: none;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.2s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-album:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-album img {
+            border-radius: 10px;
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .card-album h3 {
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .card-album p {
+            color: rgba(255,255,255, 0.8);
+            font-size: 0.8rem;
+            margin: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container my-5">
+        <div class="row align-items-center mb-5">
+            <div class="col-md-3 text-center mb-4 mb-md-0">
+                <div class="profile-img-container mb-3">
+                    {% set photo = utilisateur.geturlPhotoUtilisateur() %}
+                    {% if photo %}
+                        <img src="{{ photo }}" alt="Photo de {{ utilisateur.getPseudoUtilisateur() }}" class="rounded-circle shadow">
+                    {% else %}
+                        <img src="/assets/images/default_profile.png" alt="Profil par défaut" class="rounded-circle shadow">
+                    {% endif %}
+                </div>
+                <h2 class="h4 fw-bold mb-0">{{ utilisateur.getPseudoUtilisateur() ?? utilisateur.getNomUtilisateur() }}</h2>
+            </div>
+
+            <div class="col-md-9">
+                <div class="description-box text-white">
+                    <div class="mb-2 text-dark">
+                    <span class="me-3">
+                        {{ utilisateur.getNbAbonnesArtiste() ?? 0 }} abonné(s)
+                    </span>
+                    <span class="me-3">
+                        Genre : {{ utilisateur.getGenreUtilisateur() ? utilisateur.getGenreUtilisateur().getNomGenre() : 'Non renseigné' }}
+                    </span>
+                    <span>
+                        Inscrit le : {{ utilisateur.getDateInscriptionUtilisateur() ? utilisateur.getDateInscriptionUtilisateur()|date('d/m/Y') : 'Date inconnue' }}
+                    </span>
+                </div>
+                    <p class="mb-4 text-dark opacity-75">
+                        {{ utilisateur.getDescriptionUtilisateur() ?: "Vous trouverez ici une description de l'artiste, qu'il s'agisse de son style musical, de ses sources d'inspiration ou de tout autre élément que vous souhaitez mettre en avant." }}
+                    </p>
+                    <button class="btn btn-subscribe rounded-pill">S'abonner</button>
+                </div>
+            </div>
+        </div>
+
+        <section class="albums-section text-center position-relative">
+            <svg class="albums-bg-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 0 L60 10 L50 20 L40 10 Z" fill="#ccc" />
+                <circle cx="50" cy="50" r="40" stroke="#E0E0E0" stroke-width="10" stroke-dasharray="10 5"/>
+            </svg>
+
+            <h2 class="h3 fw-bold mb-5 position-relative z-1">Album/Singles les plus écoutés</h2>
+
+            {% if albums is empty %}
+                <p class="text-muted position-relative z-1">Cet artiste n’a pas encore publié d’albums.</p>
+            {% else %}
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4 position-relative z-1">
+                    {% for album in albums %}
+                        <div class="col">
+                            <div class="card-album">
+                                {% if album.getImageCouverture() is defined and album.getImageCouverture() %}
+                                    <img src="{{ album.getImageCouverture() }}" alt="{{ album.getTitreAlbum() }}">
+                                {% else %}
+                                    <img src="https://via.placeholder.com/300x300?text=No+Cover" alt="Pas de couverture">
+                                {% endif %}
+
+                                <div>
+                                    <h3>{{ album.getTitreAlbum() }}</h3>
+                                    {% if album.getDateSortie() is defined and album.getDateSortie() %}
+                                        <p class="mt-1">{{ album.getDateSortie()|date('Y') }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </section>
+    </div>
+{% endblock %}

@@ -348,4 +348,38 @@ class ControllerUtilisateur extends Controller
             'chansons' => $chansonsLikees
         ]);
     }
+
+    public function afficherProfilArtiste()
+    {
+        // On récupère le pseudo dans la query string
+        $pseudo = $_GET['pseudo'] ?? null;
+
+        if (!$pseudo) {
+            header('Location: /?controller=home&method=afficher');
+            exit();
+        }
+
+        $utilisateurDAO = new UtilisateurDAO($this->getPDO());
+        $albumDAO = new AlbumDAO($this->getPDO());
+
+        // Récupérer l'artiste à partir de son pseudo
+        $utilisateur = $utilisateurDAO->findByPseudo($pseudo);
+
+        if (!$utilisateur) {
+            header('Location: /?controller=home&method=afficher');
+            exit();
+        }
+
+        // Récupérer les albums de l'artiste (via son email stocké dans l'entité)
+        $emailArtiste = $utilisateur->getEmailUtilisateur();
+
+        $albums = $albumDAO->findByArtiste($emailArtiste);
+
+        $template = $this->getTwig()->load('artiste_profil.html.twig');
+        echo $template->render([
+            'session'     => $_SESSION,
+            'utilisateur' => $utilisateur,
+            'albums'      => $albums
+        ]);
+    }
 }
