@@ -87,10 +87,22 @@ document.addEventListener("DOMContentLoaded", () => {
       if (data.success) {
         showSuccess(data.message || "Connexion réussie!");
 
-        setTimeout(() => {
+        setTimeout(async () => {
           bootstrapModal.hide();
-          // Rediriger vers l'URL fournie par le serveur, ou la page d'accueil par défaut
-          window.location.href = "/?controller=home&method=afficher";
+          try {
+            const response = await fetch('/?controller=home&method=getHeader');
+            const headerData = await response.json();
+            const header = document.querySelector('header');
+            if (header) {
+              header.outerHTML = headerData.header;
+              const newDropdown = document.getElementById('userDropdown');
+              if (newDropdown) {
+                new bootstrap.Dropdown(newDropdown);
+              }
+            }
+          } catch (error) {
+            console.error('Error fetching header:', error);
+          }
         }, 1000);
       } else {
         showError(
@@ -113,18 +125,5 @@ document.addEventListener("DOMContentLoaded", () => {
   signinModal.addEventListener("shown.bs.modal", () => {
     hideMessages();
     signinForm.reset();
-    // Change the URL to /?controller=home&method=login without reloading
-    const newUrl = "/?controller=home&method=login";
-    if (window.location.search !== "?controller=home&method=login") {
-      window.history.replaceState({}, "", newUrl);
-    }
-  });
-
-  // when close the modal change to /?controller=home&method=afficer
-  signinModal.addEventListener("hidden.bs.modal", () => {
-    const newUrl = "/?controller=home&method=afficher";
-    if (window.location.search !== "?controller=home&method=afficher") {
-      window.history.replaceState({}, "", newUrl);
-    }
   });
 });

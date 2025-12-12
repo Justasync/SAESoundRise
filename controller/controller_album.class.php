@@ -230,12 +230,6 @@ class ControllerAlbum extends Controller
 
     public function afficherDetails()
     {
-        // Vérifier si l'utilisateur est connecté
-        if (!isset($_SESSION['user_logged_in'])) {
-            header('Location: /?controller=home&method=afficher');
-            exit();
-        }
-
         $idAlbum = $_GET['idAlbum'] ?? null;
         if (!$idAlbum) {
             // Gérer l'erreur, par exemple rediriger
@@ -246,34 +240,33 @@ class ControllerAlbum extends Controller
         $albumDAO = new AlbumDAO($this->getPDO());
         $album = $albumDAO->find((int)$idAlbum);
 
-        $chansonDAO = new ChansonDAO($this->getPDO());
-        $chansons = $chansonDAO->rechercherParAlbum((int)$idAlbum);
-
-        // Déterminer le rôle de l'utilisateur à partir de la session
-        $userRole = $_SESSION['user_role'] ?? null;
-        $template = '';
-
-        // Choisir le template en fonction du rôle
-        // 2 pour artiste, 1 (ou autre) pour auditeur
-        if ($userRole === RoleEnum::Artiste && $album->getArtisteAlbum() === $_SESSION['user_email']) {
-            // Si l'utilisateur est l'artiste propriétaire de l'album, il voit la page d'édition.
-            $template = 'album_details_artiste.html.twig';
-        } else {
-            // Sinon (auditeur, ou artiste regardant l'album d'un autre), il voit la page de lecture.
-            $template = 'album_details_auditeur.html.twig';
-        }
-
-        if (empty($template)) {
-            // Sécurité : si aucun template n'est défini, rediriger
+        if (!$album) {
             header('Location: /?controller=home&method=afficher');
             exit();
         }
 
-        $template = $this->getTwig()->load($template);
+        $chansonDAO = new ChansonDAO($this->getPDO());
+        $chansons = $chansonDAO->rechercherParAlbum((int)$idAlbum);
+
+        $userLoggedIn = isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in'];
+        $userRole = $_SESSION['user_role'] ?? null;
+        $templateName = '';
+
+        if ($userLoggedIn) {
+            if ($userRole === RoleEnum::Artiste && $album->getArtisteAlbum() === $_SESSION['user_email']) {
+                $templateName = 'album_details_artiste.html.twig';
+            } else {
+                $templateName = 'album_details_auditeur.html.twig';
+            }
+        } else {
+            $templateName = 'album_details_guest.html.twig';
+        }
+
+        $template = $this->getTwig()->load($templateName);
         echo $template->render([
             'album' => $album,
             'chansons' => $chansons,
-            'session' => $_SESSION,
+            'session' => $_SESSION ?? [],
         ]);
     }
 

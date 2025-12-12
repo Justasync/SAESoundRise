@@ -162,4 +162,12 @@ class ControllerHome extends Controller
             ],
         ));
     }
+
+    public function getHeader()
+    {
+        header('Content-Type: application/json');
+        $template = $this->getTwig()->load('_header.html.twig');
+        $headerHtml = $template->render(['session' => $_SESSION]);
+        echo json_encode(['header' => $headerHtml]);
+    }
 }
