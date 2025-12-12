@@ -5,19 +5,14 @@
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 	<style>:root
 	{
-		--paaxio-teal: #337f77;
+		--paaxio-turquoise: #2A9D8F;
 		--paaxio-background: #fdfaf8;
-		--paaxio-card-bg: #E5A88B;
+		--paaxio-card-bg: #E07A5F;
 		--paaxio-border: #91c9c4;
 		--paaxio-rounded-3xl: 1.5rem;
 		--paaxio-text-xs: 0.75rem;
 		--paaxio-fw-semibold: 600;
 		--paaxio-fw-medium: 500;
-	}
-
-	body {
-		font-family: 'Inter', sans-serif;
-		background-color: var(--paaxio-background) !important; /* Surcharge pour correspondre au design */
 	}
 
 	.main-content-container {
@@ -111,7 +106,7 @@
 	<div class="main-content-container bg-white">
 		<div class="container-fluid pt-4 pb-2">
 
-			<h1 class="text-center fw-bold mb-4" style="color: var(--paaxio-teal);">
+			<h1 class="text-center fw-bold mb-4" style="color: var(--paaxio-turquoise);">
 				En tendance
 			</h1>
 
@@ -126,7 +121,7 @@
 								{% for artiste in artistes %}
 									<div class="artist-item">
 										<img src="{{ artiste.urlPhotoUtilisateur ?: 'https://placehold.co/80x80/cccccc/ffffff?text=' ~ artiste.pseudoUtilisateur|first }}" alt="Avatar de {{ artiste.pseudoUtilisateur }}" class="artist-avatar">
-										<p class="mt-2 mb-0 text-sm text-center fw-medium text-gray-700">{{ artiste.pseudoUtilisateur }}</p>
+										<p class="mt-2 mb-0 text-sm text-center fw-medium text-white">{{ artiste.pseudoUtilisateur }}</p>
 									</div>
 								{% endfor %}
 							{% else %}
@@ -144,43 +139,110 @@
 			<div class="row mx-auto justify-content-center">
 				<div class="col-12">
 					{% if chansons is not empty %}
-						<div class="table-responsive">
-							<table class="table table-striped align-middle">
-								<thead class="table-light">
-									<tr>
-										<th scope="col">#</th>
-										<th scope="col">Titre</th>
-										<th scope="col">Artiste</th>
-										<th scope="col">Album</th>
-									</tr>
-								</thead>
-								<tbody>
-									{% for chanson in chansons %}
-										<tr>
-											<td>{{ loop.index }}</td>
-											<td>{{ chanson.titreChanson }}</td>
-											<td>
-												{{ chanson.artistePseudoUtilisateur ?: (chanson.getArtiste ? chanson.getArtiste.getPseudoUtilisateur() : 'Artiste inconnu') }}
-
-											</td>
-											<td>
-												{% if chanson.albumChanson is defined and chanson.albumChanson %}
-													<a href="/?controller=album&method=afficherDetails&idAlbum={{ chanson.albumChanson.idAlbum }}">
-														{{ chanson.albumChanson.nomAlbum }}
-													</a>
-												{% elseif chanson.getAlbumChanson is defined and chanson.getAlbumChanson() %}
-													{# fallback for hydrated DAO #}
-													<a href="/?controller=album&method=afficherDetails&idAlbum={{ chanson.getAlbumChanson().getIdAlbum() }}">
-														{{ chanson.getAlbumChanson().getNomAlbum() }}
-													</a>
-												{% else %}
-													<em>Single</em>
-												{% endif %}
-											</td>
-										</tr>
-									{% endfor %}
-								</tbody>
-							</table>
+						<style>
+							.chanson-scroll-container {
+								overflow-x: auto;
+								white-space: nowrap;
+								padding-bottom: 0.5rem;
+								margin-bottom: 1rem;
+								/* Hide scrollbar for Chrome, Safari and Opera */
+								scrollbar-width: none; /* Firefox */
+								-ms-overflow-style: none; /* IE and Edge */
+							}
+							.chanson-scroll-container::-webkit-scrollbar {
+								display: none; /* Chrome, Safari and Opera */
+							}
+							.chanson-card-list {
+								display: flex;
+								gap: 1.25rem;
+								padding: 0.5rem 0;
+								min-width: 200px;
+							}
+							.chanson-card {
+								flex: 0 0 220px;
+								background: #f8fafc;
+								border-radius: 1rem;
+								box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+								display: flex;
+								flex-direction: column;
+								align-items: flex-start;
+								padding: 1.25rem;
+								min-height: 110px;
+								transition: box-shadow 0.15s;
+								border: 1px solid #eee;
+							}
+							.chanson-card:hover {
+								box-shadow: 0 4px 16px rgba(0, 0, 0, 0.09);
+								border-color: var(--paaxio-card-bg, #E5A88B);
+							}
+							.chanson-title {
+								font-weight: 600;
+								font-size: 1.06rem;
+								margin-bottom: 0.5em;
+								color: var(--paaxio-card-bg, #E5A88B);
+								overflow: hidden;
+								text-overflow: ellipsis;
+								white-space: nowrap;
+								width: 100%;
+							}
+							.chanson-title a {
+								color: inherit;
+								text-decoration: none;
+							}
+							.chanson-artist {
+								font-size: 0.96rem;
+								color: #5a5a5a;
+								margin-bottom: 0.3em;
+								overflow: hidden;
+								text-overflow: ellipsis;
+								white-space: nowrap;
+								width: 100%;
+							}
+							.chanson-album-thumb {
+								width: 50px;
+								height: 50px;
+								border-radius: 8px;
+								overflow: hidden;
+								margin-bottom: 0.5em;
+								flex-shrink: 0;
+								background: #e0e0e0;
+								display: flex;
+								align-items: center;
+								justify-content: center;
+							}
+							.chanson-album-thumb img {
+								width: 100%;
+								height: 100%;
+								object-fit: cover;
+								display: block;
+							}
+						</style>
+						<div class="chanson-scroll-container">
+							<div class="chanson-card-list">
+								{% for chanson in chansons %}
+									<div class="chanson-card">
+										<div
+											class="chanson-album-thumb">
+											{# Try to get the album cover by several possible structures #}
+											{% set album = null %}
+											{% if chanson.chanson.albumChanson is defined and chanson.chanson.albumChanson %}
+												{% set album = chanson.chanson.albumChanson %}
+											{% elseif chanson.chanson.getAlbumChanson is defined and chanson.chanson.getAlbumChanson() %}
+												{% set album = chanson.chanson.getAlbumChanson() %}
+											{% endif %}
+											<img src="{{ album is not null and (album.urlPochetteAlbum is defined and album.urlPochetteAlbum) ? album.urlPochetteAlbum : 'https://placehold.co/50x50/cccccc/333?text=No+Img' }}" alt="Pochette de {{ album and album.nomAlbum is defined ? album.nomAlbum : 'Single' }}">
+										</div>
+										<div class="chanson-title">
+											<a href="/?controller=chanson&method=afficherDetails&idChanson={{ chanson.chanson.idChanson is defined ? chanson.chanson.idChanson : (chanson.chanson.getIdChanson is defined ? chanson.chanson.getIdChanson() : '') }}">
+												{{ chanson.chanson.titreChanson }}
+											</a>
+										</div>
+										<div class="chanson-artist">
+											{{ chanson.artistePseudo ?: ('Artiste inconnu') }}
+										</div>
+									</div>
+								{% endfor %}
+							</div>
 						</div>
 					{% else %}
 						<p class="text-center text-gray-500 p-3">Aucune chanson en tendance.</p>
@@ -201,8 +263,8 @@
 										<img src="{{ album.urlPochetteAlbum ?: 'https://placehold.co/300x300/cccccc/333?text=No+Image' }}" alt="Pochette de {{ album.nomAlbum }}">
 									</div>
 									<div class="text-center mt-auto">
-										<p class="mb-0 fw-medium text-sm text-gray-700">{{ album.nomAlbum }}</p>
-										<p class="text-xs text-gray-500">{{ album.pseudoArtiste }}</p>
+										<p class="mb-0 fw-medium text-sm text-white">{{ album.nomAlbum }}</p>
+										<p class="text-xs text-white">{{ album.pseudoArtiste }}</p>
 									</div>
 								</div>
 							</a>
