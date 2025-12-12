@@ -58,20 +58,32 @@
 		display: inline-block;
 		text-align: center;
 		margin-right: 1.5rem;
-		width: 80px;
+		width: 100px;
 	}
 
 	.artist-item:last-child {
 		margin-right: 0;
 	}
 
+	.artist-item p {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
 	.artist-avatar {
-		width: 80px;
-		height: 80px;
+		width: 100px;
+		height: 100px;
 		object-fit: cover;
 		border-radius: 50%;
 		border: 3px solid white;
 		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+		transition: transform 0.2s;
+	}
+
+	.artist-avatar:hover {
+		transform: translateY(-3px);
+		box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 	}
 
 	.text-xs {
@@ -105,6 +117,11 @@
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
+		transition: transform 0.3s ease;
+	}
+
+	.paaxio-card:hover .album-cover img {
+		transform: scale(1.05);
 	}
 </style>{% endblock %}{% block content %}
 <main class="container-xl py-5">
@@ -125,7 +142,7 @@
 							{% if artistes is not empty %}
 								{% for artiste in artistes %}
 									<div class="artist-item">
-										<img src="{{ artiste.urlPhotoUtilisateur ?: 'https://placehold.co/80x80/cccccc/ffffff?text=' ~ artiste.pseudoUtilisateur|first }}" alt="Avatar de {{ artiste.pseudoUtilisateur }}" class="artist-avatar">
+										<img src="{{ artiste.urlPhotoUtilisateur ?: 'https://placehold.co/100x100/cccccc/ffffff?text=' ~ artiste.pseudoUtilisateur|first }}" alt="Avatar de {{ artiste.pseudoUtilisateur }}" class="artist-avatar">
 										<p class="mt-2 mb-0 text-sm text-center fw-medium text-gray-700">{{ artiste.pseudoUtilisateur }}</p>
 									</div>
 								{% endfor %}
@@ -148,7 +165,7 @@
 							{% if chansons is not empty %}
 								{% for chanson in chansons %}
 									<div class="artist-item">
-										<img src="{{ chanson.urlPhotoUtilisateur ?: 'https://placehold.co/80x80/cccccc/ffffff?text=' ~ chanson.pseudoUtilisateur|first }}" alt="Avatar de {{ chanson.pseudoUtilisateur }}" class="artist-avatar">
+										<img src="{{ chanson.urlPhotoUtilisateur ?: 'https://placehold.co/100x100/cccccc/ffffff?text=' ~ chanson.pseudoUtilisateur|first }}" alt="Avatar de {{ chanson.pseudoUtilisateur }}" class="artist-avatar">
 										<p class="mt-2 mb-0 text-sm text-center fw-medium text-gray-700">{{ chanson.pseudoUtilisateur }}</p>
 									</div>
 								{% endfor %}
