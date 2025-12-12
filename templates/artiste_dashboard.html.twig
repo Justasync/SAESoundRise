@@ -1,161 +1,163 @@
 {% extends "base_template.html.twig" %}
 
 {% block header %}
-    {{ parent() }}
-    <style>
-        /* Configuration des couleurs personnalisées */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-        :root {
-            --paaxio-beige: #fbf8f5; /* Couleur de fond pâle */
-            --paaxio-salmon: #e9b7a6; /* Couleur d'accentuation des cartes (Terre Cuite Légère) */
-            --paaxio-dark: #333333; /* Couleur de texte sombre */
-            --paaxio-terracotta: #d68f7b; /* Nouvelle couleur terre cuite pour le fond des artistes */
-        }
-        /* On applique le style au conteneur du tableau de bord */
-        .dashboard-container {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--paaxio-beige);
-            color: var(--paaxio-dark);
-        }
+	{{ parent() }}
+	<style>
+		/* Configuration des couleurs personnalisées */
+		@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');:root {
+			--paaxio-beige: #fbf8f5; /* Couleur de fond pâle */
+			--paaxio-salmon: #e9b7a6; /* Couleur d'accentuation des cartes (Terre Cuite Légère) */
+			--paaxio-dark: #333333; /* Couleur de texte sombre */
+			--paaxio-terracotta: #d68f7b; /* Nouvelle couleur terre cuite pour le fond des artistes */
+		}
+		/* On applique le style au conteneur du tableau de bord */
+		.dashboard-container {
+			font-family: 'Inter', sans-serif;
+			background-color: var(--paaxio-beige);
+			color: var(--paaxio-dark);
+		}
 
-        /* Style pour la section de collaboration pour permettre le défilement horizontal */
-        .collaboration-scroll {
-            overflow-x: auto;
-            white-space: nowrap;
-            -webkit-overflow-scrolling: touch; /* Améliore le défilement sur iOS */
-        }
-        .collaboration-scroll::-webkit-scrollbar {
-            height: 6px;
-        }
-        .collaboration-scroll::-webkit-scrollbar-thumb {
-            background-color: rgba(0, 0, 0, 0.1);
-            border-radius: 3px;
-        }
+		/* Style pour la section de collaboration pour permettre le défilement horizontal */
+		.collaboration-scroll {
+			overflow-x: auto;
+			white-space: nowrap;
+			-webkit-overflow-scrolling: touch; /* Améliore le défilement sur iOS */
+		}
+		.collaboration-scroll::-webkit-scrollbar {
+			height: 6px;
+		}
+		.collaboration-scroll::-webkit-scrollbar-thumb {
+			background-color: rgba(0, 0, 0, 0.1);
+			border-radius: 3px;
+		}
 
-        /* Classes utilitaires pour les couleurs personnalisées */
-        .bg-terracotta {
-            background-color: var(--paaxio-terracotta);
-        }
-        .bg-paaxio-salmon {
-            background-color: var(--paaxio-salmon);
-        }
-        .hover-bg-terracotta:hover {
-            background-color: var(--paaxio-terracotta);
-        }
-    </style>
+		/* Classes utilitaires pour les couleurs personnalisées */
+		.bg-terracotta {
+			background-color: var(--paaxio-terracotta);
+		}
+		.bg-paaxio-salmon {
+			background-color: var(--paaxio-salmon);
+		}
+		.hover-bg-terracotta:hover {
+			background-color: var(--paaxio-terracotta);
+		}
+	</style>
 {% endblock %}
 
 {% block content %}
-<div class="dashboard-container py-4">
-    {# Contenu Principal #}
-    <main class="container-lg">
+	<div
+		class="dashboard-container py-4">
+		{# Contenu Principal #}
+		<main
+			class="container-lg">
 
-        {# Message de bienvenue #}
-        <section class="my-5 text-center">
-            <h1 class="display-5 fw-bold">Bienvenue, {{ session.user_pseudo }} !</h1>
-            <p class="text-muted">Voici un aperçu de votre activité sur Paaxio.</p>
-        </section>
+			{# Message de bienvenue #}
+			<section class="my-5 text-center">
+				<h1 class="display-5 fw-bold">Bienvenue,
+					{{ session.user_pseudo }}
+					!</h1>
+				<p class="text-muted">Voici un aperçu de votre activité sur Paaxio.</p>
+			</section>
 
-        {# 1. Opportunités de Collaboration #}
-        <section class="mb-5">
-            <h2 class="h2 fw-semibold mb-4 text-center">Opportunités de Collaboration</h2>
+			{# 1. Opportunités de Collaboration #}
+			<section class="mb-5">
+				<h2 class="h2 fw-semibold mb-4 text-center">Opportunités de Collaboration</h2>
 
-            {# Conteneur de la carte principale mis à jour avec la couleur terre cuite #}
-            <div class="bg-terracotta p-4 rounded-4 shadow-lg">
+				{# Conteneur de la carte principale mis à jour avec la couleur terre cuite #}
+				<div
+					class="bg-terracotta p-4 rounded-4 shadow-lg">
 
-                {# Conteneur défilable (Horizontal Scroll) #}
-                <div class="collaboration-scroll d-flex gap-4 pb-2">
-                    {% if artistes is not empty %}
-                        {% for artiste in artistes %}
-                            <div class="flex-shrink-0 d-flex flex-column align-items-center" style="width: 6rem;">
-                                {# Utilise la photo de profil de l'artiste, ou un placeholder si elle n'existe pas #}
-                                <img src="{{ artiste.geturlPhotoUtilisateur() ?: 'https://placehold.co/80x80/e9b7a6/ffffff?text=' ~ artiste.getPseudoUtilisateur()|first|upper }}"
-                                     alt="Photo de {{ artiste.getPseudoUtilisateur() }}"
-                                     class="rounded-circle object-cover border border-4 border-white"
-                                     style="width: 5rem; height: 5rem;"
-                                     onerror="this.onerror=null; this.src='https://placehold.co/80x80/e9b7a6/ffffff?text={{ artiste.getPseudoUtilisateur()|first|upper }}';">
-                                <span class="small fw-medium text-white text-truncate w-100 text-center">{{ artiste.getPseudoUtilisateur() }}</span>
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        <p class="text-white-50 mx-auto">Aucun artiste à suggérer pour le moment.</p>
-                    {% endif %}
-                </div>
-            </div>
-        </section>
+					{# Conteneur défilable (Horizontal Scroll) #}
+					<div class="collaboration-scroll d-flex gap-4 pb-2">
+						{% if artistes is not empty %}
+							{% for artiste in artistes %}
+								<div
+									class="flex-shrink-0 d-flex flex-column align-items-center" style="width: 6rem;">
+									{# Utilise la photo de profil de l'artiste, ou un placeholder si elle n'existe pas #}
+									<img src="{{ artiste.geturlPhotoUtilisateur() ?: 'https://placehold.co/80x80/e9b7a6/ffffff?text=' ~ artiste.getPseudoUtilisateur()|first|upper }}" alt="Photo de {{ artiste.getPseudoUtilisateur() }}" class="rounded-circle object-cover border border-4 border-white" style="width: 5rem; height: 5rem;" onerror="this.onerror=null; this.src='https://placehold.co/80x80/e9b7a6/ffffff?text={{ artiste.getPseudoUtilisateur()|first|upper }}';">
+									<span class="small fw-medium text-white text-truncate w-100 text-center">{{ artiste.getPseudoUtilisateur() }}</span>
+								</div>
+							{% endfor %}
+						{% else %}
+							<p class="text-white-50 mx-auto">Aucun artiste à suggérer pour le moment.</p>
+						{% endif %}
+					</div>
+				</div>
+			</section>
 
-        {# 2. Statistiques Générales #}
-        <section class="mb-5">
-            <h2 class="h2 fw-semibold mb-4 text-center">Statistiques Générales</h2>
+			{# 2. Statistiques Générales #}
+			<section class="mb-5">
+				<h2 class="h2 fw-semibold mb-4 text-center">Statistiques Générales</h2>
 
-            {# Grille de Statistiques #}
-            <div class="row g-4">
-                <div class="col-sm-4">
-                    <div class="bg-paaxio-salmon p-4 rounded-4 shadow-lg text-center text-white">
-                        <p class="fs-5 fw-medium mb-1">Reproductions Totales</p>
-                        <p class="display-4 fw-bold">0</p>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="bg-paaxio-salmon p-4 rounded-4 shadow-lg text-center text-white">
-                        <p class="fs-5 fw-medium mb-1">Total d'abonnés</p>
-                        <p class="display-4 fw-bold">0</p>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="bg-paaxio-salmon p-4 rounded-4 shadow-lg text-center text-white">
-                        <p class="fs-5 fw-medium mb-1">Battles Gagnées</p>
-                        <p class="display-4 fw-bold">0</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+				{# Grille de Statistiques #}
+				<div class="row g-4">
+					<div class="col-sm-4">
+						<div class="bg-paaxio-salmon p-4 rounded-4 shadow-lg text-center text-white">
+							<p class="fs-5 fw-medium mb-1">Reproductions Totales</p>
+							<p class="display-4 fw-bold">0</p>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="bg-paaxio-salmon p-4 rounded-4 shadow-lg text-center text-white">
+							<p class="fs-5 fw-medium mb-1">Total d'abonnés</p>
+							<p class="display-4 fw-bold">0</p>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="bg-paaxio-salmon p-4 rounded-4 shadow-lg text-center text-white">
+							<p class="fs-5 fw-medium mb-1">Battles Gagnées</p>
+							<p class="display-4 fw-bold">0</p>
+						</div>
+					</div>
+				</div>
+			</section>
 
-        {# 3. Album/Singles les plus écoutés #}
-        <section class="mb-5">
-            <h2 class="h2 fw-semibold mb-4 text-center">Album/Singles les plus écoutés</h2>
+			{# 3. Album/Singles les plus écoutés #}
+			<section class="mb-5">
+				<h2 class="h2 fw-semibold mb-4 text-center">Album/Singles les plus écoutés</h2>
 
-            {# Conteneur Flex pour les cartes (ici, juste la carte d'ajout) #}
-            <div class="d-flex gap-4 flex-wrap">
+				{# Conteneur Flex pour les cartes (ici, juste la carte d'ajout) #}
+				<div
+					class="d-flex gap-4 flex-wrap">
 
-                {# Grande carte d'ajout #}
-                <a href="/?controller=album&method=afficherFormulaireAjout" class="flex-shrink-0 bg-paaxio-salmon p-2 rounded-4 shadow-lg text-decoration-none hover-bg-terracotta" style="width: 12rem; height: 12rem;">
-                    {# Conteneur Blanc Interne (pour le signe plus) #}
-                    <div class="bg-white rounded-3 d-flex align-items-center justify-content-center m-1 shadow-sm" style="height: 70%;">
-                         {# Icône Plus (noir et plus épais) #}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16" style="color: var(--paaxio-dark);">
-                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                        </svg>
-                    </div>
+					{# Grande carte d'ajout #}
+					<a
+						href="/?controller=album&method=afficherFormulaireAjout" class="flex-shrink-0 bg-paaxio-salmon p-2 rounded-4 shadow-lg text-decoration-none hover-bg-terracotta" style="width: 12rem; height: 12rem;">
+						{# Conteneur Blanc Interne (pour le signe plus) #}
+						<div
+							class="bg-white rounded-3 d-flex align-items-center justify-content-center m-1 shadow-sm" style="height: 70%;">
+							{# Icône Plus (noir et plus épais) #}
+							<svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" fill="currentColor" class="bi bi-plus" viewbox="0 0 16 16" style="color: var(--paaxio-dark);">
+								<path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+							</svg>
+						</div>
 
-                    {# Bloc de nom stylisé #}
-                    <div class="d-flex align-items-center justify-content-center p-1" style="height: 30%;">
-                        <p class="small fw-medium text-white text-center text-truncate">Ajouter un Album/Single</p>
-                    </div>
-                </a>
+						{# Bloc de nom stylisé #}
+						<div class="d-flex align-items-center justify-content-center p-1" style="height: 30%;">
+							<p class="small fw-medium text-white text-center text-truncate">Ajouter un Album/Single</p>
+						</div>
+					</a>
 
-                {# Boucle sur les albums de l'artiste #}
-                {% for album in albums %}
-                    <a href="/?controller=album&method=afficherDetails&idAlbum={{ album.getIdAlbum() }}" class="flex-shrink-0 bg-paaxio-salmon p-2 rounded-4 shadow-lg text-decoration-none hover-bg-terracotta" style="width: 12rem; height: 12rem;">
-                        {# Image de l'album #}
-                        <img src="{{ album.getUrlImageAlbum() ?: 'https://placehold.co/200x200/e9b7a6/ffffff?text=' ~ album.getTitreAlbum()|first|upper }}"
-                             alt="Pochette de {{ album.getTitreAlbum() }}"
-                             class="rounded-3 object-cover m-1 shadow-sm"
-                             style="height: 70%; width: calc(100% - 0.5rem); object-fit: cover;"
-                             onerror="this.onerror=null; this.src='https://placehold.co/200x200/e9b7a6/ffffff?text={{ album.getTitreAlbum()|first|upper }}';">
+					{# Boucle sur les albums de l'artiste #}
+					{% for album in albums %}
+						<a
+							href="/?controller=album&method=afficherDetails&idAlbum={{ album.getIdAlbum() }}" class="flex-shrink-0 bg-paaxio-salmon p-2 rounded-4 shadow-lg text-decoration-none hover-bg-terracotta" style="width: 12rem; height: 12rem;">
+							{# Image de l'album #}
+							<img
+							src="{{ album.getUrlPochetteAlbum() ?: 'https://placehold.co/200x200/e9b7a6/ffffff?text=' ~ album.getTitreAlbum()|first|upper }}" alt="Pochette de {{ album.getTitreAlbum() }}" class="rounded-3 object-cover m-1 shadow-sm" style="height: 70%; width: calc(100% - 0.5rem); object-fit: cover;" onerror="this.onerror=null; this.src='https://placehold.co/200x200/e9b7a6/ffffff?text={{ album.getTitreAlbum()|first|upper }}';">
 
-                        {# Titre de l'album #}
-                        <div class="d-flex align-items-center justify-content-center p-1" style="height: 30%;">
-                            <p class="small fw-medium text-white text-center text-truncate">{{ album.getTitreAlbum() }}</p>
-                        </div>
-                    </a>
-                {% endfor %}
-            </div>
-        </section>
-    </main>
-</div>
+							{# Titre de l'album #}
+							<div class="d-flex align-items-center justify-content-center p-1" style="height: 30%;">
+								<p class="small fw-medium text-white text-center text-truncate">{{ album.getTitreAlbum() }}</p>
+							</div>
+						</a>
+					{% endfor %}
+				</div>
+			</section>
+		</main>
+	</div>
 {% endblock %}
 
 {% block script %}
-    {# Le script JavaScript qui générait les artistes statiques a été supprimé. #}
+	{# Le script JavaScript qui générait les artistes statiques a été supprimé. #}
 {% endblock %}

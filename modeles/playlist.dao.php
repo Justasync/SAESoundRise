@@ -21,7 +21,7 @@ class PlaylistDAO {
 
     public function find(int $id): playlist
     {
-        $sql = "SELECT * FROM playlist WHERE idplaylist = :id";
+        $sql = "SELECT * FROM playlist WHERE idPlaylist = :id";
         $pdoStatement = $this->pdo->prepare($sql);
         $pdoStatement->execute(array(
             ':id' => $id
@@ -39,14 +39,18 @@ class PlaylistDAO {
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([':email' => $email]);
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            return $results;
+            return $this->hydrateMany($results);
         } else {
             return [];
         }
     }
 
-    public function hydrate(array $tableaAssoc): playlist
+    public function hydrate(array $tableaAssoc): ?playlist
     {
+        if (empty($tableaAssoc)) {
+            return null;
+        }
+        
         $playlist = new Playlist();
         $playlist->setIdPlaylist(isset($tableaAssoc['idPlaylist']) ? (int)$tableaAssoc['idPlaylist'] : null);
         $playlist->setNomPlaylist($tableaAssoc['nomPlaylist'] ?? null);
@@ -69,9 +73,51 @@ class PlaylistDAO {
     {
         $playlists = [];
         foreach ($tableauxAssoc as $tableauAssoc) {
-            $playlists[] = $this->hydrate($tableauAssoc);
+            $playlist = $this->hydrate($tableauAssoc);
+            if ($playlist !== null) {
+                $playlists[] = $playlist;
+            }
         }
         return $playlists;
+    }
+
+    public function getChansonsByPlaylist(int $idPlaylist): array
+    {
+        $sql = "
+            SELECT c.* 
+            FROM chanson c
+            JOIN chansonPlaylist cp ON c.idChanson = cp.idChanson
+            WHERE cp.idPlaylist = :idPlaylist
+            ORDER BY cp.positionChanson ASC
+        ";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':idPlaylist' => $idPlaylist]);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Récupérer l'utilisateur connecté
+        $emailUtilisateur = $_SESSION['user_email'] ?? null;
+
+        $chansons = [];
+        foreach ($results as $row) {
+            $chansonDAO = new ChansonDAO($this->pdo);
+            $chanson = $chansonDAO->hydrate($row);
+            // Vérifier si la chanson est likée par l'utilisateur connecté
+            $isLiked = false;
+            if ($emailUtilisateur) {
+                $sqlLike = "SELECT 1 FROM likechanson WHERE idChanson = :idChanson AND emailUtilisateur = :emailUtilisateur LIMIT 1";
+                $stmtLike = $this->pdo->prepare($sqlLike);
+                $stmtLike->execute([
+                    ':idChanson' => $chanson->getIdChanson(),
+                    ':emailUtilisateur' => $emailUtilisateur
+                ]);
+                $isLiked = $stmtLike->fetchColumn() ? true : false;
+            }
+            $chanson->setIsLiked($isLiked);
+            $chansons[] = $chanson;
+        }
+
+        return $chansons;
     }
 
     /**

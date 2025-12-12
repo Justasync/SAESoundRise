@@ -9,21 +9,37 @@ class ControllerAlbum extends Controller
 
     public function afficher()
     {
-        $idAlbum = isset($_GET['idAlbum']) ? $_GET['idAlbum'] : null;
+        $idAlbum = isset($_GET['idAlbum']) ? (int)$_GET['idAlbum'] : null;
 
-        //Récupération de la catégorie
-        $managerAlbum = new AlbumDao($this->getPdo());
+        if (!$idAlbum) {
+            header('Location: /?controller=home&method=afficher');
+            exit;
+        }
+
+        // Récupération de l'album
+        $managerAlbum = new AlbumDAO($this->getPdo());
         $album = $managerAlbum->find($idAlbum);
 
-        $template = $this->getTwig()->load('test.html.twig');
-        echo $template->render(array(
+        if (!$album) {
+            header('Location: /?controller=home&method=afficher');
+            exit;
+        }
+
+        // Récupération des chansons de l'album
+        $managerChanson = new ChansonDAO($this->getPdo());
+        $chansons = $managerChanson->rechercherParAlbum($idAlbum);
+
+        // Chargement du template
+        $template = $this->getTwig()->load('chanson_album.html.twig');
+        echo $template->render([
             'page' => [
-                'title' => "Album",
+                'title' => $album->getTitreAlbum(),
                 'name' => "album",
                 'description' => "Album dans Paaxio"
             ],
-            'testing' => $album,
-        ));
+            'album' => $album,
+            'chansons' => $chansons
+        ]);
     }
 
     public function lister()
@@ -66,8 +82,8 @@ class ControllerAlbum extends Controller
     public function afficherFormulaireAjout()
     {
         // Vérifier si l'utilisateur est un artiste connecté
-        if (!isset($_SESSION['user_logged_in']) || !isset($_SESSION['user_role']) || $_SESSION['user_role'] != 2) {
-            header('Location: index.php?controller=home&method=afficher');
+        if (!isset($_SESSION['user_logged_in']) || !isset($_SESSION['user_role']) || ($_SESSION['user_role'] != RoleEnum::Artiste)) {
+            header('Location: /?controller=home&method=afficher');
             exit();
         }
 
@@ -78,15 +94,15 @@ class ControllerAlbum extends Controller
         if ($idAlbum) {
             $albumExistant = $managerAlbum->find((int)$idAlbum);
             // Vérifier que l'album appartient bien à l'artiste connecté
-            if (!$albumExistant || $albumExistant->getArtisteAlbum() !== $_SESSION['user_pseudo']) {
-                header('Location: /?controller=utilisateur&method=artisteDashboard');
+            if (!$albumExistant || $albumExistant->getArtisteAlbum() !== $_SESSION['user_email']) {
+                header('Location: /?controller=home&method=afficher');
                 exit();
             }
         }
 
         // Récupérer les albums de l'artiste
         $managerAlbum = new AlbumDAO($this->getPdo());
-        $albumsArtiste = $managerAlbum->findByArtiste($_SESSION['user_email']);
+        $albumsArtiste = $managerAlbum->findAllByArtistEmail($_SESSION['user_email']);
 
         $template = $this->getTwig()->load('album_ajout.html.twig');
         echo $template->render([
@@ -101,86 +117,12 @@ class ControllerAlbum extends Controller
         ]);
     }
 
-    public function ajouterChansons()
-    {
-        // Vérifier si l'utilisateur est un artiste
-        if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] != 2) {
-            echo "Accès non autorisé.";
-            return;
-        }
 
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_FILES['chansons'])) {
-            header('Location: index.php?controller=album&method=afficherFormulaireAjout');
-            return;
-        }
-
-        $fichiersChansons = $_FILES['chansons'];
-        $chansonsValides = [];
-        $uploadDir = 'uploads/musique/';
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0777, true);
-        }
-
-        // Inclure getID3
-        require_once 'vendor/james-heinrich/getid3/getid3/getid3.php';
-        $getID3 = new getID3;
-
-        foreach ($fichiersChansons['tmp_name'] as $index => $tmpName) {
-            if ($fichiersChansons['error'][$index] === UPLOAD_ERR_OK) {
-                $nomFichier = basename($fichiersChansons['name'][$index]);
-                $cheminCible = $uploadDir . uniqid() . '-' . $nomFichier;
-
-                if (move_uploaded_file($tmpName, $cheminCible)) {
-                    $infoFichier = $getID3->analyze($cheminCible);
-                    getid3_lib::CopyTagsToComments($infoFichier);
-
-                    $commentaires = $infoFichier['comments_html'] ?? [];
-                    $titre = $commentaires['title'][0] ?? pathinfo($nomFichier, PATHINFO_FILENAME);
-                    $genre = $commentaires['genre'][0] ?? '';
-                    $duree = (int)($infoFichier['playtime_seconds'] ?? 0);
-
-                    $chansonsValides[] = [
-                        'chemin' => $cheminCible,
-                        'titre' => $titre,
-                        'genre' => $genre,
-                        'duree' => $duree,
-                        // On garde les infos complètes au cas où
-                        'info' => $infoFichier
-                    ];
-                }
-            }
-        }
-
-        $managerAlbum = new AlbumDAO($this->getPdo());
-        $managerChanson = new ChansonDAO($this->getPdo());
-        $managerGenre = new GenreDAO($this->getPdo());
-
-        if (count($chansonsValides) > 0) {
-            $defaultAlbumTitle = '';
-            if (count($chansonsValides) === 1) {
-                $defaultAlbumTitle = $chansonsValides[0]['titre'];
-            }
-            $template = $this->getTwig()->load('album_ajout.html.twig');
-            echo $template->render([
-                'page' => [
-                    'title' => "Créer un nouvel album",
-                    'name' => "album_ajout",
-                    'description' => "Veuillez fournir les détails de l'album/single."
-                ],
-                'session' => $_SESSION,
-                'chansons_televersees' => $chansonsValides,
-                'show_album_modal' => true,
-                'default_album_title' => $defaultAlbumTitle
-            ]);
-        } else {
-            echo "Aucune chanson valide n'a été téléversée.";
-        }
-    }
 
     public function ajouterAlbum()
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_SESSION['user_role']) || $_SESSION['user_role'] != 2) {
-            header('Location: index.php?controller=home&method=afficher');
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_SESSION['user_role']) || $_SESSION['user_role'] != RoleEnum::Artiste) {
+            header('Location: /?controller=home&method=afficher');
             return;
         }
 
@@ -193,9 +135,9 @@ class ControllerAlbum extends Controller
         if ($idAlbumExistant) {
             // Ajout de chansons à un album existant
             $albumCree = $managerAlbum->find((int)$idAlbumExistant);
-            if (!$albumCree || $albumCree->getArtisteAlbum() !== $_SESSION['user_pseudo']) {
+            if (!$albumCree || $albumCree->getArtisteAlbum() !== $_SESSION['user_email']) {
                 // Gérer l'erreur : l'album n'existe pas ou n'appartient pas à l'utilisateur
-                header('Location: index.php?controller=utilisateur&method=artisteDashboard');
+                header('Location: /?controller=home&method=afficher');
                 return;
             }
             $idAlbum = $albumCree->getIdAlbum();
@@ -204,11 +146,11 @@ class ControllerAlbum extends Controller
             $album = new Album();
             $album->setTitreAlbum($_POST['titre_album'] ?? '');
             $album->setDateSortieAlbum($_POST['date_sortie'] ?? '');
-            $album->setArtisteAlbum($_SESSION['user_pseudo']);
+            $album->setArtisteAlbum($_SESSION['user_email']);
 
             // Gérer la pochette de l'album
             if (isset($_FILES['pochette_album']) && $_FILES['pochette_album']['error'] === UPLOAD_ERR_OK) {
-                $uploadDir = 'assets/images/albums/';
+                $uploadDir = 'assets' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'albums' . DIRECTORY_SEPARATOR;
                 if (!is_dir($uploadDir)) {
                     mkdir($uploadDir, 0777, true);
                 }
@@ -217,6 +159,9 @@ class ControllerAlbum extends Controller
                 if (move_uploaded_file($_FILES['pochette_album']['tmp_name'], $cheminPochette)) {
                     $album->seturlPochetteAlbum($cheminPochette);
                 }
+            } else {
+                // Fournir une URL de pochette par défaut si aucune n'est téléchargée
+                $album->seturlPochetteAlbum('assets' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'albums' . DIRECTORY_SEPARATOR . 'default.png');
             }
             $idAlbum = $managerAlbum->create($album);
             $albumCree = $managerAlbum->find($idAlbum);
@@ -224,7 +169,11 @@ class ControllerAlbum extends Controller
 
         // Gérer les chansons
         if (isset($_POST['tracks']) && isset($_FILES['tracks'])) {
-            $uploadDirMusique = 'assets/audio/';
+            $uploadDirMusique = 'assets' . DIRECTORY_SEPARATOR . 'audio' . DIRECTORY_SEPARATOR;
+            // Inclure getID3 pour analyser les fichiers audio
+            require_once 'vendor/james-heinrich/getid3/getid3/getid3.php';
+            $getID3 = new getID3;
+
             if (!is_dir($uploadDirMusique)) {
                 mkdir($uploadDirMusique, 0777, true);
             }
@@ -242,9 +191,13 @@ class ControllerAlbum extends Controller
                     continue; // Erreur lors du déplacement du fichier
                 }
 
+                // Analyser le fichier pour obtenir les métadonnées, y compris la durée
+                $infoFichier = $getID3->analyze($cheminCible);
+                $duree = (int)($infoFichier['playtime_seconds'] ?? 0);
+
                 $chanson = new Chanson();
                 $chanson->setTitreChanson($chansonData['title']);
-                $chanson->setDureeChanson((int)$chansonData['duration']);
+                $chanson->setDureeChanson($duree);
                 $chanson->setDateTeleversementChanson(new DateTime());
                 $chanson->setAlbumChanson($albumCree);
                 $chanson->setEmailPublicateur($_SESSION['user_email']);
@@ -261,18 +214,19 @@ class ControllerAlbum extends Controller
                     }
                 }
 
-                $managerChanson->create($chanson);
+                $managerChanson->createChanson($chanson);
             }
         }
 
         if ($idAlbumExistant) {
             // Rediriger vers la page de détails de l'album mis à jour
-            header('Location: index.php?controller=album&method=afficherDetails&idAlbum=' . $idAlbumExistant . '&success=1');
+            header('Location: /?controller=album&method=afficherDetails&idAlbum=' . $idAlbumExistant . '&success=1');
         } else {
             // Rediriger vers le tableau de bord après la création d'un nouvel album
-            header('Location: index.php?controller=utilisateur&method=artisteDashboard&success=1');
+            header('Location: /?controller=home&method=afficher&success=1');
         }
     }
+
 
     public function afficherDetails()
     {
@@ -285,7 +239,7 @@ class ControllerAlbum extends Controller
         $idAlbum = $_GET['idAlbum'] ?? null;
         if (!$idAlbum) {
             // Gérer l'erreur, par exemple rediriger
-            header('Location: /?controller=utilisateur&method=artisteDashboard');
+            header('Location: /?controller=home&method=afficher');
             exit();
         }
 
@@ -295,7 +249,27 @@ class ControllerAlbum extends Controller
         $chansonDAO = new ChansonDAO($this->getPDO());
         $chansons = $chansonDAO->rechercherParAlbum((int)$idAlbum);
 
-        $template = $this->getTwig()->load('album_details.html.twig');
+        // Déterminer le rôle de l'utilisateur à partir de la session
+        $userRole = $_SESSION['user_role'] ?? null;
+        $template = '';
+
+        // Choisir le template en fonction du rôle
+        // 2 pour artiste, 1 (ou autre) pour auditeur
+        if ($userRole === RoleEnum::Artiste && $album->getArtisteAlbum() === $_SESSION['user_email']) {
+            // Si l'utilisateur est l'artiste propriétaire de l'album, il voit la page d'édition.
+            $template = 'album_details_artiste.html.twig';
+        } else {
+            // Sinon (auditeur, ou artiste regardant l'album d'un autre), il voit la page de lecture.
+            $template = 'album_details_auditeur.html.twig';
+        }
+
+        if (empty($template)) {
+            // Sécurité : si aucun template n'est défini, rediriger
+            header('Location: /?controller=home&method=afficher');
+            exit();
+        }
+
+        $template = $this->getTwig()->load($template);
         echo $template->render([
             'album' => $album,
             'chansons' => $chansons,
@@ -306,7 +280,7 @@ class ControllerAlbum extends Controller
     public function modifierChanson()
     {
         // Sécurité : vérifier la méthode, la session et le rôle
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_SESSION['user_logged_in']) || $_SESSION['user_role'] != 2) {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_SESSION['user_logged_in']) || $_SESSION['user_role'] != RoleEnum::Artiste) {
             header('Location: /?controller=home&method=afficher');
             exit();
         }
@@ -316,7 +290,7 @@ class ControllerAlbum extends Controller
 
         if (!$idChanson || !$idAlbum) {
             // Rediriger si les IDs sont manquants
-            header('Location: /?controller=utilisateur&method=artisteDashboard&error=1');
+            header('Location: /?controller=home&method=afficher&error=1');
             exit();
         }
 
@@ -324,8 +298,8 @@ class ControllerAlbum extends Controller
         $chanson = $chansonDAO->findId((int)$idChanson);
 
         // Vérifier que la chanson existe et appartient bien à un album de l'artiste
-        if (!$chanson || $chanson->getAlbumChanson()->getArtisteAlbum() !== $_SESSION['user_pseudo']) {
-            header('Location: /?controller=utilisateur&method=artisteDashboard&error=unauthorized');
+        if (!$chanson || $chanson->getAlbumChanson()->getArtisteAlbum() !== $_SESSION['user_email']) {
+            header('Location: /?controller=home&method=afficher&error=unauthorized');
             exit();
         }
 
@@ -334,13 +308,14 @@ class ControllerAlbum extends Controller
 
         $genreDAO = new GenreDAO($this->getPDO());
         $nomGenre = $_POST['genre_chanson'] ?? '';
-        $genre = $genreDAO->findOrCreateByName($nomGenre); // Méthode à créer dans GenreDAO
+        $genre = $genreDAO->findOrCreateByName($nomGenre);
         $chanson->setGenreChanson($genre);
 
-        $chansonDAO->update($chanson); // Méthode à créer dans ChansonDAO
+        $chansonDAO->updateChanson($chanson); // Méthode à créer dans ChansonDAO
 
         // Rediriger vers la page de l'album avec un message de succès
         header('Location: /?controller=album&method=afficherDetails&idAlbum=' . $idAlbum . '&success_update=1');
         exit();
     }
+
 }

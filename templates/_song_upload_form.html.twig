@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
                          </div>
                          <div class="col-md-6">
                              <label for="track-duration-${index}" class="form-label small">Durée (secondes)</label>
-                             <input type="number" class="form-control form-control-sm" id="track-duration-${index}" name="tracks[${index}][duration]" value="0" required readonly>
+                             <input type="number" class="form-control form-control-sm" id="track-duration-${index}" name="tracks[${index}][duration]" value="0" required>
                              <input type="hidden" name="tracks[${index}][path]" value="">
                          </div>
                      </div>
@@ -103,6 +103,28 @@ document.addEventListener('DOMContentLoaded', function () {
                  }
              });
         });
+    });
+
+    // Ajouter une validation à la soumission du formulaire
+    form.addEventListener('submit', function(e) {
+        const durationInputs = form.querySelectorAll('input[name$="[duration]"]');
+        let allDurationsValid = true;
+
+        durationInputs.forEach(input => {
+            const value = input.value;
+            // Vérifier si la valeur n'est pas un nombre ou si elle est inférieure ou égale à 0
+            if (isNaN(value) || Number(value) <= 0) {
+                allDurationsValid = false;
+                input.classList.add('is-invalid'); // Ajoute un style d'erreur
+            } else {
+                input.classList.remove('is-invalid');
+            }
+        });
+
+        if (!allDurationsValid) {
+            e.preventDefault(); // Empêcher la soumission du formulaire
+            alert("Erreur : La durée de toutes les chansons doit être un nombre supérieur à 0. Veuillez vérifier les fichiers sélectionnés.");
+        }
     });
 
     // Nettoyer les inputs de fichiers créés dynamiquement lors de la fermeture de la modale

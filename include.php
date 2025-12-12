@@ -3,16 +3,19 @@
 // set timezone paris
 date_default_timezone_set('Europe/Paris');
 
-// Démarrage de la session
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
 // Ajout de l'autoload de composer
 require_once 'vendor/autoload.php';
 
 // Ajout du fichier constantes qui permet de configurer le site
 require_once 'modeles/constantes.class.php';
+
+// Enums
+require_once 'enums/Role.enum.php';
+
+// Démarrage de la session
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Ajout du code pour initialiser Twig
 require_once 'config/twig.php';
@@ -26,7 +29,6 @@ require_once 'controller/controller_factory.class.php';
 require_once 'controller/controller_home.class.php';
 require_once 'controller/controller_admin.class.php';
 require_once 'controller/controller_newsletter.class.php';
-require_once 'controller/controller_legales.class.php';
 require_once 'controller/controller_musique.class.php';
 require_once 'controller/controller_utilisateur.class.php';
 require_once 'controller/controller_role.class.php';

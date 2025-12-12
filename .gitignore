@@ -9,7 +9,7 @@ COMMIT
 # Albums tests files
 assets/audio
 assets/images/albums
-assets/images/pdp
+assets/images/profile_pictures
 
 # Dependencies
 /node_modules/

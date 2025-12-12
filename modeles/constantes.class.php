@@ -1,6 +1,7 @@
 <?php
 
-class Constantes {
+class Constantes
+{
 
    private static ?Constantes $instance = null;
    private $config;
@@ -8,17 +9,17 @@ class Constantes {
    private function __construct()
    {
       try {
-            $json = file_get_contents("config/config.json");
-            $this->config = json_decode($json, true);
+         $json = file_get_contents(__DIR__ . "/../config/config.json");
+         $this->config = json_decode($json, true);
       } catch (Exception $e) {
-            die('Récupération du fichier de configuration échouer: ' . $e->getMessage());
+         die('Récupération du fichier de configuration échouer: ' . $e->getMessage());
       }
    }
 
    public static function getInstance(): Constantes
    {
       if (self::$instance == null) {
-            self::$instance = new Constantes();
+         self::$instance = new Constantes();
       }
       return self::$instance;
    }
@@ -34,6 +35,4 @@ class Constantes {
    {
       throw new Exception("Un singleton ne doit pas être deserialisé.");
    }
-
-
 }
