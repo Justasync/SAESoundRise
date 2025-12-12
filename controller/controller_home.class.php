@@ -65,6 +65,23 @@ class ControllerHome extends Controller
         $chansonsDAO = new ChansonDAO($this->getPDO());
         $chansonsPopulaires = $chansonsDAO->findTrending(8, 7);
 
+        // Crée un nouvel array où chaque chanson garde toutes ses infos, mais on ajoute l'artiste avec son pseudo, pas son email
+        $chansonsPopulairesAvecArtistePseudo = [];
+        foreach ($chansonsPopulaires as $chanson) {
+            // Si le dao hydrate la propriété emailPublicateur :
+            $artistePseudo = null;
+            // On va récupérer le pseudo correspondant à l'email publicateur (pas l'email), si possible
+            if ($chanson->getEmailPublicateur()) {
+                $utilisateurDAO = new UtilisateurDAO($this->getPDO());
+                $utilisateur = $utilisateurDAO->find($chanson->getEmailPublicateur());
+                $artistePseudo = $utilisateur ? $utilisateur->getPseudoUtilisateur() : null;
+            }
+            $chansonsPopulairesAvecArtistePseudo[] = [
+                'chanson' => $chanson,
+                'artistePseudo' => $artistePseudo,
+            ];
+        }
+
         // Récupérer les albums les plus écoutés
         $albumDAO = new AlbumDAO($this->getPDO());
         $albumsPopulaires = $albumDAO->findMostListened(8); // On récupère les 8 plus populaires
@@ -78,7 +95,7 @@ class ControllerHome extends Controller
             ],
             'session' => $_SESSION,
             'artistes' => $artistesPopulaires,
-            'chansons' => $chansonsPopulaires,
+            'chansons' => $chansonsPopulairesAvecArtistePseudo,
             'albums' => $albumsPopulaires,
         ]);
     }

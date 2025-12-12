@@ -204,7 +204,7 @@ foreach ($newArtistEmails as $artistEmail) {
         for ($s = 1; $s <= $numSongs; $s++) {
             $title = pick($songVerbs) . " " . pick($songNouns); // e.g. "Running Sky"
             $duration = rand(120, 300); // 2 to 5 mins
-            $mp3Num = rand(1, 25);
+            $mp3Num = rand(1, 28);
             $audioUrl = "/assets/audio/song_{$mp3Num}.mp3";
             $genre = pick($genreIds);
 

@@ -36,6 +36,42 @@ class ChansonDAO
 
     public function findTrending(int $limit = 8, int $daysAgo = 7): array
     {
+        $sql = "SELECT 
+                    c.*, 
+                    u.pseudoUtilisateur AS artistePseudoUtilisateur,
+                    -- Métriques récentes (période paramétrable)
+                    COUNT(DISTINCT lc.emailUtilisateur) AS nouveaux_likes,
+                    COUNT(DISTINCT cp.idPlaylist) AS nouvelles_playlists,
+                    -- SCORE DE TENDANCE : 1 Like = 2 pts, 1 Playlist = 3 pts
+                    (COUNT(DISTINCT lc.emailUtilisateur) * 2) + 
+                    (COUNT(DISTINCT cp.idPlaylist) * 3) AS score_tendance
+                FROM chanson c
+                JOIN utilisateur u ON c.emailPublicateur = u.emailUtilisateur
+                LEFT JOIN likeChanson lc 
+                    ON c.idChanson = lc.idChanson 
+                    AND lc.dateLike >= DATE_SUB(NOW(), INTERVAL :daysAgo DAY)
+                LEFT JOIN chansonPlaylist cp 
+                    ON c.idChanson = cp.idChanson 
+                    AND cp.dateAjoutChanson >= DATE_SUB(NOW(), INTERVAL :daysAgo DAY)
+                GROUP BY c.idChanson, u.pseudoUtilisateur
+                HAVING score_tendance > 0
+                ORDER BY score_tendance DESC
+                LIMIT :limit;
+        ";
+
+        if ($limit < 1) {
+            $limit = 8;
+        }
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':daysAgo', $daysAgo, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        $chansons = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt->closeCursor();
+        if ($chansons) {
+            return $this->hydrateMany($chansons);
+        }
         return [];
     }
 
