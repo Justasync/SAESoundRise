@@ -138,7 +138,11 @@
 					<span class="text-sm fw-light text-uppercase" style="letter-spacing: 0.1em; opacity: 0.8;">Album</span>
 					<h2 class="display-4 fw-bolder mt-1 mb-2" id="album-title">{{ album.getTitreAlbum() }}</h2>
 					<p class="fs-5 fw-light" id="album-meta" style="opacity: 0.9;">
-						{{ album.getArtisteAlbum() }}
+						{% if album.getPseudoArtiste() %}
+							<a href="/?controller=utilisateur&method=afficherProfilArtiste&pseudo={{ album.getPseudoArtiste()|e('url') }}" class="text-white text-decoration-none" style="opacity: 0.9; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.9'">{{ album.getPseudoArtiste() }}</a>
+						{% else %}
+							{{ album.getArtisteAlbum() }}
+						{% endif %}
 						{% if album.getDateSortieAlbum() %}
 							·
 							{{ album.getDateSortieAlbum()|date('Y') }}
