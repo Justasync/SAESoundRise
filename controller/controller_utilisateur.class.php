@@ -313,13 +313,9 @@ class ControllerUtilisateur extends Controller
     public function afficherMesLikes()
     {
         // Vérifie la connexion
+        $this->requireAuth();
+
         $emailUtilisateur = $_SESSION['user_email'] ?? null;
-        if (!$emailUtilisateur) {
-            $redirectTo = '/?controller=utilisateur&method=afficherMesLikes';
-            $redirectToEncoded = urlencode($redirectTo);
-            header("Location: /?controller=home&method=connect&redirect={$redirectToEncoded}");
-            exit;
-        }
 
         // DAO → Récupération des chansons likées de l'utilisateur
         $managerLike = new ChansonDAO($this->getPdo());

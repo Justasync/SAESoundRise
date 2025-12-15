@@ -9,13 +9,22 @@ class ControllerPlaylist extends Controller
 
     public function afficher()
     {
+
+
         $idPlaylist = isset($_GET['idPlaylist']) ? (int)$_GET['idPlaylist'] : null;
+
+        if (!$idPlaylist) {
+            header('Location: /?controller=home&method=afficher');
+            exit;
+        }
+
+        $this->requireAuth("/?controller=playlist&method=afficher&idPlaylist=" . $idPlaylist);
 
         // Récupération de la playlist
         $managerPlaylist = new PlaylistDAO($this->getPdo());
         $playlist = $managerPlaylist->find($idPlaylist);
 
-        if (!$playlist || !$idPlaylist) {
+        if (!$playlist) {
             header('Location: /?controller=home&method=afficher');
             exit;
         }
@@ -25,10 +34,18 @@ class ControllerPlaylist extends Controller
 
         // Conversion de la playlist en objet stdClass pour utiliser avec le template
         $playlistObj = (object) [
-            "getTitreAlbum" => function() use ($playlist) { return $playlist->getNomPlaylist(); },
-            "getUrlImageAlbum" => function() { return null; },
-            "getArtisteAlbum" => function() { return "Ma Playlist"; },
-            "getDateSortieAlbum" => function() { return null; },
+            "getTitreAlbum" => function () use ($playlist) {
+                return $playlist->getNomPlaylist();
+            },
+            "getUrlImageAlbum" => function () {
+                return null;
+            },
+            "getArtisteAlbum" => function () {
+                return "Ma Playlist";
+            },
+            "getDateSortieAlbum" => function () {
+                return null;
+            },
         ];
 
         // Chargement du template

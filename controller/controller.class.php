@@ -97,6 +97,110 @@ class Controller
     {
         $this->post = $post;
     }
+
+    /**
+     * Exige que l'utilisateur soit authentifié. Redirige vers la page de connexion si non connecté.
+     * @param string|null $redirectUrl URL optionnelle pour rediriger après connexion
+     * @return void Quitte si l'utilisateur n'est pas authentifié
+     */
+    protected function requireAuth(?string $redirectUrl = null): void
+    {
+        if (!isset($_SESSION['user_logged_in']) || !$_SESSION['user_logged_in']) {
+            // Construction de l'URL de redirection à partir de la requête actuelle
+            if ($redirectUrl === null) {
+                $redirectUrl = $_SERVER['REQUEST_URI'] ?? '/';
+            }
+
+            // Éviter l'injection d'URL - n'autorise que les chemins relatifs commençant par /
+            if (!empty($redirectUrl)) {
+                $redirectUrlDecoded = urldecode($redirectUrl);
+                if (strpos($redirectUrlDecoded, '://') !== false || (strlen($redirectUrlDecoded) > 0 && $redirectUrlDecoded[0] !== '/')) {
+                    $redirectUrl = '/';
+                }
+            }
+
+            $redirectToEncoded = urlencode($redirectUrl);
+            header("Location: /?controller=home&method=connect&redirect={$redirectToEncoded}");
+            exit();
+        }
+    }
+
+    /**
+     * Exige que l'utilisateur ait un rôle spécifique. Affiche une erreur 403 si le rôle ne correspond pas.
+     * @param string|RoleEnum $requiredRole Le rôle requis (RoleEnum ou string)
+     * @return void Quitte si l'utilisateur n'a pas le rôle requis
+     */
+    protected function requireRole($requiredRole): void
+    {
+        $this->requireAuth();
+
+        $userRole = $_SESSION['user_role'] ?? null;
+        $roleValue = $requiredRole instanceof RoleEnum ? $requiredRole->value : $requiredRole;
+
+        if ($userRole !== $roleValue) {
+            http_response_code(403);
+            $template = $this->getTwig()->load('403.html.twig');
+            echo $template->render([
+                'page' => [
+                    'title' => "Erreur 403 - Accès refusé",
+                    'name' => "403",
+                    'description' => "Vous n'avez pas l'autorisation d'accéder à cette ressource."
+                ]
+            ]);
+            exit();
+        }
+    }
+
+    /**
+     * Redirige vers un contrôleur et une méthode donnés, avec des paramètres additionnels.
+     *
+     * @param string $controller Le nom du contrôleur (ex: "home")
+     * @param string $method Le nom de la méthode (ex: "afficher")
+     * @param array $params Paramètres additionnels sous forme clé => valeur (facultatif)
+     */
+    protected function redirectTo(string $controller, string $method, array $params = []): void
+    {
+        $query = [
+            'controller' => $controller,
+            'method' => $method
+        ];
+
+        if (!empty($params)) {
+            $query = array_merge($query, $params);
+        }
+
+        $queryString = http_build_query($query);
+        header('Location: /?' . $queryString);
+        exit();
+    }
+
+    /**
+     * Exige que l'utilisateur ait un des rôles spécifiés. Affiche une erreur 403 si aucun ne correspond.
+     * @param array $allowedRoles Tableau des rôles autorisés (RoleEnum ou string)
+     * @return void Quitte si l'utilisateur n'a aucun des rôles requis
+     */
+    protected function requireAnyRole(array $allowedRoles): void
+    {
+        $this->requireAuth();
+
+        $userRole = $_SESSION['user_role'] ?? null;
+        $allowedRoleValues = array_map(function ($role) {
+            return $role instanceof RoleEnum ? $role->value : $role;
+        }, $allowedRoles);
+
+        if (!in_array($userRole, $allowedRoleValues, true)) {
+            http_response_code(403);
+            $template = $this->getTwig()->load('403.html.twig');
+            echo $template->render([
+                'page' => [
+                    'title' => "Erreur 403 - Accès refusé",
+                    'name' => "403",
+                    'description' => "Vous n'avez pas l'autorisation d'accéder à cette ressource."
+                ]
+            ]);
+            exit();
+        }
+    }
 }
 
 
