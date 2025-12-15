@@ -619,8 +619,9 @@
                             }
                         }
                     }
-                })
-                .catch(err => {
+                }
+            })
+            .catch(err => {
                     console.error('Erreur like:', err);
                     // Affiche une erreur visuelle minimale pour l'utilisateur
                     if (icon) icon.classList.add('text-muted');
