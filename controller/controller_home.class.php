@@ -59,10 +59,6 @@ class ControllerHome extends Controller
             exit;
         }
 
-        $pdo = bd::getInstance()->getConnexion();
-        $genreDAO = new GenreDAO($pdo);
-        $genres = $genreDAO->findAll();
-
         $template = $this->getTwig()->load('connect.html.twig');
         echo $template->render([
             'page' => [
@@ -70,7 +66,6 @@ class ControllerHome extends Controller
                 'name' => "login_required",
                 'description' => "Veuillez vous connecter pour continuer"
             ],
-            'genres' => $genres,
             'session' => $_SESSION,
             'redirect' => $redirectUrl
         ]);
