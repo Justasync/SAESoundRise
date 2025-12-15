@@ -119,14 +119,18 @@
 
 			<div class="d-flex flex-column flex-md-row align-items-start gap-4">
 				<div class="flex-shrink-0">
-					<img id="album-cover" src="{{ album.getUrlPochetteAlbum() ?: 'https://placehold.co/160x160/7b4343/ffffff?text=' ~ (album.getTitreAlbum()|replace({' ': '+'})|slice(0, 20)) }}" alt="Couverture de l'album {{ album.getTitreAlbum() }}" class="rounded-2 shadow-lg" style="width: 160px; height: 160px; object-fit: cover;">
+					<a href="/?controller=utilisateur&method=afficherProfilArtiste&pseudo={{ album.getPseudoArtiste() }}">
+						<img id="album-cover" src="{{ album.getUrlPochetteAlbum() ?: 'https://placehold.co/160x160/7b4343/ffffff?text=' ~ (album.getTitreAlbum()|replace({' ': '+'})|slice(0, 20)) }}" alt="Couverture de l'album {{ album.getTitreAlbum() }}" class="rounded-2 shadow-lg" style="width: 160px; height: 160px; object-fit: cover;">
+					</a>
 				</div>
 
 				<div class="flex-grow-1">
 					<span class="text-sm fw-light text-uppercase" style="letter-spacing: 0.1em; opacity: 0.8;">Album</span>
 					<h2 class="display-4 fw-bolder mt-1 mb-2" id="album-title">{{ album.getTitreAlbum() }}</h2>
 					<p class="fs-5 fw-light" id="album-meta" style="opacity: 0.9;">
-						{{ album.getArtisteAlbum() }}
+						<a href="/?controller=utilisateur&method=afficherProfilArtiste&pseudo={{ album.getPseudoArtiste() }}" class="fs-5 fw-light" style="opacity: 0.9; color: white; text-decoration: none;">
+							{{ album.getArtisteAlbum() }}
+						</a>
 						{% if album.getDateSortieAlbum() %}
 							·
 							{{ album.getDateSortieAlbum()|date('Y') }}

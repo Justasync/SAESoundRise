@@ -71,12 +71,11 @@
 					<div class="collaboration-scroll d-flex gap-4 pb-2">
 						{% if artistes is not empty %}
 							{% for artiste in artistes %}
-								<div
-									class="flex-shrink-0 d-flex flex-column align-items-center" style="width: 6rem;">
+								<a href="/?controller=utilisateur&method=afficherProfilArtiste&pseudo={{ artiste.getPseudoUtilisateur() }}" class="flex-shrink-0 d-flex flex-column align-items-center text-decoration-none" style="width: 6rem;">
 									{# Utilise la photo de profil de l'artiste, ou un placeholder si elle n'existe pas #}
 									<img src="{{ artiste.geturlPhotoUtilisateur() ?: 'https://placehold.co/80x80/e9b7a6/ffffff?text=' ~ artiste.getPseudoUtilisateur()|first|upper }}" alt="Photo de {{ artiste.getPseudoUtilisateur() }}" class="rounded-circle object-cover border border-4 border-white" style="width: 5rem; height: 5rem;" onerror="this.onerror=null; this.src='https://placehold.co/80x80/e9b7a6/ffffff?text={{ artiste.getPseudoUtilisateur()|first|upper }}';">
 									<span class="small fw-medium text-white text-truncate w-100 text-center">{{ artiste.getPseudoUtilisateur() }}</span>
-								</div>
+								</a>
 							{% endfor %}
 						{% else %}
 							<p class="text-white-50 mx-auto">Aucun artiste à suggérer pour le moment.</p>
