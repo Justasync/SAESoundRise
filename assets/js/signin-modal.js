@@ -89,8 +89,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
         setTimeout(() => {
           bootstrapModal.hide();
-          // Rediriger vers l'URL fournie par le serveur, ou la page d'accueil par défaut
-          window.location.href = "/?controller=home&method=afficher";
+          const redirectUrl = signinModal.getAttribute('data-redirect-url') || null;
+      
+          if (redirectUrl && redirectUrl.trim() !== '') {
+            // Redirect to the specified URL
+            window.location.href = redirectUrl;
+          } else {
+            // Recharger la page après connexion réussie
+            window.location.reload();
+          }
         }, 1000);
       } else {
         showError(
@@ -107,24 +114,6 @@ document.addEventListener("DOMContentLoaded", () => {
         submitButton.disabled = false;
         submitButton.textContent = originalButtonText;
       }
-    }
-  });
-
-  signinModal.addEventListener("shown.bs.modal", () => {
-    hideMessages();
-    signinForm.reset();
-    // Change the URL to /?controller=home&method=login without reloading
-    const newUrl = "/?controller=home&method=login";
-    if (window.location.search !== "?controller=home&method=login") {
-      window.history.replaceState({}, "", newUrl);
-    }
-  });
-
-  // when close the modal change to /?controller=home&method=afficer
-  signinModal.addEventListener("hidden.bs.modal", () => {
-    const newUrl = "/?controller=home&method=afficher";
-    if (window.location.search !== "?controller=home&method=afficher") {
-      window.history.replaceState({}, "", newUrl);
     }
   });
 });

@@ -58,3 +58,9 @@ require_once 'modeles/battle.class.php';
 require_once 'modeles/battle.dao.php';
 require_once 'modeles/fichier.class.php';
 require_once 'modeles/fichier.dao.php';
+
+// Ajout des genres comme variable globale Twig pour qu'ils soient disponibles dans tous les templates
+$pdo = bd::getInstance()->getConnexion();
+$genreDAO = new GenreDAO($pdo);
+$genres = $genreDAO->findAll();
+$twig->addGlobal('genres', $genres);

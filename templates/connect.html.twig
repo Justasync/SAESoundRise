@@ -1,0 +1,60 @@
+{% extends "base_template.html.twig" %}
+
+{% block content %}
+	<div class="container py-5" style="max-width: 500px;">
+		<div class="card shadow-sm">
+			<div class="card-body d-flex flex-column align-items-center">
+				<i class="bi bi-lock-fill text-primary fs-1 mb-3"></i>
+				<h1 class="h4 mb-3 text-center">Connexion requise</h1>
+				<p class="mb-3 text-center">
+					Cette page nécessite d'être connecté(e) pour continuer.
+				</p>
+				{% if redirect is defined and redirect %}
+					<div class="alert alert-info text-break text-center py-2 px-3 mb-4 w-100" style="word-break:break-all;">
+						<small>
+							Après connexion, vous serez redirigé vers&nbsp;:<br>
+							<code class="text-break">{{ redirect|e }}</code>
+						</small>
+					</div>
+				{% endif %}
+				<div class="w-100 d-flex flex-column align-items-center gap-2">
+					<button id="login-to-continue-login" class="btn btn-primary w-100" type="button">
+						Se connecter
+					</button>
+					<span class="text-secondary small">ou</span>
+					<button id="login-to-continue-signup" class="btn btn-outline-primary w-100" type="button">
+						Créer un compte
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block script %}
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+var loginBtn = document.getElementById('login-to-continue-login');
+loginBtn.addEventListener('click', function (e) {
+e.preventDefault();
+var signinModal = new bootstrap.Modal(document.getElementById('signinModal'));
+signinModal.show();
+});
+
+// If a redirect URL is specified in the PHP, set it as a data attribute when opening the modal
+{% if redirect is defined and redirect %}
+var signinModalEl = document.getElementById('signinModal');
+if (signinModalEl) {
+signinModalEl.setAttribute('data-redirect-url', {{ redirect|json_encode|raw }});
+}
+{% endif %}
+
+var signupBtn = document.getElementById('login-to-continue-signup');
+signupBtn.addEventListener('click', function (e) {
+e.preventDefault();
+var signupModal = new bootstrap.Modal(document.getElementById('signupModal'));
+signupModal.show();
+});
+});
+	</script>
+{% endblock %}

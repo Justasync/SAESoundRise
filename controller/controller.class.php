@@ -30,7 +30,17 @@ class Controller
     public function call(string $method): mixed
     {
         if (!method_exists($this, $method)) {
-            throw new Exception("La méthode $method n'existe pas dans le contrôleur __CLASS__");
+            // Afficher une page 404 méthode non autorisée avec Twig
+            http_response_code(404);
+            $template = $this->getTwig()->load('404.html.twig');
+            echo $template->render([
+                'page' => [
+                    'title' => "Page non trouvée",
+                    'name'  => "error_404",
+                    'description' => "La page ou la méthode demandée n'existe pas."
+                ]
+            ]);
+            exit;
         } else {
             return $this->$method();
         }

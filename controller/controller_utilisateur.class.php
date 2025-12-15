@@ -315,24 +315,34 @@ class ControllerUtilisateur extends Controller
         // Vérifie la connexion
         $emailUtilisateur = $_SESSION['user_email'] ?? null;
         if (!$emailUtilisateur) {
-            header("Location: /?controller=auth&method=login");
+            $redirectTo = '/?controller=utilisateur&method=afficherMesLikes';
+            $redirectToEncoded = urlencode($redirectTo);
+            header("Location: /?controller=home&method=connect&redirect={$redirectToEncoded}");
             exit;
         }
 
         // DAO → Récupération des chansons likées de l'utilisateur
         $managerLike = new ChansonDAO($this->getPdo());
         $chansonsLikees = $managerLike->findChansonsLikees($emailUtilisateur);
-        
+
         // Marque toutes les chansons comme likées (puisqu'elles viennent de la liste des likes)
         foreach ($chansonsLikees as $chanson) {
             $chanson->setIsLiked(true);
         }
 
         $albumVirtuel = (object) [
-            "getTitreAlbum" => function() { return "Chansons Likées"; },
-            "getUrlImageAlbum" => function() { return "public/assets/like_default.png"; },
-            "getArtisteAlbum" => function() { return "Moi"; },
-            "getDateSortieAlbum" => function() { return null; },
+            "getTitreAlbum" => function () {
+                return "Chansons Likées";
+            },
+            "getUrlImageAlbum" => function () {
+                return "public/assets/like_default.png";
+            },
+            "getArtisteAlbum" => function () {
+                return "Moi";
+            },
+            "getDateSortieAlbum" => function () {
+                return null;
+            },
         ];
 
         // Chargement du template
