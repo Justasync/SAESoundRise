@@ -22,8 +22,7 @@ class ControllerNewsletter extends Controller
     public function ajouter()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: /?controller=newsletter&method=afficher');
-            return;
+            $this->redirectTo('newsletter', 'afficher');
         }
 
         $post = $this->getPost() ?? [];

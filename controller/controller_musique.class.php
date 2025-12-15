@@ -9,6 +9,8 @@ class ControllerMusique extends Controller
     public function afficher() 
     {
         // Récupère l'utilisateur connecté
+        $this->requireAuth();
+        
         $emailUtilisateur = $_SESSION['user_email'] ?? null;
 
         // Récupère les musiques de l'utilisateur connecté
