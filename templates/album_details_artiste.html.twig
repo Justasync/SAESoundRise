@@ -39,7 +39,7 @@
 
 			<div class="d-flex flex-column flex-md-row align-items-start gap-4">
 				<div class="flex-shrink-0">
-					<img src="{{ album.getUrlPochetteAlbum() ?: 'https://placehold.co/160x160/7b4343/ffffff?text=' ~ (album.getTitreAlbum()|replace({' ': '+'})|slice(0, 20)) }}" alt="Couverture de l'album {{ album.getTitreAlbum() }}" class="rounded-2 shadow-lg" style="width: 160px; height: 160px; object-fit: cover;">
+					<img src="{{ album.getUrlPochetteAlbum() ?: 'https://placehold.co/160x160/7b4343/ffffff?text=' ~ (album.getTitreAlbum()|replace({' ': '+'})|slice(0, 20)) }}" alt="Couverture de l'album {{ album.getTitreAlbum() }}" class="rounded-circle shadow-lg" style="width: 160px; height: 160px; object-fit: cover;">
 				</div>
 
 				<div class="flex-grow-1">
