@@ -37,6 +37,18 @@
 			font-weight: 600;
 		}
 
+		/* --- Style de la piste sélectionnée (via URL) --- */
+		.track-row.selected-track {
+			background-color: rgba(255, 255, 255, 0.3);
+			border-left: 4px solid white;
+			font-weight: 700;
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+		}
+		.track-row.selected-track.active-track {
+			background-color: rgba(255, 255, 255, 0.35);
+			border-left: 4px solid white;
+		}
+
 		/* --- Styles de la Barre de Progression --- */
 		.progress-bar-container {
 			height: 6px;
@@ -202,7 +214,7 @@
 					<tbody>
 						{% if chansons is not empty %}
 							{% for chanson in chansons %}
-								<tr class="track-row" data-index="{{ loop.index0 }}" style="color: rgba(255,255,255,0.9);">
+								<tr class="track-row{% if chansonSelected and chanson.getIdChanson() == chansonSelected %} selected-track{% endif %}" data-index="{{ loop.index0 }}" data-song-id="{{ chanson.getIdChanson() }}" style="color: rgba(255,255,255,0.9);">
 									<td class="py-3 px-4 fw-bold track-index">{{ loop.index }}</td>
 									<td class="py-3 px-4 track-title">{{ chanson.getTitreChanson() }}</td>
 									<td class="py-3 px-4 d-none d-sm-table-cell track-listens">0</td>
@@ -259,7 +271,10 @@ let wasPlayingBeforeScrub = false;
 let isPlaying = false;
 
 // 1. CRÉATION DYNAMIQUE DE LA PLAYLIST À PARTIR DES DONNÉES TWIG
-const playlist = [];{% for chanson in chansons %}playlist.push({title: "{{ chanson.getTitreChanson()|e('js') }}", src: "{{ chanson.geturlAudioChanson()|default('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3')|e('js') }}", durationFormatted: "{{ (chanson.getDureeChanson() / 60)|round(0, 'floor') }}:{{ (chanson.getDureeChanson() % 60)|number_format(0, '', '02') }}"});{% endfor %}
+const playlist = [];{% for chanson in chansons %}playlist.push({id: {{ chanson.getIdChanson() }}, title: "{{ chanson.getTitreChanson()|e('js') }}", src: "{{ chanson.geturlAudioChanson()|default('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3')|e('js') }}", durationFormatted: "{{ (chanson.getDureeChanson() / 60)|round(0, 'floor') }}:{{ (chanson.getDureeChanson() % 60)|number_format(0, '', '02') }}"});{% endfor %}
+
+// ID de la chanson sélectionnée depuis l'URL (si fourni)
+const selectedSongId = {{ chansonSelected ?? 'null' }};
 
 /**
          * Convertit un nombre de secondes en format MM:SS
@@ -289,6 +304,8 @@ currentTimeEl.textContent = formatTime(audioPlayer.currentTime);
 function handleScrubbing(event) {
 if (! audioPlayer.src) 
 return;
+
+
 
 const rect = progressBarContainer.getBoundingClientRect();
 const offsetX = event.clientX - rect.left;
@@ -323,6 +340,8 @@ audioPlayer.play().catch(e => console.error("Erreur de lecture : ", e));
 progressBarContainer.addEventListener('mousedown', (e) => {
 if (! audioPlayer.src) 
 return;
+
+
 
 isScrubbing = true;
 wasPlayingBeforeScrub = isPlaying;
@@ -495,7 +514,42 @@ loadTrack(index);
 });
 });
 
-// Charge la première piste par défaut si la playlist n'est pas vide
+// Si une chanson est sélectionnée via l'URL, la charger et la mettre en évidence
+if (selectedSongId !== null && playlist.length > 0) {
+const selectedIndex = playlist.findIndex(track => track.id === selectedSongId);
+if (selectedIndex !== -1) { // Trouver la ligne correspondante et la faire défiler en vue
+const selectedRow = document.querySelector (`tr[data-song-id="${selectedSongId}"]`);
+if (selectedRow) { // Faire défiler la ligne sélectionnée en vue avec un léger décalage
+setTimeout(() => {
+selectedRow.scrollIntoView({behavior: 'smooth', block: 'center'});
+}, 100);
+}
+// Charger la piste sélectionnée (mais ne pas la jouer automatiquement)
+currentTrackIndex = selectedIndex;
+const track = playlist[selectedIndex];
+audioPlayer.src = track.src;
+currentTrackTitleEl.textContent = `Piste en cours : ${
+currentTrackIndex + 1
+}. ${
+track.title
+}`;
+durationEl.textContent = track.durationFormatted;
+updateTrackRowVisuals();
+} else { // Si la chanson sélectionnée n'est pas trouvée, charger la première par défaut
+if (playlist.length > 0) {
+currentTrackIndex = 0;
+const track = playlist[0];
+audioPlayer.src = track.src;
+currentTrackTitleEl.textContent = `Piste en cours : ${
+currentTrackIndex + 1
+}. ${
+track.title
+}`;
+durationEl.textContent = track.durationFormatted;
+updateTrackRowVisuals();
+}
+}
+} else { // Charge la première piste par défaut si la playlist n'est pas vide
 if (playlist.length > 0) {
 currentTrackIndex = 0;
 const track = playlist[0];
@@ -508,6 +562,7 @@ track.title
 durationEl.textContent = track.durationFormatted;
 // L'état initial est toujours en pause, l'utilisateur doit cliquer sur play.
 updateTrackRowVisuals();
+}
 }
 };
 
