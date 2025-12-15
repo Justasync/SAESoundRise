@@ -403,6 +403,27 @@
             currentTrackTitleEl.textContent = `Piste en cours : ${index + 1}. ${track.title}`;
             durationEl.textContent = track.durationFormatted;
 
+            // Incrémente le compteur d'écoutes côté serveur
+            (function(incrIndex, chansonId) {
+                fetch('/?controller=chanson&method=incrementEcoute', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'idChanson=' + encodeURIComponent(chansonId)
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data && data.nbEcoute !== undefined) {
+                        // Met à jour l'affichage du nombre d'écoutes dans la table
+                        const row = document.querySelector('.track-row[data-index="' + incrIndex + '"]');
+                        if (row) {
+                            const listensCell = row.querySelector('.track-listens');
+                            if (listensCell) listensCell.textContent = data.nbEcoute;
+                        }
+                    }
+                })
+                .catch(err => console.error('Erreur incrément écoute:', err));
+            })(index, track.id);
+
             // Joue la piste immédiatement après le chargement
             audioPlayer.play().catch(e => {
                 console.error("Lecture automatique bloquée. Veuillez interagir.", e);
