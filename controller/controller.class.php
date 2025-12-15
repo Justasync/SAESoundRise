@@ -100,15 +100,22 @@ class Controller
 
     /**
      * Exige que l'utilisateur soit authentifié. Redirige vers la page de connexion si non connecté.
-     * @param string|null $redirectUrl URL optionnelle pour rediriger après connexion
+     * @param string $controller Le nom du contrôleur pour rediriger après connexion (ex: "playlist")
+     * @param string $method Le nom de la méthode pour rediriger après connexion (ex: "afficher")
+     * @param array $params Paramètres additionnels sous forme clé => valeur (facultatif)
      * @return void Quitte si l'utilisateur n'est pas authentifié
      */
-    protected function requireAuth(?string $redirectUrl = null): void
+    protected function requireAuth(string $controller = '', string $method = '', array $params = []): void
     {
         if (!isset($_SESSION['user_logged_in']) || !$_SESSION['user_logged_in']) {
-            // Construction de l'URL de redirection à partir de la requête actuelle
-            if ($redirectUrl === null) {
+            // Construction de l'URL de redirection
+            if (empty($controller) && empty($method)) {
+                // Si aucun paramètre n'est fourni, utiliser l'URL actuelle
                 $redirectUrl = $_SERVER['REQUEST_URI'] ?? '/';
+            } else {
+                // Construire l'URL à partir des paramètres fournis
+                $redirectParams = array_merge(['controller' => $controller, 'method' => $method], $params);
+                $redirectUrl = '/?' . http_build_query($redirectParams);
             }
 
             // Éviter l'injection d'URL - n'autorise que les chemins relatifs commençant par /
@@ -120,8 +127,9 @@ class Controller
             }
 
             $redirectToEncoded = urlencode($redirectUrl);
-            header("Location: /?controller=home&method=connect&redirect={$redirectToEncoded}");
-            exit();
+
+            // Redirection vers la page de connexion avec l'URL de retour
+            $this->redirectTo('home', 'connect', ['redirect' => $redirectToEncoded]);
         }
     }
 

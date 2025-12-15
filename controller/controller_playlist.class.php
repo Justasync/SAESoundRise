@@ -17,7 +17,7 @@ class ControllerPlaylist extends Controller
             $this->redirectTo('home', 'afficher');
         }
 
-        $this->requireAuth("/?controller=playlist&method=afficher&idPlaylist=" . $idPlaylist);
+        $this->requireAuth('playlist', 'afficher', ['idPlaylist' => $idPlaylist]);
 
         // Récupération de la playlist
         $managerPlaylist = new PlaylistDAO($this->getPdo());
