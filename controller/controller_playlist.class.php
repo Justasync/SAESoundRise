@@ -14,8 +14,7 @@ class ControllerPlaylist extends Controller
         $idPlaylist = isset($_GET['idPlaylist']) ? (int)$_GET['idPlaylist'] : null;
 
         if (!$idPlaylist) {
-            header('Location: /?controller=home&method=afficher');
-            exit;
+            $this->redirectTo('home', 'afficher');
         }
 
         $this->requireAuth("/?controller=playlist&method=afficher&idPlaylist=" . $idPlaylist);
@@ -25,8 +24,7 @@ class ControllerPlaylist extends Controller
         $playlist = $managerPlaylist->find($idPlaylist);
 
         if (!$playlist) {
-            header('Location: /?controller=home&method=afficher');
-            exit;
+            $this->redirectTo('home', 'afficher');
         }
 
         // Récupération des chansons de la playlist

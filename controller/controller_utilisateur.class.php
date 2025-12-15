@@ -306,8 +306,7 @@ class ControllerUtilisateur extends Controller
         session_destroy();
 
         // Redirection vers la page d'accueil (controller=home, method=afficher)
-        header('Location: /?controller=home&method=afficher');
-        exit;
+        $this->redirectTo('home', 'afficher');
     }
 
     public function afficherMesLikes()
@@ -361,8 +360,7 @@ class ControllerUtilisateur extends Controller
         $pseudo = $_GET['pseudo'] ?? null;
 
         if (!$pseudo) {
-            header('Location: /?controller=home&method=afficher');
-            exit();
+            $this->redirectTo('home', 'afficher');
         }
 
         $utilisateurDAO = new UtilisateurDAO($this->getPDO());
@@ -372,8 +370,7 @@ class ControllerUtilisateur extends Controller
         $utilisateur = $utilisateurDAO->findByPseudo($pseudo);
 
         if (!$utilisateur) {
-            header('Location: /?controller=home&method=afficher');
-            exit();
+            $this->redirectTo('home', 'afficher');
         }
 
         // Récupérer les albums de l'artiste (via son email stocké dans l'entité)

@@ -55,8 +55,13 @@ class ControllerHome extends Controller
 
         if (isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in']) {
             // Déjà connecté
-            header('Location: ' . (!empty($redirectUrl) ? $redirectUrl : '/?controller=home&method=afficher'));
-            exit;
+            if (!empty($redirectUrl)) {
+                // Si une URL de redirection est fournie, l'utiliser directement
+                header('Location: ' . $redirectUrl);
+                exit;
+            } else {
+                $this->redirectTo('home', 'afficher');
+            }
         }
 
         $template = $this->getTwig()->load('connect.html.twig');
