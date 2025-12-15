@@ -217,7 +217,7 @@
 								<tr class="track-row{% if chansonSelected and chanson.getIdChanson() == chansonSelected %} selected-track{% endif %}" data-index="{{ loop.index0 }}" data-song-id="{{ chanson.getIdChanson() }}" style="color: rgba(255,255,255,0.9);">
 									<td class="py-3 px-4 fw-bold track-index">{{ loop.index }}</td>
 									<td class="py-3 px-4 track-title">{{ chanson.getTitreChanson() }}</td>
-									<td class="py-3 px-4 d-none d-sm-table-cell track-listens">0</td>
+									<td class="py-3 px-4 d-none d-sm-table-cell track-listens">{{ chanson.getNbEcouteChanson() ?? 0 }}</td>
 									<td class="py-3 px-4 track-duration">{{ (chanson.getDureeChanson() / 60)|round(0, 'floor') }}:{{ (chanson.getDureeChanson() % 60)|number_format(0, '', '02') }}</td>
 									<td
 										class="py-3 px-4 text-center">

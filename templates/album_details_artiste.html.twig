@@ -83,7 +83,7 @@
 								<tr class="track-row" style="color: rgba(255,255,255,0.9);">
 									<td class="py-3 px-4 fw-bold">{{ loop.index|number_format(2, '.', ',') }}</td>
 									<td class="py-3 px-4">{{ chanson.getTitreChanson() }}</td>
-									<td class="py-3 px-4 d-none d-sm-table-cell">0</td>
+									<td class="py-3 px-4 d-none d-sm-table-cell">{{ chanson.getNbEcouteChanson() ?? 0 }}</td>
 									<td class="py-3 px-4">{{ (chanson.getDureeChanson() / 60)|round(0, 'floor') }}:{{ (chanson.getDureeChanson() % 60)|number_format(0, '', '02') }}</td>
 									<td class="py-3 px-4 text-center">
 										<button type="button" class="btn btn-sm btn-link p-1" title="Modifier" data-bs-toggle="modal" data-bs-target="#modifierChansonModal" data-song-id="{{ chanson.getIdChanson() }}" data-song-title="{{ chanson.getTitreChanson() }}" data-song-genre="{{ chanson.getGenreChanson() ? chanson.getGenreChanson().getNomGenre() : '' }}">
