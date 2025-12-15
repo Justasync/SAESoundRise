@@ -75,7 +75,7 @@ class ChansonDAO
         return [];
     }
 
-    public function findUser(?string $email = null): array
+    public function findAllFromUser(?string $email = null): array
     {
         if ($email) {
             $sql = "SELECT * FROM chanson WHERE emailPublicateur = :email";
