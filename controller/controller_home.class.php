@@ -37,12 +37,47 @@ class ControllerHome extends Controller
         }
     }
 
-    public function homeBienvenue($showModalName = '')
+    public function connect()
     {
+
+        $redirectUrl = $_GET["redirect"] ?? "";
+
+        // avoid URL injection
+        if (!empty($redirectUrl)) {
+            // Vérifier que le redirectUrl est une URL interne valide, pour éviter toute injection (open redirect ou autre)
+            // On n'autorise que les URL commençant par "/" et ne contenant pas "://"
+            $redirectUrlDecoded = urldecode($redirectUrl);
+            if (strpos($redirectUrlDecoded, '://') !== false || (strlen($redirectUrlDecoded) > 0 && $redirectUrlDecoded[0] !== '/')) {
+                // L'URL contient un schéma ou n'est pas un chemin relatif ; on l'ignore
+                $redirectUrl = '';
+            }
+        }
+
+        if (isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in']) {
+            // Déjà connecté
+            header('Location: ' . (!empty($redirectUrl) ? $redirectUrl : '/?controller=home&method=afficher'));
+            exit;
+        }
+
         $pdo = bd::getInstance()->getConnexion();
         $genreDAO = new GenreDAO($pdo);
         $genres = $genreDAO->findAll();
 
+        $template = $this->getTwig()->load('connect.html.twig');
+        echo $template->render([
+            'page' => [
+                'title' => "Connexion requise",
+                'name' => "login_required",
+                'description' => "Veuillez vous connecter pour continuer"
+            ],
+            'genres' => $genres,
+            'session' => $_SESSION,
+            'redirect' => $redirectUrl
+        ]);
+    }
+
+    public function homeBienvenue()
+    {
         $template = $this->getTwig()->load('index.html.twig');
         echo $template->render([
             'page' => [
@@ -50,8 +85,6 @@ class ControllerHome extends Controller
                 'name' => "accueil",
                 'description' => "Page d'accueil de Paaxio"
             ],
-            'genres' => $genres,
-            'show' => $showModalName,
             'session' => $_SESSION
         ]);
     }
@@ -156,16 +189,6 @@ class ControllerHome extends Controller
             ],
             'testing' => $_SESSION,
         ));
-    }
-
-    public function login()
-    {
-        $this->homeBienvenue('login');
-    }
-
-    public function signup()
-    {
-        $this->homeBienvenue('signup');
     }
 
     public function afficherLegales()

@@ -82,8 +82,26 @@ class ControllerAlbum extends Controller
     public function afficherFormulaireAjout()
     {
         // Vérifier si l'utilisateur est un artiste connecté
-        if (!isset($_SESSION['user_logged_in']) || !isset($_SESSION['user_role']) || ($_SESSION['user_role'] != RoleEnum::Artiste)) {
-            header('Location: /?controller=home&method=afficher');
+        // Connexion obligatoire pour ajouter un album (redirige vers connect si non connecté)
+        if (!isset($_SESSION['user_logged_in']) || !$_SESSION['user_logged_in']) {
+            $redirectTo = '/?controller=album&method=afficherFormulaireAjout';
+            $redirectToEncoded = urlencode($redirectTo);
+            header("Location: /?controller=home&method=connect&redirect={$redirectToEncoded}");
+            exit();
+        }
+
+        // Vérification du rôle (doit être Artiste)
+        if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] != RoleEnum::Artiste) {
+            http_response_code(403);
+            // Charger la page d'erreur 403 personnalisée (ou défaut)
+            $template = $this->getTwig()->load('403.html.twig');
+            echo $template->render([
+                'page' => [
+                    'title' => "Erreur 403 - Accès refusé",
+                    'name' => "403",
+                    'description' => "Vous n'avez pas l'autorisation d'accéder à cette ressource."
+                ]
+            ]);
             exit();
         }
 
