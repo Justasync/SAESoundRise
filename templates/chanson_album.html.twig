@@ -256,6 +256,9 @@
 
         let isPlaying = false;
         
+        // Token CSRF pour la protection
+        const csrfToken = '{{ csrf_token|default('') }}';
+        
         // 1. CRÉATION DYNAMIQUE DE LA PLAYLIST À PARTIR DES DONNÉES TWIG
         const playlist = [];
         {% for chanson in chansons %}
@@ -271,6 +274,9 @@
                 console.warn("Chanson {{ chanson.getTitreChanson()|e('js') }} n'a pas d'URL audio valide");
             {% endif %}
         {% endfor %}
+        
+        // Suivi des chansons ayant atteint 75% de lecture (pour éviter les faux clics)
+        const playedBeyond75 = new Set();
 
         /**
          * Convertit un nombre de secondes en format MM:SS
@@ -403,27 +409,6 @@
             currentTrackTitleEl.textContent = `Piste en cours : ${index + 1}. ${track.title}`;
             durationEl.textContent = track.durationFormatted;
 
-            // Incrémente le compteur d'écoutes côté serveur
-            (function(incrIndex, chansonId) {
-                fetch('/?controller=chanson&method=incrementEcoute', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: 'idChanson=' + encodeURIComponent(chansonId)
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data && data.nbEcoute !== undefined) {
-                        // Met à jour l'affichage du nombre d'écoutes dans la table
-                        const row = document.querySelector('.track-row[data-index="' + incrIndex + '"]');
-                        if (row) {
-                            const listensCell = row.querySelector('.track-listens');
-                            if (listensCell) listensCell.textContent = data.nbEcoute;
-                        }
-                    }
-                })
-                .catch(err => console.error('Erreur incrément écoute:', err));
-            })(index, track.id);
-
             // Joue la piste immédiatement après le chargement
             audioPlayer.play().catch(e => {
                 console.error("Lecture automatique bloquée. Veuillez interagir.", e);
@@ -480,8 +465,40 @@
             }
         });
 
-        // Pendant la lecture (pour la barre de progression)
-        audioPlayer.addEventListener('timeupdate', updateProgress);
+        // Incrément d'écoute uniquement après 75% de la chanson jouée
+        audioPlayer.addEventListener('timeupdate', () => {
+            if (currentTrackIndex >= 0 && audioPlayer.duration) {
+                const track = playlist[currentTrackIndex];
+                const threshold75 = audioPlayer.duration * 0.75;
+                
+                // Si on dépasse 75% et qu'on n'a pas déjà compté cette écoute
+                if (audioPlayer.currentTime >= threshold75 && !playedBeyond75.has(track.id)) {
+                    playedBeyond75.add(track.id);
+                    
+                    // Incrémente le compteur d'écoutes côté serveur
+                    fetch('/?controller=chanson&method=incrementEcoute', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: 'idChanson=' + encodeURIComponent(track.id) + '&csrfToken=' + encodeURIComponent(csrfToken)
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data && data.nbEcoute !== undefined) {
+                            // Met à jour l'affichage du nombre d'écoutes dans la table
+                            const row = document.querySelector('.track-row[data-index="' + currentTrackIndex + '"]');
+                            if (row) {
+                                const listensCell = row.querySelector('.track-listens');
+                                if (listensCell) listensCell.textContent = data.nbEcoute;
+                            }
+                        }
+                    })
+                    .catch(err => console.error('Erreur incrément écoute:', err));
+                }
+            }
+            
+            // Mise à jour de la barre de progression
+            updateProgress();
+        });
 
         // Quand la piste se termine, passe à la suivante
         audioPlayer.addEventListener('ended', () => {

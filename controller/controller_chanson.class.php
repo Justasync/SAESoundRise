@@ -173,6 +173,16 @@ class ControllerChanson extends Controller
 
     public function incrementEcoute()
     {
+        // Vérification du token CSRF
+        $csrfToken = $_POST['csrfToken'] ?? null;
+        $sessionToken = $_SESSION['csrf_token'] ?? null;
+        
+        if (!$csrfToken || !$sessionToken || $csrfToken !== $sessionToken) {
+            http_response_code(403);
+            echo json_encode(['error' => 'Token CSRF invalide']);
+            exit;
+        }
+
         $idChanson = $_POST['idChanson'] ?? null;
         if (!$idChanson) {
             http_response_code(400);

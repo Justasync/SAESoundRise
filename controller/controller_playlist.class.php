@@ -31,6 +31,11 @@ class ControllerPlaylist extends Controller
             "getDateSortieAlbum" => function() { return null; },
         ];
 
+        // Génération du token CSRF
+        if (empty($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+
         // Chargement du template
         $template = $this->getTwig()->load('chanson_album.html.twig');
         echo $template->render([
@@ -40,7 +45,8 @@ class ControllerPlaylist extends Controller
                 'description' => "Playlist dans Paaxio"
             ],
             'album' => $playlistObj,
-            'chansons' => $chansons
+            'chansons' => $chansons,
+            'csrf_token' => $_SESSION['csrf_token']
         ]);
     }
 
