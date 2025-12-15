@@ -109,7 +109,7 @@ class PlaylistDAO
             // Vérifier si la chanson est likée par l'utilisateur connecté
             $isLiked = false;
             if ($emailUtilisateur) {
-                $sqlLike = "SELECT 1 FROM likechanson WHERE idChanson = :idChanson AND emailUtilisateur = :emailUtilisateur LIMIT 1";
+                $sqlLike = "SELECT 1 FROM likeChanson WHERE idChanson = :idChanson AND emailUtilisateur = :emailUtilisateur LIMIT 1";
                 $stmtLike = $this->pdo->prepare($sqlLike);
                 $stmtLike->execute([
                     ':idChanson' => $chanson->getIdChanson(),
