@@ -41,6 +41,7 @@ class ControllerHome extends Controller
     {
 
         $redirectUrl = $_GET["redirect"] ?? "";
+        $redirectUrl = urldecode($redirectUrl);
 
         // avoid URL injection
         if (!empty($redirectUrl)) {
