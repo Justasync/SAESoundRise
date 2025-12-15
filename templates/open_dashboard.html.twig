@@ -233,7 +233,7 @@
 											<img src="{{ album is not null and (album.urlPochetteAlbum is defined and album.urlPochetteAlbum) ? album.urlPochetteAlbum : 'https://placehold.co/50x50/cccccc/333?text=No+Img' }}" alt="Pochette de {{ album and album.nomAlbum is defined ? album.nomAlbum : 'Single' }}">
 										</div>
 										<div class="chanson-title">
-											<a href="/?controller=chanson&method=afficherDetails&idChanson={{ chanson.chanson.idChanson is defined ? chanson.chanson.idChanson : (chanson.chanson.getIdChanson is defined ? chanson.chanson.getIdChanson() : '') }}">
+											<a href="/?controller=album&method=afficherDetails&idChanson={{ chanson.chanson.idChanson is defined ? chanson.chanson.idChanson : (chanson.chanson.getIdChanson is defined ? chanson.chanson.getIdChanson() : '') }}&idAlbum={{ album is not null and (album.idAlbum is defined and album.idAlbum) ? album.idAlbum : '' }}">
 												{{ chanson.chanson.titreChanson }}
 											</a>
 										</div>

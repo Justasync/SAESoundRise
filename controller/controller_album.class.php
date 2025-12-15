@@ -230,13 +230,10 @@ class ControllerAlbum extends Controller
 
     public function afficherDetails()
     {
-        // Vérifier si l'utilisateur est connecté
-        if (!isset($_SESSION['user_logged_in'])) {
-            header('Location: /?controller=home&method=afficher');
-            exit();
-        }
 
         $idAlbum = $_GET['idAlbum'] ?? null;
+        $idChanson = $_GET['idChanson'] ?? null;
+
         if (!$idAlbum) {
             // Gérer l'erreur, par exemple rediriger
             header('Location: /?controller=home&method=afficher');
@@ -273,6 +270,7 @@ class ControllerAlbum extends Controller
         echo $template->render([
             'album' => $album,
             'chansons' => $chansons,
+            'chansonSelected' => $idChanson ? (int)$idChanson : null,
             'session' => $_SESSION,
         ]);
     }
@@ -317,5 +315,4 @@ class ControllerAlbum extends Controller
         header('Location: /?controller=album&method=afficherDetails&idAlbum=' . $idAlbum . '&success_update=1');
         exit();
     }
-
 }
