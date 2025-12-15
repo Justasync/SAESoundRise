@@ -87,15 +87,15 @@ INSERT INTO album (idAlbum, nomAlbum, dateSortieAlbum, urlPochetteAlbum, artiste
 
 -- ===== chanson =====
 INSERT INTO chanson (idChanson, titreChanson, dureeChanson, dateTeleversementChanson, nbEcouteChanson, albumChanson, genreChanson, urlAudioChanson, emailPublicateur) VALUES
-(1, 'Lumière de Bayonne', 182, '2024-10-02', 1520, 7, 9, '/assets/audio/song_01.mp3', 'angel@paaxio.com'),
-(2, 'Nuit Électrique', 210, '2024-09-21', 2310, 1, 4, '/assets/audio/song_02.mp3', 'yohan@paaxio.com'),
-(3, 'Plaza del Sol', 198, '2024-08-06', 890, 6, 8, '/assets/audio/song_03.mp3', 'christopher@paaxio.com'),
-(4, 'Minuit Jazz', 245, '2024-03-15', 121, 5, 5, '/assets/audio/song_04.mp3', 'jarlin@paaxio.com'),
-(5, 'Folk du Matin', 174, '2023-12-05', 67, 4, 10, '/assets/audio/song_05.mp3', 'tim@paaxio.com'),
-(6, 'Rock sur la Nivelle', 203, '2024-07-12', 560, 2, 2, '/assets/audio/song_06.mp3', 'erwan@paaxio.com'),
-(7, 'Hip-Hop Indigo', 199, '2024-05-31', 1940, 3, 3, '/assets/audio/song_07.mp3', 'yohan@paaxio.com'),
-(8, 'Valse Moderne', 221, '2024-02-11', 83, 9, 6, '/assets/audio/song_08.mp3', 'christopher@paaxio.com'),
-(9, 'Reggae du Port', 207, '2024-06-20', 304, 10, 7, '/assets/audio/song_09.mp3', 'jarlin@paaxio.com'),
+(1, 'Lumière de Bayonne', 182, '2024-10-02', 1520, 7, 9, '/assets/audio/song_1.mp3', 'angel@paaxio.com'),
+(2, 'Nuit Électrique', 210, '2024-09-21', 2310, 1, 4, '/assets/audio/song_2.mp3', 'yohan@paaxio.com'),
+(3, 'Plaza del Sol', 198, '2024-08-06', 890, 6, 8, '/assets/audio/song_3.mp3', 'christopher@paaxio.com'),
+(4, 'Minuit Jazz', 245, '2024-03-15', 121, 5, 5, '/assets/audio/song_4.mp3', 'jarlin@paaxio.com'),
+(5, 'Folk du Matin', 174, '2023-12-05', 67, 4, 10, '/assets/audio/song_5.mp3', 'tim@paaxio.com'),
+(6, 'Rock sur la Nivelle', 203, '2024-07-12', 560, 2, 2, '/assets/audio/song_6.mp3', 'erwan@paaxio.com'),
+(7, 'Hip-Hop Indigo', 199, '2024-05-31', 1940, 3, 3, '/assets/audio/song_7.mp3', 'yohan@paaxio.com'),
+(8, 'Valse Moderne', 221, '2024-02-11', 83, 9, 6, '/assets/audio/song_8.mp3', 'christopher@paaxio.com'),
+(9, 'Reggae du Port', 207, '2024-06-20', 304, 10, 7, '/assets/audio/song_9.mp3', 'jarlin@paaxio.com'),
 (10, 'Urbain 64', 188, '2024-06-19', 1290, 10, 3, '/assets/audio/song_10.mp3', 'angel@paaxio.com'),
 (11, 'Étoiles sur l''Adour', 236, '2024-07-11', 640, 1, 4, '/assets/audio/song_11.mp3', 'yohan@paaxio.com'),
 (12, 'Quai des Paroles', 202, '2024-04-23', 220, 8, 9, '/assets/audio/song_12.mp3', 'erwan@paaxio.com');
