@@ -11,6 +11,7 @@
 		--paaxio-border: #91c9c4;
 		--paaxio-rounded-3xl: 1.5rem;
 		--paaxio-text-xs: 0.75rem;
+		--paaxio-text-sm: 0.875rem;
 		--paaxio-fw-semibold: 600;
 		--paaxio-fw-medium: 500;
 	}
@@ -53,7 +54,7 @@
 		display: inline-block;
 		text-align: center;
 		margin-right: 1.5rem;
-		width: 80px;
+		width: 110px;
 	}
 
 	.artist-item:last-child {
@@ -61,16 +62,26 @@
 	}
 
 	.artist-avatar {
-		width: 80px;
-		height: 80px;
+		width: 110px;
+		height: 110px;
 		object-fit: cover;
 		border-radius: 50%;
 		border: 3px solid white;
 		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 	}
 
+	.artist-avatar {
+		transition: transform 0.3s ease;
+	}
+	.artist-item:hover .artist-avatar {
+		transform: scale(1.05);
+	}
+
 	.text-xs {
 		font-size: var(--paaxio-text-xs);
+	}
+	.text-sm {
+		font-size: var(--paaxio-text-sm);
 	}
 	.fw-medium {
 		font-weight: var(--paaxio-fw-medium);
@@ -119,10 +130,10 @@
 						<div class="artist-list-container">
 							{% if artistes is not empty %}
 								{% for artiste in artistes %}
-									<div class="artist-item">
-										<img src="{{ artiste.urlPhotoUtilisateur ?: 'https://placehold.co/80x80/cccccc/ffffff?text=' ~ artiste.pseudoUtilisateur|first }}" alt="Avatar de {{ artiste.pseudoUtilisateur }}" class="artist-avatar">
-										<p class="mt-2 mb-0 text-sm text-center fw-medium text-white">{{ artiste.pseudoUtilisateur }}</p>
-									</div>
+									<a href="/?controller=utilisateur&method=afficherProfilArtiste&pseudo={{ artiste.pseudoUtilisateur }}" class="artist-item text-decoration-none" title="{{ artiste.pseudoUtilisateur }}">
+										<img src="{{ artiste.urlPhotoUtilisateur ?: 'https://placehold.co/110x110/cccccc/ffffff?text=' ~ artiste.pseudoUtilisateur|first }}" alt="Avatar de {{ artiste.pseudoUtilisateur }}" class="artist-avatar">
+										<p class="mt-1 mb-0 text-sm text-center fw-medium text-white">{{ artiste.pseudoUtilisateur|length > 10 ? artiste.pseudoUtilisateur|slice(0, 10) ~ '...' : artiste.pseudoUtilisateur }}</p>
+									</a>
 								{% endfor %}
 							{% else %}
 								<p class="text-center text-gray-500 p-3">Aucun artiste en tendance.</p>
