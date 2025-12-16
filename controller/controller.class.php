@@ -140,20 +140,41 @@ class Controller
      */
     protected function requireRole($requiredRole): void
     {
+        // 1. Vérifier si l'utilisateur est connecté (méthode du parent)
         $this->requireAuth();
 
-        $userRole = $_SESSION['user_role'] ?? null;
-        $roleValue = $requiredRole instanceof RoleEnum ? $requiredRole->value : $requiredRole;
+        // 2. Récupérer le rôle en session
+        $sessionRole = $_SESSION['user_role'] ?? null;
 
-        if ($userRole !== $roleValue) {
+        // --- CORRECCIÓN AQUÍ ---
+        // Si en session on a un Objet (Enum), on prend sa valeur. Sinon, on prend la string.
+        $userRoleValue = (is_object($sessionRole) && property_exists($sessionRole, 'value')) 
+                         ? $sessionRole->value 
+                         : $sessionRole;
+
+        // 3. Récupérer la valeur du rôle requis (argument)
+        $requiredRoleValue = ($requiredRole instanceof RoleEnum) 
+                             ? $requiredRole->value 
+                             : $requiredRole;
+
+        // 4. Comparaison stricte (String vs String)
+        if ($userRoleValue !== $requiredRoleValue) {
             http_response_code(403);
-            $template = $this->getTwig()->load('403.html.twig');
+            // Asegúrate de que existe '403.html.twig', si no, usa 'base_template.html.twig' con un mensaje
+            try {
+                $template = $this->getTwig()->load('403.html.twig');
+            } catch (\Exception $e) {
+                // Fallback si no existe el archivo 403
+                die("Erreur 403 : Accès refusé. (Template 403 introuvable)");
+            }
+            
             echo $template->render([
                 'page' => [
                     'title' => "Erreur 403 - Accès refusé",
                     'name' => "403",
                     'description' => "Vous n'avez pas l'autorisation d'accéder à cette ressource."
-                ]
+                ],
+                'session' => $_SESSION // Importante pasar la sesión para el menú
             ]);
             exit();
         }
