@@ -140,7 +140,6 @@ class Controller
      */
     protected function requireRole($requiredRole): void
     {
-        // 1. Vérifier si l'utilisateur est connecté (méthode du parent)
         $this->requireAuth();
 
         // 2. Récupérer le rôle en session
@@ -156,18 +155,19 @@ class Controller
         $requiredRoleValue = ($requiredRole instanceof RoleEnum)
             ? $requiredRole->value
             : $requiredRole;
+        $userRole = $_SESSION['user_role'] ?? null;
+        $userRoleValue = $userRole instanceof RoleEnum ? $userRole->value : $userRole;
+        $roleValue = $requiredRole instanceof RoleEnum ? $requiredRole->value : $requiredRole;
 
-        // 4. Comparaison stricte (String vs String)
-        if ($userRoleValue !== $requiredRoleValue) {
+        if ($userRoleValue !== $roleValue) {
             http_response_code(403);
-            $template = $this->getTwig()->load('errors/403.html.twig');
+            $template = $this->getTwig()->load('403.html.twig');
             echo $template->render([
                 'page' => [
                     'title' => "Erreur 403 - Accès refusé",
                     'name' => "403",
                     'description' => "Vous n'avez pas l'autorisation d'accéder à cette ressource."
-                ],
-                'session' => $_SESSION // Importante pasar la sesión para el menú
+                ]
             ]);
             exit();
         }
@@ -206,11 +206,12 @@ class Controller
         $this->requireAuth();
 
         $userRole = $_SESSION['user_role'] ?? null;
+        $userRoleValue = $userRole instanceof RoleEnum ? $userRole->value : $userRole;
         $allowedRoleValues = array_map(function ($role) {
             return $role instanceof RoleEnum ? $role->value : $role;
         }, $allowedRoles);
 
-        if (!in_array($userRole, $allowedRoleValues, true)) {
+        if (!in_array($userRoleValue, $allowedRoleValues, true)) {
             http_response_code(403);
             $template = $this->getTwig()->load('errors/403.html.twig');
             echo $template->render([
