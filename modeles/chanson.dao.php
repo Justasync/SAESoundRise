@@ -75,7 +75,7 @@ class ChansonDAO
         return [];
     }
 
-    public function findUser(?string $email = null): array
+    public function findAllFromUser(?string $email = null): array
     {
         if ($email) {
             $sql = "SELECT * FROM chanson WHERE emailPublicateur = :email";
@@ -263,7 +263,7 @@ class ChansonDAO
     {
         $sql = "
             SELECT c.*, l.dateLike, l.emailUtilisateur
-            FROM likechanson l
+            FROM likeChanson l
             JOIN chanson c ON c.idChanson = l.idChanson
             WHERE l.emailUtilisateur = :email
             ORDER BY l.dateLike DESC
@@ -286,7 +286,7 @@ class ChansonDAO
      */
     public function addChansonLikee(string $emailUtilisateur, int $idChanson): bool
     {
-        $sql = "INSERT INTO likechanson (emailUtilisateur, idChanson, dateLike)
+        $sql = "INSERT INTO likeChanson (emailUtilisateur, idChanson, dateLike)
                 VALUES (:emailUtilisateur, :idChanson, :dateLike)";
 
         $stmt = $this->pdo->prepare($sql);
@@ -302,7 +302,7 @@ class ChansonDAO
      */
     public function updateChansonLikee(string $emailUtilisateur, int $idChanson): bool
     {
-        $sql = "UPDATE likechanson SET dateLike = :dateLike
+        $sql = "UPDATE likeChanson SET dateLike = :dateLike
                 WHERE emailUtilisateur = :emailUtilisateur AND idChanson = :idChanson";
 
         $stmt = $this->pdo->prepare($sql);
@@ -319,7 +319,7 @@ class ChansonDAO
     public function toggleLike(string $emailUtilisateur, int $idChanson): bool
     {
         // Vérifie si la chanson est déjà likée
-        $sql = "SELECT COUNT(*) FROM likechanson WHERE emailUtilisateur = :emailUtilisateur AND idChanson = :idChanson";
+        $sql = "SELECT COUNT(*) FROM likeChanson WHERE emailUtilisateur = :emailUtilisateur AND idChanson = :idChanson";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
             ':emailUtilisateur' => $emailUtilisateur,
@@ -329,7 +329,7 @@ class ChansonDAO
 
         if ($isLiked) {
             // Supprime le like
-            $sql = "DELETE FROM likechanson WHERE emailUtilisateur = :emailUtilisateur AND idChanson = :idChanson";
+            $sql = "DELETE FROM likeChanson WHERE emailUtilisateur = :emailUtilisateur AND idChanson = :idChanson";
             $stmt = $this->pdo->prepare($sql);
             return $stmt->execute([
                 ':emailUtilisateur' => $emailUtilisateur,

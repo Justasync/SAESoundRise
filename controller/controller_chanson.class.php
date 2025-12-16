@@ -135,12 +135,9 @@ class ControllerChanson extends Controller
     public function toggleLike()
     {
         // Vérifie la connexion
+        $this->requireAuth();
+        
         $emailUtilisateur = $_SESSION['user_email'] ?? null;
-        if (!$emailUtilisateur) {
-            http_response_code(401);
-            echo json_encode(['error' => 'Utilisateur non connecté']);
-            exit;
-        }
 
         // Récupère l'ID de la chanson depuis POST
         $idChanson = $_POST['idChanson'] ?? null;

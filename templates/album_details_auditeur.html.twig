@@ -138,7 +138,11 @@
 					<span class="text-sm fw-light text-uppercase" style="letter-spacing: 0.1em; opacity: 0.8;">Album</span>
 					<h2 class="display-4 fw-bolder mt-1 mb-2" id="album-title">{{ album.getTitreAlbum() }}</h2>
 					<p class="fs-5 fw-light" id="album-meta" style="opacity: 0.9;">
-						{{ album.getArtisteAlbum() }}
+						{% if album.getPseudoArtiste() %}
+							<a href="/?controller=utilisateur&method=afficherProfilArtiste&pseudo={{ album.getPseudoArtiste()|e('url') }}" class="text-white text-decoration-none" style="opacity: 0.9; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.9'">{{ album.getPseudoArtiste() }}</a>
+						{% else %}
+							{{ album.getArtisteAlbum() }}
+						{% endif %}
 						{% if album.getDateSortieAlbum() %}
 							·
 							{{ album.getDateSortieAlbum()|date('Y') }}
@@ -225,8 +229,8 @@
 										<button title="Lire la musique" class="btn btn-sm btn-link p-1 play-track-btn" data-index="{{ loop.index0 }}" onclick="loadTrack({{ loop.index0 }})">
 											<i class="bi bi-play-fill track-play-icon" style="color: rgba(255,255,255,0.7); font-size: 1.2rem;"></i>
 										</button>
-										<button title="Aimer la musique" class="btn btn-sm btn-link p-1">
-											<i class="bi bi-heart" style="color: rgba(255,255,255,0.7); font-size: 1rem;"></i>
+										<button title="Aimer la musique" class="btn btn-sm btn-link p-1 like-btn" data-id="{{ chanson.getIdChanson() }}">
+											<i class="bi {% if chanson.getIsLiked() %}bi-heart-fill text-danger{% else %}bi-heart{% endif %}" style="color: rgba(255,255,255,0.7); font-size: 1rem;"></i>
 										</button>
 									</td>
 								</tr>
@@ -249,7 +253,7 @@
 
 {% block script %}
 	{{ parent() }}
-
+	<script src="/assets/js/like-handler.js"></script>
 	<script>
 		const audioPlayer = document.getElementById('audio-player');
 const playPauseIcon = document.getElementById('play-pause-icon');
@@ -660,5 +664,85 @@ volumeSlider.value = audioPlayer.volume > 0 ? audioPlayer.volume * 100 : 75;
 
 // Initialisation du volume au chargement de la page
 handleVolumeChange();
+
+// --- Gestion des Likes ---
+
+// Délégation d'événements pour les boutons like (robuste et fonctionne pour éléments dynamiques)
+document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.like-btn');
+    if (!btn) return;
+
+    e.stopPropagation(); // évite de déclencher le clic sur la ligne
+    const chansonId = btn.dataset.id;
+    const row = btn.closest('tr'); // récupère la ligne de la table
+    const icon = btn.querySelector('i');
+
+    fetch('/?controller=chanson&method=toggleLike', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `idChanson=${encodeURIComponent(chansonId)}`
+    })
+    .then(async (res) => {
+        const text = await res.text();
+        try {
+            const data = JSON.parse(text);
+            return { ok: res.ok, status: res.status, data };
+        } catch (err) {
+            console.error('Réponse non JSON du serveur pour toggleLike:', text);
+            throw new Error('Réponse non JSON du serveur');
+        }
+    })
+    .then(({ ok, status, data }) => {
+        console.log('toggleLike response', status, data);
+        if (data.liked) {
+            // coeur rempli + rouge
+            icon.classList.remove('bi-heart');
+            icon.classList.add('bi-heart-fill');
+            icon.classList.add('text-danger');
+        } else {
+            // coeur vide + supprime rouge
+            icon.classList.remove('bi-heart-fill');
+            icon.classList.add('bi-heart');
+            icon.classList.remove('text-danger');
+
+            // Supprime la ligne uniquement si on est sur la page des musiques likées
+            if (window.location.search.includes('controller=utilisateur') && window.location.search.includes('method=afficherMesLikes')) {
+                if (row) row.remove();
+
+                // Supprime la chanson de la playlist JS
+                const indexInPlaylist = playlist.findIndex(track => track.id == chansonId);
+                if (indexInPlaylist !== -1) {
+                    playlist.splice(indexInPlaylist, 1);
+
+                    // Si la chanson supprimée est la piste en cours, jouer la suivante
+                    if (currentTrackIndex === indexInPlaylist) {
+                        if (playlist.length > 0) {
+                            const nextIndex = Math.min(indexInPlaylist, playlist.length - 1);
+                            loadTrack(nextIndex);
+                        } else {
+                            // Plus de pistes → arrêt
+                            audioPlayer.pause();
+                            audioPlayer.currentTime = 0;
+                            progressBar.style.width = '0%';
+                            currentTimeEl.textContent = '0:00';
+                            currentTrackTitleEl.textContent = `Piste en cours : Aucune`;
+                            currentTrackIndex = -1;
+                            isPlaying = false;
+                            playPauseIcon.classList.replace('bi-pause-fill', 'bi-play-fill');
+                        }
+                    } else if (currentTrackIndex > indexInPlaylist) {
+                        // Ajuste l'index de la piste en cours si une piste avant elle a été supprimée
+                        currentTrackIndex--;
+                    }
+                }
+            }
+        }
+    })
+    .catch(err => {
+        console.error('Erreur like:', err);
+        // Affiche une erreur visuelle minimale pour l'utilisateur
+        if (icon) icon.classList.add('text-muted');
+    });
+});
 	</script>
 {% endblock %}

@@ -306,33 +306,38 @@ class ControllerUtilisateur extends Controller
         session_destroy();
 
         // Redirection vers la page d'accueil (controller=home, method=afficher)
-        header('Location: /?controller=home&method=afficher');
-        exit;
+        $this->redirectTo('home', 'afficher');
     }
 
     public function afficherMesLikes()
     {
         // Vérifie la connexion
+        $this->requireAuth();
+
         $emailUtilisateur = $_SESSION['user_email'] ?? null;
-        if (!$emailUtilisateur) {
-            header("Location: /?controller=auth&method=login");
-            exit;
-        }
 
         // DAO → Récupération des chansons likées de l'utilisateur
         $managerLike = new ChansonDAO($this->getPdo());
         $chansonsLikees = $managerLike->findChansonsLikees($emailUtilisateur);
-        
+
         // Marque toutes les chansons comme likées (puisqu'elles viennent de la liste des likes)
         foreach ($chansonsLikees as $chanson) {
             $chanson->setIsLiked(true);
         }
 
         $albumVirtuel = (object) [
-            "getTitreAlbum" => function() { return "Chansons Likées"; },
-            "getUrlImageAlbum" => function() { return "public/assets/like_default.png"; },
-            "getArtisteAlbum" => function() { return "Moi"; },
-            "getDateSortieAlbum" => function() { return null; },
+            "getTitreAlbum" => function () {
+                return "Chansons Likées";
+            },
+            "getUrlImageAlbum" => function () {
+                return "public/assets/like_default.png";
+            },
+            "getArtisteAlbum" => function () {
+                return "Moi";
+            },
+            "getDateSortieAlbum" => function () {
+                return null;
+            },
         ];
 
         // Génération du token CSRF
@@ -361,8 +366,7 @@ class ControllerUtilisateur extends Controller
         $pseudo = $_GET['pseudo'] ?? null;
 
         if (!$pseudo) {
-            header('Location: /?controller=home&method=afficher');
-            exit();
+            $this->redirectTo('home', 'afficher');
         }
 
         $utilisateurDAO = new UtilisateurDAO($this->getPDO());
@@ -372,14 +376,13 @@ class ControllerUtilisateur extends Controller
         $utilisateur = $utilisateurDAO->findByPseudo($pseudo);
 
         if (!$utilisateur) {
-            header('Location: /?controller=home&method=afficher');
-            exit();
+            $this->redirectTo('home', 'afficher');
         }
 
         // Récupérer les albums de l'artiste (via son email stocké dans l'entité)
         $emailArtiste = $utilisateur->getEmailUtilisateur();
 
-        $albums = $albumDAO->findByArtiste($emailArtiste);
+        $albums = $albumDAO->findAllByArtistEmail($emailArtiste);
 
         $template = $this->getTwig()->load('artiste_profil.html.twig');
         echo $template->render([

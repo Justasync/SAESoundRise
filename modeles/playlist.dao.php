@@ -1,6 +1,7 @@
 <?php
 
-class PlaylistDAO {
+class PlaylistDAO
+{
     private ?PDO $pdo;
 
     public function __construct(?PDO $pdo = null)
@@ -19,21 +20,27 @@ class PlaylistDAO {
         return $playlist;
     }
 
-    public function find(int $id): playlist
+    public function findFromUser(int $id, ?string $email): ?playlist
     {
-        $sql = "SELECT * FROM playlist WHERE idPlaylist = :id";
+        $sql = "SELECT * FROM playlist WHERE idPlaylist = :id 
+        AND emailProprietaire = :email";
         $pdoStatement = $this->pdo->prepare($sql);
         $pdoStatement->execute(array(
-            ':id' => $id
+            ':id' => $id,
+            ':email' => $email
         ));
 
         $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
         $tableau = $pdoStatement->fetch();
+        if (!$tableau) {
+            return null;
+        }
         $playlist = $this->hydrate($tableau);
         return $playlist;
     }
 
-    public function findUser(?string $email = null): array {
+    public function findAllFromUser(?string $email = null): array
+    {
         if ($email) {
             $sql = "SELECT * FROM playlist WHERE emailProprietaire = :email";
             $stmt = $this->pdo->prepare($sql);
@@ -50,7 +57,7 @@ class PlaylistDAO {
         if (empty($tableaAssoc)) {
             return null;
         }
-        
+
         $playlist = new Playlist();
         $playlist->setIdPlaylist(isset($tableaAssoc['idPlaylist']) ? (int)$tableaAssoc['idPlaylist'] : null);
         $playlist->setNomPlaylist($tableaAssoc['nomPlaylist'] ?? null);
@@ -64,7 +71,7 @@ class PlaylistDAO {
         $playlist->setDateDerniereModification(
             !empty($tableaAssoc['dateDerniereModification']) ? new DateTime($tableaAssoc['dateDerniereModification']) : null
         );
-        
+
         $playlist->setEmailProprietaire($tableaAssoc['emailProprietaire'] ?? null);
         return $playlist;
     }
@@ -81,7 +88,7 @@ class PlaylistDAO {
         return $playlists;
     }
 
-    public function getChansonsByPlaylist(int $idPlaylist): array
+    public function getChansonsByPlaylist(int $idPlaylist, ?string $emailUtilisateur = null): array
     {
         $sql = "
             SELECT c.* 
@@ -95,9 +102,6 @@ class PlaylistDAO {
         $stmt->execute([':idPlaylist' => $idPlaylist]);
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Récupérer l'utilisateur connecté
-        $emailUtilisateur = $_SESSION['user_email'] ?? null;
-
         $chansons = [];
         foreach ($results as $row) {
             $chansonDAO = new ChansonDAO($this->pdo);
@@ -105,7 +109,7 @@ class PlaylistDAO {
             // Vérifier si la chanson est likée par l'utilisateur connecté
             $isLiked = false;
             if ($emailUtilisateur) {
-                $sqlLike = "SELECT 1 FROM likechanson WHERE idChanson = :idChanson AND emailUtilisateur = :emailUtilisateur LIMIT 1";
+                $sqlLike = "SELECT 1 FROM likeChanson WHERE idChanson = :idChanson AND emailUtilisateur = :emailUtilisateur LIMIT 1";
                 $stmtLike = $this->pdo->prepare($sqlLike);
                 $stmtLike->execute([
                     ':idChanson' => $chanson->getIdChanson(),

@@ -286,23 +286,4 @@ document.addEventListener("DOMContentLoaded", () => {
     resetStatusMessages();
     showStep(1);
   });
-
-  modalElement.addEventListener("shown.bs.modal", () => {
-    showStep(1);
-    modalElement.querySelector('[name="signupUserType"]')?.focus();
-
-    // Change the URL to /?controller=home&method=signup without reloading
-    const newUrl = "/?controller=home&method=signup";
-    if (window.location.search !== "?controller=home&method=signup") {
-      window.history.replaceState({}, "", newUrl);
-    }
-  });
-
-  // when close the modal change to /?controller=home&method=afficer
-  modalElement.addEventListener("hidden.bs.modal", () => {
-    const newUrl = "/?controller=home&method=afficher";
-    if (window.location.search !== "?controller=home&method=afficher") {
-      window.history.replaceState({}, "", newUrl);
-    }
-  });
 });

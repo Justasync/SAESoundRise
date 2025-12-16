@@ -9,6 +9,8 @@ class ControllerAdmin extends Controller
 
     public function afficher()
     {
+        $this->requireRole(RoleEnum::Admin);
+        
         $template = $this->getTwig()->load('admin_dashboard.html.twig');
         echo $template->render([
             'page' => [
