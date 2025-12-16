@@ -32,7 +32,7 @@ class Controller
         if (!method_exists($this, $method)) {
             // Afficher une page 404 méthode non autorisée avec Twig
             http_response_code(404);
-            $template = $this->getTwig()->load('404.html.twig');
+            $template = $this->getTwig()->load('errors/404.html.twig');
             echo $template->render([
                 'page' => [
                     'title' => "Page non trouvée",
