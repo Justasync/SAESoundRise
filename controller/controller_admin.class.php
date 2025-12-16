@@ -1,44 +1,76 @@
 <?php
-
 /**
  * Contrôleur dédié à la gestion de l'administration.
- * 
- * Ce contrôleur gère l'affichage du tableau de bord administrateur,
- * la liste des utilisateurs et les actions de suppression.
  */
 class ControllerAdmin extends Controller
 {
-    /**
-     * Constructeur du contrôleur d'administration.
-     *
-     * @param \Twig\Environment $twig L'environnement Twig pour le rendu des vues.
-     * @param \Twig\Loader\FilesystemLoader $loader Le chargeur de fichiers de templates.
-     */
     public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader)
     {
         parent::__construct($loader, $twig);
     }
 
     /**
-     * Affiche le tableau de bord de l'administrateur (Liste des utilisateurs).
-     *
-     * Cette méthode effectue les opérations suivantes :
-     * 1. Établit la connexion à la base de données.
-     * 2. Récupère la liste complète des utilisateurs via le DAO.
-     * 3. Vérifie la présence d'un indicateur de succès dans l'URL (ex: après une création).
-     * 4. Rend la vue 'admin_dashboard.html.twig' avec les données nécessaires.
-     *
-     * @return void
+     * Méthode de sécurité pour vérifier le rôle.
+     * Inclut la correction pour lire la valeur de l'Enum en session.
+     */
+    protected function requireRole($requiredRole): void
+    {
+        // 1. Vérifier l'authentification (Redirige si non connecté)
+        $this->requireAuth();
+
+        // 2. Récupérer le rôle en session
+        $sessionRole = $_SESSION['user_role'] ?? null;
+
+        // --- CORRECTION IMPORTANTE ---
+        // Extraction de la valeur (string) si c'est un objet Enum
+        $userRoleValue = (is_object($sessionRole) && property_exists($sessionRole, 'value')) 
+                         ? $sessionRole->value 
+                         : $sessionRole;
+
+        // 3. Récupérer la valeur du rôle requis
+        $requiredRoleValue = ($requiredRole instanceof RoleEnum) 
+                             ? $requiredRole->value 
+                             : $requiredRole;
+
+        // 4. Comparaison
+        if ($userRoleValue !== $requiredRoleValue) {
+            http_response_code(403);
+            
+            // Tentative de chargement du template 403
+            try {
+                $template = $this->getTwig()->load('403.html.twig');
+                echo $template->render([
+                    'page' => [
+                        'title' => "Erreur 403 - Accès refusé",
+                        'name' => "403",
+                        'description' => "Vous n'avez pas l'autorisation d'accéder à cette ressource."
+                    ],
+                    'session' => $_SESSION
+                ]);
+            } catch (\Exception $e) {
+                // Fallback si le template n'existe pas
+                die("Erreur 403 : Accès refusé.");
+            }
+            exit();
+        }
+    }
+
+    /**
+     * Affiche le tableau de bord de l'administrateur.
      */
     public function afficher()
     {
+        // Vérification du rôle Admin
+        $this->requireRole(RoleEnum::Admin);
+
         $pdo = Bd::getInstance()->getConnexion();
         $utilisateurDAO = new UtilisateurDAO($pdo);
         $utilisateurs = $utilisateurDAO->findAll();
 
         $successMessage = null;
-        if (isset($_GET['success']) && $_GET['success'] == 1) {
-            $successMessage = "L'utilisateur a été créé avec succès !";
+        if (isset($_GET['success'])) {
+            if ($_GET['success'] == 1) $successMessage = "L'utilisateur a été créé avec succès !";
+            if ($_GET['success'] == 2) $successMessage = "L'utilisateur a été modifié avec succès !";
         }
 
         $template = $this->getTwig()->load('admin_dashboard.html.twig');
@@ -52,23 +84,27 @@ class ControllerAdmin extends Controller
 
     /**
      * Supprime un utilisateur spécifique.
-     *
-     * Cette méthode récupère l'identifiant de l'utilisateur passé dans la requête GET,
-     * appelle le DAO pour effectuer la suppression en base de données,
-     * puis redirige l'administrateur vers le tableau de bord.
-     *
-     * @return void
      */
     public function supprimer()
     {
+        // Vérification du rôle Admin
+        $this->requireRole(RoleEnum::Admin);
+
         if (isset($_GET['id'])) {
             $pdo = Bd::getInstance()->getConnexion();
             $utilisateurDAO = new UtilisateurDAO($pdo);
             
+            // Protection : ne pas se supprimer soi-même
+            if (isset($_SESSION['user_email']) && $_GET['id'] == $_SESSION['user_email']) {
+                // Redirection propre avec la méthode du contrôleur parent
+                $this->redirectTo('admin', 'afficher');
+                return;
+            }
+
             $utilisateurDAO->delete($_GET['id']);
         }
 
-        header('Location: ?controller=admin&method=afficher');
-        exit();
+        // Redirection propre après suppression
+        $this->redirectTo('admin', 'afficher');
     }
 }
