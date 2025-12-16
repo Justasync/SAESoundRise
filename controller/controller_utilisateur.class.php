@@ -56,7 +56,7 @@ class ControllerUtilisateur extends Controller
             }
 
             $hashedPassword = $utilisateur->getMotDePasseUtilisateur();
-
+            
             if (!password_verify($password, $hashedPassword)) {
                 header('Content-Type: application/json');
                 echo json_encode([
@@ -314,7 +314,7 @@ class ControllerUtilisateur extends Controller
     public function inscription()
     {
         if (!isset($_SESSION['user_role']) || $_SESSION['user_role']->value !== 'admin') {
-            header('Location: ?controller=home&method=afficher');
+            $this->redirectTo('home', 'afficher');
             exit();
         }
 
