@@ -1,0 +1,29 @@
+{% extends 'emails/base_email.html.twig' %}
+
+{% block title %}Nouveau like{% endblock %}
+
+{% block content %}
+    <h2>❤️ Quelqu'un a aimé votre musique !</h2>
+    
+    <p>Bonjour {{ pseudo }},</p>
+    
+    <p><strong>{{ liker_name|default('Un utilisateur') }}</strong> a aimé votre chanson !</p>
+    
+    <div class="highlight-box">
+        <p>🎵 <strong>{{ song_title|default('Votre chanson') }}</strong></p>
+        {% if album_title is defined %}
+            <p>📀 Album : {{ album_title }}</p>
+        {% endif %}
+        {% if total_likes is defined %}
+            <p>❤️ Total de likes : {{ total_likes }}</p>
+        {% endif %}
+    </div>
+    
+    <p style="text-align: center;">
+        <a href="{{ site_url }}/?controller=musique&method=afficher" class="btn">Voir mes statistiques</a>
+    </p>
+    
+    <p>Votre musique touche les gens, continuez comme ça !</p>
+    <p><em>L'équipe Paaxio</em></p>
+{% endblock %}
+

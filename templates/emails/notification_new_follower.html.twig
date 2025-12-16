@@ -1,0 +1,26 @@
+{% extends 'emails/base_email.html.twig' %}
+
+{% block title %}Nouveau follower{% endblock %}
+
+{% block content %}
+    <h2>🎉 Vous avez un nouveau follower !</h2>
+    
+    <p>Bonjour {{ pseudo }},</p>
+    
+    <p>Bonne nouvelle ! <strong>{{ follower_name|default('Un utilisateur') }}</strong> a commencé à vous suivre sur Paaxio.</p>
+    
+    <div class="highlight-box">
+        <p>📈 Votre communauté grandit !</p>
+        {% if total_followers is defined %}
+            <p>Vous avez maintenant <strong>{{ total_followers }}</strong> followers.</p>
+        {% endif %}
+    </div>
+    
+    <p style="text-align: center;">
+        <a href="{{ site_url }}/?controller=utilisateur&method=afficherProfilArtiste&pseudo={{ pseudo }}" class="btn">Voir mon profil</a>
+    </p>
+    
+    <p>Continuez à partager votre musique avec le monde !</p>
+    <p><em>L'équipe Paaxio</em></p>
+{% endblock %}
+

@@ -1,0 +1,32 @@
+{% extends 'emails/base_email.html.twig' %}
+
+{% block title %}Invitation à une battle{% endblock %}
+
+{% block content %}
+    <h2>🎤 Invitation à une battle musicale !</h2>
+    
+    <p>Bonjour {{ pseudo }},</p>
+    
+    <p>Vous avez été invité(e) à participer à une battle musicale sur Paaxio !</p>
+    
+    <div class="highlight-box">
+        <p>⚔️ <strong>{{ battle_title|default('Battle musicale') }}</strong></p>
+        {% if opponent_name is defined %}
+            <p>🎵 Contre : {{ opponent_name }}</p>
+        {% endif %}
+        {% if deadline is defined %}
+            <p>⏰ Date limite : {{ deadline }}</p>
+        {% endif %}
+        {% if theme is defined %}
+            <p>🎯 Thème : {{ theme }}</p>
+        {% endif %}
+    </div>
+    
+    <p style="text-align: center;">
+        <a href="{{ site_url }}/?controller=battle&method=afficher&id={{ battle_id|default(0) }}" class="btn">Voir la battle</a>
+    </p>
+    
+    <p>Montrez votre talent et relevez le défi !</p>
+    <p><em>L'équipe Paaxio</em></p>
+{% endblock %}
+

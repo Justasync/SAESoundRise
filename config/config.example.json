@@ -5,5 +5,14 @@
       "username": "VOTRE_USERNAME",
       "password": "VOTRE_MOT_DE_PASSE",
       "port": 3306
+   },
+   "mail": {
+      "host": "smtp.hostinger.com",
+      "port": 465,
+      "username": "VOTRE_EMAIL@paaxio.com",
+      "password": "VOTRE_MOT_DE_PASSE",
+      "from_email": "no-reply@paaxio.com",
+      "from_name": "Paaxio",
+      "encryption": "ssl"
    }
 }

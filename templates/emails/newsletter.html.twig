@@ -1,0 +1,16 @@
+{% extends 'emails/base_email.html.twig' %}
+
+{% block title %}Newsletter Paaxio{% endblock %}
+
+{% block content %}
+    {{ content|raw }}
+{% endblock %}
+
+{% block footer_extra %}
+    {% if unsubscribe_url %}
+        <p style="margin-top: 15px;">
+            <a href="{{ unsubscribe_url }}" style="color: #999; font-size: 12px;">Se désinscrire de la newsletter</a>
+        </p>
+    {% endif %}
+{% endblock %}
+
