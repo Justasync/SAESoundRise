@@ -1,0 +1,27 @@
+{% extends 'emails/base_email.html.twig' %}
+
+{% block title %}Nouvel album disponible{% endblock %}
+
+{% block content %}
+    <h2>🎵 Nouvel album disponible !</h2>
+    
+    <p>Bonjour {{ pseudo }},</p>
+    
+    <p>Un artiste que vous suivez vient de sortir un nouvel album !</p>
+    
+    <div class="highlight-box">
+        <p><strong>Album :</strong> {{ album_title|default('Nouvel album') }}</p>
+        <p><strong>Artiste :</strong> {{ artist_name|default('Artiste') }}</p>
+        {% if track_count is defined %}
+            <p><strong>Nombre de titres :</strong> {{ track_count }}</p>
+        {% endif %}
+    </div>
+    
+    <p style="text-align: center;">
+        <a href="{{ site_url }}/?controller=album&method=afficher&id={{ album_id|default(0) }}" class="btn">Écouter maintenant</a>
+    </p>
+    
+    <p>Bonne écoute !</p>
+    <p><em>L'équipe Paaxio</em></p>
+{% endblock %}
+

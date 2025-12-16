@@ -1,0 +1,48 @@
+{% extends 'emails/base_email.html.twig' %}
+
+{% block title %}Bienvenue sur Paaxio{% endblock %}
+
+{% block content %}
+    <h2>Bienvenue sur Paaxio, {{ pseudo }} ! 🎉</h2>
+    
+    <p>Nous sommes ravis de vous accueillir dans notre communauté musicale !</p>
+    
+    <div class="highlight-box">
+        <p><strong>Votre compte {{ type }}</strong> a été créé avec succès.</p>
+        <p>Email : <span class="code">{{ email }}</span></p>
+    </div>
+    
+    {% if type == 'artiste' %}
+        <p>En tant qu'artiste, vous pouvez maintenant :</p>
+        <ul>
+            <li>🎤 Publier vos albums et chansons</li>
+            <li>🎯 Participer aux battles musicales</li>
+            <li>📊 Suivre vos statistiques d'écoute</li>
+            <li>💬 Interagir avec vos fans</li>
+        </ul>
+    {% elseif type == 'auditeur' %}
+        <p>En tant qu'auditeur, vous pouvez maintenant :</p>
+        <ul>
+            <li>🎧 Découvrir de nouveaux artistes</li>
+            <li>❤️ Liker vos morceaux préférés</li>
+            <li>📋 Créer vos playlists personnalisées</li>
+            <li>🏆 Voter pour vos artistes favoris dans les battles</li>
+        </ul>
+    {% elseif type == 'producteur' %}
+        <p>En tant que producteur, vous pouvez maintenant :</p>
+        <ul>
+            <li>🎹 Découvrir de nouveaux talents</li>
+            <li>📈 Analyser les tendances musicales</li>
+            <li>🤝 Entrer en contact avec des artistes</li>
+            <li>⭐ Suivre les battles et repérer les futurs stars</li>
+        </ul>
+    {% endif %}
+    
+    <p style="text-align: center;">
+        <a href="{{ site_url }}" class="btn">Commencer l'aventure</a>
+    </p>
+    
+    <p>À très bientôt sur Paaxio !</p>
+    <p><em>L'équipe Paaxio</em></p>
+{% endblock %}
+

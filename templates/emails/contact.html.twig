@@ -1,0 +1,23 @@
+{% extends 'emails/base_email.html.twig' %}
+
+{% block title %}Nouveau message de contact{% endblock %}
+
+{% block content %}
+    <h2>📬 Nouveau message de contact</h2>
+    
+    <div class="highlight-box">
+        <p><strong>De :</strong> {{ from_name }}</p>
+        <p><strong>Email :</strong> <a href="mailto:{{ from_email }}">{{ from_email }}</a></p>
+        <p><strong>Sujet :</strong> {{ subject }}</p>
+    </div>
+    
+    <h3>Message :</h3>
+    <div style="background-color: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin: 15px 0;">
+        {{ message|nl2br }}
+    </div>
+    
+    <p style="color: #888; font-size: 13px;">
+        <em>Vous pouvez répondre directement à cet email pour contacter l'expéditeur.</em>
+    </p>
+{% endblock %}
+

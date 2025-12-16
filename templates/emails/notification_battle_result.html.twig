@@ -1,0 +1,44 @@
+{% extends 'emails/base_email.html.twig' %}
+
+{% block title %}Résultats de la battle{% endblock %}
+
+{% block content %}
+    <h2>🏆 Résultats de la battle musicale</h2>
+    
+    <p>Bonjour {{ pseudo }},</p>
+    
+    <p>La battle à laquelle vous avez participé est terminée !</p>
+    
+    <div class="highlight-box">
+        <p>⚔️ <strong>{{ battle_title|default('Battle musicale') }}</strong></p>
+        
+        {% if is_winner is defined and is_winner %}
+            <p style="font-size: 24px; text-align: center;">🥇 <strong>FÉLICITATIONS, VOUS AVEZ GAGNÉ !</strong></p>
+        {% elseif is_winner is defined and not is_winner %}
+            <p style="font-size: 18px; text-align: center;">Vous n'avez pas gagné cette fois, mais ne vous découragez pas !</p>
+        {% endif %}
+        
+        {% if your_votes is defined and opponent_votes is defined %}
+            <p>📊 <strong>Résultats :</strong></p>
+            <p>Vos votes : {{ your_votes }}</p>
+            <p>Votes adversaire : {{ opponent_votes }}</p>
+        {% endif %}
+        
+        {% if winner_name is defined %}
+            <p>🏆 Gagnant : <strong>{{ winner_name }}</strong></p>
+        {% endif %}
+    </div>
+    
+    <p style="text-align: center;">
+        <a href="{{ site_url }}/?controller=battle&method=afficher&id={{ battle_id|default(0) }}" class="btn">Voir les détails</a>
+    </p>
+    
+    {% if is_winner is defined and is_winner %}
+        <p>Bravo pour cette victoire ! Vos points de renommée ont été mis à jour.</p>
+    {% else %}
+        <p>Chaque battle est une expérience. La prochaine sera la bonne !</p>
+    {% endif %}
+    
+    <p><em>L'équipe Paaxio</em></p>
+{% endblock %}
+
