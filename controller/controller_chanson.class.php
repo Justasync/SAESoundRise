@@ -173,6 +173,14 @@ class ControllerChanson extends Controller
 
     public function incrementEcoute()
     {
+        // Vérification de l'authentification
+        $emailUtilisateur = $_SESSION['user_email'] ?? null;
+        if (!$emailUtilisateur) {
+            http_response_code(401);
+            echo json_encode(['error' => 'Utilisateur non connecté']);
+            exit;
+        }
+
         // Vérification du token CSRF
         $csrfToken = $_POST['csrfToken'] ?? null;
         $sessionToken = $_SESSION['csrf_token'] ?? null;
