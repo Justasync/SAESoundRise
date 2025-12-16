@@ -140,41 +140,21 @@ class Controller
      */
     protected function requireRole($requiredRole): void
     {
-        // 1. Vérifier si l'utilisateur est connecté (méthode du parent)
         $this->requireAuth();
 
-        // 2. Récupérer le rôle en session
-        $sessionRole = $_SESSION['user_role'] ?? null;
+        $userRole = $_SESSION['user_role'] ?? null;
+        $userRoleValue = $userRole instanceof RoleEnum ? $userRole->value : $userRole;
+        $roleValue = $requiredRole instanceof RoleEnum ? $requiredRole->value : $requiredRole;
 
-        // --- CORRECCIÓN AQUÍ ---
-        // Si en session on a un Objet (Enum), on prend sa valeur. Sinon, on prend la string.
-        $userRoleValue = (is_object($sessionRole) && property_exists($sessionRole, 'value')) 
-                         ? $sessionRole->value 
-                         : $sessionRole;
-
-        // 3. Récupérer la valeur du rôle requis (argument)
-        $requiredRoleValue = ($requiredRole instanceof RoleEnum) 
-                             ? $requiredRole->value 
-                             : $requiredRole;
-
-        // 4. Comparaison stricte (String vs String)
-        if ($userRoleValue !== $requiredRoleValue) {
+        if ($userRoleValue !== $roleValue) {
             http_response_code(403);
-            // Asegúrate de que existe '403.html.twig', si no, usa 'base_template.html.twig' con un mensaje
-            try {
-                $template = $this->getTwig()->load('403.html.twig');
-            } catch (\Exception $e) {
-                // Fallback si no existe el archivo 403
-                die("Erreur 403 : Accès refusé. (Template 403 introuvable)");
-            }
-            
+            $template = $this->getTwig()->load('403.html.twig');
             echo $template->render([
                 'page' => [
                     'title' => "Erreur 403 - Accès refusé",
                     'name' => "403",
                     'description' => "Vous n'avez pas l'autorisation d'accéder à cette ressource."
-                ],
-                'session' => $_SESSION // Importante pasar la sesión para el menú
+                ]
             ]);
             exit();
         }
@@ -213,11 +193,12 @@ class Controller
         $this->requireAuth();
 
         $userRole = $_SESSION['user_role'] ?? null;
+        $userRoleValue = $userRole instanceof RoleEnum ? $userRole->value : $userRole;
         $allowedRoleValues = array_map(function ($role) {
             return $role instanceof RoleEnum ? $role->value : $role;
         }, $allowedRoles);
 
-        if (!in_array($userRole, $allowedRoleValues, true)) {
+        if (!in_array($userRoleValue, $allowedRoleValues, true)) {
             http_response_code(403);
             $template = $this->getTwig()->load('403.html.twig');
             echo $template->render([

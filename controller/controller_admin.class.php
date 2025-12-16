@@ -21,7 +21,6 @@ class ControllerAdmin extends Controller
         // 2. Récupérer le rôle en session
         $sessionRole = $_SESSION['user_role'] ?? null;
 
-        // --- CORRECTION IMPORTANTE ---
         // Extraction de la valeur (string) si c'est un objet Enum
         $userRoleValue = (is_object($sessionRole) && property_exists($sessionRole, 'value')) 
                          ? $sessionRole->value 
