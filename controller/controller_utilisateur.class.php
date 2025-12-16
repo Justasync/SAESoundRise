@@ -56,7 +56,7 @@ class ControllerUtilisateur extends Controller
             }
 
             $hashedPassword = $utilisateur->getMotDePasseUtilisateur();
-            
+
             if (!password_verify($password, $hashedPassword)) {
                 header('Content-Type: application/json');
                 echo json_encode([
@@ -296,7 +296,7 @@ class ControllerUtilisateur extends Controller
         }
     }
 
-   /**
+    /**
      * Gère la création d'un nouvel utilisateur par l'administrateur.
      *
      * Cette méthode effectue les opérations suivantes :
@@ -313,10 +313,7 @@ class ControllerUtilisateur extends Controller
      */
     public function inscription()
     {
-        if (!isset($_SESSION['user_role']) || $_SESSION['user_role']->value !== 'admin') {
-            $this->redirectTo('home', 'afficher');
-            exit();
-        }
+        $this->requireRole(RoleEnum::Admin);
 
         $error = null;
 
@@ -335,7 +332,7 @@ class ControllerUtilisateur extends Controller
                 $error = "Ce pseudo est déjà pris.";
             } else {
                 try {
-                    $roleDao = new RoleDao($pdo); 
+                    $roleDao = new RoleDao($pdo);
                     $role = $roleDao->findByType($roleType);
 
                     if ($role) {
@@ -345,14 +342,14 @@ class ControllerUtilisateur extends Controller
                         $user->setEmailUtilisateur($email);
                         $user->setMotDePasseUtilisateur(password_hash($password, PASSWORD_ARGON2ID));
                         $user->setRoleUtilisateur($role);
-                        
+
                         $user->setDateInscriptionUtilisateur(new DateTime());
-                        $user->setDateDeNaissanceUtilisateur(new DateTime('2000-01-01')); 
-                        
+                        $user->setDateDeNaissanceUtilisateur(new DateTime('2000-01-01'));
+
                         $user->setStatutUtilisateur(\StatutUtilisateur::Actif);
                         $user->setEstAbonnee(false);
                         $user->setStatutAbonnement(\StatutAbonnement::Inactif);
-                        
+
                         $user->setGenreUtilisateur(null);
                         $user->setDescriptionUtilisateur("Compte créé par admin");
                         $user->setSiteWebUtilisateur(null);
@@ -363,7 +360,7 @@ class ControllerUtilisateur extends Controller
                         $user->setNbAbonnesArtiste(0);
 
                         if ($utilisateurDAO->create($user)) {
-                            header('Location: ?controller=admin&method=afficher&success=1');
+                            $this->redirectTo('admin', 'afficher', ['success' => 1]);
                             exit();
                         } else {
                             $error = "Erreur lors de la création en base de données.";
@@ -383,7 +380,7 @@ class ControllerUtilisateur extends Controller
             'session' => $_SESSION,
             'error' => $error
         ]);
-    } 
+    }
     public function logout()
     {
         $_SESSION = [];
