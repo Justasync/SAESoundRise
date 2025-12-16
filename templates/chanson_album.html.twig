@@ -158,7 +158,7 @@
 
 						<!-- Boutons de Contrôle -->
 						<div class="mt-3 d-flex gap-3 align-items-center">
-							<button id="play-pause-btn" type="button" onclick="playPause()" class="btn btn-light text-dark rounded-circle shadow-sm" style="width: 48px; height: 48px;">
+                            <button id="play-pause-btn" type="button" onclick="playSelected()" class="btn btn-light text-dark rounded-circle shadow-sm" style="width: 48px; height: 48px;">
 								<i id="play-pause-icon" class="bi bi-play-fill" style="font-size: 1.5rem; line-height: 1;"></i>
 							</button>
 
@@ -380,6 +380,34 @@
             }
             isPlaying = !isPlaying;
             updateTrackRowVisuals();
+        }
+
+        // Joue la piste sélectionnée dans la table (comportement identique à un double-clic)
+        window.playSelected = function() {
+            // Recherche d'une ligne marquée 'selected-track' ou 'active-track'
+            const selectedRow = document.querySelector('.track-row.selected-track') || document.querySelector('.track-row.active-track');
+            let index = -1;
+            if (selectedRow) {
+                index = parseInt(selectedRow.dataset.index, 10);
+            }
+
+            // Si aucune sélection claire, on utilise l'index courant ou la première piste
+            if (isNaN(index) || index < 0) {
+                if (currentTrackIndex === -1 && playlist.length > 0) {
+                    loadTrack(0);
+                } else {
+                    // Sinon, toggle play/pause sur la piste courante
+                    playPause();
+                }
+                return;
+            }
+
+            // Si la sélection correspond à la piste en cours → toggle, sinon charger et jouer
+            if (index === currentTrackIndex) {
+                playPause();
+            } else {
+                loadTrack(index);
+            }
         }
 
         /**
