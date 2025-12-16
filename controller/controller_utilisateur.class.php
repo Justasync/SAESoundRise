@@ -376,7 +376,7 @@ class ControllerUtilisateur extends Controller
         // Récupérer les albums de l'artiste (via son email stocké dans l'entité)
         $emailArtiste = $utilisateur->getEmailUtilisateur();
 
-        $albums = $albumDAO->findByArtiste($emailArtiste);
+        $albums = $albumDAO->findAllByArtistEmail($emailArtiste);
 
         $template = $this->getTwig()->load('artiste_profil.html.twig');
         echo $template->render([

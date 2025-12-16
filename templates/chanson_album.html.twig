@@ -30,13 +30,25 @@
 			--bs-table-hover-bg: rgba(0, 0, 0, 0.15);
 		}
 
-        /* --- Style de la piste active --- */
+		/* --- Style de la piste active --- */
 		.track-row.active-track {
 			background-color: rgba(255, 255, 255, 0.2);
 			font-weight: 600;
 		}
 
-        /* --- Styles de la Barre de Progression --- */
+		/* --- Style de la piste sélectionnée (via URL) --- */
+		.track-row.selected-track {
+			background-color: rgba(255, 255, 255, 0.3);
+			border-left: 4px solid white;
+			font-weight: 700;
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+		}
+		.track-row.selected-track.active-track {
+			background-color: rgba(255, 255, 255, 0.35);
+			border-left: 4px solid white;
+		}
+
+		/* --- Styles de la Barre de Progression --- */
 		.progress-bar-container {
 			height: 6px;
 			background-color: rgba(255, 255, 255, 0.3);
@@ -79,12 +91,12 @@
 				transform: rotate(360deg);
 			}
 		}
-		#album-cover.rotating {
-			animation: spin 12s linear infinite;
-			border-radius: 50%; /* Pour un effet "vinyle" */
-		}
 		#album-cover {
-			transition: border-radius 0.5s ease-out; /* Transition douce vers la forme circulaire */
+			animation: spin 12s linear infinite;
+			animation-play-state: paused;
+		}
+		#album-cover.rotating {
+			animation-play-state: running;
 		}
 
         /* --- Styles de la navigation --- */
@@ -118,7 +130,7 @@
 
 			<div class="d-flex flex-column flex-md-row align-items-start gap-4">
 				<div class="flex-shrink-0">
-					<img id="album-cover" src="{{ album.getUrlImageAlbum() ?: 'https://placehold.co/160x160/7b4343/ffffff?text=' ~ (album.getTitreAlbum()|replace({' ': '+'})|slice(0, 20)) }}" alt="Couverture de l'album {{ album.getTitreAlbum() }}" class="rounded-2 shadow-lg" style="width: 160px; height: 160px; object-fit: cover;">
+					<img id="album-cover" src="{{ album.getUrlImageAlbum() ?: 'https://placehold.co/160x160/7b4343/ffffff?text=' ~ (album.getTitreAlbum()|replace({' ': '+'})|slice(0, 20)) }}" alt="Couverture de l'album {{ album.getTitreAlbum() }}" class="rounded-circle shadow-lg" style="width: 160px; height: 160px; object-fit: cover;">
 				</div>
 
 				<div class="flex-grow-1">
@@ -619,8 +631,9 @@
                             }
                         }
                     }
-                })
-                .catch(err => {
+                }
+            })
+            .catch(err => {
                     console.error('Erreur like:', err);
                     // Affiche une erreur visuelle minimale pour l'utilisateur
                     if (icon) icon.classList.add('text-muted');
