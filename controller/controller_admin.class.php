@@ -10,51 +10,6 @@ class ControllerAdmin extends Controller
     }
 
     /**
-     * Méthode de sécurité pour vérifier le rôle.
-     * Inclut la correction pour lire la valeur de l'Enum en session.
-     */
-    protected function requireRole($requiredRole): void
-    {
-        // 1. Vérifier l'authentification (Redirige si non connecté)
-        $this->requireAuth();
-
-        // 2. Récupérer le rôle en session
-        $sessionRole = $_SESSION['user_role'] ?? null;
-
-        // Extraction de la valeur (string) si c'est un objet Enum
-        $userRoleValue = (is_object($sessionRole) && property_exists($sessionRole, 'value')) 
-                         ? $sessionRole->value 
-                         : $sessionRole;
-
-        // 3. Récupérer la valeur du rôle requis
-        $requiredRoleValue = ($requiredRole instanceof RoleEnum) 
-                             ? $requiredRole->value 
-                             : $requiredRole;
-
-        // 4. Comparaison
-        if ($userRoleValue !== $requiredRoleValue) {
-            http_response_code(403);
-            
-            // Tentative de chargement du template 403
-            try {
-                $template = $this->getTwig()->load('403.html.twig');
-                echo $template->render([
-                    'page' => [
-                        'title' => "Erreur 403 - Accès refusé",
-                        'name' => "403",
-                        'description' => "Vous n'avez pas l'autorisation d'accéder à cette ressource."
-                    ],
-                    'session' => $_SESSION
-                ]);
-            } catch (\Exception $e) {
-                // Fallback si le template n'existe pas
-                die("Erreur 403 : Accès refusé.");
-            }
-            exit();
-        }
-    }
-
-    /**
      * Affiche le tableau de bord de l'administrateur.
      */
     public function afficher()
