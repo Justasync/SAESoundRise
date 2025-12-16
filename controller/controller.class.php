@@ -161,7 +161,7 @@ class Controller
 
         if ($userRoleValue !== $roleValue) {
             http_response_code(403);
-            $template = $this->getTwig()->load('403.html.twig');
+            $template = $this->getTwig()->load('errors/403.html.twig');
             echo $template->render([
                 'page' => [
                     'title' => "Erreur 403 - Accès refusé",
