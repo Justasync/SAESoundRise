@@ -12,8 +12,7 @@ class ControllerAlbum extends Controller
         $idAlbum = isset($_GET['idAlbum']) ? (int)$_GET['idAlbum'] : null;
 
         if (!$idAlbum) {
-            header('Location: /?controller=home&method=afficher');
-            exit;
+            $this->redirectTo('home', 'afficher');
         }
 
         // Récupération de l'album
@@ -21,8 +20,7 @@ class ControllerAlbum extends Controller
         $album = $managerAlbum->find($idAlbum);
 
         if (!$album) {
-            header('Location: /?controller=home&method=afficher');
-            exit;
+            $this->redirectTo('home', 'afficher');
         }
 
         // Récupération des chansons de l'album
@@ -88,10 +86,8 @@ class ControllerAlbum extends Controller
     public function afficherFormulaireAjout()
     {
         // Vérifier si l'utilisateur est un artiste connecté
-        if (!isset($_SESSION['user_logged_in']) || !isset($_SESSION['user_role']) || ($_SESSION['user_role'] != RoleEnum::Artiste)) {
-            header('Location: /?controller=home&method=afficher');
-            exit();
-        }
+        // Connexion obligatoire pour ajouter un album (redirige vers connect si non connecté)
+        $this->requireRole(RoleEnum::Artiste);
 
         $idAlbum = $_GET['idAlbum'] ?? null;
         $albumExistant = null;
@@ -101,8 +97,7 @@ class ControllerAlbum extends Controller
             $albumExistant = $managerAlbum->find((int)$idAlbum);
             // Vérifier que l'album appartient bien à l'artiste connecté
             if (!$albumExistant || $albumExistant->getArtisteAlbum() !== $_SESSION['user_email']) {
-                header('Location: /?controller=home&method=afficher');
-                exit();
+                $this->redirectTo('home', 'afficher');
             }
         }
 
@@ -127,10 +122,11 @@ class ControllerAlbum extends Controller
 
     public function ajouterAlbum()
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_SESSION['user_role']) || $_SESSION['user_role'] != RoleEnum::Artiste) {
-            header('Location: /?controller=home&method=afficher');
-            return;
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $this->redirectTo('home', 'afficher');
         }
+
+        $this->requireRole(RoleEnum::Artiste);
 
         $managerChanson = new ChansonDAO($this->getPdo());
         $managerGenre = new GenreDAO($this->getPdo());
@@ -143,8 +139,7 @@ class ControllerAlbum extends Controller
             $albumCree = $managerAlbum->find((int)$idAlbumExistant);
             if (!$albumCree || $albumCree->getArtisteAlbum() !== $_SESSION['user_email']) {
                 // Gérer l'erreur : l'album n'existe pas ou n'appartient pas à l'utilisateur
-                header('Location: /?controller=home&method=afficher');
-                return;
+                $this->redirectTo('home', 'afficher');
             }
             $idAlbum = $albumCree->getIdAlbum();
         } else {
@@ -226,10 +221,10 @@ class ControllerAlbum extends Controller
 
         if ($idAlbumExistant) {
             // Rediriger vers la page de détails de l'album mis à jour
-            header('Location: /?controller=album&method=afficherDetails&idAlbum=' . $idAlbumExistant . '&success=1');
+            $this->redirectTo('album', 'afficherDetails', ['idAlbum' => $idAlbumExistant, 'success' => 1]);
         } else {
             // Rediriger vers le tableau de bord après la création d'un nouvel album
-            header('Location: /?controller=home&method=afficher&success=1');
+            $this->redirectTo('home', 'afficher', ['success' => 1]);
         }
     }
 
@@ -242,8 +237,7 @@ class ControllerAlbum extends Controller
 
         if (!$idAlbum) {
             // Gérer l'erreur, par exemple rediriger
-            header('Location: /?controller=home&method=afficher');
-            exit();
+            $this->redirectTo('home', 'afficher');
         }
 
         $albumDAO = new AlbumDAO($this->getPDO());
@@ -266,12 +260,6 @@ class ControllerAlbum extends Controller
             $template = 'album_details_auditeur.html.twig';
         }
 
-        if (empty($template)) {
-            // Sécurité : si aucun template n'est défini, rediriger
-            header('Location: /?controller=home&method=afficher');
-            exit();
-        }
-
         // Génération du token CSRF
         if (empty($_SESSION['csrf_token'])) {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
@@ -290,18 +278,18 @@ class ControllerAlbum extends Controller
     public function modifierChanson()
     {
         // Sécurité : vérifier la méthode, la session et le rôle
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_SESSION['user_logged_in']) || $_SESSION['user_role'] != RoleEnum::Artiste) {
-            header('Location: /?controller=home&method=afficher');
-            exit();
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $this->redirectTo('home', 'afficher');
         }
+
+        $this->requireRole(RoleEnum::Artiste);
 
         $idChanson = $_GET['idChanson'] ?? null;
         $idAlbum = $_POST['id_album'] ?? null; // Assurez-vous que ce champ est dans le formulaire de la modale
 
         if (!$idChanson || !$idAlbum) {
             // Rediriger si les IDs sont manquants
-            header('Location: /?controller=home&method=afficher&error=1');
-            exit();
+            $this->redirectTo('home', 'afficher', ['error' => 1]);
         }
 
         $chansonDAO = new ChansonDAO($this->getPDO());
@@ -309,8 +297,7 @@ class ControllerAlbum extends Controller
 
         // Vérifier que la chanson existe et appartient bien à un album de l'artiste
         if (!$chanson || $chanson->getAlbumChanson()->getArtisteAlbum() !== $_SESSION['user_email']) {
-            header('Location: /?controller=home&method=afficher&error=unauthorized');
-            exit();
+            $this->redirectTo('home', 'afficher', ['error' => 'unauthorized']);
         }
 
         // Mettre à jour les informations
@@ -324,7 +311,6 @@ class ControllerAlbum extends Controller
         $chansonDAO->updateChanson($chanson); // Méthode à créer dans ChansonDAO
 
         // Rediriger vers la page de l'album avec un message de succès
-        header('Location: /?controller=album&method=afficherDetails&idAlbum=' . $idAlbum . '&success_update=1');
-        exit();
+        $this->redirectTo('album', 'afficherDetails', ['idAlbum' => $idAlbum, 'success_update' => 1]);
     }
 }

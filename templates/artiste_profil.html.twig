@@ -154,20 +154,22 @@
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4 position-relative z-1">
                     {% for album in albums %}
                         <div class="col">
-                            <div class="card-album">
-                                {% if album.getImageCouverture() is defined and album.getImageCouverture() %}
-                                    <img src="{{ album.getImageCouverture() }}" alt="{{ album.getTitreAlbum() }}">
-                                {% else %}
-                                    <img src="https://via.placeholder.com/300x300?text=No+Cover" alt="Pas de couverture">
-                                {% endif %}
-
-                                <div>
-                                    <h3>{{ album.getTitreAlbum() }}</h3>
-                                    {% if album.getDateSortie() is defined and album.getDateSortie() %}
-                                        <p class="mt-1">{{ album.getDateSortie()|date('Y') }}</p>
+                            <a href="index.php?controller=album&method=afficherDetails&idAlbum={{ album.getIdAlbum() }}" class="text-decoration-none">
+                                <div class="card-album">
+                                    {% if album.getUrlPochetteAlbum() %}
+                                        <img src="{{ album.getUrlPochetteAlbum() }}" alt="{{ album.getTitreAlbum() }}">
+                                    {% else %}
+                                        <img src="https://via.placeholder.com/300x300?text=No+Cover" alt="Pas de couverture">
                                     {% endif %}
+
+                                    <div>
+                                        <h3>{{ album.getTitreAlbum() }}</h3>
+                                        {% if album.getDateSortieAlbum() %}
+                                            <p class="mt-1">{{ album.getDateSortieAlbum()|date('Y') }}</p>
+                                        {% endif %}
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     {% endfor %}
                 </div>

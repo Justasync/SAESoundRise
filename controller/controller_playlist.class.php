@@ -9,26 +9,41 @@ class ControllerPlaylist extends Controller
 
     public function afficher()
     {
+
+
         $idPlaylist = isset($_GET['idPlaylist']) ? (int)$_GET['idPlaylist'] : null;
+
+        if (!$idPlaylist) {
+            $this->redirectTo('home', 'afficher');
+        }
+
+        $this->requireAuth();
 
         // Récupération de la playlist
         $managerPlaylist = new PlaylistDAO($this->getPdo());
-        $playlist = $managerPlaylist->find($idPlaylist);
+        $playlist = $managerPlaylist->findFromUser($idPlaylist, $_SESSION['user_email'] ?? null);
 
-        if (!$playlist || !$idPlaylist) {
-            header('Location: /?controller=home&method=afficher');
-            exit;
+        if (!$playlist) {
+            $this->redirectTo('home', 'afficher');
         }
 
         // Récupération des chansons de la playlist
-        $chansons = $managerPlaylist->getChansonsByPlaylist($idPlaylist);
+        $chansons = $managerPlaylist->getChansonsByPlaylist($idPlaylist, $_SESSION['user_email'] ?? null);
 
         // Conversion de la playlist en objet stdClass pour utiliser avec le template
         $playlistObj = (object) [
-            "getTitreAlbum" => function() use ($playlist) { return $playlist->getNomPlaylist(); },
-            "getUrlImageAlbum" => function() { return null; },
-            "getArtisteAlbum" => function() { return "Ma Playlist"; },
-            "getDateSortieAlbum" => function() { return null; },
+            "getTitreAlbum" => function () use ($playlist) {
+                return $playlist->getNomPlaylist();
+            },
+            "getUrlImageAlbum" => function () {
+                return null;
+            },
+            "getArtisteAlbum" => function () {
+                return "Ma Playlist";
+            },
+            "getDateSortieAlbum" => function () {
+                return null;
+            },
         ];
 
         // Génération du token CSRF

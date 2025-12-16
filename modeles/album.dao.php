@@ -22,7 +22,10 @@ class AlbumDAO
 
     public function find(int $id): Album
     {
-        $sql = "SELECT * FROM album WHERE idAlbum = :id";
+        $sql = "SELECT a.*, u.pseudoUtilisateur 
+                FROM album a
+                JOIN utilisateur u ON a.artisteAlbum = u.emailUtilisateur
+                WHERE a.idAlbum = :id";
         $pdoStatement = $this->pdo->prepare($sql);
         // Correction mineure : utilisation de la syntaxe [] au lieu de array()
         $pdoStatement->execute([
@@ -32,6 +35,10 @@ class AlbumDAO
         $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
         $tableau = $pdoStatement->fetch();
         $album = $this->hydrate($tableau);
+        // Set the pseudo if available
+        if (isset($tableau['pseudoUtilisateur'])) {
+            $album->setPseudoArtiste($tableau['pseudoUtilisateur']);
+        }
         return $album;
     }
 
@@ -105,7 +112,7 @@ class AlbumDAO
         }
         return $albums;
     }
-    
+
     /**
      * Récupère les albums les plus écoutés.
      *
@@ -131,7 +138,7 @@ class AlbumDAO
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
             $stmt->execute();
-            
+
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $albums = [];
 
@@ -142,7 +149,6 @@ class AlbumDAO
                 $albums[] = $album;
             }
             return $albums;
-
         } catch (PDOException $e) {
             error_log('Erreur DAO lors de la récupération des albums les plus écoutés : ' . $e->getMessage());
             return [];

@@ -1,0 +1,90 @@
+{% extends "base_template.html.twig" %}
+
+{% block header %}
+	{{ parent() }}
+	<style>
+		.error-403-container {
+			min-height: 70vh;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background: var(--paaxio-background, #fdfaf8);
+		}
+		.error-403-box {
+			max-width: 500px;
+			width: 100%;
+			background: white;
+			border-radius: 2rem;
+			box-shadow: 0 8px 28px rgba(0, 0, 0, 0.10);
+			padding: 3rem 2.5rem;
+			text-align: center;
+			border: 1.5px solid var(--paaxio-border, #91c9c4);
+		}
+		.error-403-title {
+			color: var(--paaxio-turquoise, #2A9D8F);
+			font-size: 4rem;
+			font-weight: 700;
+		}
+		.error-403-text {
+			margin-top: 1rem;
+			font-size: 1.4rem;
+			font-weight: 500;
+			color: #444;
+		}
+		.error-403-btn {
+			margin-top: 2rem;
+			font-weight: 600;
+			background: var(--paaxio-turquoise, #2A9D8F);
+			color: #fff;
+			border: none;
+			border-radius: 0.75rem;
+			padding: 0.75rem 2rem;
+			font-size: 1.15rem;
+			transition: background 0.2s;
+			text-decoration: none;
+			display: inline-block;
+		}
+		.error-403-btn:hover {
+			background: #238379;
+			color: #fff;
+			text-decoration: none;
+		}
+		.error-403-quote {
+			font-style: italic;
+			color: #6b7280;
+			margin-top: 2rem;
+			font-size: 1rem;
+		}
+		@media(max-width: 600px) {
+			.error-403-box {
+				padding: 2rem 1rem;
+			}
+			.error-403-title {
+				font-size: 2.5rem;
+			}
+		}
+	</style>
+{% endblock %}
+
+{% block content %}
+	<main>
+		<div class="error-403-container">
+			<div class="error-403-box">
+				<div class="error-403-title">403</div>
+				<p class="error-403-text">
+					Accès refusé<br>
+					<span class="text-secondary fw-normal" style="font-size:1rem;">
+						Désolé, vous n'avez pas l'autorisation d'accéder à cette page.
+					</span>
+				</p>
+				<a href="/?controller=home&method=afficher" class="error-403-btn">
+					Retour à l'accueil
+				</a>
+				<div class="error-403-quote">
+					<i class="bi bi-info-circle-fill me-1"></i>
+					Si vous pensez qu'il s'agit d'une erreur, contactez l'équipe Paaxio.
+				</div>
+			</div>
+		</div>
+	</main>
+{% endblock %}

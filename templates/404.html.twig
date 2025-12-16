@@ -1,0 +1,90 @@
+{% extends "base_template.html.twig" %}
+
+{% block header %}
+	{{ parent() }}
+	<style>
+		.error-404-container {
+			min-height: 70vh;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background: var(--paaxio-background, #fdfaf8);
+		}
+		.error-404-box {
+			max-width: 500px;
+			width: 100%;
+			background: white;
+			border-radius: 2rem;
+			box-shadow: 0 8px 28px rgba(0, 0, 0, 0.10);
+			padding: 3rem 2.5rem;
+			text-align: center;
+			border: 1.5px solid var(--paaxio-border, #91c9c4);
+		}
+		.error-404-title {
+			color: var(--paaxio-orange, #FF8C42);
+			font-size: 4rem;
+			font-weight: 700;
+		}
+		.error-404-text {
+			margin-top: 1rem;
+			font-size: 1.4rem;
+			font-weight: 500;
+			color: #444;
+		}
+		.error-404-btn {
+			margin-top: 2rem;
+			font-weight: 600;
+			background: var(--paaxio-orange, #FF8C42);
+			color: #fff;
+			border: none;
+			border-radius: 0.75rem;
+			padding: 0.75rem 2rem;
+			font-size: 1.15rem;
+			transition: background 0.2s;
+			text-decoration: none;
+			display: inline-block;
+		}
+		.error-404-btn:hover {
+			background: #d97706;
+			color: #fff;
+			text-decoration: none;
+		}
+		.error-404-quote {
+			font-style: italic;
+			color: #6b7280;
+			margin-top: 2rem;
+			font-size: 1rem;
+		}
+		@media(max-width: 600px) {
+			.error-404-box {
+				padding: 2rem 1rem;
+			}
+			.error-404-title {
+				font-size: 2.5rem;
+			}
+		}
+	</style>
+{% endblock %}
+
+{% block content %}
+	<main>
+		<div class="error-404-container">
+			<div class="error-404-box">
+				<div class="error-404-title">404</div>
+				<p class="error-404-text">
+					Page introuvable<br>
+					<span class="text-secondary fw-normal" style="font-size:1rem;">
+						Désolé, la page que vous cherchez n'existe pas, a été supprimée ou l'URL saisie est incorrecte.
+					</span>
+				</p>
+				<a href="/?controller=home&method=afficher" class="error-404-btn">
+					Retour à l'accueil
+				</a>
+				<div class="error-404-quote">
+					<i class="bi bi-search me-1"></i>
+					On dirait qu’on s’est un peu perdu... Essayez de revenir à l’accueil ou de faire une nouvelle recherche !
+				</div>
+			</div>
+		</div>
+	</main>
+{% endblock %}
