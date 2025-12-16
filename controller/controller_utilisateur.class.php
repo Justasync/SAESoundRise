@@ -266,19 +266,19 @@ class ControllerUtilisateur extends Controller
 
             if ($creationReussie) {
 
-                $email = new Email($this->getTwig());
-                $email->sendWelcomeEmail(
+                $emailSender = new Email($this->getTwig());
+                $emailSender->sendWelcomeEmail(
                     $utilisateur->getEmailUtilisateur(),
                     $utilisateur->getPseudoUtilisateur(),
-                    (string)$utilisateur->getRoleUtilisateur()
+                    $userType
                 );
 
                 echo json_encode([
                     'success' => true,
                     'message' => 'Votre compte a été créé! Vérifiez vos e-mails pour confirmer votre inscription.',
                     'user' => [
-                        'email' => $email,
-                        'pseudo' => $pseudo,
+                        'email' => $utilisateur->getEmailUtilisateur(),
+                        'pseudo' => $utilisateur->getPseudoUtilisateur(),
                         'type' => $userType
                     ]
                 ]);
