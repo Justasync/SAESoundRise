@@ -236,6 +236,27 @@ class ChansonDAO
     }
 
     /**
+     * Incrémente le compteur d'écoutes d'une chanson de 1 et retourne la nouvelle valeur
+     * @param int $idChanson
+     * @return int|null Nouvelle valeur de nbEcouteChanson ou null en cas d'erreur
+     */
+    public function incrementNbEcoute(int $idChanson): ?int
+    {
+        $sql = "UPDATE chanson SET nbEcouteChanson = COALESCE(nbEcouteChanson, 0) + 1 WHERE idChanson = :idChanson";
+        $stmt = $this->pdo->prepare($sql);
+        $ok = $stmt->execute([':idChanson' => $idChanson]);
+        if (!$ok) {
+            return null;
+        }
+
+        $sql2 = "SELECT nbEcouteChanson FROM chanson WHERE idChanson = :idChanson";
+        $stmt2 = $this->pdo->prepare($sql2);
+        $stmt2->execute([':idChanson' => $idChanson]);
+        $val = $stmt2->fetchColumn();
+        return $val !== false ? (int)$val : null;
+    }
+
+    /**
      * Récupère les chansons likées par un utilisateur
      */
     public function findChansonsLikees(string $email): array

@@ -167,4 +167,37 @@ class ControllerChanson extends Controller
         echo json_encode(['liked' => !$estLikee]);
         exit;
     }  
+
+    public function incrementEcoute()
+    {
+        // Vérification du token CSRF
+        $csrfToken = $_POST['csrfToken'] ?? null;
+        $sessionToken = $_SESSION['csrf_token'] ?? null;
+        
+        if (!$csrfToken || !$sessionToken || $csrfToken !== $sessionToken) {
+            http_response_code(403);
+            echo json_encode(['error' => 'Token CSRF invalide']);
+            exit;
+        }
+
+        $idChanson = $_POST['idChanson'] ?? null;
+        if (!$idChanson) {
+            http_response_code(400);
+            echo json_encode(['error' => 'ID de chanson manquant']);
+            exit;
+        }
+
+        $chansonDAO = new ChansonDAO($this->getPdo());
+        $nouveau = $chansonDAO->incrementNbEcoute((int)$idChanson);
+
+        if ($nouveau === null) {
+            http_response_code(500);
+            echo json_encode(['error' => 'Impossible d\'incrémenter']);
+            exit;
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode(['success' => true, 'nbEcoute' => $nouveau]);
+        exit;
+    }
 }

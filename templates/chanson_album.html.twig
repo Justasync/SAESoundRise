@@ -170,7 +170,7 @@
 
 						<!-- Boutons de Contrôle -->
 						<div class="mt-3 d-flex gap-3 align-items-center">
-							<button id="play-pause-btn" type="button" onclick="playPause()" class="btn btn-light text-dark rounded-circle shadow-sm" style="width: 48px; height: 48px;">
+                            <button id="play-pause-btn" type="button" onclick="playSelected()" class="btn btn-light text-dark rounded-circle shadow-sm" style="width: 48px; height: 48px;">
 								<i id="play-pause-icon" class="bi bi-play-fill" style="font-size: 1.5rem; line-height: 1;"></i>
 							</button>
 
@@ -268,6 +268,9 @@
 
         let isPlaying = false;
         
+        // Token CSRF pour la protection
+        const csrfToken = '{{ csrf_token|default('') }}';
+        
         // 1. CRÉATION DYNAMIQUE DE LA PLAYLIST À PARTIR DES DONNÉES TWIG
         const playlist = [];
         {% for chanson in chansons %}
@@ -283,6 +286,9 @@
                 console.warn("Chanson {{ chanson.getTitreChanson()|e('js') }} n'a pas d'URL audio valide");
             {% endif %}
         {% endfor %}
+        
+        // Suivi des chansons ayant atteint 75% de lecture (pour éviter les faux clics)
+        const playedBeyond75 = new Set();
 
         /**
          * Convertit un nombre de secondes en format MM:SS
@@ -388,6 +394,34 @@
             updateTrackRowVisuals();
         }
 
+        // Joue la piste sélectionnée dans la table (comportement identique à un double-clic)
+        window.playSelected = function() {
+            // Recherche d'une ligne marquée 'selected-track' ou 'active-track'
+            const selectedRow = document.querySelector('.track-row.selected-track') || document.querySelector('.track-row.active-track');
+            let index = -1;
+            if (selectedRow) {
+                index = parseInt(selectedRow.dataset.index, 10);
+            }
+
+            // Si aucune sélection claire, on utilise l'index courant ou la première piste
+            if (isNaN(index) || index < 0) {
+                if (currentTrackIndex === -1 && playlist.length > 0) {
+                    loadTrack(0);
+                } else {
+                    // Sinon, toggle play/pause sur la piste courante
+                    playPause();
+                }
+                return;
+            }
+
+            // Si la sélection correspond à la piste en cours → toggle, sinon charger et jouer
+            if (index === currentTrackIndex) {
+                playPause();
+            } else {
+                loadTrack(index);
+            }
+        }
+
         /**
          * Charge une piste spécifique de la playlist et démarre la lecture.
          * @param {number} index - L'index de la piste à charger.
@@ -471,8 +505,40 @@
             }
         });
 
-        // Pendant la lecture (pour la barre de progression)
-        audioPlayer.addEventListener('timeupdate', updateProgress);
+        // Incrément d'écoute uniquement après 75% de la chanson jouée
+        audioPlayer.addEventListener('timeupdate', () => {
+            if (currentTrackIndex >= 0 && audioPlayer.duration) {
+                const track = playlist[currentTrackIndex];
+                const threshold75 = audioPlayer.duration * 0.75;
+                
+                // Si on dépasse 75% et qu'on n'a pas déjà compté cette écoute
+                if (audioPlayer.currentTime >= threshold75 && !playedBeyond75.has(track.id)) {
+                    playedBeyond75.add(track.id);
+                    
+                    // Incrémente le compteur d'écoutes côté serveur
+                    fetch('/?controller=chanson&method=incrementEcoute', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: 'idChanson=' + encodeURIComponent(track.id) + '&csrfToken=' + encodeURIComponent(csrfToken)
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data && data.nbEcoute !== undefined) {
+                            // Met à jour l'affichage du nombre d'écoutes dans la table
+                            const row = document.querySelector('.track-row[data-index="' + currentTrackIndex + '"]');
+                            if (row) {
+                                const listensCell = row.querySelector('.track-listens');
+                                if (listensCell) listensCell.textContent = data.nbEcoute;
+                            }
+                        }
+                    })
+                    .catch(err => console.error('Erreur incrément écoute:', err));
+                }
+            }
+            
+            // Mise à jour de la barre de progression
+            updateProgress();
+        });
 
         // Quand la piste se termine, passe à la suivante
         audioPlayer.addEventListener('ended', () => {
