@@ -4,18 +4,28 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-class ControllerEmail extends Controller
+/**
+ * Classe de gestion des emails pour Paaxio
+ * Utilise PHPMailer pour l'envoi d'emails via SMTP
+ */
+class Email
 {
     private array $mailConfig;
+    private \Twig\Environment $twig;
 
-    public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader)
+    /**
+     * Constructeur de la classe Email
+     * @param \Twig\Environment $twig Instance Twig pour le rendu des templates
+     */
+    public function __construct(\Twig\Environment $twig)
     {
-        parent::__construct($loader, $twig);
+        $this->twig = $twig;
         $this->loadMailConfig();
     }
 
     /**
      * Charge la configuration email depuis le fichier config.json
+     * @throws Exception Si le fichier de configuration est introuvable ou invalide
      */
     private function loadMailConfig(): void
     {
@@ -106,7 +116,7 @@ class ControllerEmail extends Controller
     {
         $subject = "Bienvenue sur Paaxio, $pseudo !";
 
-        $htmlBody = $this->getTwig()->render('emails/welcome.html.twig', [
+        $htmlBody = $this->twig->render('emails/welcome.html.twig', [
             'pseudo' => $pseudo,
             'email' => $email,
             'type' => $type,
@@ -134,7 +144,7 @@ class ControllerEmail extends Controller
 
         $confirmationUrl = $this->getSiteUrl() . "/?controller=utilisateur&method=confirmer&token=" . urlencode($confirmationToken);
 
-        $htmlBody = $this->getTwig()->render('emails/confirmation.html.twig', [
+        $htmlBody = $this->twig->render('emails/confirmation.html.twig', [
             'pseudo' => $pseudo,
             'confirmation_url' => $confirmationUrl,
             'site_url' => $this->getSiteUrl()
@@ -163,7 +173,7 @@ class ControllerEmail extends Controller
 
         $resetUrl = $this->getSiteUrl() . "/?controller=utilisateur&method=resetPassword&token=" . urlencode($resetToken);
 
-        $htmlBody = $this->getTwig()->render('emails/password_reset.html.twig', [
+        $htmlBody = $this->twig->render('emails/password_reset.html.twig', [
             'pseudo' => $pseudo,
             'reset_url' => $resetUrl,
             'site_url' => $this->getSiteUrl()
@@ -193,7 +203,7 @@ class ControllerEmail extends Controller
             ? $this->getSiteUrl() . "/?controller=newsletter&method=desinscrire&token=" . urlencode($unsubscribeToken)
             : null;
 
-        $htmlBody = $this->getTwig()->render('emails/newsletter.html.twig', [
+        $htmlBody = $this->twig->render('emails/newsletter.html.twig', [
             'content' => $content,
             'unsubscribe_url' => $unsubscribeUrl,
             'site_url' => $this->getSiteUrl()
@@ -227,7 +237,7 @@ class ControllerEmail extends Controller
 
         $subject = $subjects[$type] ?? 'Notification Paaxio';
 
-        $htmlBody = $this->getTwig()->render("emails/notification_$type.html.twig", array_merge([
+        $htmlBody = $this->twig->render("emails/notification_$type.html.twig", array_merge([
             'pseudo' => $pseudo,
             'site_url' => $this->getSiteUrl()
         ], $data));
@@ -247,7 +257,7 @@ class ControllerEmail extends Controller
     {
         $contactEmail = $this->mailConfig['from_email']; // Email de contact de Paaxio
 
-        $htmlBody = $this->getTwig()->render('emails/contact.html.twig', [
+        $htmlBody = $this->twig->render('emails/contact.html.twig', [
             'from_email' => $fromEmail,
             'from_name' => $fromName,
             'subject' => $subject,
@@ -363,14 +373,14 @@ class ControllerEmail extends Controller
     }
 
     /**
-     * Fonction de test simple du contrôleur email avec un nom et un email factices.
+     * Fonction de test simple de la classe Email avec un nom et un email factices.
      * Cette méthode peut être appelée pour vérifier l'envoi d'un email.
      * @return array Informations sur le résultat du test
      */
-    public function testControllerEmail(): array
+    public function testEmail(): array
     {
         $fakeName = "Angel Ramirez";
-        $fakeEmail = "moi@angel.ba";
+        $fakeEmail = "contact@angelbatalla.com";
         $fakeType = "auditeur";
 
         try {
