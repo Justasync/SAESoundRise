@@ -296,6 +296,94 @@ class ControllerUtilisateur extends Controller
         }
     }
 
+   /**
+     * Gère la création d'un nouvel utilisateur par l'administrateur.
+     *
+     * Cette méthode effectue les opérations suivantes :
+     * 1. Vérifie si l'utilisateur connecté a les droits d'administrateur.
+     * 2. Traite la requête POST pour récupérer les données (pseudo, email, mot de passe, rôle).
+     * 3. Vérifie l'unicité de l'email et du pseudo via le DAO.
+     * 4. Initialise une nouvelle entité Utilisateur avec les données fournies et des valeurs par défaut
+     *    (hachage du mot de passe, date de naissance par défaut, statut actif, etc.).
+     * 5. Persiste le nouvel utilisateur dans la base de données.
+     * 6. Redirige vers la liste des utilisateurs en cas de succès ou affiche le formulaire avec les erreurs.
+     *
+     * @return void
+     * @throws Exception En cas d'erreur lors de la récupération du rôle ou de l'insertion en base de données.
+     */
+    public function inscription()
+    {
+        if (!isset($_SESSION['user_role']) || $_SESSION['user_role']->value !== 'admin') {
+            header('Location: ?controller=home&method=afficher');
+            exit();
+        }
+
+        $error = null;
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $pseudo = trim($_POST['pseudo'] ?? '');
+            $email = trim($_POST['email'] ?? '');
+            $password = $_POST['mdp'] ?? '';
+            $roleType = $_POST['role'] ?? 'auditeur';
+
+            $pdo = $this->getPDO();
+            $utilisateurDAO = new UtilisateurDAO($pdo);
+
+            if ($utilisateurDAO->existsByEmail($email)) {
+                $error = "Cet email est déjà utilisé.";
+            } elseif ($utilisateurDAO->existsByPseudo($pseudo)) {
+                $error = "Ce pseudo est déjà pris.";
+            } else {
+                try {
+                    $roleDao = new RoleDao($pdo); 
+                    $role = $roleDao->findByType($roleType);
+
+                    if ($role) {
+                        $user = new Utilisateur();
+                        $user->setPseudoUtilisateur($pseudo);
+                        $user->setNomUtilisateur($pseudo);
+                        $user->setEmailUtilisateur($email);
+                        $user->setMotDePasseUtilisateur(password_hash($password, PASSWORD_ARGON2ID));
+                        $user->setRoleUtilisateur($role);
+                        
+                        $user->setDateInscriptionUtilisateur(new DateTime());
+                        $user->setDateDeNaissanceUtilisateur(new DateTime('2000-01-01')); 
+                        
+                        $user->setStatutUtilisateur(\StatutUtilisateur::Actif);
+                        $user->setEstAbonnee(false);
+                        $user->setStatutAbonnement(\StatutAbonnement::Inactif);
+                        
+                        $user->setGenreUtilisateur(null);
+                        $user->setDescriptionUtilisateur("Compte créé par admin");
+                        $user->setSiteWebUtilisateur(null);
+                        $user->seturlPhotoUtilisateur(null);
+                        $user->setDateDebutAbonnement(null);
+                        $user->setDateFinAbonnement(null);
+                        $user->setPointsDeRenommeeArtiste(0);
+                        $user->setNbAbonnesArtiste(0);
+
+                        if ($utilisateurDAO->create($user)) {
+                            header('Location: ?controller=admin&method=afficher&success=1');
+                            exit();
+                        } else {
+                            $error = "Erreur lors de la création en base de données.";
+                        }
+                    } else {
+                        $error = "Rôle introuvable.";
+                    }
+                } catch (Exception $e) {
+                    $error = "Erreur système: " . $e->getMessage();
+                }
+            }
+        }
+
+        $template = $this->getTwig()->load('utilisateur_ajout.html.twig');
+        echo $template->render([
+            'page' => ['title' => 'Ajouter Utilisateur'],
+            'session' => $_SESSION,
+            'error' => $error
+        ]);
+    } 
     public function logout()
     {
         $_SESSION = [];
