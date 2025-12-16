@@ -1,14 +1,23 @@
+{# 
+# @file templates/newsletter.html.twig 
+# @brief Template pour la page de la Newsletter
+#}
 {% extends 'base_template.html.twig' %}
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="/assets/css/style.css">
+{% endblock %}
 {% block content %}
 	<div class="container py-5">
 		<form action="/?controller=newsletter&method=ajouter" method="post" class="form-newsletter">
-			<h2>🎶 Abonnez-vous à la newsletter Paaxio!</h2>
+			<h2>Tenez vous à l'écoute !</h2>
 			<p>Recevez les dernières actualités de Paaxio directement dans votre boîte mail.
 			</p>
 			{% if success %}
 				<div class="alert alert-success" role="alert">
 					{{ success }}
 				</div>
+				<div id="music-rain"></div>
 			{% endif %}
 			{% if errors is defined and errors|length > 0 %}
 				<div class="alert alert-danger" role="alert">
@@ -22,7 +31,49 @@
 			<label for="email">Adresse e-mail:
 			</label>
 			<input type="email" id="email" name="email" required placeholder="Votre adresse e-mail" value="{{ form.email|default('') }}">
+
+			<div class="form-check my-3">
+				<input class="form-check-input" type="checkbox" id="consent_newsletter" name="consent_newsletter" required>
+				<label class="form-check-label" for="consent_newsletter">
+					J'accepte de m'abonner à la newsletter pour recevoir les dernières actualités par courriel et j'accepte les termes et conditions. <a href="/?controller=conditionsGenerales&method=afficher">Voir la politique de confidentialité</a>
+				</label>
+			</div>
+
 			<button type="submit">S'abonner</button>
 		</form>
 	</div>
+
+	{% if success %}
+	<script>
+	document.addEventListener("DOMContentLoaded", () => {
+		const container = document.getElementById("music-rain");
+		if (!container) return;
+
+		const notes = ["🎵", "🎶", "🎼", "🎧", "🎹"];
+		let rainInterval;
+
+		function createNote() {
+			const note = document.createElement("div");
+			note.classList.add("music-note");
+			note.textContent = notes[Math.floor(Math.random() * notes.length)];
+
+			note.style.left = Math.random() * 100 + "vw";
+			note.style.fontSize = 14 + Math.random() * 30 + "px";
+			note.style.animationDuration = 3 + Math.random() * 3 + "s";
+
+			container.appendChild(note);
+
+			setTimeout(() => note.remove(), 7000);
+		}
+
+		// Lance la pluie (1 note toutes les 100ms)
+		rainInterval = setInterval(createNote, 100);
+
+		// Stop la pluie après 5 secondes
+		setTimeout(() => {
+			clearInterval(rainInterval);
+		}, 5000);
+	});
+	</script>
+	{% endif %}
 {% endblock %}
