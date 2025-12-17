@@ -32,6 +32,24 @@
 			<meta name="description" content="{{ page.description }} ">
 		{% endif %}
 		{% block header %}{% endblock %}
+		<style>
+			/* Force le footer à rester en bas si contenu insuffisant */
+			html, body {
+				height: 100%;
+				min-height: 100%;
+			}
+			body {
+				display: flex;
+				min-height: 100vh;
+				flex-direction: column;
+			}
+			main.paaxio-content-wrapper {
+				flex: 1 0 auto;
+			}
+			footer {
+				flex-shrink: 0;
+			}
+		</style>
 	</head>
 	<body>
 		<header>
@@ -96,7 +114,9 @@
 				</nav>
 			</header>
 
-			{% block content %}{% endblock %}
+			<main class="paaxio-content-wrapper">
+				{% block content %}{% endblock %}
+			</main>
 
 			<!-- Sign-up Modal -->
 			<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
@@ -154,19 +174,19 @@
 										<!-- Nom -->
 										<div class="col-md-12">
 											<label for="artisteNom" class="form-label">Nom complet</label>
-											<input type="text" class="form-control" id="artisteNom" name="nom" placeholder="Entrez votre nom" required minlength="1" maxlength="255" autocomplete="given-name">
+											<input type="text" class="form-control" id="artisteNom" name="nom" placeholder="Ex: Jean Dupont" required minlength="1" maxlength="255" autocomplete="given-name" title="Entrez votre nom complet (1 à 255 caractères).">
 										</div>
 
 										<!-- Pseudonyme d'artiste -->
 										<div class="col-md-12">
 											<label for="artistePseudonyme" class="form-label">Pseudonyme</label>
-											<input type="text" class="form-control" id="artistePseudonyme" name="pseudo" placeholder="Entrez votre pseudonyme" required minlength="3" maxlength="50" autocomplete="nickname">
+											<input type="text" class="form-control" id="artistePseudonyme" name="pseudo" placeholder="Ex: DJ_Music42" required minlength="3" maxlength="50" autocomplete="nickname" pattern="^[a-zA-Z0-9_]+$" title="Entrez un pseudonyme de 3 à 50 caractères (lettres, chiffres et underscores uniquement, sans espaces).">
 										</div>
 
 										<!-- Description -->
 										<div class="col-md-12">
 											<label for="artisteDescription" class="form-label">Description</label>
-											<textarea class="form-control" id="artisteDescription" name="description" rows="2" required placeholder="Décrivez-vous en quelques mots." minlength="10"></textarea>
+											<textarea class="form-control" id="artisteDescription" name="description" rows="2" required placeholder="Ex: Passionné de musique depuis toujours..." minlength="10" maxlength="1000" title="Décrivez-vous en quelques mots (10 à 1000 caractères)."></textarea>
 										</div>
 
 										<!-- Informations supplémentaires -->
@@ -177,13 +197,13 @@
 											<label for="artisteWebsite" class="form-label">Site web
 												<span class="text-secondary">(Facultatif)</span>
 											</label>
-											<input type="url" class="form-control" id="artisteWebsite" name="website" placeholder="https://votresite.com" autocomplete="url">
+											<input type="url" class="form-control" id="artisteWebsite" name="website" placeholder="https://votresite.com" autocomplete="url" title="Entrez une URL valide commençant par http:// ou https://." maxlength="255">
 										</div>
 
 										<!-- Genres -->
 										<div class="col-md-12">
 											<label for="artisteGenre" class="form-label">Genre musical</label>
-											<select class="form-select" id="artisteGenre" name="genre_id" required>
+											<select class="form-select" id="artisteGenre" name="genre_id" required title="Sélectionnez votre genre musical principal.">
 												<option value="" selected disabled>Choisissez un genre</option>
 												{% if genres is defined %}
 													{% for genre in genres %}
@@ -196,26 +216,26 @@
 										<!-- Courrier électronique -->
 										<div class="col-md-6">
 											<label for="artisteEmail" class="form-label">Courrier électronique</label>
-											<input type="email" class="form-control" id="artisteEmail" name="email" required autocomplete="email">
+											<input type="email" class="form-control" id="artisteEmail" name="email" required autocomplete="email" placeholder="Ex: votre@email.com" title="Entrez une adresse e-mail valide." maxlength="191">
 										</div>
 
 										<!-- Date de naissance -->
 										<div class="col-md-6">
 											<label class="form-label">Date de naissance</label>
-											<input type="date" class="form-control" id="artisteBirthDay" name="birthdate" required autocomplete="bday">
+											<input type="date" class="form-control" id="artisteBirthDay" name="birthdate" required autocomplete="bday" title="Vous devez avoir au moins 13 ans pour créer un compte.">
 										</div>
 
 										<!-- Mot de passe -->
 										<div class="col-md-6">
 											<label for="artistePassword" class="form-label">Mot de passe</label>
-											<input type="password" class="form-control" id="artistePassword" name="password" required minlength="8" autocomplete="new-password">
-											<div class="form-text">8 caractères minimum.</div>
+											<input type="password" class="form-control" id="artistePassword" name="password" required minlength="8" maxlength="128" autocomplete="new-password" pattern="^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=\[\]{}|;:',.<>?/~`]).{8,}$" placeholder="••••••••" title="Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un symbole (!@#$%^&*...).">
+											<div class="form-text">8 caractères minimum, 1 majuscule, 1 chiffre, 1 symbole.</div>
 										</div>
 
 										<!-- Réinsérez votre mot de passe -->
 										<div class="col-md-6">
 											<label for="artistePasswordRepeat" class="form-label">Réinsérez votre mot de passe</label>
-											<input type="password" class="form-control" id="artistePasswordRepeat" name="password_repeat" required minlength="8" autocomplete="new-password">
+											<input type="password" class="form-control" id="artistePasswordRepeat" name="password_repeat" required minlength="8" maxlength="128" autocomplete="new-password" placeholder="••••••••" title="Répétez le même mot de passe.">
 										</div>
 									</div>
 								</form>
@@ -227,18 +247,18 @@
 										<!-- Nom -->
 										<div class="col-md-12">
 											<label for="auditeurNom" class="form-label">Nom</label>
-											<input type="text" class="form-control" id="auditeurNom" name="nom" placeholder="Entrez votre nom" required minlength="1" maxlength="255" autocomplete="given-name">
+											<input type="text" class="form-control" id="auditeurNom" name="nom" placeholder="Ex: Jean Dupont" required minlength="1" maxlength="255" autocomplete="given-name" title="Entrez votre nom complet (1 à 255 caractères).">
 										</div>
 
 										<div class="col-md-12">
 											<label for="auditeurPseudonyme" class="form-label">Pseudonyme</label>
-											<input type="text" class="form-control" id="auditeurPseudonyme" name="pseudo" placeholder="Entrez votre pseudonyme" required minlength="3" maxlength="50" autocomplete="nickname">
+											<input type="text" class="form-control" id="auditeurPseudonyme" name="pseudo" placeholder="Ex: MusicLover42" required minlength="3" maxlength="50" autocomplete="nickname" pattern="^[a-zA-Z0-9_]+$" title="Entrez un pseudonyme de 3 à 50 caractères (lettres, chiffres et underscores uniquement, sans espaces).">
 										</div>
 
 										<!-- Description -->
 										<div class="col-md-12">
 											<label for="auditeurDescription" class="form-label">Description</label>
-											<textarea class="form-control" id="auditeurDescription" name="description" rows="2" required placeholder="Décrivez-vous en quelques mots." minlength="10"></textarea>
+											<textarea class="form-control" id="auditeurDescription" name="description" rows="2" required placeholder="Ex: Amateur de tous styles musicaux..." minlength="10" maxlength="1000" title="Décrivez-vous en quelques mots (10 à 1000 caractères)."></textarea>
 										</div>
 
 										<!-- Informations supplémentaires -->
@@ -249,32 +269,32 @@
 											<label for="auditeurWebsite" class="form-label">Site web
 												<span class="text-secondary">(Facultatif)</span>
 											</label>
-											<input type="url" class="form-control" id="auditeurWebsite" name="website" placeholder="https://votresite.com" autocomplete="url">
+											<input type="url" class="form-control" id="auditeurWebsite" name="website" placeholder="https://votresite.com" autocomplete="url" title="Entrez une URL valide commençant par http:// ou https://." maxlength="255">
 										</div>
 
 										<!-- Courrier électronique -->
 										<div class="col-md-6">
 											<label for="auditeurEmail" class="form-label">Courrier électronique</label>
-											<input type="email" class="form-control" id="auditeurEmail" name="email" required autocomplete="email">
+											<input type="email" class="form-control" id="auditeurEmail" name="email" required autocomplete="email" placeholder="Ex: votre@email.com" title="Entrez une adresse e-mail valide." maxlength="191">
 										</div>
 
 										<!-- Date de naissance -->
 										<div class="col-md-6">
 											<label class="form-label">Date de naissance</label>
-											<input type="date" class="form-control" id="auditeurBirthDay" name="birthdate" required autocomplete="bday">
+											<input type="date" class="form-control" id="auditeurBirthDay" name="birthdate" required autocomplete="bday" title="Vous devez avoir au moins 13 ans pour créer un compte.">
 										</div>
 
 										<!-- Mot de passe -->
 										<div class="col-md-6">
 											<label for="auditeurPassword" class="form-label">Mot de passe</label>
-											<input type="password" class="form-control" id="auditeurPassword" name="password" required minlength="8" autocomplete="new-password">
-											<div class="form-text">8 caractères minimum.</div>
+											<input type="password" class="form-control" id="auditeurPassword" name="password" required minlength="8" maxlength="128" autocomplete="new-password" pattern="^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=\[\]{}|;:',.<>?/~`]).{8,}$" placeholder="••••••••" title="Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un symbole (!@#$%^&*...).">
+											<div class="form-text">8 caractères minimum, 1 majuscule, 1 chiffre, 1 symbole.</div>
 										</div>
 
 										<!-- Réinsérez votre mot de passe -->
 										<div class="col-md-6">
 											<label for="auditeurPasswordRepeat" class="form-label">Réinsérez votre mot de passe</label>
-											<input type="password" class="form-control" id="auditeurPasswordRepeat" name="password_repeat" required minlength="8" autocomplete="new-password">
+											<input type="password" class="form-control" id="auditeurPasswordRepeat" name="password_repeat" required minlength="8" maxlength="128" autocomplete="new-password" placeholder="••••••••" title="Répétez le même mot de passe.">
 										</div>
 									</div>
 								</form>
@@ -286,19 +306,19 @@
 										<!-- Nom -->
 										<div class="col-md-12">
 											<label for="producteurNom" class="form-label">Nom</label>
-											<input type="text" class="form-control" id="producteurNom" name="nom" placeholder="Entrez votre nom" required minlength="1" maxlength="255" autocomplete="given-name">
+											<input type="text" class="form-control" id="producteurNom" name="nom" placeholder="Ex: Jean Dupont" required minlength="1" maxlength="255" autocomplete="given-name" title="Entrez votre nom complet (1 à 255 caractères).">
 										</div>
 
 										<!-- Pseudonyme -->
-										<div class="col-md-6">
+										<div class="col-md-12">
 											<label for="producteurPseudonyme" class="form-label">Pseudonyme</label>
-											<input type="text" class="form-control" id="producteurPseudonyme" name="pseudo" placeholder="Entrez votre pseudonyme" required minlength="3" maxlength="50" autocomplete="nickname">
+											<input type="text" class="form-control" id="producteurPseudonyme" name="pseudo" placeholder="Ex: BeatMaker_Pro" required minlength="3" maxlength="50" autocomplete="nickname" pattern="^[a-zA-Z0-9_]+$" title="Entrez un pseudonyme de 3 à 50 caractères (lettres, chiffres et underscores uniquement, sans espaces).">
 										</div>
 
 										<!-- Description -->
 										<div class="col-md-12">
 											<label for="producteurDescription" class="form-label">Description</label>
-											<textarea class="form-control" id="producteurDescription" name="description" rows="2" required placeholder="Décrivez-vous en quelques mots." minlength="10"></textarea>
+											<textarea class="form-control" id="producteurDescription" name="description" rows="2" required placeholder="Ex: Producteur spécialisé en hip-hop..." minlength="10" maxlength="1000" title="Décrivez-vous en quelques mots (10 à 1000 caractères)."></textarea>
 										</div>
 
 										<!-- Informations supplémentaires -->
@@ -309,13 +329,13 @@
 											<label for="producteurWebsite" class="form-label">Site web
 												<span class="text-secondary">(Facultatif)</span>
 											</label>
-											<input type="url" class="form-control" id="producteurWebsite" name="website" placeholder="https://votresite.com" autocomplete="url">
+											<input type="url" class="form-control" id="producteurWebsite" name="website" placeholder="https://votresite.com" autocomplete="url" title="Entrez une URL valide commençant par http:// ou https://." maxlength="255">
 										</div>
 
 										<!-- Genres -->
 										<div class="col-md-12">
 											<label for="producteurGenre" class="form-label">Genre musical</label>
-											<select class="form-select" id="producteurGenre" name="genre_id" required>
+											<select class="form-select" id="producteurGenre" name="genre_id" required title="Sélectionnez votre genre musical principal.">
 												<option value="" selected disabled>Choisissez un genre</option>
 												{% if genres is defined %}
 													{% for genre in genres %}
@@ -328,26 +348,26 @@
 										<!-- Courrier électronique -->
 										<div class="col-md-6">
 											<label for="producteurEmail" class="form-label">Courrier électronique</label>
-											<input type="email" class="form-control" id="producteurEmail" name="email" required autocomplete="email">
+											<input type="email" class="form-control" id="producteurEmail" name="email" required autocomplete="email" placeholder="Ex: votre@email.com" title="Entrez une adresse e-mail valide." maxlength="191">
 										</div>
 
 										<!-- Date de naissance -->
 										<div class="col-md-6">
 											<label class="form-label">Date de naissance</label>
-											<input type="date" class="form-control" id="producteurBirthDay" name="birthdate" required autocomplete="bday">
+											<input type="date" class="form-control" id="producteurBirthDay" name="birthdate" required autocomplete="bday" title="Vous devez avoir au moins 13 ans pour créer un compte.">
 										</div>
 
 										<!-- Mot de passe -->
 										<div class="col-md-6">
 											<label for="producteurPassword" class="form-label">Mot de passe</label>
-											<input type="password" class="form-control" id="producteurPassword" name="password" required minlength="8" autocomplete="new-password">
-											<div class="form-text">8 caractères minimum.</div>
+											<input type="password" class="form-control" id="producteurPassword" name="password" required minlength="8" maxlength="128" autocomplete="new-password" pattern="^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=\[\]{}|;:',.<>?/~`]).{8,}$" placeholder="••••••••" title="Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un symbole (!@#$%^&*...).">
+											<div class="form-text">8 caractères minimum, 1 majuscule, 1 chiffre, 1 symbole.</div>
 										</div>
 
 										<!-- Réinsérez votre mot de passe -->
 										<div class="col-md-6">
 											<label for="producteurPasswordRepeat" class="form-label">Réinsérez votre mot de passe</label>
-											<input type="password" class="form-control" id="producteurPasswordRepeat" name="password_repeat" required minlength="8" autocomplete="new-password">
+											<input type="password" class="form-control" id="producteurPasswordRepeat" name="password_repeat" required minlength="8" maxlength="128" autocomplete="new-password" placeholder="••••••••" title="Répétez le même mot de passe.">
 										</div>
 									</div>
 								</form>
@@ -394,11 +414,11 @@
 							<form id="signinForm">
 								<div class="mb-3">
 									<label for="signinEmail" class="form-label">Adresse e-mail</label>
-									<input type="email" class="form-control" id="signinEmail" name="email" placeholder="votre@email.com" required autocomplete="email">
+									<input type="email" class="form-control" id="signinEmail" name="email" placeholder="Ex: votre@email.com" required autocomplete="email" title="Entrez une adresse e-mail valide.">
 								</div>
 								<div class="mb-3">
 									<label for="signinPassword" class="form-label">Mot de passe</label>
-									<input type="password" class="form-control" id="signinPassword" name="password" placeholder="Entrez votre mot de passe" required autocomplete="current-password">
+									<input type="password" class="form-control" id="signinPassword" name="password" placeholder="••••••••" required autocomplete="current-password" title="Entrez votre mot de passe.">
 								</div>
 								<div class="mb-3 d-flex justify-content-end">
 									<button type="button" class="btn btn-link p-0" id="forgotPasswordBtn">Mot de passe oublié ?</button>
@@ -432,28 +452,30 @@
 			{% block script %}{% endblock %}
 
 			<script>
-				document.addEventListener('DOMContentLoaded', function () { // Show login modal when Se connecter is clicked
-var triggerLoginModal = document.getElementById('trigger-login-modal');
-if (triggerLoginModal) {
-triggerLoginModal.addEventListener('click', function (e) {
-e.preventDefault();
-var signinModal = new bootstrap.Modal(document.getElementById('signinModal'));
-signinModal.show();
-});
-}
-// Show sign up modal when S'inscrire is clicked
-var triggerSignupModal = document.getElementById('trigger-signup-modal');
-if (triggerSignupModal) {
-triggerSignupModal.addEventListener('click', function (e) {
-e.preventDefault();
-var signupModal = new bootstrap.Modal(document.getElementById('signupModal'));
-signupModal.show();
-});
-}
-});
+				document.addEventListener('DOMContentLoaded', function () {
+					// Afficher la modale de connexion lorsque "Se connecter" est cliqué
+					var triggerLoginModal = document.getElementById('trigger-login-modal');
+					if (triggerLoginModal) {
+						triggerLoginModal.addEventListener('click', function (e) {
+							e.preventDefault();
+							var signinModal = new bootstrap.Modal(document.getElementById('signinModal'));
+							signinModal.show();
+						});
+					}
+					// Afficher la modale d'inscription lorsque "S'inscrire" est cliqué
+					var triggerSignupModal = document.getElementById('trigger-signup-modal');
+					if (triggerSignupModal) {
+						triggerSignupModal.addEventListener('click', function (e) {
+							e.preventDefault();
+							var signupModal = new bootstrap.Modal(document.getElementById('signupModal'));
+							signupModal.show();
+						});
+					}
+				});
 			</script>
-			<script src="assets/js/signup-modal.js?v=1.0b2"></script>
-			<script src="assets/js/signin-modal.js?v=1.0b2"></script>
+			</script>
+			<script src="assets/js/signup-modal.js?v=1.0b3"></script>
+			<script src="assets/js/signin-modal.js?v=1.0b3"></script>
 		</body>
 	</body>
-</html></body></html>
+</html>

@@ -2,12 +2,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const signinForm = document.getElementById("signinForm");
   const signinModal = document.getElementById("signinModal");
 
+  // Vérifier que le formulaire et la modale existent avant d'aller plus loin
   if (!signinForm || !signinModal) {
     return;
   }
 
+  // Vérifier la présence de Bootstrap JS
   if (typeof bootstrap === "undefined") {
-    console.warn("Bootstrap JS is required for the signin modal.");
+    console.warn("Bootstrap JS est requis pour la modale de connexion.");
     return;
   }
 
@@ -15,6 +17,40 @@ document.addEventListener("DOMContentLoaded", () => {
   const errorAlert = signinModal.querySelector("[data-signin-error]");
   const successAlert = signinModal.querySelector("[data-signin-success]");
 
+  // Constantes pour la validation
+  const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  /**
+   * Valide le format de l'adresse email
+   * @param {string} email - L'adresse email à valider
+   * @returns {{valid: boolean, error: string|null}} - Résultat de la validation et message d'erreur si invalide
+   */
+  const validateEmail = (email) => {
+    if (!email || email.trim() === "") {
+      return { valid: false, error: "L'adresse e-mail est requise." };
+    }
+    if (!EMAIL_REGEX.test(email)) {
+      return { valid: false, error: "L'adresse e-mail n'est pas valide." };
+    }
+    return { valid: true, error: null };
+  };
+
+  /**
+   * Valide le format du mot de passe lors de la connexion
+   * @param {string} password - Le mot de passe à valider
+   * @returns {{valid: boolean, error: string|null}} - Résultat de la validation et message d'erreur si invalide
+   */
+  const validatePassword = (password) => {
+    if (!password || password === "") {
+      return { valid: false, error: "Le mot de passe est requis." };
+    }
+    return { valid: true, error: null };
+  };
+
+  /**
+   * Affiche un message d'erreur dans la modale
+   * @param {string} message - Message à afficher
+   */
   const showError = (message) => {
     if (errorAlert) {
       errorAlert.textContent = message;
@@ -25,6 +61,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  /**
+   * Affiche un message de succès dans la modale
+   * @param {string} message - Message à afficher
+   */
   const showSuccess = (message) => {
     if (successAlert) {
       successAlert.textContent = message;
@@ -35,6 +75,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  /**
+   * Cache les messages d'alerte (succès ou erreur)
+   */
   const hideMessages = () => {
     if (errorAlert) {
       errorAlert.classList.add("d-none");
@@ -44,13 +87,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // Handle form submission
+  // Gestion de la soumission du formulaire de connexion
   signinForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     hideMessages();
 
-    // Get form data
+    // Vérification du HTML5
+    if (!signinForm.reportValidity()) {
+      return;
+    }
+
+    // Récupération des données du formulaire
     const formData = new FormData(signinForm);
     const email =
       formData.get("email") || document.getElementById("signinEmail")?.value;
@@ -58,11 +106,28 @@ document.addEventListener("DOMContentLoaded", () => {
       formData.get("password") ||
       document.getElementById("signinPassword")?.value;
 
-    if (!email || !password) {
-      showError("Veuillez remplir tous les champs.");
+    // Tableau pour les erreurs de validation côté client
+    const validationErrors = [];
+
+    // Validation de l'e-mail
+    const emailValidation = validateEmail(email);
+    if (!emailValidation.valid) {
+      validationErrors.push(emailValidation.error);
+    }
+
+    // Validation du mot de passe
+    const passwordValidation = validatePassword(password);
+    if (!passwordValidation.valid) {
+      validationErrors.push(passwordValidation.error);
+    }
+
+    // Affiche les erreurs de validation s'il y en a
+    if (validationErrors.length > 0) {
+      showError(validationErrors.join(" "));
       return;
     }
 
+    // Gestion du bouton de soumission (disabled pendant le chargement)
     const submitButton = signinForm.querySelector('button[type="submit"]');
     const originalButtonText = submitButton?.textContent;
     if (submitButton) {
@@ -71,13 +136,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
+      // Envoi de la requête de connexion au serveur
       const response = await fetch("/?controller=utilisateur&method=signin", {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
         body: new URLSearchParams({
-          email: email,
+          email: email.trim(),
           password: password,
         }),
       });
@@ -87,15 +153,17 @@ document.addEventListener("DOMContentLoaded", () => {
       if (data.success) {
         showSuccess(data.message || "Connexion réussie!");
 
+        // Attendre 1 seconde avant de fermer la modale et rediriger/recharger
         setTimeout(() => {
           bootstrapModal.hide();
+          // On vérifie s'il y a une URL de redirection à utiliser après connexion
           const redirectUrl = signinModal.getAttribute('data-redirect-url') || null;
-      
+
           if (redirectUrl && redirectUrl.trim() !== '') {
-            // Redirect to the specified URL
+            // Redirige vers l'URL spécifiée
             window.location.href = redirectUrl;
           } else {
-            // Recharger la page après connexion réussie
+            // Recharge la page si pas de redirection spécifique
             window.location.reload();
           }
         }, 1000);
@@ -110,6 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
           (error?.message || "")
       );
     } finally {
+      // Réactiver le bouton de connexion quoi qu'il arrive
       if (submitButton) {
         submitButton.disabled = false;
         submitButton.textContent = originalButtonText;

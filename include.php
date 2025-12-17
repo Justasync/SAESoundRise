@@ -40,6 +40,7 @@ require_once 'controller/controller_battle.class.php';
 require_once 'controller/controller_fichier.class.php';
 
 // Ajout des modèles
+require_once 'modeles/validator.class.php';
 require_once 'modeles/email.class.php';
 require_once 'modeles/role.class.php';
 require_once 'modeles/role.dao.php';
