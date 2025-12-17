@@ -2,11 +2,23 @@
 
 class ControllerUtilisateur extends Controller
 {
+    /**
+     * Constructeur du contrôleur utilisateur.
+     *
+     * @param \Twig\Environment $twig Environnement Twig.
+     * @param \Twig\Loader\FilesystemLoader $loader Chargement des templates.
+     */
     public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader)
     {
         parent::__construct($loader, $twig);
     }
 
+    /**
+     * Gère la connexion (authentification) d'un utilisateur.
+     *
+     * Reçoit une requête POST contenant l'email et le mot de passe.
+     * Retourne une réponse JSON indiquant le succès ou l'échec de la connexion.
+     */
     public function signin()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -22,22 +34,30 @@ class ControllerUtilisateur extends Controller
         $email = trim($post['email'] ?? '');
         $password = $post['password'] ?? '';
 
-        $errors = [];
-        if (empty($email)) {
-            $errors[] = 'L\'adresse e-mail est requise.';
-        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errors[] = 'L\'adresse e-mail n\'est pas valide.';
-        }
+        // Validation via la classe Validator
+        $signinRules = [
+            'email' => [
+                'obligatoire' => true,
+                'type' => 'string',
+                'format' => FILTER_VALIDATE_EMAIL
+            ],
+            'password' => [
+                'obligatoire' => true,
+                'type' => 'string',
+            ]
+        ];
 
-        if (empty($password)) {
-            $errors[] = 'Le mot de passe est requis.';
-        }
+        $validator = new Validator($signinRules);
+        $signinData = [
+            'email' => $email,
+            'password' => $password
+        ];
 
-        if (!empty($errors)) {
+        if (!$validator->valider($signinData)) {
             header('Content-Type: application/json');
             echo json_encode([
                 'success' => false,
-                'message' => implode(' ', $errors)
+                'message' => implode(' ', $validator->getMessagesErreurs())
             ]);
             return;
         }
@@ -67,6 +87,7 @@ class ControllerUtilisateur extends Controller
             }
 
             $statut = $utilisateur->getStatutUtilisateur();
+            // Vérification que le compte est actif
             if ($statut && $statut !== StatutUtilisateur::Actif) {
                 header('Content-Type: application/json');
                 echo json_encode([
@@ -76,14 +97,13 @@ class ControllerUtilisateur extends Controller
                 return;
             }
 
-            // session
+            // Connexion réussie : initialisation de la session
             $_SESSION['user_email'] = $utilisateur->getEmailUtilisateur();
             $_SESSION['user_pseudo'] = $utilisateur->getPseudoUtilisateur();
             $_SESSION['user_role'] = $utilisateur->getRoleUtilisateur()?->getRoleEnum();
             $_SESSION['user_logged_in'] = true;
 
-            // Log connection
-
+            // Réponse de succès
             header('Content-Type: application/json');
             echo json_encode([
                 'success' => true,
@@ -102,6 +122,12 @@ class ControllerUtilisateur extends Controller
         }
     }
 
+    /**
+     * Gère l'inscription d'un nouvel utilisateur (artiste, auditeur ou producteur).
+     * Valide les données, crée le compte et envoie l'e-mail de bienvenue.
+     *
+     * Retourne du JSON indiquant le succès ou l'échec de la création.
+     */
     public function signup()
     {
         header('Content-Type: application/json');
@@ -116,6 +142,7 @@ class ControllerUtilisateur extends Controller
 
         $post = $this->getPost() ?? [];
 
+        // Types de profils autorisés
         $allowedTypes = [
             'artiste' => 'artiste',
             'auditeur' => 'auditeur',
@@ -135,60 +162,78 @@ class ControllerUtilisateur extends Controller
 
         $errors = [];
 
+        // Validation préalable du type d'utilisateur (non dans les règles Validator)
         if (!array_key_exists($userType, $allowedTypes)) {
             $errors[] = 'Le type de profil sélectionné est invalide.';
         }
 
-        if ($pseudo === '' || mb_strlen($pseudo) < 3 || mb_strlen($pseudo) > 50) {
-            $errors[] = 'Le nom ou pseudonyme doit contenir entre 3 et 50 caractères.';
+        // Règles de validation des données pour l'inscription
+        $signupRules = [
+            'nom' => [
+                'obligatoire' => true,
+                'type' => 'string',
+                'longueur_min' => 1,
+                'longueur_max' => 255
+            ],
+            'pseudo' => [
+                'obligatoire' => true,
+                'type' => 'string',
+                'longueur_min' => 3,
+                'longueur_max' => 50,
+                'pseudo_format' => true
+            ],
+            'description' => [
+                'obligatoire' => true,
+                'type' => 'string',
+                'longueur_min' => 10,
+                'longueur_max' => 1000
+            ],
+            'website' => [
+                'obligatoire' => false,
+                'format' => FILTER_VALIDATE_URL
+            ],
+            'email' => [
+                'obligatoire' => true,
+                'type' => 'string',
+                'longueur_min' => 5,
+                'longueur_max' => 320,
+                'format' => FILTER_VALIDATE_EMAIL
+            ],
+            'birthdate' => [
+                'obligatoire' => true,
+                'type' => 'string',
+                'age_minimum' => 13
+            ],
+            'password' => [
+                'obligatoire' => true,
+                'type' => 'string',
+                'longueur_min' => 8,
+                'longueur_max' => 128,
+                'mot_de_passe_fort' => true
+            ]
+        ];
+
+        $signupData = [
+            'nom' => $nom,
+            'pseudo' => $pseudo,
+            'description' => $description,
+            'website' => $website,
+            'email' => $email,
+            'birthdate' => $birthdate,
+            'password' => $password
+        ];
+
+        $validator = new Validator($signupRules);
+        if (!$validator->valider($signupData)) {
+            $errors = array_merge($errors, $validator->getMessagesErreurs());
         }
 
-        // Le pseudo ne doit contenir que des lettres, chiffres et underscores, sans espaces.
-        if (!preg_match('/^[a-zA-Z0-9_]+$/', $pseudo)) {
-            $errors[] = 'Le pseudo ne doit contenir que des lettres, des chiffres et des underscores, sans espaces.';
-        }
-
-        if ($nom === '' || mb_strlen($nom) == 0 || mb_strlen($nom) > 255) {
-            $errors[] = 'Le nom ou pseudonyme doit contenir entre 1 et 255 caractères.';
-        }
-
-        if ($description === '' || mb_strlen($description) < 10) {
-            $errors[] = 'La description doit contenir au moins 10 caractères.';
-        }
-
-        if ($website !== '' && !filter_var($website, FILTER_VALIDATE_URL)) {
-            $errors[] = 'L’URL du site web n’est pas valide.';
-        }
-
-        if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errors[] = 'L’adresse e-mail n’est pas valide.';
-        }
-
-        $birthDateTime = null;
-        if ($birthdate === '') {
-            $errors[] = 'La date de naissance est requise.';
-        } else {
-            $birthDateTime = DateTime::createFromFormat('Y-m-d', $birthdate);
-            $birthDateErrors = DateTime::getLastErrors();
-            if (!$birthDateTime || ($birthDateErrors['warning_count'] ?? 0) > 0 || ($birthDateErrors['error_count'] ?? 0) > 0) {
-                $errors[] = 'La date de naissance fournie est invalide.';
-            } else {
-                $today = new DateTimeImmutable();
-                $minDate = $today->modify('-13 years');
-                if ($birthDateTime > $minDate) {
-                    $errors[] = 'Vous devez avoir au moins 13 ans pour créer un compte.';
-                }
-            }
-        }
-
-        if (mb_strlen($password) < 8) {
-            $errors[] = 'Le mot de passe doit contenir au moins 8 caractères.';
-        }
-
+        // Vérification supplémentaire : confirmation du mot de passe
         if ($password !== $passwordRepeat) {
             $errors[] = 'Les mots de passe ne correspondent pas.';
         }
 
+        // Pour les artistes/producteurs, vérifier la sélection d’un genre
         if ($userType != 'auditeur') {
             if (!$genreId) {
                 $errors[] = 'Veuillez sélectionner un genre musical.';
@@ -205,6 +250,7 @@ class ControllerUtilisateur extends Controller
             }
         }
 
+        // Vérification unicité de l'email et du pseudo
         $utilisateurDAO = new UtilisateurDAO($this->getPDO());
 
         if ($email !== '' && $utilisateurDAO->existsByEmail($email)) {
@@ -223,6 +269,9 @@ class ControllerUtilisateur extends Controller
             return;
         }
 
+        // Parsing de la date de naissance
+        $birthDateTime = DateTime::createFromFormat('Y-m-d', $birthdate);
+
         $roleDao = new RoleDao($this->getPDO());
         $role = $roleDao->findByType($allowedTypes[$userType]);
 
@@ -236,25 +285,24 @@ class ControllerUtilisateur extends Controller
 
         $hashedPassword = password_hash($password, PASSWORD_ARGON2ID);
         $createdAt = (new DateTime())->format('Y-m-d H:i:s');
-
         $pdo = $this->getPDO();
 
         try {
             $utilisateur = new Utilisateur();
-            // add all paramaters
+            // Affectation des différents attributs de l'utilisateur
             $utilisateur->setEmailUtilisateur($email); // adresse e-mail
             $utilisateur->setNomUtilisateur($nom); // nom
             $utilisateur->setPseudoUtilisateur($pseudo); // pseudonyme
             $utilisateur->setMotDePasseUtilisateur($hashedPassword); // mot de passe hashé
             $dateNaissance = !empty($birthdate) ? DateTime::createFromFormat('Y-m-d', $birthdate) : null;
             $utilisateur->setDateDeNaissanceUtilisateur($dateNaissance); // date de naissance
-            $utilisateur->setDateInscriptionUtilisateur(DateTime::createFromFormat('Y-m-d H:i:s', $createdAt)); // date d'inscription maintenant
+            $utilisateur->setDateInscriptionUtilisateur(DateTime::createFromFormat('Y-m-d H:i:s', $createdAt)); // date d'inscription
             $utilisateur->setStatutUtilisateur(\StatutUtilisateur::Actif); // statut par défaut
-            $utilisateur->setGenreUtilisateur(isset($genre) ? $genre : null); // instance Genre ou null
+            $utilisateur->setGenreUtilisateur(isset($genre) ? $genre : null); // instance de Genre ou null
             $utilisateur->setEstAbonnee(false); // nouvel utilisateur non abonné par défaut
             $utilisateur->setDescriptionUtilisateur($description ?? null);
             $utilisateur->setSiteWebUtilisateur((isset($website) && $website !== '') ? $website : null);
-            $utilisateur->setStatutAbonnement(\StatutAbonnement::Inactif); // par défaut non abonné
+            $utilisateur->setStatutAbonnement(\StatutAbonnement::Inactif); // statut abonnement par défaut
             $utilisateur->setDateDebutAbonnement(null);
             $utilisateur->setDateFinAbonnement(null);
             $utilisateur->setPointsDeRenommeeArtiste(null);
@@ -313,6 +361,7 @@ class ControllerUtilisateur extends Controller
      */
     public function inscription()
     {
+        // On vérifie que l'utilisateur courant est bien un administrateur
         $this->requireRole(RoleEnum::Admin);
 
         $error = null;
@@ -326,6 +375,7 @@ class ControllerUtilisateur extends Controller
             $pdo = $this->getPDO();
             $utilisateurDAO = new UtilisateurDAO($pdo);
 
+            // Vérification si l'e-mail ou le pseudo existe déjà
             if ($utilisateurDAO->existsByEmail($email)) {
                 $error = "Cet email est déjà utilisé.";
             } elseif ($utilisateurDAO->existsByPseudo($pseudo)) {
@@ -381,6 +431,13 @@ class ControllerUtilisateur extends Controller
             'error' => $error
         ]);
     }
+
+    /**
+     * Déconnecte l'utilisateur et détruit la session.
+     * Redirige vers la page d'accueil.
+     *
+     * @return void
+     */
     public function logout()
     {
         $_SESSION = [];
@@ -402,22 +459,28 @@ class ControllerUtilisateur extends Controller
         $this->redirectTo('home', 'afficher');
     }
 
+    /**
+     * Affiche la page des chansons aimées (likées) par l'utilisateur connecté.
+     *
+     * @return void
+     */
     public function afficherMesLikes()
     {
-        // Vérifie la connexion
+        // Vérification de la connexion de l'utilisateur
         $this->requireAuth();
 
         $emailUtilisateur = $_SESSION['user_email'] ?? null;
 
-        // DAO → Récupération des chansons likées de l'utilisateur
+        // DAO : récupération des chansons likées par l'utilisateur courant
         $managerLike = new ChansonDAO($this->getPdo());
         $chansonsLikees = $managerLike->findChansonsLikees($emailUtilisateur);
 
-        // Marque toutes les chansons comme likées (puisqu'elles viennent de la liste des likes)
+        // Marquer toutes les chansons chargées comme étant likées
         foreach ($chansonsLikees as $chanson) {
             $chanson->setIsLiked(true);
         }
 
+        // Création d'un "album virtuel" pour la page d'affichage
         $albumVirtuel = (object) [
             "getTitreAlbum" => function () {
                 return "Chansons Likées";
@@ -433,12 +496,12 @@ class ControllerUtilisateur extends Controller
             },
         ];
 
-        // Génération du token CSRF
+        // Génération d'un token CSRF si nécessaire
         if (empty($_SESSION['csrf_token'])) {
             $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         }
 
-        // Chargement du template
+        // Chargement du template Twig et affichage
         $template = $this->getTwig()->load('chanson_album.html.twig');
 
         echo $template->render([
@@ -453,9 +516,14 @@ class ControllerUtilisateur extends Controller
         ]);
     }
 
+    /**
+     * Affichage du profil public d'un artiste à partir de son pseudo.
+     *
+     * @return void
+     */
     public function afficherProfilArtiste()
     {
-        // On récupère le pseudo dans la query string
+        // Récupération du pseudo dans la query string
         $pseudo = $_GET['pseudo'] ?? null;
 
         if (!$pseudo) {
@@ -465,14 +533,14 @@ class ControllerUtilisateur extends Controller
         $utilisateurDAO = new UtilisateurDAO($this->getPDO());
         $albumDAO = new AlbumDAO($this->getPDO());
 
-        // Récupérer l'artiste à partir de son pseudo
+        // Recherche de l'artiste via son pseudo
         $utilisateur = $utilisateurDAO->findByPseudo($pseudo);
 
         if (!$utilisateur) {
             $this->redirectTo('home', 'afficher');
         }
 
-        // Récupérer les albums de l'artiste (via son email stocké dans l'entité)
+        // Récupération des albums de cet artiste par son e-mail
         $emailArtiste = $utilisateur->getEmailUtilisateur();
 
         $albums = $albumDAO->findAllByArtistEmail($emailArtiste);
