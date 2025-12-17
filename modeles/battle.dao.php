@@ -84,4 +84,40 @@ class BattleDAO {
     {
         $this->pdo = $pdo;
     }
+
+    /**
+     * Compte le nombre de battles gagnées par un artiste
+     * Une battle est gagnée si l'artiste a reçu plus de votes que son adversaire
+     * @param string $emailArtiste L'email de l'artiste
+     * @return int Le nombre de battles gagnées
+     */
+    public function countBattlesWon(string $emailArtiste): int
+    {
+        // Cette requête compte les battles terminées où l'artiste a plus de votes que son adversaire
+        $sql = "SELECT COUNT(*) as wins FROM (
+                    SELECT 
+                        b.idBattle,
+                        b.emailCreateurBattle,
+                        b.emailParticipantBattle,
+                        COALESCE(SUM(CASE WHEN v.emailVotee = b.emailCreateurBattle THEN 1 ELSE 0 END), 0) as votes_createur,
+                        COALESCE(SUM(CASE WHEN v.emailVotee = b.emailParticipantBattle THEN 1 ELSE 0 END), 0) as votes_participant
+                    FROM battle b
+                    LEFT JOIN vote v ON b.idBattle = v.idBattle
+                    WHERE b.statutBattle = 'terminee'
+                      AND (b.emailCreateurBattle = :email1 OR b.emailParticipantBattle = :email2)
+                    GROUP BY b.idBattle, b.emailCreateurBattle, b.emailParticipantBattle
+                ) AS battle_stats
+                WHERE 
+                    (emailCreateurBattle = :email3 AND votes_createur > votes_participant)
+                    OR (emailParticipantBattle = :email4 AND votes_participant > votes_createur)";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':email1' => $emailArtiste,
+            ':email2' => $emailArtiste,
+            ':email3' => $emailArtiste,
+            ':email4' => $emailArtiste
+        ]);
+        return (int)$stmt->fetchColumn();
+    }
 }

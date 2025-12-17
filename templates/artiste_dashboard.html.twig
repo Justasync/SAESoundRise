@@ -101,19 +101,19 @@
 					<div class="col-sm-4">
 						<div class="bg-paaxio-salmon p-4 rounded-4 shadow-lg text-center text-white">
 							<p class="fs-5 fw-medium mb-1">Reproductions Totales</p>
-							<p class="display-4 fw-bold">0</p>
+							<p class="display-4 fw-bold">{{ stats.totalReproductions|default(0)|number_format(0, ',', ' ') }}</p>
 						</div>
 					</div>
 					<div class="col-sm-4">
 						<div class="bg-paaxio-salmon p-4 rounded-4 shadow-lg text-center text-white">
 							<p class="fs-5 fw-medium mb-1">Total d'abonnés</p>
-							<p class="display-4 fw-bold">0</p>
+							<p class="display-4 fw-bold">{{ stats.totalAbonnes|default(0)|number_format(0, ',', ' ') }}</p>
 						</div>
 					</div>
 					<div class="col-sm-4">
 						<div class="bg-paaxio-salmon p-4 rounded-4 shadow-lg text-center text-white">
 							<p class="fs-5 fw-medium mb-1">Battles Gagnées</p>
-							<p class="display-4 fw-bold">0</p>
+							<p class="display-4 fw-bold">{{ stats.battlesGagnees|default(0) }}</p>
 						</div>
 					</div>
 				</div>

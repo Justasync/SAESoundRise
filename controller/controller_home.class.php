@@ -143,6 +143,14 @@ class ControllerHome extends Controller
         $albumDAO = new AlbumDAO($this->getPDO());
         $albums = $albumDAO->findAllByArtistEmail($_SESSION['user_email']);
 
+        // Calcul des statistiques de l'artiste
+        $chansonDAO = new ChansonDAO($this->getPDO());
+        $battleDAO = new BattleDAO($this->getPDO());
+
+        $totalReproductions = $chansonDAO->getTotalEcoutesByArtiste($_SESSION['user_email']);
+        $totalAbonnes = $utilisateurDAO->countFollowers($_SESSION['user_email']);
+        $battlesGagnees = $battleDAO->countBattlesWon($_SESSION['user_email']);
+
         $template = $this->getTwig()->load('artiste_dashboard.html.twig');
         echo $template->render([
             'page' => [
@@ -153,6 +161,11 @@ class ControllerHome extends Controller
             'session' => $_SESSION,
             'artistes' => $artistesSuggere,
             'albums' => $albums,
+            'stats' => [
+                'totalReproductions' => $totalReproductions,
+                'totalAbonnes' => $totalAbonnes,
+                'battlesGagnees' => $battlesGagnees,
+            ],
         ]);
     }
 
