@@ -23,7 +23,10 @@
   "homepage": "https://github.com/Justasync/SAESoundRise#readme",
   "dependencies": {
     "bootstrap": "^5.3.8",
-    "datatables.net-dt": "^2.3.5"
+    "datatables.net": "^2.3.5",
+    "datatables.net-bs5": "^2.3.5",
+    "datatables.net-dt": "^2.3.5",
+    "jquery": "^3.7.1"
   },
   "devDependencies": {
     "sass": "^1.93.3"
