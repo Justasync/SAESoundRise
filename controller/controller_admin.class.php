@@ -61,4 +61,92 @@ class ControllerAdmin extends Controller
         // Redirection propre après suppression
         $this->redirectTo('admin', 'afficher');
     }
+
+    /**
+     * Modifie un utilisateur existant (Admin seulement).
+     */
+    public function modifier()
+    {
+        // 1. Sécurité : Vérification manuelle du rôle Admin
+        $roleSession = $_SESSION['user_role'] ?? null;
+        $valeurRole = (is_object($roleSession) && property_exists($roleSession, 'value')) ? $roleSession->value : $roleSession;
+
+        if ($valeurRole !== 'admin') {
+            $this->redirectTo('home', 'afficher');
+            return;
+        }
+
+        $pdo = $this->getPDO();
+        $utilisateurDAO = new UtilisateurDAO($pdo);
+        $roleDao = new RoleDao($pdo); 
+        
+        $error = null;
+        $user = null;
+
+        // 2. Récupération de l'identifiant (Email) via GET ou POST
+        $emailTarget = $_GET['id'] ?? $_POST['original_email'] ?? null;
+
+        if (!$emailTarget) {
+            $this->redirectTo('admin', 'afficher');
+            return;
+        }
+
+        // Recherche de l'utilisateur
+        $user = $utilisateurDAO->find($emailTarget);
+        if (!$user) {
+            $this->redirectTo('admin', 'afficher');
+            return;
+        }
+
+        // 3. Traitement du formulaire (POST)
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $pseudo = trim($_POST['pseudo'] ?? '');
+            $roleType = $_POST['role'] ?? 'auditeur';
+            $newPassword = $_POST['mdp'] ?? '';
+
+            // Vérification si le pseudo est déjà pris (sauf si c'est le sien)
+            if ($pseudo !== $user->getPseudoUtilisateur() && $utilisateurDAO->existsByPseudo($pseudo)) {
+                $error = "Ce pseudo est déjà utilisé par un autre membre.";
+            } else {
+                try {
+                    // Mise à jour des infos de base
+                    $user->setPseudoUtilisateur($pseudo);
+                    $user->setNomUtilisateur($pseudo);
+
+                    // Mise à jour du Rôle
+                    $newRole = $roleDao->findByType($roleType);
+                    if ($newRole) {
+                        $user->setRoleUtilisateur($newRole);
+                    }
+
+                    // Mise à jour du Mot de passe (Uniquement si rempli)
+                    if (!empty($newPassword)) {
+                        $user->setMotDePasseUtilisateur(password_hash($newPassword, PASSWORD_ARGON2ID));
+                    }
+
+                    // Sauvegarde en base de données
+                    if ($utilisateurDAO->update($user)) {
+                        // Redirection vers le dashboard avec message de succès (success=2)
+                        $this->redirectTo('admin', 'afficher', ['success' => 2]);
+                        return;
+                    } else {
+                        $error = "Erreur lors de la mise à jour.";
+                    }
+
+                } catch (Exception $e) {
+                    $error = "Erreur système : " . $e->getMessage();
+                }
+            }
+        }
+
+        // 4. Affichage du formulaire
+        $template = $this->getTwig()->load('utilisateur_modifier.html.twig');
+        echo $template->render([
+            'page' => ['title' => 'Modifier Utilisateur'],
+            'session' => $_SESSION,
+            'user' => $user,
+            'error' => $error
+        ]);
+    }
+
 }
