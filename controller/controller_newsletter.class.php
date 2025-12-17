@@ -43,7 +43,9 @@ class ControllerNewsletter extends Controller
                 $dao = new NewsletterDAO($pdo);
 
                 if ($dao->existsByEmail($email)) {
-                    $errors[] = 'Cette adresse e-mail est déjà inscrite.';
+                    // Pour la sécurité, on ne révèle pas si l'email est déjà présent : message générique succès
+                    $success = 'Merci ! Votre inscription à la newsletter a bien été prise en compte.';
+                    // On garde les erreurs vide pour ne pas afficher de bloc erreur
                 } else {
                     $n = new Newsletter();
                     $n->setEmail($email);
