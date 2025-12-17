@@ -53,7 +53,7 @@
 								</li>
 								{% if session.user_logged_in is defined and session.user_logged_in%}
 									<li class="nav-item">
-										<a class="nav-link fs-4 {% if page.name is defined and page.name == 'maMusique' %}active{% endif %}" href="/?controller=musique&method=afficher">Ma Musique</a>
+										<a class="nav-link fs-4 {% if page.name is defined and page.name == 'maMusique' %}active{% endif %}" aria-current="page" href="/?controller=musique&method=afficher">Ma Musique</a>
 									</li>
 									<li class="nav-item">
 										<a class="nav-link fs-4 {% if page.name is defined and page.name == 'decouvrir' %}active{% endif %}" aria-current="page" href="#">Découvrir</a>
@@ -68,7 +68,7 @@
 								<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown" style="min-width: 180px;">
 									{% if session.user_logged_in is defined and session.user_logged_in %}
 										<li>
-											<a class="dropdown-item" href="/?controller=home&method=session">
+											<a class="dropdown-item" href="/?controller=utilisateur&method=afficherProfilArtiste&pseudo={{session.user_pseudo}}">
 												<i class="bi bi-person-circle me-2"></i>Mon Profil</a>
 										</li>
 										<li><hr class="dropdown-divider"></li>

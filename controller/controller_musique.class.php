@@ -26,7 +26,7 @@ class ControllerMusique extends Controller
         echo $template->render([
             'page' => [
                 'title' => "Musique",
-                'name' => "musique",
+                'name' => "maMusique",
                 'description' => "Page musique de Paaxio"
             ],
             'chansons' => $chansons,

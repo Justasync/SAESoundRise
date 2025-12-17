@@ -135,7 +135,9 @@
                     <p class="mb-4 text-dark opacity-75">
                         {{ utilisateur.getDescriptionUtilisateur() ?: "Vous trouverez ici une description de l'artiste, qu'il s'agisse de son style musical, de ses sources d'inspiration ou de tout autre élément que vous souhaitez mettre en avant." }}
                     </p>
-                    <button class="btn btn-subscribe rounded-pill">S'abonner</button>
+                    {% if session.user_pseudo is not defined or session.user_pseudo != utilisateur.getPseudoUtilisateur() %}
+                        <button class="btn btn-subscribe rounded-pill">S'abonner</button>
+                    {% endif %}
                 </div>
             </div>
         </div>
