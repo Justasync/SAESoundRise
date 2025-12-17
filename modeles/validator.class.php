@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @file
+ * @file validator.class.php
  * @brief Classe Validator pour la validation de données selon des règles prédéfinies.
  *
  * Ce fichier contient la définition de la classe Validator qui permet de valider
