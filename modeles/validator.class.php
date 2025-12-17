@@ -1,7 +1,35 @@
 <?php
 
 /**
- * Classe Validator : Permet de valider des données selon des règles spécifiées.
+ * @file
+ * @brief Classe Validator pour la validation de données selon des règles prédéfinies.
+ *
+ * Ce fichier contient la définition de la classe Validator qui permet de valider
+ * des données (typiquement issues de formulaires) selon des règles de validation
+ * souples et personnalisables. Les règles gèrent la présence, le format, la longueur,
+ * la sécurité de champs tels que : e-mail, pseudo, mot de passe, etc.
+ *
+ * Exemple d'utilisation (formulaire d'inscription) :
+ * @code{.php}
+ * $rules = [
+ *     'email' => ['required' => true, 'email' => true],
+ *     'pseudo' => ['required' => true, 'pseudo' => true, 'min' => 3, 'max' => 50],
+ *     'motDePasse' => ['required' => true, 'password_strong' => true],
+ * ];
+ * $validator = new Validator($rules);
+ * if ($validator->valider($_POST)) {
+ *     // Données valides
+ * } else {
+ *     $errors = $validator->getMessagesErreurs();
+ * }
+ * @endcode
+ *
+ * @see Validator
+ */
+
+/**
+ * @class Validator
+ * @brief Permet de valider des données selon des règles spécifiées.
  */
 class Validator
 {

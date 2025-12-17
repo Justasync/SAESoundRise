@@ -42,8 +42,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Constantes pour validation (doivent correspondre aux limites de la base de données)
   const PASSWORD_MIN_LENGTH = 8;
-  const PASSWORD_REGEX = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=\[\]{}|;:'",.<>?/~`]).{8,}$/;
   const PSEUDO_REGEX = /^[a-zA-Z0-9_]+$/;
+  const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const EMAIL_MAX_LENGTH = 191;   // VARCHAR(191) dans la BDD
   const NAME_MAX_LENGTH = 255;    // VARCHAR(255) dans la BDD
   const WEBSITE_MAX_LENGTH = 255; // VARCHAR(255) dans la BDD
@@ -105,8 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (email.length > EMAIL_MAX_LENGTH) {
       return { valid: false, error: `L'adresse e-mail ne doit pas dépasser ${EMAIL_MAX_LENGTH} caractères.` };
     }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!EMAIL_REGEX.test(email)) {
       return { valid: false, error: "L'adresse e-mail n'est pas valide." };
     }
     return { valid: true, error: null };
