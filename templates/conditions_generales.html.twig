@@ -1,51 +1,466 @@
 {# 
 # @file templates/conditions_generales.html.twig
-# @brief Template pour la page des Conditions Générales
+# @brief Template pour la page des Conditions Générales d'Utilisation
  #}
 {% extends 'base_template.html.twig' %}
 {% block content %}
     <div class="container py-5">
-        <h1>Conditions Générales d'utilisation</h1>
-        <p class="text-muted">Dernière mise à jour : 16 décembre 2025</p>
+        <h1 class="mb-3">Conditions Générales d'Utilisation</h1>
+        <p class="text-muted mb-5">Dernière mise à jour : 17 décembre 2025</p>
 
-        <section class="my-4">
-            <h2>1. Objet</h2>
-            <p>Les présentes conditions générales définissent les modalités et conditions dans lesquelles Paaxio fournit ses services et les règles d'utilisation du site et des services associés (newsletter, comptes utilisateurs, etc.).</p>
+        <!-- Table des matières -->
+        <nav class="card mb-5 shadow-sm">
+            <div class="card-body">
+                <h2 class="h5 mb-3">Sommaire</h2>
+                <ol class="mb-0">
+                    <li><a href="#objet" class="text-decoration-none">Objet et champ d'application</a></li>
+                    <li><a href="#definitions" class="text-decoration-none">Définitions</a></li>
+                    <li><a href="#acces" class="text-decoration-none">Accès aux services</a></li>
+                    <li><a href="#compte" class="text-decoration-none">Création de compte et types d'utilisateurs</a></li>
+                    <li><a href="#services" class="text-decoration-none">Description des services</a></li>
+                    <li><a href="#obligations" class="text-decoration-none">Obligations des utilisateurs</a></li>
+                    <li><a href="#contenu" class="text-decoration-none">Contenus et propriété intellectuelle</a></li>
+                    <li><a href="#abonnement" class="text-decoration-none">Abonnements et paiements</a></li>
+                    <li><a href="#newsletter" class="text-decoration-none">Newsletter</a></li>
+                    <li><a href="#donnees" class="text-decoration-none">Protection des données personnelles</a></li>
+                    <li><a href="#responsabilite" class="text-decoration-none">Responsabilité et garanties</a></li>
+                    <li><a href="#suspension" class="text-decoration-none">Suspension et résiliation</a></li>
+                    <li><a href="#modifications" class="text-decoration-none">Modifications des CGU</a></li>
+                    <li><a href="#litiges" class="text-decoration-none">Droit applicable et litiges</a></li>
+                    <li><a href="#contact" class="text-decoration-none">Contact</a></li>
+                </ol>
+            </div>
+        </nav>
+
+        <!-- 1. Objet -->
+        <section id="objet" class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title h4">1. Objet et champ d'application</h2>
+                <p>Les présentes Conditions Générales d'Utilisation (ci-après « CGU ») définissent les modalités et conditions d'accès et d'utilisation de la plateforme <strong>Paaxio</strong>, accessible à l'adresse <a href="https://paaxio.com">paaxio.com</a>.</p>
+                <p>Paaxio est une plateforme de streaming musical permettant aux utilisateurs de découvrir, écouter et partager de la musique. Elle offre également aux artistes et producteurs la possibilité de publier et promouvoir leurs œuvres.</p>
+                <p>En accédant ou en utilisant nos services, vous reconnaissez avoir lu, compris et accepté sans réserve l'intégralité des présentes CGU. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser nos services.</p>
+            </div>
         </section>
 
-        <section class="my-4">
-            <h2>2. Acceptation</h2>
-            <p>En utilisant le site ou en vous abonnant à la newsletter, vous reconnaissez avoir lu et accepté ces conditions générales.</p>
+        <!-- 2. Définitions -->
+        <section id="definitions" class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title h4">2. Définitions</h2>
+                <dl>
+                    <dt>« Plateforme »</dt>
+                    <dd class="ms-3 mb-2">Le site web paaxio.com et l'ensemble des services associés.</dd>
+                    
+                    <dt>« Utilisateur »</dt>
+                    <dd class="ms-3 mb-2">Toute personne accédant à la Plateforme, qu'elle dispose ou non d'un compte.</dd>
+                    
+                    <dt>« Membre »</dt>
+                    <dd class="ms-3 mb-2">Utilisateur disposant d'un compte actif sur la Plateforme.</dd>
+                    
+                    <dt>« Artiste »</dt>
+                    <dd class="ms-3 mb-2">Membre ayant créé un profil artiste pour publier et partager ses œuvres musicales.</dd>
+                    
+                    <dt>« Auditeur »</dt>
+                    <dd class="ms-3 mb-2">Membre utilisant la Plateforme principalement pour écouter de la musique et créer des playlists.</dd>
+                    
+                    <dt>« Producteur »</dt>
+                    <dd class="ms-3 mb-2">Membre professionnel utilisant la Plateforme pour découvrir des talents et proposer des collaborations.</dd>
+                    
+                    <dt>« Contenu »</dt>
+                    <dd class="ms-3 mb-2">Tout élément publié sur la Plateforme : musiques, albums, playlists, textes, images, commentaires.</dd>
+                    
+                    <dt>« Battle »</dt>
+                    <dd class="ms-3 mb-2">Fonctionnalité permettant à deux artistes de s'affronter musicalement, les auditeurs votant pour leur favori.</dd>
+                </dl>
+            </div>
         </section>
 
-        <section class="my-4">
-            <h2>3. Inscription à la newsletter</h2>
-            <p>L'abonnement à la newsletter est facultatif. En vous abonnant, vous consentez à recevoir des communications par courriel concernant les actualités et offres de Paaxio. Vous pouvez vous désabonner à tout moment via le lien de désinscription présent dans chaque message.</p>
+        <!-- 3. Accès aux services -->
+        <section id="acces" class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title h4">3. Accès aux services</h2>
+                <h3 class="h6 mt-3">3.1 Conditions d'accès</h3>
+                <p>L'accès à certaines fonctionnalités de la Plateforme est possible sans inscription. Cependant, pour bénéficier de l'ensemble des services (écoute complète, création de playlists, publication de musique, participation aux battles), la création d'un compte est nécessaire.</p>
+                
+                <h3 class="h6 mt-3">3.2 Âge minimum</h3>
+                <p>L'inscription sur Paaxio est réservée aux personnes âgées d'au moins <strong>13 ans</strong>. Les mineurs de moins de 18 ans doivent disposer de l'autorisation de leur représentant légal pour utiliser nos services. En vous inscrivant, vous déclarez satisfaire à cette condition d'âge.</p>
+                
+                <h3 class="h6 mt-3">3.3 Disponibilité</h3>
+                <p>Paaxio s'efforce d'assurer la disponibilité de la Plateforme 24h/24 et 7j/7. Toutefois, nous nous réservons le droit d'interrompre temporairement l'accès pour des opérations de maintenance, de mise à jour ou en cas de force majeure, sans que cela ne puisse engager notre responsabilité.</p>
+            </div>
         </section>
 
-        <section class="my-4">
-            <h2>4. Protection des données personnelles</h2>
-            <p>Les données collectées lors de l'inscription (adresse e-mail, nom éventuel) sont traitées conformément à notre politique de confidentialité. Nous ne partagerons pas vos données avec des tiers sans consentement, sauf obligation légale.</p>
+        <!-- 4. Création de compte -->
+        <section id="compte" class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title h4">4. Création de compte et types d'utilisateurs</h2>
+                
+                <h3 class="h6 mt-3">4.1 Processus d'inscription</h3>
+                <p>Pour créer un compte, vous devez fournir les informations suivantes :</p>
+                <ul>
+                    <li><strong>Nom complet</strong> : votre identité réelle</li>
+                    <li><strong>Pseudonyme</strong> : votre nom d'utilisateur visible publiquement (3 à 50 caractères)</li>
+                    <li><strong>Adresse e-mail</strong> : valide et accessible, servant d'identifiant de connexion</li>
+                    <li><strong>Mot de passe</strong> : minimum 8 caractères</li>
+                    <li><strong>Date de naissance</strong> : pour vérifier votre éligibilité</li>
+                    <li><strong>Description</strong> : courte présentation (minimum 10 caractères)</li>
+                    <li><strong>Genre musical préféré</strong> (pour Artistes et Producteurs)</li>
+                    <li><strong>Site web</strong> (facultatif)</li>
+                </ul>
+                <p>Un e-mail de confirmation vous sera envoyé pour activer votre compte.</p>
+                
+                <h3 class="h6 mt-3">4.2 Types de comptes</h3>
+                <div class="row g-3 mt-2">
+                    <div class="col-md-4">
+                        <div class="border rounded p-3 h-100">
+                            <h4 class="h6">🎤 Compte Artiste</h4>
+                            <p class="small mb-0">Publiez vos chansons et albums, participez aux battles, développez votre communauté d'abonnés et suivez vos statistiques d'écoute.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="border rounded p-3 h-100">
+                            <h4 class="h6">🎧 Compte Auditeur</h4>
+                            <p class="small mb-0">Écoutez de la musique, créez des playlists publiques ou privées, suivez vos artistes préférés et likez vos titres favoris.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="border rounded p-3 h-100">
+                            <h4 class="h6">🎚️ Compte Producteur</h4>
+                            <p class="small mb-0">Découvrez de nouveaux talents, entrez en contact avec des artistes et proposez des collaborations professionnelles.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 class="h6 mt-4">4.3 Sécurité du compte</h3>
+                <p>Vous êtes responsable de la confidentialité de vos identifiants de connexion. Toute activité réalisée depuis votre compte est présumée être de votre fait. En cas de suspicion d'utilisation non autorisée, contactez-nous immédiatement à <a href="mailto:contact@paaxio.com">contact@paaxio.com</a>.</p>
+                
+                <h3 class="h6 mt-3">4.4 Exactitude des informations</h3>
+                <p>Vous vous engagez à fournir des informations exactes et à jour. Paaxio se réserve le droit de suspendre ou supprimer tout compte contenant des informations manifestement fausses ou trompeuses.</p>
+            </div>
         </section>
 
-        <section class="my-4">
-            <h2>5. Responsabilité</h2>
-            <p>Paaxio met en œuvre des moyens raisonnables pour assurer la disponibilité et la sécurité du service, mais ne garantit pas l'absence d'interruptions ou d'erreurs. La responsabilité de Paaxio est limitée dans les conditions prévues par la loi.</p>
+        <!-- 5. Description des services -->
+        <section id="services" class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title h4">5. Description des services</h2>
+                
+                <h3 class="h6 mt-3">5.1 Écoute de musique</h3>
+                <p>Les membres peuvent écouter les titres disponibles sur la Plateforme. Le nombre d'écoutes de chaque chanson est comptabilisé et affiché publiquement.</p>
+                
+                <h3 class="h6 mt-3">5.2 Publication de musique (Artistes)</h3>
+                <p>Les artistes peuvent téléverser leurs créations musicales originales, les organiser en albums et les partager avec la communauté. Chaque chanson comprend : titre, durée, genre musical et fichier audio.</p>
+                
+                <h3 class="h6 mt-3">5.3 Playlists</h3>
+                <p>Les membres peuvent créer des playlists personnalisées, publiques ou privées. Les playlists publiques sont visibles par tous les utilisateurs de la Plateforme.</p>
+                
+                <h3 class="h6 mt-3">5.4 Système de « Likes »</h3>
+                <p>Les membres peuvent « liker » des chansons pour les retrouver facilement et soutenir les artistes.</p>
+                
+                <h3 class="h6 mt-3">5.5 Battles</h3>
+                <p>Les artistes peuvent s'affronter dans des « battles » musicales. Les battles ont une durée définie, pendant laquelle les auditeurs votent. Les points de renommée des artistes sont influencés par ces compétitions.</p>
+                
+                <h3 class="h6 mt-3">5.6 Système d'abonnement aux artistes</h3>
+                <p>Les membres peuvent s'abonner à des artistes pour suivre leur actualité. Le nombre d'abonnés d'un artiste est visible publiquement.</p>
+            </div>
         </section>
 
-        <section class="my-4">
-            <h2>6. Propriété intellectuelle</h2>
-            <p>Le contenu du site (textes, images, logos) est protégé par le droit d'auteur. Toute reproduction ou utilisation non autorisée est interdite.</p>
+        <!-- 6. Obligations des utilisateurs -->
+        <section id="obligations" class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title h4">6. Obligations des utilisateurs</h2>
+                
+                <h3 class="h6 mt-3">6.1 Comportement général</h3>
+                <p>En utilisant Paaxio, vous vous engagez à :</p>
+                <ul>
+                    <li>Respecter les présentes CGU et la législation en vigueur</li>
+                    <li>Ne pas usurper l'identité d'un tiers</li>
+                    <li>Ne pas harceler, menacer ou intimider d'autres utilisateurs</li>
+                    <li>Ne pas diffuser de contenus haineux, discriminatoires, diffamatoires ou incitant à la violence</li>
+                    <li>Ne pas utiliser la Plateforme à des fins commerciales non autorisées</li>
+                </ul>
+                
+                <h3 class="h6 mt-3">6.2 Obligations spécifiques aux Artistes</h3>
+                <p>En publiant du contenu musical, vous garantissez :</p>
+                <ul>
+                    <li>Être l'auteur ou le titulaire des droits sur les œuvres publiées</li>
+                    <li>Disposer de toutes les autorisations nécessaires (droits d'auteur, droits voisins)</li>
+                    <li>Ne pas publier de contenu portant atteinte aux droits de tiers</li>
+                    <li>Ne pas publier de contenu à caractère illégal, pornographique ou incitant à la haine</li>
+                </ul>
+                
+                <h3 class="h6 mt-3">6.3 Interdictions techniques</h3>
+                <p>Il est strictement interdit de :</p>
+                <ul>
+                    <li>Tenter de contourner les mesures de sécurité de la Plateforme</li>
+                    <li>Utiliser des robots, scripts ou outils automatisés pour accéder aux services</li>
+                    <li>Télécharger, copier ou redistribuer les contenus sans autorisation</li>
+                    <li>Introduire des virus ou programmes malveillants</li>
+                    <li>Surcharger intentionnellement nos serveurs</li>
+                </ul>
+            </div>
         </section>
 
-        <section class="my-4">
-            <h2>7. Modifications des conditions</h2>
-            <p>Nous pouvons modifier ces conditions à tout moment. Les nouvelles conditions seront publiées sur cette page et entreront en vigueur dès leur publication.</p>
+        <!-- 7. Contenus et propriété intellectuelle -->
+        <section id="contenu" class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title h4">7. Contenus et propriété intellectuelle</h2>
+                
+                <h3 class="h6 mt-3">7.1 Propriété de Paaxio</h3>
+                <p>La Plateforme, son design, ses fonctionnalités, son code source, ses logos et sa marque « Paaxio » sont la propriété exclusive de SARL Paaxio et sont protégés par le droit de la propriété intellectuelle. Toute reproduction non autorisée est interdite.</p>
+                
+                <h3 class="h6 mt-3">7.2 Contenus des utilisateurs</h3>
+                <p>Vous conservez l'intégralité de vos droits de propriété intellectuelle sur les contenus que vous publiez. En publiant sur Paaxio, vous accordez à la Plateforme une licence non exclusive, mondiale, gratuite et transférable pour :</p>
+                <ul>
+                    <li>Héberger, stocker et sauvegarder vos contenus</li>
+                    <li>Diffuser vos contenus aux utilisateurs de la Plateforme</li>
+                    <li>Promouvoir vos contenus sur nos réseaux sociaux et supports marketing</li>
+                    <li>Adapter techniquement vos contenus (conversion de formats, compression)</li>
+                </ul>
+                <p>Cette licence prend fin à la suppression de votre contenu, sous réserve des délais techniques de suppression et des copies légalement conservées (sauvegardes).</p>
+                
+                <h3 class="h6 mt-3">7.3 Signalement de contenus illicites</h3>
+                <p>Si vous constatez un contenu portant atteinte à vos droits ou à la loi, vous pouvez le signaler à <a href="mailto:contact@paaxio.com">contact@paaxio.com</a> en précisant : l'URL du contenu, la nature de la violation et vos coordonnées. Nous nous engageons à traiter votre signalement dans les meilleurs délais conformément à la loi LCEN.</p>
+            </div>
         </section>
 
-        <section class="my-4">
-            <h2>8. Contact</h2>
-            <p>Pour toute question concernant ces conditions, contactez-nous via la page de contact ou par e-mail à l'adresse indiquée sur le site.</p>
+        <!-- 8. Abonnements -->
+        <section id="abonnement" class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title h4">8. Abonnements et paiements</h2>
+                
+                <h3 class="h6 mt-3">8.1 Offres d'abonnement</h3>
+                <p>Paaxio peut proposer des abonnements payants offrant des fonctionnalités supplémentaires. Les détails, tarifs et conditions spécifiques de chaque offre sont présentés lors de la souscription.</p>
+                
+                <h3 class="h6 mt-3">8.2 Statut de l'abonnement</h3>
+                <p>Votre abonnement peut avoir l'un des statuts suivants :</p>
+                <ul>
+                    <li><strong>Actif</strong> : vous bénéficiez des services premium</li>
+                    <li><strong>Expiré</strong> : votre période d'abonnement est terminée</li>
+                    <li><strong>Annulé</strong> : vous avez résilié votre abonnement</li>
+                    <li><strong>Inactif</strong> : pas d'abonnement souscrit</li>
+                </ul>
+                
+                <h3 class="h6 mt-3">8.3 Résiliation</h3>
+                <p>Vous pouvez résilier votre abonnement à tout moment depuis les paramètres de votre compte. La résiliation prend effet à la fin de la période en cours. Aucun remboursement au prorata n'est effectué pour la période restante.</p>
+                
+                <h3 class="h6 mt-3">8.4 Droit de rétractation</h3>
+                <p>Conformément au Code de la consommation, vous disposez d'un délai de 14 jours pour exercer votre droit de rétractation. Ce droit peut être exclu si vous avez commencé à utiliser les services avant l'expiration du délai, avec votre accord exprès.</p>
+            </div>
         </section>
+
+        <!-- 9. Newsletter -->
+        <section id="newsletter" class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title h4">9. Newsletter</h2>
+                
+                <h3 class="h6 mt-3">9.1 Inscription</h3>
+                <p>L'inscription à notre newsletter est facultative et gratuite. Elle nécessite uniquement une adresse e-mail valide. Vous pouvez vous abonner sans avoir de compte Paaxio.</p>
+                
+                <h3 class="h6 mt-3">9.2 Contenu des newsletters</h3>
+                <p>Nos newsletters peuvent contenir :</p>
+                <ul>
+                    <li>Les actualités de la Plateforme et nouvelles fonctionnalités</li>
+                    <li>Des recommandations musicales personnalisées</li>
+                    <li>Des mises en avant d'artistes</li>
+                    <li>Des offres promotionnelles</li>
+                </ul>
+                
+                <h3 class="h6 mt-3">9.3 Désinscription</h3>
+                <p>Vous pouvez vous désabonner à tout moment en cliquant sur le lien de désinscription présent dans chaque e-mail, ou en nous contactant directement. Le traitement de votre demande est effectué dans un délai maximum de 48 heures.</p>
+            </div>
+        </section>
+
+        <!-- 10. Protection des données -->
+        <section id="donnees" class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title h4">10. Protection des données personnelles</h2>
+                
+                <h3 class="h6 mt-3">10.1 Données collectées</h3>
+                <p>Dans le cadre de nos services, nous collectons et traitons les données suivantes :</p>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Catégorie</th>
+                                <th>Données</th>
+                                <th>Finalité</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Identification</td>
+                                <td>Nom, pseudonyme, e-mail, date de naissance</td>
+                                <td>Gestion du compte, vérification de l'âge</td>
+                            </tr>
+                            <tr>
+                                <td>Profil</td>
+                                <td>Description, photo de profil, site web, genre musical</td>
+                                <td>Personnalisation, affichage du profil public</td>
+                            </tr>
+                            <tr>
+                                <td>Contenu</td>
+                                <td>Musiques, playlists, albums</td>
+                                <td>Fourniture des services</td>
+                            </tr>
+                            <tr>
+                                <td>Activité</td>
+                                <td>Écoutes, likes, abonnements, participations aux battles</td>
+                                <td>Statistiques, recommandations, fonctionnement des battles</td>
+                            </tr>
+                            <tr>
+                                <td>Technique</td>
+                                <td>Adresse IP, cookies, données de connexion</td>
+                                <td>Sécurité, amélioration des services</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h3 class="h6 mt-3">10.2 Base légale</h3>
+                <p>Nos traitements sont fondés sur :</p>
+                <ul>
+                    <li><strong>L'exécution du contrat</strong> : pour la fourniture des services</li>
+                    <li><strong>Le consentement</strong> : pour la newsletter et les cookies non essentiels</li>
+                    <li><strong>L'intérêt légitime</strong> : pour la sécurité et l'amélioration des services</li>
+                    <li><strong>L'obligation légale</strong> : pour la conservation de certaines données</li>
+                </ul>
+                
+                <h3 class="h6 mt-3">10.3 Durée de conservation</h3>
+                <ul>
+                    <li>Données de compte : pendant la durée de votre inscription + 3 ans après suppression</li>
+                    <li>Données newsletter : jusqu'à désinscription + 1 an</li>
+                    <li>Cookies : maximum 13 mois</li>
+                </ul>
+                
+                <h3 class="h6 mt-3">10.4 Vos droits (RGPD)</h3>
+                <p>Conformément au Règlement Général sur la Protection des Données, vous disposez des droits suivants :</p>
+                <ul>
+                    <li><strong>Accès</strong> : obtenir une copie de vos données</li>
+                    <li><strong>Rectification</strong> : corriger vos données inexactes</li>
+                    <li><strong>Effacement</strong> : demander la suppression de vos données</li>
+                    <li><strong>Limitation</strong> : restreindre le traitement de vos données</li>
+                    <li><strong>Portabilité</strong> : recevoir vos données dans un format structuré</li>
+                    <li><strong>Opposition</strong> : vous opposer à certains traitements</li>
+                </ul>
+                <p>Pour exercer ces droits, contactez-nous à <a href="mailto:contact@paaxio.com">contact@paaxio.com</a>. Nous répondrons dans un délai d'un mois. En cas de réclamation, vous pouvez saisir la <a href="https://www.cnil.fr" target="_blank" rel="noopener">CNIL</a>.</p>
+                
+                <h3 class="h6 mt-3">10.5 Partage des données</h3>
+                <p>Vos données ne sont pas vendues à des tiers. Elles peuvent être partagées avec :</p>
+                <ul>
+                    <li>Notre hébergeur (Hostinger) pour le stockage technique</li>
+                    <li>Les autorités compétentes sur demande légale</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 11. Responsabilité -->
+        <section id="responsabilite" class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title h4">11. Responsabilité et garanties</h2>
+                
+                <h3 class="h6 mt-3">11.1 Responsabilité de Paaxio</h3>
+                <p>Paaxio met en œuvre tous les moyens raisonnables pour assurer un accès de qualité à ses services. Toutefois, en tant qu'hébergeur au sens de la LCEN, notre responsabilité ne peut être engagée du fait des contenus publiés par les utilisateurs, sauf si nous n'avons pas agi promptement pour les retirer après notification.</p>
+                
+                <h3 class="h6 mt-3">11.2 Limitation de responsabilité</h3>
+                <p>Dans les limites autorisées par la loi, Paaxio ne saurait être tenu responsable :</p>
+                <ul>
+                    <li>Des interruptions temporaires de service</li>
+                    <li>Des dommages indirects (perte de données, manque à gagner)</li>
+                    <li>Des contenus publiés par les utilisateurs</li>
+                    <li>Des interactions entre utilisateurs</li>
+                    <li>Des dysfonctionnements liés à des causes extérieures (réseaux, matériel utilisateur)</li>
+                </ul>
+                
+                <h3 class="h6 mt-3">11.3 Responsabilité des utilisateurs</h3>
+                <p>Vous êtes seul responsable des contenus que vous publiez et de l'utilisation que vous faites de la Plateforme. Vous vous engagez à indemniser Paaxio de tout dommage résultant d'une violation des présentes CGU.</p>
+            </div>
+        </section>
+
+        <!-- 12. Suspension et résiliation -->
+        <section id="suspension" class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title h4">12. Suspension et résiliation</h2>
+                
+                <h3 class="h6 mt-3">12.1 Suppression de compte par l'utilisateur</h3>
+                <p>Vous pouvez supprimer votre compte à tout moment depuis les paramètres de votre profil ou en nous contactant. La suppression entraîne :</p>
+                <ul>
+                    <li>La désactivation immédiate de l'accès à votre compte</li>
+                    <li>La suppression de vos playlists privées</li>
+                    <li>Le retrait de vos contenus publics (selon le délai technique)</li>
+                </ul>
+                
+                <h3 class="h6 mt-3">12.2 Suspension par Paaxio</h3>
+                <p>Nous nous réservons le droit de suspendre temporairement votre compte en cas de :</p>
+                <ul>
+                    <li>Violation des présentes CGU</li>
+                    <li>Comportement nuisible envers la communauté</li>
+                    <li>Suspicion de fraude ou d'utilisation abusive</li>
+                </ul>
+                <p>Vous serez informé par e-mail des motifs de la suspension et des recours possibles.</p>
+                
+                <h3 class="h6 mt-3">12.3 Résiliation par Paaxio</h3>
+                <p>En cas de violation grave ou répétée des CGU, nous pouvons résilier définitivement votre compte. Vous conservez le droit de contester cette décision en nous contactant.</p>
+                
+                <h3 class="h6 mt-3">12.4 Statuts de compte</h3>
+                <ul>
+                    <li><strong>Actif</strong> : compte fonctionnel</li>
+                    <li><strong>Suspendu</strong> : accès temporairement restreint</li>
+                    <li><strong>Supprimé</strong> : compte définitivement fermé</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 13. Modifications -->
+        <section id="modifications" class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title h4">13. Modifications des CGU</h2>
+                <p>Nous pouvons modifier les présentes CGU à tout moment pour les adapter à l'évolution de nos services ou du cadre juridique.</p>
+                <p>En cas de modification substantielle, nous vous en informerons par :</p>
+                <ul>
+                    <li>Une notification sur la Plateforme</li>
+                    <li>Un e-mail si vous êtes membre</li>
+                </ul>
+                <p>Les nouvelles CGU entrent en vigueur à la date indiquée. En continuant à utiliser nos services après cette date, vous acceptez les modifications. Si vous n'acceptez pas les nouvelles conditions, vous devez cesser d'utiliser la Plateforme et supprimer votre compte.</p>
+            </div>
+        </section>
+
+        <!-- 14. Droit applicable -->
+        <section id="litiges" class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title h4">14. Droit applicable et litiges</h2>
+                
+                <h3 class="h6 mt-3">14.1 Droit applicable</h3>
+                <p>Les présentes CGU sont régies par le droit français, quel que soit le lieu d'utilisation de la Plateforme.</p>
+                
+                <h3 class="h6 mt-3">14.2 Résolution amiable</h3>
+                <p>En cas de litige, nous vous invitons à nous contacter pour rechercher une solution amiable avant toute action judiciaire.</p>
+                
+                <h3 class="h6 mt-3">14.3 Médiation</h3>
+                <p>Conformément à l'article L.612-1 du Code de la consommation, vous pouvez recourir gratuitement à un médiateur de la consommation. Les coordonnées du médiateur compétent vous seront communiquées sur demande.</p>
+                
+                <h3 class="h6 mt-3">14.4 Juridiction compétente</h3>
+                <p>À défaut de résolution amiable, les tribunaux français seront seuls compétents pour connaître des litiges relatifs aux présentes CGU.</p>
+            </div>
+        </section>
+
+        <!-- 15. Contact -->
+        <section id="contact" class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title h4">15. Contact</h2>
+                <p>Pour toute question concernant les présentes CGU ou nos services :</p>
+                <dl class="row mb-0">
+                    <dt class="col-sm-3">Éditeur :</dt>
+                    <dd class="col-sm-9">SARL Paaxio</dd>
+                    <dt class="col-sm-3">Siège social :</dt>
+                    <dd class="col-sm-9">IUT de Bayonne et du Pays Basque, Anglet</dd>
+                    <dt class="col-sm-3">E-mail :</dt>
+                    <dd class="col-sm-9"><a href="mailto:contact@paaxio.com">contact@paaxio.com</a></dd>
+                </dl>
+            </div>
+        </section>
+
+        <div class="text-center small mt-5 text-muted">
+            <p>En utilisant Paaxio, vous reconnaissez avoir pris connaissance de ces Conditions Générales d'Utilisation et les accepter dans leur intégralité.</p>
+            <p class="mb-0">Document conforme à la législation française (Code civil, Code de la consommation, LCEN, RGPD).</p>
+        </div>
     </div>
 {% endblock %}
