@@ -203,4 +203,20 @@ class ControllerHome extends Controller
             ],
         ));
     }
+
+    /**
+     * @brief Fonction pour afficher les conditions générales
+     * @return void
+     */
+    public function afficherGenerales()
+    {
+        $template = $this->getTwig()->load('conditions_generales.html.twig');
+        echo $template->render(array(
+            "page" => [
+                'title' => "Conditions Générales",
+                'name' => "conditions_generales",
+                'description' => "Conditions Générales de Paaxio"
+            ],
+        ));
+    }
 }

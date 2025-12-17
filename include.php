@@ -37,7 +37,6 @@ require_once 'controller/controller_musique.class.php';
 require_once 'controller/controller_utilisateur.class.php';
 require_once 'controller/controller_role.class.php';
 require_once 'controller/controller_chanson.class.php';
-require_once 'controller/controller_conditionsGenerales.class.php';
 require_once 'controller/controller_album.class.php';
 require_once 'controller/controller_genre.class.php';
 require_once 'controller/controller_playlist.class.php';

@@ -5,11 +5,11 @@
 {% extends 'base_template.html.twig' %}
 {% block stylesheets %}
 	{{ parent() }}
-	<link rel="stylesheet" href="/assets/css/style.css">
+	<link rel="stylesheet" href="/assets/css/newsletter.css">
 {% endblock %}
 {% block content %}
 	<div class="container py-5">
-		<form action="/?controller=newsletter&method=ajouter" method="post" class="form-newsletter">
+		<form action="/?controller=home&method=ajouterGenerales" method="post" class="form-newsletter">
 			<h2>Tenez vous à l'écoute !</h2>
 			<p>Recevez les dernières actualités de Paaxio directement dans votre boîte mail.
 			</p>
