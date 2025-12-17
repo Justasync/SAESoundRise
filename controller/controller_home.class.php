@@ -20,7 +20,7 @@ class ControllerHome extends Controller
                 $this->artisteDashboard();
                 break;
             case RoleEnum::Admin:
-                $this->homeBienvenue();
+                $this->redirectTo('admin', 'afficher');
                 break;
             case RoleEnum::Auditeur:
                 $this->auditeurDashboard();
