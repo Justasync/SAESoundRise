@@ -118,7 +118,7 @@ CREATE TABLE participation (
     ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT fkPartUtilisateur
     FOREIGN KEY (emailArtisteParticipant) REFERENCES utilisateur(emailUtilisateur)
-    ON DELETE RESTRICT ON UPDATE CASCADE
+    ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- ===================== LIKE CHANSON (U ↔ Chanson) =====================
