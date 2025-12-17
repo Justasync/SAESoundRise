@@ -357,4 +357,19 @@ class ChansonDAO
     {
         $this->pdo = $pdo;
     }
+
+    /**
+     * Calcule le nombre total d'écoutes pour toutes les chansons d'un artiste
+     * @param string $emailArtiste L'email de l'artiste
+     * @return int Le nombre total d'écoutes
+     */
+    public function getTotalEcoutesByArtiste(string $emailArtiste): int
+    {
+        $sql = "SELECT COALESCE(SUM(nbEcouteChanson), 0) as total 
+                FROM chanson 
+                WHERE emailPublicateur = :email";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':email' => $emailArtiste]);
+        return (int)$stmt->fetchColumn();
+    }
 }

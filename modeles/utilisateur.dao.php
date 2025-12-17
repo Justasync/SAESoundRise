@@ -326,4 +326,17 @@ class UtilisateurDAO
             return [];
         }
     }
+
+    /**
+     * Compte le nombre d'abonnés d'un artiste
+     * @param string $emailArtiste L'email de l'artiste
+     * @return int Le nombre d'abonnés
+     */
+    public function countFollowers(string $emailArtiste): int
+    {
+        $sql = "SELECT COUNT(*) FROM abonnementArtiste WHERE emailArtiste = :email";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':email' => $emailArtiste]);
+        return (int)$stmt->fetchColumn();
+    }
 }
