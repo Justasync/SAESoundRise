@@ -68,13 +68,7 @@ class ControllerAdmin extends Controller
     public function modifier()
     {
         // 1. Sécurité : Vérification manuelle du rôle Admin
-        $roleSession = $_SESSION['user_role'] ?? null;
-        $valeurRole = (is_object($roleSession) && property_exists($roleSession, 'value')) ? $roleSession->value : $roleSession;
-
-        if ($valeurRole !== 'admin') {
-            $this->redirectTo('home', 'afficher');
-            return;
-        }
+        $this->requireRole(RoleEnum::Admin);
 
         $pdo = $this->getPDO();
         $utilisateurDAO = new UtilisateurDAO($pdo);
