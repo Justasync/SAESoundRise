@@ -1,4 +1,8 @@
 <?php
+/** 
+ * @file include.php
+ * @brief Fichier d'inclusion principal
+ */
 
 // set timezone paris
 date_default_timezone_set('Europe/Paris');
