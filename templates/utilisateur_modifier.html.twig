@@ -1,0 +1,77 @@
+{% extends 'base_template.html.twig' %}
+
+{% block title %}Modifier Utilisateur - Paaxio{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            
+            <div class="card border-0 shadow-sm rounded-4">
+                
+                <div class="card-header bg-white border-0 pt-4 pb-0 text-center">
+                    <h3 class="fw-bold" style="color: #D99181;">Modifier Utilisateur</h3>
+                    <p class="text-muted small">Modification du profil de <strong>{{ user.pseudoUtilisateur }}</strong></p>
+                </div>
+                
+                <div class="card-body p-4">
+                    
+                    {% if error is defined and error is not null %}
+                        <div class="alert alert-danger d-flex align-items-center rounded-3" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            <div>{{ error }}</div>
+                        </div>
+                    {% endif %}
+
+                    <form action="?controller=admin&method=modifier" method="POST">
+                        
+                        <input type="hidden" name="original_email" value="{{ user.emailUtilisateur }}">
+
+                        <div class="mb-3">
+                            <label class="form-label text-muted small text-uppercase fw-bold">Email (Non modifiable)</label>
+                            <input type="email" class="form-control rounded-pill px-3 bg-light text-secondary" value="{{ user.emailUtilisateur }}" disabled>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="pseudo" class="form-label fw-bold" style="color: #555;">Pseudo</label>
+                            <input type="text" class="form-control rounded-pill px-3" id="pseudo" name="pseudo" value="{{ user.pseudoUtilisateur }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="mdp" class="form-label fw-bold" style="color: #555;">Nouveau mot de passe</label>
+                            <input type="password" class="form-control rounded-pill px-3" id="mdp" name="mdp" placeholder="Laisser vide pour ne pas changer">
+                            <div class="form-text small ms-2">Remplissez uniquement si vous souhaitez changer le mot de passe.</div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="role" class="form-label fw-bold" style="color: #555;">Rôle</label>
+                            <select class="form-select rounded-pill px-3" id="role" name="role">
+                                {% set currentRole = 'auditeur' %}
+                                {% if user.roleUtilisateur.libelleRole is defined %}
+                                    {% set currentRole = user.roleUtilisateur.libelleRole|lower %}
+                                {% elseif user.roleUtilisateur.typeRole is defined %}
+                                    {% set currentRole = user.roleUtilisateur.typeRole|lower %}
+                                {% endif %}
+                                
+                                <option value="auditeur" {{ currentRole == 'auditeur' ? 'selected' : '' }}>Auditeur</option>
+                                <option value="artiste" {{ currentRole == 'artiste' ? 'selected' : '' }}>Artiste</option>
+                                <option value="admin" {{ currentRole == 'admin' ? 'selected' : '' }}>Admin</option>
+                                <option value="producteur" {{ currentRole == 'producteur' ? 'selected' : '' }}>Producteur</option>
+                            </select>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn text-white rounded-pill py-2 fw-bold shadow-sm" style="background-color: #D99181; transition: all 0.3s;">
+                                Enregistrer les modifications
+                            </button>
+                            <a href="?controller=admin&method=afficher" class="btn btn-light rounded-pill py-2 text-muted border">
+                                Annuler
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
