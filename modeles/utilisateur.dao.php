@@ -1,14 +1,30 @@
 <?php
+/**
+ * @file modeles/utilisateur.dao.php
+ * @brief DAO pour la gestion des utilisateurs
+ */
 
 class UtilisateurDAO
 {
+    /**
+     * @var PDO|null $pdo L'instance PDO pour la connexion à la base de données.
+     */
     private ?PDO $pdo;
 
+    /**
+     * Constructeur de la classe UtilisateurDAO.
+     * @param PDO|null $pdo L'instance PDO pour la connexion à la base de données.
+     */
     public function __construct(?PDO $pdo)
     {
         $this->pdo = $pdo;
     }
 
+    /**
+     * Récupère un utilisateur par son adresse email.
+     * @param string|null $emailUtilisateur L'adresse email à rechercher.
+     * @return Utilisateur|null L'utilisateur correspondant ou null si introuvable.
+     */
     public function find(?string $emailUtilisateur): ?Utilisateur
     {
         $sql = "SELECT * FROM utilisateur WHERE emailUtilisateur = :emailUtilisateur";
