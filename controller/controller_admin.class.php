@@ -1,16 +1,46 @@
 <?php
+
 /**
- * Contrôleur dédié à la gestion de l'administration.
+ * @file controller_admin.class.php
+ * @brief Fichier contenant le contrôleur d'administration.
+ * 
+ * Ce fichier gère toutes les fonctionnalités d'administration
+ * de l'application Paaxio, notamment la gestion des utilisateurs.
+ * 
+ */
+
+/**
+ * @class ControllerAdmin
+ * @brief Contrôleur dédié à la gestion de l'administration.
+ * 
+ * Cette classe gère les opérations d'administration telles que :
+ * - Affichage du tableau de bord administrateur
+ * - Suppression d'utilisateurs
+ * - Modification d'utilisateurs
+ * 
+ * @extends Controller
  */
 class ControllerAdmin extends Controller
 {
+    /**
+     * @brief Constructeur du contrôleur admin.
+     * 
+     * @param \Twig\Environment $twig Environnement Twig pour le rendu des templates.
+     * @param \Twig\Loader\FilesystemLoader $loader Chargeur de fichiers Twig.
+     */
     public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader)
     {
         parent::__construct($loader, $twig);
     }
 
     /**
-     * Affiche le tableau de bord de l'administrateur.
+     * @brief Affiche le tableau de bord de l'administrateur.
+     * 
+     * Récupère la liste de tous les utilisateurs et les affiche
+     * dans le template du tableau de bord admin.
+     * Nécessite le rôle Admin.
+     * 
+     * @return void
      */
     public function afficher()
     {
@@ -37,7 +67,13 @@ class ControllerAdmin extends Controller
     }
 
     /**
-     * Supprime un utilisateur spécifique.
+     * @brief Supprime un utilisateur spécifique.
+     * 
+     * Supprime l'utilisateur identifié par son ID (email) passé en paramètre GET.
+     * Protection : un administrateur ne peut pas se supprimer lui-même.
+     * Nécessite le rôle Admin.
+     * 
+     * @return void
      */
     public function supprimer()
     {
@@ -47,7 +83,7 @@ class ControllerAdmin extends Controller
         if (isset($_GET['id'])) {
             $pdo = Bd::getInstance()->getConnexion();
             $utilisateurDAO = new UtilisateurDAO($pdo);
-            
+
             // Protection : ne pas se supprimer soi-même
             if (isset($_SESSION['user_email']) && $_GET['id'] == $_SESSION['user_email']) {
                 // Redirection propre avec la méthode du contrôleur parent
@@ -63,21 +99,31 @@ class ControllerAdmin extends Controller
     }
 
     /**
-     * Modifie un utilisateur existant (Admin seulement).
+     * @brief Modifie un utilisateur existant.
+     * 
+     * Permet à l'administrateur de modifier les informations d'un utilisateur :
+     * - Pseudo
+     * - Rôle
+     * - Mot de passe (optionnel)
+     * 
+     * L'identifiant de l'utilisateur est récupéré via GET (id) ou POST (original_email).
+     * Nécessite le rôle Admin.
+     * 
+     * @return void
      */
     public function modifier()
     {
-        // 1. Sécurité : Vérification manuelle du rôle Admin
+        // Sécurité : Vérification manuelle du rôle Admin
         $this->requireRole(RoleEnum::Admin);
 
         $pdo = $this->getPDO();
         $utilisateurDAO = new UtilisateurDAO($pdo);
-        $roleDao = new RoleDao($pdo); 
-        
+        $roleDao = new RoleDao($pdo);
+
         $error = null;
         $user = null;
 
-        // 2. Récupération de l'identifiant (Email) via GET ou POST
+        // Récupération de l'identifiant (Email) via GET ou POST
         $emailTarget = $_GET['id'] ?? $_POST['original_email'] ?? null;
 
         if (!$emailTarget) {
@@ -92,7 +138,7 @@ class ControllerAdmin extends Controller
             return;
         }
 
-        // 3. Traitement du formulaire (POST)
+        // Traitement du formulaire (POST)
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $pseudo = trim($_POST['pseudo'] ?? '');
             $roleType = $_POST['role'] ?? 'auditeur';
@@ -126,14 +172,13 @@ class ControllerAdmin extends Controller
                     } else {
                         $error = "Erreur lors de la mise à jour.";
                     }
-
                 } catch (Exception $e) {
                     $error = "Erreur système : " . $e->getMessage();
                 }
             }
         }
 
-        // 4. Affichage du formulaire
+        // Affichage du formulaire
         $template = $this->getTwig()->load('utilisateur_modifier.html.twig');
         echo $template->render([
             'page' => ['title' => 'Modifier Utilisateur'],
@@ -142,5 +187,4 @@ class ControllerAdmin extends Controller
             'error' => $error
         ]);
     }
-
 }

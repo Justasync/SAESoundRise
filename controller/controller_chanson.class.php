@@ -1,17 +1,53 @@
 <?php
 
-class ControllerChanson extends Controller 
+/**
+ * @file controller_chanson.class.php
+ * @brief Fichier contenant le contrôleur de gestion des chansons.
+ * 
+ * Ce fichier gère toutes les fonctionnalités liées aux chansons
+ * dans l'application Paaxio.
+ * 
+ */
+
+/**
+ * @class ControllerChanson
+ * @brief Contrôleur dédié à la gestion des chansons.
+ * 
+ * Cette classe gère les opérations sur les chansons :
+ * - Affichage d'une chanson spécifique
+ * - Recherche par titre ou par album
+ * - Liste de toutes les chansons
+ * - Filtrage et tri des chansons
+ * - Gestion des likes
+ * - Incrémentation du nombre d'écoutes
+ * 
+ * @extends Controller
+ */
+class ControllerChanson extends Controller
 {
+    /**
+     * @brief Constructeur du contrôleur chanson.
+     * 
+     * @param \Twig\Environment $twig Environnement Twig pour le rendu des templates.
+     * @param \Twig\Loader\FilesystemLoader $loader Chargeur de fichiers Twig.
+     */
     public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader)
     {
         parent::__construct($loader, $twig);
     }
 
+    /**
+     * @brief Affiche les détails d'une chanson spécifique.
+     * 
+     * Récupère une chanson par son ID passé en paramètre GET.
+     * 
+     * @return void
+     */
     public function afficher()
     {
         $idChanson = isset($_GET['idChanson']) ? $_GET['idChanson'] : null;
 
-        //Récupération de la catégorie
+        // Récupération de la chanson
         $managerChanson = new ChansonDao($this->getPdo());
         $chanson = $managerChanson->findId($idChanson);
 
@@ -26,11 +62,18 @@ class ControllerChanson extends Controller
         ));
     }
 
+    /**
+     * @brief Recherche des chansons par leur titre.
+     * 
+     * Récupère les chansons correspondant au titre passé en paramètre GET.
+     * 
+     * @return void
+     */
     public function rechercherParTitre()
     {
         $titreChanson = isset($_GET['titreChanson']) ? $_GET['titreChanson'] : null;
 
-        //Récupération de la catégorie
+        // Récupération des chansons par titre
         $managerChanson = new ChansonDao($this->getPdo());
         $chanson = $managerChanson->rechercherParTitre($titreChanson);
 
@@ -45,11 +88,18 @@ class ControllerChanson extends Controller
         ));
     }
 
+    /**
+     * @brief Recherche des chansons par album.
+     * 
+     * Récupère toutes les chansons d'un album spécifique via son ID.
+     * 
+     * @return void
+     */
     public function rechercherParAlbum()
     {
         $idAlbum = isset($_GET['idAlbum']) ? $_GET['idAlbum'] : null;
 
-        //Récupération de la catégorie
+        // Récupération des chansons de l'album
         $managerChanson = new ChansonDao($this->getPdo());
         $chanson = $managerChanson->rechercherParAlbum($idAlbum);
 
@@ -63,17 +113,24 @@ class ControllerChanson extends Controller
             'testing' => $chanson,
         ));
     }
-    
+
+    /**
+     * @brief Liste toutes les chansons de la plateforme.
+     * 
+     * Récupère toutes les chansons et les affiche dans un template de test.
+     * 
+     * @return void
+     */
     public function lister()
     {
-        //recupération des catégories
+        // Récupération des chansons
         $managerChanson = new ChansonDao($this->getPdo());
         $chansons = $managerChanson->findAll();
 
-        //Choix du template
+        // Choix du template
         $template = $this->getTwig()->load('test.html.twig');
 
-        //Affichage de la page
+        // Affichage de la page
         echo $template->render(array(
             'page' => [
                 'title' => "Chansons",
@@ -84,12 +141,19 @@ class ControllerChanson extends Controller
         ));
     }
 
+    /**
+     * @brief Liste toutes les chansons sous forme de tableau.
+     * 
+     * Récupère toutes les chansons et les affiche dans un format tableau.
+     * 
+     * @return void
+     */
     public function listerTableau()
     {
         $managerChanson = new ChansonDao($this->getPdo());
         $chansons = $managerChanson->findAll();
 
-        //Génération de la vue
+        // Génération de la vue
         $template = $this->getTwig()->load('test.html.twig');
         echo $template->render(array(
             'page' => [
@@ -101,17 +165,28 @@ class ControllerChanson extends Controller
         ));
     }
 
-   public function filtrerChanson()
+    /**
+     * @brief Filtre les chansons selon différents critères.
+     * 
+     * Permet de filtrer les chansons par :
+     * - Genre musical (idGenre)
+     * - Album (idAlbum)
+     * - Colonne de tri (titreChanson, dateTeleversementChanson, nbEcouteChanson)
+     * - Ordre de tri (ASC ou DESC)
+     * 
+     * @return void
+     */
+    public function filtrerChanson()
     {
         // Récupération des filtres depuis l'URL
         $idGenre = $_GET['idGenre'] ?? null;
         $idAlbum = $_GET['idAlbum'] ?? null;
-        
+
         // Récupération de l'ordre (asc ou desc) et de la colonne de tri
-        $ordre = isset($_GET['ordre']) && in_array(strtolower($_GET['ordre']), ['asc', 'desc']) 
-                ? strtoupper($_GET['ordre']) 
-                : 'ASC';
-                
+        $ordre = isset($_GET['ordre']) && in_array(strtolower($_GET['ordre']), ['asc', 'desc'])
+            ? strtoupper($_GET['ordre'])
+            : 'ASC';
+
         $tri = $_GET['tri'] ?? 'titreChanson';
         $colonnesValides = ['titreChanson', 'dateTeleversementChanson', 'nbEcouteChanson'];
         $colonne = in_array($tri, $colonnesValides) ? $tri : 'titreChanson';
@@ -132,11 +207,19 @@ class ControllerChanson extends Controller
         ]);
     }
 
+    /**
+     * @brief Bascule l'état "j'aime" d'une chanson pour l'utilisateur connecté.
+     * 
+     * Cette méthode AJAX permet à un utilisateur authentifié de liker ou
+     * unliker une chanson. Retourne une réponse JSON avec le nouvel état.
+     * 
+     * @return void Retourne une réponse JSON et termine le script.
+     */
     public function toggleLike()
     {
         // Vérifie la connexion
         $this->requireAuth();
-        
+
         $emailUtilisateur = $_SESSION['user_email'] ?? null;
 
         // Récupère l'ID de la chanson depuis POST
@@ -166,8 +249,17 @@ class ControllerChanson extends Controller
         header('Content-Type: application/json');
         echo json_encode(['liked' => !$estLikee]);
         exit;
-    }  
+    }
 
+    /**
+     * @brief Incrémente le compteur d'écoutes d'une chanson.
+     * 
+     * Cette méthode AJAX incrémente le nombre d'écoutes d'une chanson
+     * lorsqu'un utilisateur connecté l'écoute.
+     * Vérifie le token CSRF pour la sécurité.
+     * 
+     * @return void Retourne une réponse JSON et termine le script.
+     */
     public function incrementEcoute()
     {
         // Vérification de l'authentification
@@ -181,7 +273,7 @@ class ControllerChanson extends Controller
         // Vérification du token CSRF
         $csrfToken = $_POST['csrfToken'] ?? null;
         $sessionToken = $_SESSION['csrf_token'] ?? null;
-        
+
         if (!$csrfToken || !$sessionToken || $csrfToken !== $sessionToken) {
             http_response_code(403);
             echo json_encode(['error' => 'Token CSRF invalide']);
