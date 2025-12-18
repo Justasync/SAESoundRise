@@ -251,6 +251,18 @@ class ChansonDAO
     }
 
     /**
+     * Supprime une chanson en base de données par son ID.
+     * @param int $idChanson
+     * @return bool
+     */
+    public function deleteChanson(int $idChanson): bool
+    {
+        $sql = "DELETE FROM chanson WHERE idChanson = :idChanson";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([':idChanson' => $idChanson]);
+    }
+
+    /**
      * Incrémente le compteur d'écoutes d'une chanson de 1 et retourne la nouvelle valeur
      * @param int $idChanson
      * @return int|null Nouvelle valeur de nbEcouteChanson ou null en cas d'erreur
