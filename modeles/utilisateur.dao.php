@@ -37,6 +37,11 @@ class UtilisateurDAO
         return null;
     }
 
+    /**
+     * Récupère un utilisateur par son pseudo.
+     * @param string|null $pseudoUtilisateur Le pseudo à rechercher.
+     * @return Utilisateur|null L'utilisateur correspondant ou null si introuvable.
+     */
     public function findByPseudo(?string $pseudoUtilisateur): ?Utilisateur
     {
         $sql = "SELECT * FROM utilisateur WHERE pseudoUtilisateur = :pseudoUtilisateur";
@@ -49,6 +54,11 @@ class UtilisateurDAO
         return null;
     }
 
+    /**
+     * Vérifie si un utilisateur existe par son adresse email.
+     * @param string $emailUtilisateur L'adresse email à vérifier.
+     * @return bool Vrai si l'utilisateur existe, faux sinon.
+     */
     public function existsByEmail(string $emailUtilisateur): bool
     {
         $sql = "SELECT COUNT(*) FROM utilisateur WHERE emailUtilisateur = :emailUtilisateur";
@@ -57,17 +67,25 @@ class UtilisateurDAO
         return (bool)$stmt->fetchColumn();
     }
 
+    /**
+     * Récupère les artistes en tendance sur la plateforme.
+     * @param int $limit Le nombre maximum d'artistes à récupérer.
+     * @param int $daysAgo Le nombre de jours à considérer pour le calcul de la tendance.
+     * @return array Une liste d'artistes en tendance.
+     */
     public function findTrending(int $limit = 8, int $daysAgo = 7): array
     {
-        // Requête SQL pour récupérer les artistes en tendance sur la plateforme
-        // Les artistes sont classés selon un "score de tendance" basé sur :
-        //    - le nombre de nouveaux abonnés (pondéré 5)
-        //    - les utilisateurs ayant liké leurs chansons (pondéré 1)
-        //    - les votes reçus lors des battles (pondéré 3)
-        // Le calcul s'effectue sur les 7 derniers jours uniquement
-        // On ne retient que les artistes actifs (statut = 'actif' et rôle = 2)
-        // Seuls les artistes avec un score de tendance strictement positif sont affichés (HAVING)
-        // La requête retourne au maximum 8 artistes, triés par leur score de tendance décroissant
+        /*
+        Requête SQL pour récupérer les artistes en tendance sur la plateforme
+        Les artistes sont classés selon un "score de tendance" basé sur :
+           - le nombre de nouveaux abonnés (pondéré 5)
+           - les utilisateurs ayant liké leurs chansons (pondéré 1)
+           - les votes reçus lors des battles (pondéré 3)
+        Le calcul s'effectue sur les 7 derniers jours uniquement
+        On ne retient que les artistes actifs (statut = 'actif' et rôle = 2)
+        Seuls les artistes avec un score de tendance strictement positif sont affichés (HAVING)
+        La requête retourne au maximum 8 artistes, triés par leur score de tendance décroissant
+        */
 
         $sql = "SELECT 
                 u.*,
@@ -127,6 +145,11 @@ class UtilisateurDAO
         return [];
     }
 
+    /**
+     * Vérifie si un utilisateur existe par son pseudo.
+     * @param string $pseudoUtilisateur Le pseudo à vérifier.
+     * @return bool Vrai si l'utilisateur existe, faux sinon.
+     */
     public function existsByPseudo(string $pseudoUtilisateur): bool
     {
         $sql = "SELECT COUNT(*) FROM utilisateur WHERE pseudoUtilisateur = :pseudoUtilisateur";
@@ -135,6 +158,11 @@ class UtilisateurDAO
         return (bool)$stmt->fetchColumn();
     }
 
+    /**
+     * Hydrate un tableau de données en une instance de Utilisateur.
+     * @param array $row Le tableau de données.
+     * @return Utilisateur L'instance de Utilisateur hydratée.
+     */
     private function hydrate(array $row): Utilisateur
     {
         $dateDeNaissance = $row['dateDeNaissanceUtilisateur'] ? new DateTime($row['dateDeNaissanceUtilisateur']) : null;
@@ -179,6 +207,10 @@ class UtilisateurDAO
         );
     }
 
+    /**
+     * Récupère tous les utilisateurs de la base de données.
+     * @return array Une liste d'utilisateurs.
+     */
     public function findAll(): array
     {
         $sql = "SELECT * FROM utilisateur";
@@ -187,6 +219,11 @@ class UtilisateurDAO
         return $this->hydrateAll($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
+    /**
+     * Hydrate plusieurs utilisateurs à partir d'un tableau de données.
+     * @param array $rows Le tableau de données.
+     * @return array Une liste d'instances de Utilisateur hydratées.
+     */
     private function hydrateAll(array $rows): array
     {
         $utilisateurs = [];
@@ -196,6 +233,11 @@ class UtilisateurDAO
         return $utilisateurs;
     }
 
+    /**
+     * Crée un nouvel utilisateur dans la base de données.
+     * @param Utilisateur $utilisateur L'utilisateur à créer.
+     * @return bool Vrai si la création a réussi, faux sinon.
+     */
     public function create(Utilisateur $utilisateur): bool
     {
         $sql = "INSERT INTO utilisateur (emailUtilisateur, pseudoUtilisateur, motDePasseUtilisateur, dateDeNaissanceUtilisateur, dateInscriptionUtilisateur, statutUtilisateur, estAbonnee, statutAbonnement, dateDebutAbonnement, dateFinAbonnement, pointsDeRenommeeArtiste, nbAbonnesArtiste, urlPhotoUtilisateur, roleUtilisateur, descriptionUtilisateur, siteWebUtilisateur, genreUtilisateur, nomUtilisateur) VALUES (:emailUtilisateur, :pseudoUtilisateur, :motDePasseUtilisateur, :dateDeNaissanceUtilisateur, :dateInscriptionUtilisateur, :statutUtilisateur, :estAbonnee, :statutAbonnement, :dateDebutAbonnement, :dateFinAbonnement, :pointsDeRenommeeArtiste, :nbAbonnesArtiste, :urlPhotoUtilisateur, :roleUtilisateur, :descriptionUtilisateur, :siteWebUtilisateur, :genreUtilisateur, :nomUtilisateur)";
@@ -232,6 +274,11 @@ class UtilisateurDAO
         ]);
     }
 
+    /**
+     * Met à jour un utilisateur dans la base de données.
+     * @param Utilisateur $utilisateur L'utilisateur à mettre à jour.
+     * @return bool Vrai si la mise à jour a réussi, faux sinon.
+     */
     public function update(Utilisateur $utilisateur): bool
     {
         $sql = "UPDATE utilisateur SET pseudoUtilisateur = :pseudoUtilisateur, motDePasseUtilisateur = :motDePasseUtilisateur, dateDeNaissanceUtilisateur = :dateDeNaissanceUtilisateur, dateInscriptionUtilisateur = :dateInscriptionUtilisateur, statutUtilisateur = :statutUtilisateur, estAbonnee = :estAbonnee, statutAbonnement = :statutAbonnement, dateDebutAbonnement = :dateDebutAbonnement, dateFinAbonnement = :dateFinAbonnement, pointsDeRenommeeArtiste = :pointsDeRenommeeArtiste, nbAbonnesArtiste = :nbAbonnesArtiste, urlPhotoUtilisateur = :urlPhotoUtilisateur, roleUtilisateur = :roleUtilisateur, descriptionUtilisateur = :descriptionUtilisateur, siteWebUtilisateur = :siteWebUtilisateur, genreUtilisateur = :genreUtilisateur, nomUtilisateur = :nomUtilisateur WHERE emailUtilisateur = :emailUtilisateur";
@@ -268,6 +315,11 @@ class UtilisateurDAO
         ]);
     }
 
+    /**
+     * Supprime un utilisateur de la base de données.
+     * @param string|null $emailUtilisateur L'adresse email de l'utilisateur à supprimer.
+     * @return bool Vrai si la suppression a réussi, faux sinon.
+     */
     public function delete(?string $emailUtilisateur): bool
     {
         $sql = "DELETE FROM utilisateur WHERE emailUtilisateur = :emailUtilisateur";
@@ -276,7 +328,8 @@ class UtilisateurDAO
     }
 
     /**
-     * Get the value of pdo
+     * Getter pour la pdo
+     * @return PDO|null L'instance PDO pour la connexion à la base de données.
      */
     public function getPdo(): ?PDO
     {
@@ -284,14 +337,21 @@ class UtilisateurDAO
     }
 
     /**
-     * Set the value of pdo
-     *
+     * Setter pour la pdo
+     * @param PDO|null $pdo L'instance PDO pour la connexion à la base de données.
+     * @return void
      */
     public function setPdo($pdo): void
     {
         $this->pdo = $pdo;
     }
 
+    /**
+     * Récupère une liste d'artistes populaires, en priorisant ceux du même genre que l'utilisateur donné.
+     * @param string $excludeEmail L'email de l'utilisateur à exclure des résultats.
+     * @return array Une liste d'artistes populaires.
+     * @throws Exception En cas d'erreur lors de la récupération des artistes.
+     */
     public function findAllArtistes(string $excludeEmail): array
     {
         // First, get the current user to find their genre
