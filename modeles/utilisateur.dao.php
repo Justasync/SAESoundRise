@@ -339,4 +339,30 @@ class UtilisateurDAO
         $stmt->execute([':email' => $emailArtiste]);
         return (int)$stmt->fetchColumn();
     }
+
+    /** 
+      *Vérifie si un utilisateur est abonné à un artiste
+      * @param string $emailAbonne L'email de l'abonné
+      * @param string $emailArtiste L'email de l'artiste  
+    */
+    public function estAbonneAArtiste(string $emailAbonne, string $emailArtiste): bool
+    {
+        $sql = "SELECT COUNT(*) FROM abonnementArtiste WHERE emailAbonne = :abonne AND emailArtiste = :artiste";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':abonne' => $emailAbonne, ':artiste' => $emailArtiste]);
+        return (bool)$stmt->fetchColumn();
+    }
+
+    public function basculerAbonnement(string $emailAbonne, string $emailArtiste): string
+    {
+        if ($this->estAbonneAArtiste($emailAbonne, $emailArtiste)) {
+            $sql = "DELETE FROM abonnementArtiste WHERE emailAbonne = :abonne AND emailArtiste = :artiste";
+            $this->pdo->prepare($sql)->execute([':abonne' => $emailAbonne, ':artiste' => $emailArtiste]);
+            return 'unfollowed';
+        } else {
+            $sql = "INSERT INTO abonnementArtiste (emailAbonne, emailArtiste) VALUES (:abonne, :artiste)";
+            $this->pdo->prepare($sql)->execute([':abonne' => $emailAbonne, ':artiste' => $emailArtiste]);
+            return 'followed';
+        }
+    }
 }

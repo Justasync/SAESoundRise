@@ -135,8 +135,18 @@
                     <p class="mb-4 text-dark opacity-75">
                         {{ utilisateur.getDescriptionUtilisateur() ?: "Vous trouverez ici une description de l'artiste, qu'il s'agisse de son style musical, de ses sources d'inspiration ou de tout autre élément que vous souhaitez mettre en avant." }}
                     </p>
-                    {% if session.user_pseudo is not defined or session.user_pseudo != utilisateur.getPseudoUtilisateur() %}
-                        <button class="btn btn-subscribe rounded-pill">S'abonner</button>
+                    {# On n'affiche le bouton QUE SI l'utilisateur est connecté ET qu'il n'est pas sur son propre profil #}
+                    {% if session.user_email and session.user_email != utilisateur.getEmailUtilisateur() %}
+                        <button id="btn-abonnement" 
+                                class="btn {{ estAbonneAArtiste ? 'btn-light' : 'btn-subscribe' }} rounded-pill"
+                                data-email="{{ utilisateur.getEmailUtilisateur() }}">
+                            {{ estAbonneAArtiste ? 'Abonné(e)' : 'S\'abonner' }}
+                        </button>
+                    {% elseif not session.user_email %}
+                        {# Optionnel : Afficher le bouton mais demander la connexion au clic (votre logique actuelle) #}
+                        <button id="btn-abonnement" class="btn btn-subscribe rounded-pill">
+                            S'abonner
+                        </button>
                     {% endif %}
                 </div>
             </div>
@@ -178,4 +188,41 @@
             {% endif %}
         </section>
     </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const btn = document.getElementById('btn-abonnement');
+        
+        if (btn) {
+            btn.addEventListener('click', function() {
+                const emailArtiste = this.getAttribute('data-email');
+                const formData = new FormData();
+                formData.append('emailArtiste', emailArtiste);
+
+                // Appel vers votre contrôleur
+                fetch('index.php?controller=utilisateur&method=suivreArtiste', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Mise à jour visuelle du bouton
+                        this.textContent = data.newText;
+                        
+                        if (data.action === 'followed') {
+                            this.classList.replace('btn-subscribe', 'btn-light');
+                        } else {
+                            this.classList.replace('btn-light', 'btn-subscribe');
+                        }
+                    } else {
+                        alert(data.message || "Une erreur est survenue.");
+                    }
+                })
+                .catch(error => console.error('Erreur:', error));
+            });
+        }
+    });
+    </script>
 {% endblock %}
+

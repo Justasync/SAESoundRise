@@ -536,6 +536,12 @@ class ControllerUtilisateur extends Controller
         // Recherche de l'artiste via son pseudo
         $utilisateur = $utilisateurDAO->findByPseudo($pseudo);
 
+        // Vérification de l'abonnement si connecté
+        $estAbonneAArtiste = false;
+        if (isset($_SESSION['user_email'])) {
+            $estAbonneAArtiste = $utilisateurDAO->estAbonneAArtiste($_SESSION['user_email'], $utilisateur->getEmailUtilisateur());
+        }
+
         if (!$utilisateur) {
             $this->redirectTo('home', 'afficher');
         }
@@ -549,7 +555,44 @@ class ControllerUtilisateur extends Controller
         echo $template->render([
             'session'     => $_SESSION,
             'utilisateur' => $utilisateur,
-            'albums'      => $albums
+            'albums'      => $albums,
+            'estAbonneAArtiste' => $estAbonneAArtiste
         ]);
+    }
+
+    public function suivreArtiste()
+    {
+        header('Content-Type: application/json');
+
+        // Vérification de la connexion 
+        if (!isset($_SESSION['user_email'])) {
+            echo json_encode(['success' => false, 'message' => 'Non connecté']);
+            return;
+        }
+
+        $emailArtiste = $_POST['emailArtiste'] ?? null;
+        $emailAbonne = $_SESSION['user_email'];
+
+        // --- SÉCURITÉ : Empêcher l'auto-abonnement ---
+        if ($emailAbonne === $emailArtiste) {
+            echo json_encode([
+                'success' => false, 
+                'message' => 'Vous ne pouvez pas vous abonner à votre propre profil.'
+            ]);
+            return;
+        }
+
+        if ($emailArtiste) {
+            $dao = new UtilisateurDAO($this->getPDO());
+            $result = $dao->basculerAbonnement($emailAbonne, $emailArtiste);
+            
+            echo json_encode([
+                'success' => true, 
+                'action' => $result,
+                'newText' => ($result === 'followed') ? 'Abonné(e)' : 'S\'abonner'
+            ]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Email artiste manquant']);
+        }
     }
 }
