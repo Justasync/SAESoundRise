@@ -1,22 +1,78 @@
 <?php
+/**
+ * @file modeles/chanson.class.php
+ * @brief Classe représentant une chanson
+ */
 
 class Chanson
 {
+    /**
+     * @var int|null $idChanson L'identifiant unique de la chanson.
+     */
     private int|null $idChanson;
+
+    /**
+     * @var string|null $titreChanson Le titre de la chanson.
+     */
     private string|null $titreChanson;
+
+    /**
+     * @var int|null $dureeChanson La durée de la chanson en secondes.
+     */
     private int|null $dureeChanson;
-    private DateTime|null $dateTeleversementChanson; //Le type dans la bdd est DATE
+
+    /**
+     * @var DateTime|null $dateTeleversementChanson La date de mise en ligne de la chanson.
+     */
+    private DateTime|null $dateTeleversementChanson;
+
+    /**
+     * @var int|null $nbEcouteChanson Le nombre d'écoutes de la chanson.
+     */
     private int|null $nbEcouteChanson;
+
+    /**
+     * @var Album|null $albumChanson L'album auquel appartient la chanson.
+     */
     private Album|null $albumChanson;
+
+    /**
+     * @var Genre|null $genreChanson Le genre musical de la chanson.
+     */
     private Genre|null $genreChanson;
+
+    /**
+     * @var string|null $emailPublicateur L'email de l'artiste qui a publié la chanson.
+     */
     private string|null $emailPublicateur;
+
+    /**
+     * @var string|null $urlAudioChanson L'URL du fichier audio de la chanson.
+     */
     private string|null $urlAudioChanson;
+
+    /**
+     * @var bool $isLiked Indique si la chanson est likée par l'utilisateur connecté.
+     */
     private bool $isLiked = false;
+
+    /**
+     * @var DateTime|null $dateLike La date du like par l'utilisateur connecté.
+     */
     private ?DateTime $dateLike = null;
 
-
-    //Constructeur
-
+    /**
+     * Constructeur de la classe Chanson.
+     * @param int|null $idChanson L'identifiant unique.
+     * @param string|null $titreChanson Le titre.
+     * @param int|null $dureeChanson La durée en secondes.
+     * @param DateTime|null $dateTeleversementChanson La date de publication.
+     * @param Album|null $albumChanson L'album associé.
+     * @param Genre|null $genreChanson Le genre musical.
+     * @param string|null $emailPublicateur L'email de l'artiste.
+     * @param string|null $urlAudioChanson L'URL du fichier audio.
+     * @param int|null $nbEcouteChanson Le nombre d'écoutes.
+     */
     public function __construct(
         ?int $idChanson = null,
         ?string $titreChanson = null,
@@ -38,8 +94,6 @@ class Chanson
         $this->urlAudioChanson = $urlAudioChanson;
         $this->nbEcouteChanson = $nbEcouteChanson;
     }
-
-    //Getteurs et Setteurs
 
     /**
      * Get the value of idChanson

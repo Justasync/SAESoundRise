@@ -1,15 +1,29 @@
 <?php
+/**
+ * @file modeles/role.dao.php
+ * @brief DAO pour la gestion des rôles utilisateurs
+ */
 
 class RoleDao
 {
-
+    /**
+     * @var PDO|null $pdo L'instance PDO pour la connexion à la base de données.
+     */
     private ?PDO $pdo;
 
+    /**
+     * Constructeur de la classe RoleDao.
+     * @param PDO|null $pdo L'instance PDO pour la connexion à la base de données.
+     */
     public function __construct(?PDO $pdo = null)
     {
         $this->pdo = $pdo;
     }
 
+    /**
+     * Récupère tous les rôles de la base de données.
+     * @return array Une liste de tous les rôles.
+     */
     public function findAll(): array
     {
         $sql = "SELECT * FROM role";

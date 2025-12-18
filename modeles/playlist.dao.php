@@ -1,14 +1,29 @@
 <?php
+/**
+ * @file modeles/playlist.dao.php
+ * @brief DAO pour la gestion des playlists
+ */
 
 class PlaylistDAO
 {
+    /**
+     * @var PDO|null $pdo L'instance PDO pour la connexion à la base de données.
+     */
     private ?PDO $pdo;
 
+    /**
+     * Constructeur de la classe PlaylistDAO.
+     * @param PDO|null $pdo L'instance PDO pour la connexion à la base de données.
+     */
     public function __construct(?PDO $pdo = null)
     {
         $this->pdo = $pdo;
     }
 
+    /**
+     * Récupère toutes les playlists de la base de données.
+     * @return array Une liste de toutes les playlists.
+     */
     public function findAll(): array
     {
         $sql = "SELECT * FROM playlist";

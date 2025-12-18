@@ -1,10 +1,21 @@
 <?php
+/**
+ * @file modeles/fichier.class.php
+ * @brief Classe représentant un fichier (image ou audio)
+ */
 
+/**
+ * @enum TypeFichier Énumération des types de fichiers supportés
+ */
 enum TypeFichier: string
 {
     case Image = 'image';
     case Audio = 'audio';
 }
+
+/**
+ * @enum FormatFichier Énumération des formats de fichiers supportés
+ */
 enum FormatFichier: string
 {
     case JPG = 'jpg';
@@ -16,11 +27,32 @@ enum FormatFichier: string
 }
 
 class Fichier {
+    /**
+     * @var string|null $urlFichier L'URL du fichier stocké.
+     */
     private string|null $urlFichier;
+
+    /**
+     * @var TypeFichier|null $typeFichier Le type du fichier (image ou audio).
+     */
     private TypeFichier|null $typeFichier;
+
+    /**
+     * @var FormatFichier|null $formatFichier Le format du fichier (jpg, png, mp3, etc.).
+     */
     private FormatFichier|null $formatFichier;
+
+    /**
+     * @var DateTime|null $dateAjout La date d'ajout du fichier.
+     */
     private DateTime|null $dateAjout;
 
+    /**
+     * Constructeur de la classe Fichier.
+     * @param string|null $urlFichier L'URL du fichier.
+     * @param TypeFichier|null $typeFichier Le type du fichier.
+     * @param FormatFichier|null $formatFichier Le format du fichier.
+     */
     public function __construct(?string $urlFichier = null, ?TypeFichier $typeFichier = null, ?FormatFichier $formatFichier = null)
     {
         $this->urlFichier = $urlFichier;

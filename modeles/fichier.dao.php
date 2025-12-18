@@ -1,13 +1,28 @@
 <?php
+/**
+ * @file modeles/fichier.dao.php
+ * @brief DAO pour la gestion des fichiers
+ */
 
 class FichierDAO {
+    /**
+     * @var PDO|null $pdo L'instance PDO pour la connexion à la base de données.
+     */
     private ?PDO $pdo;
 
+    /**
+     * Constructeur de la classe FichierDAO.
+     * @param PDO|null $pdo L'instance PDO pour la connexion à la base de données.
+     */
     public function __construct(?PDO $pdo = null)
     {
         $this->pdo = $pdo;
     }
 
+    /**
+     * Récupère tous les fichiers de la base de données.
+     * @return array Une liste de tous les fichiers.
+     */
     public function findAll(): array
     {
         $sql = "SELECT * FROM fichier";
