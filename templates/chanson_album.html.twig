@@ -268,8 +268,7 @@
 
         let isPlaying = false;
         
-        // Token CSRF pour la protection
-        const csrfToken = '{{ csrf_token|default('') }}';
+        // CSRF token removed
         
         // 1. CRÉATION DYNAMIQUE DE LA PLAYLIST À PARTIR DES DONNÉES TWIG
         const playlist = [];
@@ -433,6 +432,9 @@
             }
             
             const track = playlist[index];
+
+            // Autoriser la ré-incrémentation de la même piste sur des lectures séparées
+            playedBeyond75.delete(track.id);
             
             // Si c'est la même piste et qu'elle est en pause, on la relance
             if (index === currentTrackIndex && !isPlaying) {
@@ -519,7 +521,7 @@
                     fetch('/?controller=chanson&method=incrementEcoute', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        body: 'idChanson=' + encodeURIComponent(track.id) + '&csrfToken=' + encodeURIComponent(csrfToken)
+                        body: 'idChanson=' + encodeURIComponent(track.id)
                     })
                     .then(res => res.json())
                     .then(data => {
