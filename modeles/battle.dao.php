@@ -1,13 +1,27 @@
 <?php
-
+/**
+ * @file modeles/battle.dao.php
+ * @brief DAO pour la table battle
+ */
 class BattleDAO {
+    /**
+     * @var PDO|null $pdo L'instance PDO pour la connexion à la base de données.
+     */
     private ?PDO $pdo;
 
+    /**
+     * Constructeur de la classe BattleDAO.
+     * @param PDO|null $pdo L'instance PDO pour la connexion à la base de données.
+     */
     public function __construct(?PDO $pdo = null)
     {
         $this->pdo = $pdo;
     }
 
+    /**
+     * Récupère toutes les battles de la base de données.
+     * @return array Une liste de battles.
+     */
     public function findAll(): array
     {
         $sql = "SELECT * FROM battle";
@@ -19,6 +33,11 @@ class BattleDAO {
         return $battle;
     }
 
+    /**
+     * Récupère une battle par son identifiant.
+     * @param int $id L'identifiant de la battle.
+     * @return Battle La Battle correspondante.
+     */
     public function find(int $id): Battle
     {
         $sql = "SELECT * FROM battle WHERE idBattle = :id";
@@ -33,6 +52,11 @@ class BattleDAO {
         return $battle;
     }
 
+    /**
+     * Hydrate une battle à partir d'un tableau associatif.
+     * @param array $data Le tableau associatif contenant les données de la battle.
+     * @return Battle La Battle hydratée.
+     */
     public function hydrate(array $data): Battle
     {
         $battle = new Battle();
@@ -60,6 +84,11 @@ class BattleDAO {
         return $battle;
     }
 
+    /**
+     * Hydrate plusieurs battles à partir d'un tableau de tableaux associatifs.
+     * @param array $rows Le tableau de tableaux associatifs contenant les données des battles.
+     * @return array Une liste de battles hydratées.
+     */
     public function hydrateMany(array $rows): array
     {
         $battles = [];
@@ -70,15 +99,16 @@ class BattleDAO {
     }
 
     /**
-     * Get the value of pdo
+     * Getter pour la pdo
+     * @return PDO|null
      */
     public function getPdo(): ?PDO
     {
         return $this->pdo;
     }
     /**
-     * Set the value of pdo
-     *
+     * Setter pour la pdo
+     * @param PDO|null $pdo
      */
     public function setPdo(?PDO $pdo): void
     {
