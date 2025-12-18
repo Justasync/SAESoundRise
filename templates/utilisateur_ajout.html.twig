@@ -5,61 +5,102 @@
 {% block content %}
 <div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6">
+        <div class="col-md-8 col-lg-7">
             <div class="card border-0 shadow-sm rounded-4">
                 <div class="card-header bg-white border-0 pt-4 pb-0 text-center">
                     <h3 class="fw-bold" style="color: #D99181;">Nouvel Utilisateur</h3>
                 </div>
                 <div class="card-body p-4">
 
-                    {# --- PEGA ESTO AQUÍ --- #}
-    {% if error is defined and error is not null %}
-        <div class="alert alert-danger d-flex align-items-center" role="alert">
-            <i class="bi bi-exclamation-triangle-fill me-2"></i>
-            <div>
-                {{ error }}
-            </div>
-        </div>
-    {% endif %}
-    {# ---------------------- #}
+                    {# Affichage des erreurs de validation #}
+                    {% if errors %}
+                        <div class="alert alert-danger shadow-sm border-0 rounded-3">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-exclamation-octagon-fill me-2"></i>
+                                <strong>Veuillez corriger les erreurs suivantes :</strong>
+                            </div>
+                            <ul class="mb-0">
+                                {% for error in errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
 
-    
-                    <form action="?controller=utilisateur&method=inscription" method="POST">
+                    <form action="?controller=utilisateur&method=signup" method="POST">
                         
-                        <!-- Pseudo -->
+                        {# Type de profil (Rôles) #}
                         <div class="mb-3">
-                            <label for="pseudo" class="form-label">Pseudo</label>
-                            <input type="text" class="form-control rounded-pill px-3" id="pseudo" name="pseudo" required>
-                        </div>
-
-                        <!-- Email -->
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control rounded-pill px-3" id="email" name="email" required>
-                        </div>
-
-                        <!-- Contraseña -->
-                        <div class="mb-3">
-                            <label for="mdp" class="form-label">Mot de passe</label>
-                            <input type="password" class="form-control rounded-pill px-3" id="mdp" name="mdp" required>
-                        </div>
-
-                        <!-- Selección de Rol (Solo visible para admins) -->
-                        <div class="mb-4">
-                            <label for="role" class="form-label">Rôle</label>
-                            <select class="form-select rounded-pill px-3" id="role" name="role">
-                                <option value="auditeur">Auditeur</option>
-                                <option value="artiste">Artiste</option>
-                                <option value="admin">Admin</option>
-                                <option value="producteur">Producteur</option>
+                            <label class="form-label fw-bold">Type de profil</label>
+                            <select name="type" class="form-select rounded-pill px-3 shadow-sm" required>
+                                <option value="" disabled {{ not formData.type ? 'selected' }}>Sélectionner un rôle...</option>
+                                {# Ajout du rôle Admin #}
+                                <option value="admin" {{ formData.type == 'admin' ? 'selected' }}>Administrateur</option>
+                                <option value="auditeur" {{ formData.type == 'auditeur' ? 'selected' }}>Auditeur</option>
+                                <option value="artiste" {{ formData.type == 'artiste' ? 'selected' }}>Artiste</option>
+                                <option value="producteur" {{ formData.type == 'producteur' ? 'selected' }}>Producteur</option>
                             </select>
                         </div>
 
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn text-white rounded-pill py-2 fw-bold" style="background-color: #D99181;">
+                        {# Liste des Genres Musicaux Dynamique #}
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Genre musical associé</label>
+                            <select name="genre_id" class="form-select rounded-pill px-3 shadow-sm">
+                                <option value="">Choisir un genre...</option>
+                                {% for genre in genres %}
+                                    <option value="{{ genre.idGenre }}" {{ formData.genre_id == genre.idGenre ? 'selected' }}>
+                                        {{ genre.nomGenre }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <small class="text-muted ms-2">Obligatoire pour les Artistes et Producteurs.</small>
+                        </div>
+
+                        {# Informations personnelles #}
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Nom complet</label>
+                                <input type="text" name="nom" class="form-control rounded-pill px-3" value="{{ formData.nom }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Pseudo</label>
+                                <input type="text" name="pseudo" class="form-control rounded-pill px-3" value="{{ formData.pseudo }}" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Email</label>
+                            <input type="email" name="email" class="form-control rounded-pill px-3" value="{{ formData.email }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Date de naissance</label>
+                            <input type="date" name="birthdate" class="form-control rounded-pill px-3" value="{{ formData.birthdate }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Description</label>
+                            <textarea name="description" class="form-control rounded-4 px-3" rows="3" required>{{ formData.description }}</textarea>
+                        </div>
+
+                        {# Mots de passe #}
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Mot de passe</label>
+                                <input type="password" name="password" class="form-control rounded-pill px-3" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Confirmer</label>
+                                <input type="password" name="password_repeat" class="form-control rounded-pill px-3" required>
+                            </div>
+                        </div>
+
+                        {# Boutons d'action #}
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn text-white rounded-pill py-2 fw-bold shadow-sm" style="background-color: #D99181;">
                                 Créer l'utilisateur
                             </button>
-                            <a href="?controller=admin&method=afficher" class="btn btn-light rounded-pill py-2">
+                            <a href="?controller=admin&method=afficher" class="btn btn-light rounded-pill py-2 border">
                                 Annuler
                             </a>
                         </div>
