@@ -158,12 +158,12 @@ function getRandomIds($pdo, $table, $col, $limit = 1, $condition = "")
     $stmt = $pdo->query($sql);
 
     // Récupération des données
-    $dados = $stmt->fetchAll(PDO::FETCH_COLUMN);
+    $donnees = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
     // Fermeture du curseur pour libérer la connexion (prévention de l'erreur 2014)
     $stmt->closeCursor();
 
-    return $dados;
+    return $donnees;
 }
 
 // ==========================================
