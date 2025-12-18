@@ -1,66 +1,126 @@
 <?php
-// set timezone paris
+
+/**
+ * @file populate.php
+ * @brief Script de simulation de données pour la base de données Paaxio
+ * 
+ * @description Ce script génère automatiquement des données simulées pour peupler
+ * la base de données. Il crée des utilisateurs (artistes et auditeurs), des albums,
+ * des chansons, des playlists, des battles et simule des interactions utilisateurs.
+ * 
+ * @usage Exécuter via CLI : php populate.php
+ *        Ou via navigateur web.
+ */
+
+// Configuration du fuseau horaire Paris
 date_default_timezone_set('Europe/Paris');
 
 // Ajout du fichier constantes qui permet de configurer le site
 require_once __DIR__ . '/../modeles/constantes.class.php';
 
-// Enums
+// Énumérations
 require_once __DIR__ . '/../enums/Role.enum.php';
 
-// Ajout du modèle qui gère la connexion mysql
+// Ajout du modèle qui gère la connexion MySQL
 require_once __DIR__ . '/../modeles/bd.class.php';
-
-/**
- * Paaxio Database Simulation Script
- * run via CLI: php daily_simulation.php
- * or via Browser.
- */
 
 // ==========================================
 // 1. CONFIGURATION
 // ==========================================
 
-// The password hash used in your SQL file (Argon2)
+/**
+ * @var string $defaultPasswordHash
+ * @brief Hash du mot de passe par défaut utilisé pour tous les utilisateurs créés
+ * 
+ * Hash Argon2 du mot de passe utilisé dans le fichier SQL de peuplement.
+ */
 $defaultPasswordHash = '$argon2id$v=19$m=65536,t=4,p=1$b3BNMmVpRy5MVjZCS0dlcg$bYAH2BvEB+GmEeCU2scK5eolODq4RopGBiXHmsanSm4';
 
-// Current Date for the simulation
+/**
+ * @var string $currentDate
+ * @brief Date actuelle pour la simulation
+ */
 $currentDate = date('Y-m-d');
-$scriptTag = "User created automatically by script on " . $currentDate;
+
+/**
+ * @var string $scriptTag
+ * @brief Tag identifiant les utilisateurs créés automatiquement
+ */
+$scriptTag = "Utilisateur créé automatiquement par le script le " . $currentDate;
 
 // ==========================================
-// 2. DATA POOLS (For random generation)
+// 2. DONNÉES POUR LA GÉNÉRATION ALÉATOIRE
 // ==========================================
+
+/**
+ * @var array $fNames
+ * @brief Liste des prénoms disponibles pour la génération d'utilisateurs
+ */
 $fNames = ['Alex', 'Jordan', 'Casey', 'Riley', 'Morgan', 'Taylor', 'Cameron', 'Quinn', 'Peyton', 'Avery', 'Liam', 'Noah', 'Oliver', 'Elijah', 'James', 'William', 'Benjamin', 'Lucas', 'Henry', 'Alexander', 'Mia', 'Emma', 'Ava', 'Charlotte', 'Sophia', 'Amelia', 'Isabella', 'Harper', 'Evelyn', 'Abigail'];
+
+/**
+ * @var array $lNames
+ * @brief Liste des noms de famille disponibles pour la génération d'utilisateurs
+ */
 $lNames = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez', 'Hernandez', 'Lopez', 'Gonzalez', 'Wilson', 'Anderson', 'Thomas', 'Taylor', 'Moore', 'Jackson', 'Martin'];
 
+/**
+ * @var array $albumNouns
+ * @brief Liste des noms pour la génération de titres d'albums
+ */
 $albumNouns = ['Echoes', 'Vibrations', 'Shadows', 'Lights', 'Waves', 'Horizons', 'Dreams', 'Nightmares', 'Stories', 'Memories', 'Pulse', 'Rhythm', 'Soul', 'Mind', 'Heart'];
+
+/**
+ * @var array $albumAdjectives
+ * @brief Liste des adjectifs pour la génération de titres d'albums
+ */
 $albumAdjectives = ['Dark', 'Bright', 'Silent', 'Loud', 'Electric', 'Acoustic', 'Hidden', 'Lost', 'Found', 'Eternal', 'Fleeting', 'Urban', 'Wild', 'Deep'];
 
+/**
+ * @var array $songVerbs
+ * @brief Liste des verbes pour la génération de titres de chansons
+ */
 $songVerbs = ['Running', 'Flying', 'Sleeping', 'Dancing', 'Crying', 'Loving', 'Hating', 'Thinking', 'Dreaming', 'Walking'];
+
+/**
+ * @var array $songNouns
+ * @brief Liste des noms pour la génération de titres de chansons
+ */
 $songNouns = ['Sky', 'River', 'City', 'Street', 'Night', 'Day', 'Sun', 'Moon', 'Star', 'Fire', 'Rain', 'Wind'];
 
 // ==========================================
-// 3. DATABASE CONNECTION & HELPERS
+// 3. CONNEXION À LA BASE DE DONNÉES ET FONCTIONS UTILITAIRES
 // ==========================================
 
 try {
     $pdo = bd::getInstance()->getConnexion();
-    echo "[INFO] Connected to database.\n";
+    echo "[INFO] Connexion à la base de données établie.\n";
 } catch (Exception $e) {
-    die("[ERROR] Connection failed: " . $e->getMessage());
+    die("[ERREUR] Échec de la connexion : " . $e->getMessage());
 }
 
-// Helper: Get Random Item
+/**
+ * @brief Sélectionne un élément aléatoire dans un tableau
+ * 
+ * @param array $array Tableau source
+ * @return mixed Élément sélectionné aléatoirement
+ * @throws InvalidArgumentException Si le tableau est vide
+ */
 function pick($array)
 {
     if (empty($array)) {
-        throw new InvalidArgumentException('Cannot pick a random item from an empty array.');
+        throw new InvalidArgumentException('Impossible de sélectionner un élément dans un tableau vide.');
     }
     return $array[array_rand($array)];
 }
 
-// Helper: Generate Email
+/**
+ * @brief Génère une adresse email à partir d'un prénom et nom
+ * 
+ * @param string $fname Prénom de l'utilisateur
+ * @param string $lname Nom de famille de l'utilisateur
+ * @return string Adresse email générée au format prenom.nom123@example.com
+ */
 function generateEmail($fname, $lname)
 {
     $base = strtolower($fname . '.' . $lname);
@@ -68,7 +128,11 @@ function generateEmail($fname, $lname)
     return "{$base}{$rand}@example.com";
 }
 
-// Helper: Get Random Time today
+/**
+ * @brief Génère une date/heure aléatoire pour la journée courante
+ * 
+ * @return string Date/heure au format AAAA-MM-JJ HH:MM:SS
+ */
 function randomTime()
 {
     global $currentDate;
@@ -78,49 +142,61 @@ function randomTime()
     return "$currentDate $h:$m:$s";
 }
 
-// Helper: Get Random ID from table
+/**
+ * @brief Récupère des identifiants aléatoires depuis une table
+ * 
+ * @param PDO $pdo Instance de connexion PDO
+ * @param string $table Nom de la table
+ * @param string $col Nom de la colonne à récupérer
+ * @param int $limit Nombre maximum d'éléments à récupérer
+ * @param string $condition Condition WHERE optionnelle
+ * @return array Tableau des identifiants récupérés
+ */
 function getRandomIds($pdo, $table, $col, $limit = 1, $condition = "")
 {
     $sql = "SELECT $col FROM $table $condition ORDER BY RAND() LIMIT $limit";
     $stmt = $pdo->query($sql);
 
-    // CORRECCIÓN: Primero obtenemos los datos
-    $datos = $stmt->fetchAll(PDO::FETCH_COLUMN);
+    // Récupération des données
+    $donnees = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-    // Luego cerramos el cursor para liberar la conexión (Error 2014 prevención)
+    // Fermeture du curseur pour libérer la connexion (prévention de l'erreur 2014)
     $stmt->closeCursor();
 
-    return $datos;
+    return $donnees;
 }
 
 // ==========================================
-// 4. MAIN LOGIC
+// 4. LOGIQUE PRINCIPALE
 // ==========================================
 
-// --- A. Fetch Constraints ---
-// Get existing Genre IDs
+// --- A. Récupération des contraintes ---
+// Récupération des identifiants de genres existants
 $genreIds = getRandomIds($pdo, 'genre', 'idGenre', 100);
 
-// --- B. Create New Users (Artists & Auditeurs) ---
+// --- B. Création de nouveaux utilisateurs (Artistes et Auditeurs) ---
 
 $numNewArtists = rand(4, 10);
 $numNewAuditeurs = rand(10, 20);
 
+/** @var array $newArtistEmails Liste des emails des nouveaux artistes créés */
 $newArtistEmails = [];
+
+/** @var array $newAuditeurEmails Liste des emails des nouveaux auditeurs créés */
 $newAuditeurEmails = [];
 
-echo "[INFO] Creating $numNewArtists new Artists...\n";
+echo "[INFO] Création de $numNewArtists nouveaux Artistes...\n";
 for ($i = 0; $i < $numNewArtists; $i++) {
     $fn = pick($fNames);
     $ln = pick($lNames);
     $pseudo = $fn . $ln . rand(100, 9999);
     $email = generateEmail($fn, $ln);
 
-    // Image 1-64
+    // Image de profil aléatoire (1-64)
     $imgNum = rand(1, 64);
     $photoUrl = "/assets/images/profile_pictures/user_exp{$imgNum}.jpeg";
 
-    // Role 2 = Artiste
+    // Rôle 2 = Artiste
     $sql = "INSERT INTO utilisateur (emailUtilisateur, nomUtilisateur, pseudoUtilisateur, motDePasseUtilisateur, dateDeNaissanceUtilisateur, dateInscriptionUtilisateur, statutUtilisateur, estAbonnee, descriptionUtilisateur, urlPhotoUtilisateur, roleUtilisateur, genreUtilisateur, statutAbonnement, dateDebutAbonnement, dateFinAbonnement) 
             VALUES (:email, :nom, :pseudo, :pass, :dob, :dateInscr, 'actif', 1, :desc, :photo, 2, :genre, 'actif', :dateDeb, :dateFin)";
 
@@ -141,12 +217,12 @@ for ($i = 0; $i < $numNewArtists; $i++) {
         ]);
         $newArtistEmails[] = $email;
     } catch (Exception $e) {
-        // Pseudo or email might exist, skip
+        // Le pseudo ou l'email existe peut-être déjà, on passe au suivant
         continue;
     }
 }
 
-echo "[INFO] Creating $numNewAuditeurs new Auditeurs...\n";
+echo "[INFO] Création de $numNewAuditeurs nouveaux Auditeurs...\n";
 for ($i = 0; $i < $numNewAuditeurs; $i++) {
     $fn = pick($fNames);
     $ln = pick($lNames);
@@ -156,7 +232,7 @@ for ($i = 0; $i < $numNewAuditeurs; $i++) {
     $imgNum = rand(1, 64);
     $photoUrl = "/assets/images/profile_pictures/user_exp{$imgNum}.jpeg";
 
-    // Role 3 = Auditeur
+    // Rôle 3 = Auditeur
     $sql = "INSERT INTO utilisateur (emailUtilisateur, nomUtilisateur, pseudoUtilisateur, motDePasseUtilisateur, dateDeNaissanceUtilisateur, dateInscriptionUtilisateur, statutUtilisateur, estAbonnee, descriptionUtilisateur, urlPhotoUtilisateur, roleUtilisateur, genreUtilisateur) 
             VALUES (:email, :nom, :pseudo, :pass, :dob, :dateInscr, 'actif', 0, :desc, :photo, 3, NULL)";
 
@@ -178,9 +254,9 @@ for ($i = 0; $i < $numNewAuditeurs; $i++) {
     }
 }
 
-// --- C. Create Content (Albums & Songs) for New Artists ---
+// --- C. Création de contenu (Albums et Chansons) pour les nouveaux artistes ---
 
-echo "[INFO] Generating Albums and Songs for new artists...\n";
+echo "[INFO] Génération des Albums et Chansons pour les nouveaux artistes...\n";
 foreach ($newArtistEmails as $artistEmail) {
     $numAlbums = rand(0, 2);
 
@@ -193,17 +269,17 @@ foreach ($newArtistEmails as $artistEmail) {
         $stmt = $pdo->prepare($sqlAlb);
         $stmt->execute([
             ':nom' => $albumName,
-            ':date' => $currentDate, // Released today
+            ':date' => $currentDate, // Sortie aujourd'hui
             ':url' => $coverUrl,
             ':artist' => $artistEmail
         ]);
         $albumId = $pdo->lastInsertId();
 
-        // Add Songs to this Album
+        // Ajout de chansons à cet album
         $numSongs = rand(5, 12);
         for ($s = 1; $s <= $numSongs; $s++) {
-            $title = pick($songVerbs) . " " . pick($songNouns); // e.g. "Running Sky"
-            $duration = rand(120, 300); // 2 to 5 mins
+            $title = pick($songVerbs) . " " . pick($songNouns); // Ex: "Running Sky"
+            $duration = rand(120, 300); // 2 à 5 minutes
             $mp3Num = rand(1, 28);
             $audioUrl = "/assets/audio/song_{$mp3Num}.mp3";
             $genre = pick($genreIds);
@@ -221,7 +297,7 @@ foreach ($newArtistEmails as $artistEmail) {
                 ':email' => $artistEmail
             ]);
 
-            // Add participation (Leader)
+            // Ajout de la participation (Leader)
             $lastSongId = $pdo->lastInsertId();
             $sqlPart = "INSERT INTO participation (idChanson, emailArtisteParticipant, typeParticipation, ordreParticipation) VALUES (?, ?, 'leader', 1)";
             $stmtPart = $pdo->prepare($sqlPart);
@@ -230,17 +306,18 @@ foreach ($newArtistEmails as $artistEmail) {
     }
 }
 
-// --- D. Refresh Pools (Mix Old and New Data) ---
-// Now that we have added new people and content, we get lists of EVERYONE to create interactions.
+// --- D. Actualisation des listes (mélange anciennes et nouvelles données) ---
+// Maintenant que nous avons ajouté de nouvelles personnes et du contenu,
+// nous récupérons les listes de TOUS pour créer des interactions.
 
 $allAuditeurs = getRandomIds($pdo, 'utilisateur', 'emailUtilisateur', 1000, "WHERE roleUtilisateur = 3");
 $allArtistes = getRandomIds($pdo, 'utilisateur', 'emailUtilisateur', 1000, "WHERE roleUtilisateur = 2");
 $allSongs = getRandomIds($pdo, 'chanson', 'idChanson', 2000);
 
-// --- E. Create Battles ---
-// Create some battles between random artists (Old or New)
+// --- E. Création de Battles ---
+// Création de battles entre artistes aléatoires (anciens ou nouveaux)
 $numNewBattles = rand(2, 5);
-echo "[INFO] Creating $numNewBattles new Battles...\n";
+echo "[INFO] Création de $numNewBattles nouvelles Battles...\n";
 
 for ($b = 0; $b < $numNewBattles; $b++) {
     if (count($allArtistes) < 2) break;
@@ -264,16 +341,16 @@ for ($b = 0; $b < $numNewBattles; $b++) {
     ]);
 }
 
-// Get Active Battles IDs for voting
+// Récupération des identifiants des Battles actives pour le vote
 $activeBattles = getRandomIds($pdo, 'battle', 'idBattle', 50, "WHERE statutBattle = 'en_cours'");
 
-// --- F. Simulate User Actions (Auditeurs) ---
-// Loop through ALL auditeurs (old and newly created) to perform actions
-echo "[INFO] Simulating interactions for Auditeurs...\n";
+// --- F. Simulation des actions utilisateurs (Auditeurs) ---
+// Parcours de TOUS les auditeurs (anciens et nouveaux) pour effectuer des actions
+echo "[INFO] Simulation des interactions pour les Auditeurs...\n";
 
 foreach ($allAuditeurs as $auditeurEmail) {
 
-    // 1. Abonnement Artiste (Up to 4)
+    // 1. Abonnement à des Artistes (jusqu'à 4)
     $subsCount = rand(0, 4);
     if ($subsCount > 0 && count($allArtistes) > 0) {
         $targets = array_rand(array_flip($allArtistes), min($subsCount, count($allArtistes)));
@@ -286,7 +363,7 @@ foreach ($allAuditeurs as $auditeurEmail) {
         }
     }
 
-    // 2. Like Chanson (Up to 8)
+    // 2. Like de Chansons (jusqu'à 8)
     $likeCount = rand(0, 8);
     if ($likeCount > 0 && count($allSongs) > 0) {
         $targets = array_rand(array_flip($allSongs), min($likeCount, count($allSongs)));
@@ -297,12 +374,12 @@ foreach ($allAuditeurs as $auditeurEmail) {
             $stmt = $pdo->prepare($sqlLike);
             $stmt->execute([$auditeurEmail, $songId, randomTime()]);
 
-            // Increment listen count slightly just for simulation realism
+            // Incrémente légèrement le compteur d'écoutes pour le réalisme de la simulation
             $pdo->exec("UPDATE chanson SET nbEcouteChanson = nbEcouteChanson + 1 WHERE idChanson = $songId");
         }
     }
 
-    // 3. Create Playlists (Up to 2)
+    // 3. Création de Playlists (jusqu'à 2)
     $plCount = rand(0, 2);
     for ($p = 0; $p < $plCount; $p++) {
         $plName = "My " . pick($albumAdjectives) . " Mix " . rand(1, 99);
@@ -313,7 +390,7 @@ foreach ($allAuditeurs as $auditeurEmail) {
         $stmt->execute([$plName, $isPublic, randomTime(), $auditeurEmail]);
         $plId = $pdo->lastInsertId();
 
-        // Add 1-5 songs to playlist
+        // Ajout de 1 à 5 chansons à la playlist
         $songsInPl = rand(1, 5);
         if (count($allSongs) > 0) {
             $plSongs = array_rand(array_flip($allSongs), min($songsInPl, count($allSongs)));
@@ -328,21 +405,21 @@ foreach ($allAuditeurs as $auditeurEmail) {
         }
     }
 
-    // 4. Vote in Battles (Up to 2)
+    // 4. Vote dans les Battles (jusqu'à 2)
     $voteCount = rand(0, 2);
     if ($voteCount > 0 && count($activeBattles) > 0) {
         $targetBattles = array_rand(array_flip($activeBattles), min($voteCount, count($activeBattles)));
         if (!is_array($targetBattles)) $targetBattles = [$targetBattles];
 
         foreach ($targetBattles as $battleId) {
-            // Check participants
+            // Vérification des participants de la battle
             $stmtB = $pdo->prepare("SELECT emailCreateurBattle, emailParticipantBattle FROM battle WHERE idBattle = ?");
             $stmtB->execute([$battleId]);
             $battleData = $stmtB->fetch(PDO::FETCH_ASSOC);
-            $stmtB->closeCursor(); // <--- FIX CRITIQUE : Libère la connexion pour la requête suivante
+            $stmtB->closeCursor(); // FIX CRITIQUE : Libère la connexion pour la requête suivante
 
             if ($battleData && $battleData['emailParticipantBattle']) {
-                // Pick random winner
+                // Sélection aléatoire du gagnant
                 $votedFor = (rand(0, 1) == 0) ? $battleData['emailCreateurBattle'] : $battleData['emailParticipantBattle'];
 
                 $sqlVote = "INSERT IGNORE INTO vote (emailVotant, idBattle, emailVotee, dateVote) VALUES (?, ?, ?, ?)";
@@ -353,4 +430,4 @@ foreach ($allAuditeurs as $auditeurEmail) {
     }
 }
 
-echo "[SUCCESS] Daily simulation complete.\n";
+echo "[SUCCÈS] Simulation quotidienne terminée.\n";
