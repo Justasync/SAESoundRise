@@ -1,14 +1,29 @@
 <?php
+/**
+ * @file modeles/chanson.dao.php
+ * @brief DAO pour la gestion des chansons
+ */
 
 class ChansonDAO
 {
+    /**
+     * @var PDO|null $pdo L'instance PDO pour la connexion à la base de données.
+     */
     private ?PDO $pdo;
 
+    /**
+     * Constructeur de la classe ChansonDAO.
+     * @param PDO|null $pdo L'instance PDO pour la connexion à la base de données.
+     */
     public function __construct(?PDO $pdo = null)
     {
         $this->pdo = $pdo;
     }
 
+    /**
+     * Récupère toutes les chansons de la base de données.
+     * @return array Une liste de toutes les chansons.
+     */
     public function findAll(): array
     {
         $sql = "SELECT * FROM chanson";
