@@ -143,7 +143,6 @@
                             {{ estAbonneAArtiste ? 'Abonné(e)' : 'S\'abonner' }}
                         </button>
                     {% elseif not session.user_email %}
-                        {# Optionnel : Afficher le bouton mais demander la connexion au clic (votre logique actuelle) #}
                         <button id="btn-abonnement" class="btn btn-subscribe rounded-pill">
                             S'abonner
                         </button>

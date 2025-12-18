@@ -560,6 +560,14 @@ class ControllerUtilisateur extends Controller
         ]);
     }
 
+    /**
+     * Gère l'abonnement/désabonnement à un artiste via une requête AJAX.
+     *
+     * Reçoit une requête POST avec l'email de l'artiste.
+     * Retourne une réponse JSON indiquant le succès et l'état de l'abonnement.
+     * 
+     * @return void
+     */
     public function suivreArtiste()
     {
         header('Content-Type: application/json');
@@ -582,6 +590,7 @@ class ControllerUtilisateur extends Controller
             return;
         }
 
+        // Traitement de l'abonnement/désabonnement
         if ($emailArtiste) {
             $dao = new UtilisateurDAO($this->getPDO());
             $result = $dao->basculerAbonnement($emailAbonne, $emailArtiste);

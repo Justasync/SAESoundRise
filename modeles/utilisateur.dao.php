@@ -353,6 +353,12 @@ class UtilisateurDAO
         return (bool)$stmt->fetchColumn();
     }
 
+    /**
+     * Bascule l'état d'abonnement d'un utilisateur à un artiste
+     * @param string $emailAbonne L'email de l'abonné
+     * @param string $emailArtiste L'email de l'artiste
+     * @return string 'followed' si abonné, 'unfollowed' si désabonné
+     */
     public function basculerAbonnement(string $emailAbonne, string $emailArtiste): string
     {
         if ($this->estAbonneAArtiste($emailAbonne, $emailArtiste)) {
