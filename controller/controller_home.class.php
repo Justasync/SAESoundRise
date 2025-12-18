@@ -1,12 +1,51 @@
 <?php
 
+/**
+ * @file controller_home.class.php
+ * @brief Fichier contenant le contrôleur de la page d'accueil.
+ * 
+ * Ce fichier gère l'affichage de la page d'accueil et des différents
+ * tableaux de bord selon le rôle de l'utilisateur.
+ * 
+ */
+
+/**
+ * @class ControllerHome
+ * @brief Contrôleur dédié à la gestion de la page d'accueil.
+ * 
+ * Cette classe gère :
+ * - L'affichage de la page d'accueil adaptée au rôle de l'utilisateur
+ * - La page de connexion
+ * - Les différents tableaux de bord (artiste, auditeur, admin, invité)
+ * - L'affichage des mentions légales et conditions générales
+ * 
+ * @extends Controller
+ */
 class ControllerHome extends Controller
 {
+    /**
+     * @brief Constructeur du contrôleur home.
+     * 
+     * @param \Twig\Environment $twig Environnement Twig pour le rendu des templates.
+     * @param \Twig\Loader\FilesystemLoader $loader Chargeur de fichiers Twig.
+     */
     public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader)
     {
         parent::__construct($loader, $twig);
     }
 
+    /**
+     * @brief Affiche la page d'accueil selon le rôle de l'utilisateur.
+     * 
+     * Redirige vers le tableau de bord approprié selon le rôle :
+     * - Artiste : tableau de bord artiste
+     * - Admin : tableau de bord admin
+     * - Auditeur : tableau de bord auditeur
+     * - Producteur : page de bienvenue
+     * - Invité ou non connecté : dashboard public
+     * 
+     * @return void
+     */
     public function afficher()
     {
         if (!isset($_SESSION['user_logged_in']) || !isset($_SESSION['user_role'])) {
@@ -37,13 +76,21 @@ class ControllerHome extends Controller
         }
     }
 
+    /**
+     * @brief Affiche la page de connexion.
+     * 
+     * Gère la redirection après connexion si une URL de redirection est fournie.
+     * Vérifie que l'URL de redirection est sûre (pas d'injection d'URL externe).
+     * 
+     * @return void
+     */
     public function connect()
     {
 
         $redirectUrl = $_GET["redirect"] ?? "";
         $redirectUrl = urldecode($redirectUrl);
 
-        // avoid URL injection
+        // Éviter l'injection d'URL
         if (!empty($redirectUrl)) {
             // Vérifier que le redirectUrl est une URL interne valide, pour éviter toute injection (open redirect ou autre)
             // On n'autorise que les URL commençant par "/" et ne contenant pas "://"
@@ -77,6 +124,13 @@ class ControllerHome extends Controller
         ]);
     }
 
+    /**
+     * @brief Affiche la page d'accueil de bienvenue.
+     * 
+     * Page d'accueil simple pour les utilisateurs connectés.
+     * 
+     * @return void
+     */
     public function homeBienvenue()
     {
         $template = $this->getTwig()->load('index.html.twig');
@@ -90,6 +144,16 @@ class ControllerHome extends Controller
         ]);
     }
 
+    /**
+     * @brief Affiche le tableau de bord public (utilisateurs non connectés ou invités).
+     * 
+     * Affiche :
+     * - Les artistes populaires/tendance
+     * - Les chansons populaires avec le pseudo de l'artiste
+     * - Les albums les plus écoutés
+     * 
+     * @return void
+     */
     private function openDashboard()
     {
 
@@ -134,6 +198,16 @@ class ControllerHome extends Controller
         ]);
     }
 
+    /**
+     * @brief Affiche le tableau de bord de l'artiste connecté.
+     * 
+     * Affiche :
+     * - Les suggestions d'autres artistes à suivre
+     * - Les albums de l'artiste
+     * - Les statistiques (reproductions, abonnés, battles gagnées)
+     * 
+     * @return void
+     */
     private function artisteDashboard()
     {
         $utilisateurDAO = new UtilisateurDAO($this->getPDO());
@@ -169,6 +243,15 @@ class ControllerHome extends Controller
         ]);
     }
 
+    /**
+     * @brief Affiche le tableau de bord de l'auditeur connecté.
+     * 
+     * Affiche :
+     * - Les suggestions d'artistes à suivre
+     * - Les albums les plus populaires
+     * 
+     * @return void
+     */
     private function auditeurDashboard()
     {
         $utilisateurDAO = new UtilisateurDAO($this->getPDO());
@@ -192,6 +275,13 @@ class ControllerHome extends Controller
         ]);
     }
 
+    /**
+     * @brief Affiche les données de session (méthode de débogage).
+     * 
+     * Affiche le contenu de la session courante à des fins de test.
+     * 
+     * @return void
+     */
     public function session()
     {
         $template = $this->getTwig()->load('test.html.twig');
@@ -205,6 +295,11 @@ class ControllerHome extends Controller
         ));
     }
 
+    /**
+     * @brief Affiche la page des mentions légales.
+     * 
+     * @return void
+     */
     public function afficherLegales()
     {
         $template = $this->getTwig()->load('mentionsLegales.html.twig');
@@ -218,7 +313,8 @@ class ControllerHome extends Controller
     }
 
     /**
-     * @brief Fonction pour afficher les conditions générales
+     * @brief Affiche la page des conditions générales.
+     * 
      * @return void
      */
     public function afficherGenerales()

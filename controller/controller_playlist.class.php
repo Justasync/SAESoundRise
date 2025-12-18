@@ -1,15 +1,49 @@
 <?php
 
+/**
+ * @file controller_playlist.class.php
+ * @brief Fichier contenant le contrôleur de gestion des playlists.
+ * 
+ * Ce fichier gère toutes les fonctionnalités liées aux playlists
+ * dans l'application Paaxio.
+ * 
+ */
+
+/**
+ * @class ControllerPlaylist
+ * @brief Contrôleur dédié à la gestion des playlists.
+ * 
+ * Cette classe gère les opérations sur les playlists :
+ * - Affichage d'une playlist avec ses chansons
+ * - Liste de toutes les playlists
+ * - Affichage sous forme de tableau
+ * 
+ * @extends Controller
+ */
 class ControllerPlaylist extends Controller
 {
+    /**
+     * @brief Constructeur du contrôleur playlist.
+     * 
+     * @param \Twig\Environment $twig Environnement Twig pour le rendu des templates.
+     * @param \Twig\Loader\FilesystemLoader $loader Chargeur de fichiers Twig.
+     */
     public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader)
     {
         parent::__construct($loader, $twig);
     }
 
+    /**
+     * @brief Affiche une playlist avec ses chansons.
+     * 
+     * Récupère la playlist de l'utilisateur connecté et affiche ses chansons.
+     * Génère un token CSRF pour la protection des formulaires.
+     * Nécessite que l'utilisateur soit authentifié.
+     * 
+     * @return void
+     */
     public function afficher()
     {
-
 
         $idPlaylist = isset($_GET['idPlaylist']) ? (int)$_GET['idPlaylist'] : null;
 
@@ -59,16 +93,23 @@ class ControllerPlaylist extends Controller
         ]);
     }
 
+    /**
+     * @brief Liste toutes les playlists de la plateforme.
+     * 
+     * Récupère toutes les playlists et les affiche dans un template de test.
+     * 
+     * @return void
+     */
     public function lister()
     {
-        //recupération des catégories
+        // Récupération des playlists
         $managerPlaylist = new PlaylistDao($this->getPdo());
         $playlists = $managerPlaylist->findAll();
 
-        //Choix du template
+        // Choix du template
         $template = $this->getTwig()->load('test.html.twig');
 
-        //Affichage de la page
+        // Affichage de la page
         echo $template->render(array(
             'page' => [
                 'title' => "Playlists",
@@ -79,12 +120,19 @@ class ControllerPlaylist extends Controller
         ));
     }
 
+    /**
+     * @brief Liste toutes les playlists sous forme de tableau.
+     * 
+     * Récupère toutes les playlists et les affiche dans un format tableau.
+     * 
+     * @return void
+     */
     public function listerTableau()
     {
         $managerPlaylist = new PlaylistDao($this->getPdo());
         $playlists = $managerPlaylist->findAll();
 
-        //Génération de la vue
+        // Génération de la vue
         $template = $this->getTwig()->load('test.html.twig');
         echo $template->render(array(
             'page' => [

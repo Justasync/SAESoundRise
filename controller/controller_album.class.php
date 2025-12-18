@@ -1,12 +1,48 @@
 <?php
 
+/**
+ * @file controller_album.class.php
+ * @brief Fichier contenant le contrôleur de gestion des albums.
+ * 
+ * Ce fichier gère toutes les fonctionnalités liées aux albums musicaux
+ * dans l'application Paaxio.
+ * 
+ */
+
+/**
+ * @class ControllerAlbum
+ * @brief Contrôleur dédié à la gestion des albums.
+ * 
+ * Cette classe gère les opérations sur les albums :
+ * - Affichage d'un album et de ses chansons
+ * - Liste de tous les albums
+ * - Création d'un nouvel album
+ * - Ajout de chansons à un album existant
+ * - Modification des chansons d'un album
+ * 
+ * @extends Controller
+ */
 class ControllerAlbum extends Controller
 {
+    /**
+     * @brief Constructeur du contrôleur album.
+     * 
+     * @param \Twig\Environment $twig Environnement Twig pour le rendu des templates.
+     * @param \Twig\Loader\FilesystemLoader $loader Chargeur de fichiers Twig.
+     */
     public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader)
     {
         parent::__construct($loader, $twig);
     }
 
+    /**
+     * @brief Affiche les détails d'un album avec ses chansons.
+     * 
+     * Récupère l'album par son ID et affiche la liste de ses chansons.
+     * Génère également un token CSRF pour la protection des formulaires.
+     * 
+     * @return void
+     */
     public function afficher()
     {
         $idAlbum = isset($_GET['idAlbum']) ? (int)$_GET['idAlbum'] : null;
@@ -40,16 +76,23 @@ class ControllerAlbum extends Controller
         ]);
     }
 
+    /**
+     * @brief Liste tous les albums de la plateforme.
+     * 
+     * Récupère tous les albums et les affiche dans un template de test.
+     * 
+     * @return void
+     */
     public function lister()
     {
-        //recupération des catégories
+        // Récupération des albums
         $managerAlbum = new AlbumDao($this->getPdo());
         $albums = $managerAlbum->findAll();
 
-        //Choix du template
+        // Choix du template
         $template = $this->getTwig()->load('test.html.twig');
 
-        //Affichage de la page
+        // Affichage de la page
         echo $template->render(array(
             'page' => [
                 'title' => "Albums",
@@ -60,12 +103,19 @@ class ControllerAlbum extends Controller
         ));
     }
 
+    /**
+     * @brief Liste tous les albums sous forme de tableau.
+     * 
+     * Récupère tous les albums et les affiche dans un format tableau.
+     * 
+     * @return void
+     */
     public function listerTableau()
     {
         $managerAlbum = new AlbumDao($this->getPdo());
         $albums = $managerAlbum->findAll();
 
-        //Génération de la vue
+        // Génération de la vue
         $template = $this->getTwig()->load('test.html.twig');
         echo $template->render(array(
             'page' => [
@@ -77,6 +127,15 @@ class ControllerAlbum extends Controller
         ));
     }
 
+    /**
+     * @brief Affiche le formulaire d'ajout d'album.
+     * 
+     * Permet à un artiste connecté de créer un nouvel album ou
+     * d'ajouter des chansons à un album existant.
+     * Nécessite le rôle Artiste.
+     * 
+     * @return void
+     */
     public function afficherFormulaireAjout()
     {
         // Vérifier si l'utilisateur est un artiste connecté
@@ -112,8 +171,19 @@ class ControllerAlbum extends Controller
         ]);
     }
 
-
-
+    /**
+     * @brief Traite l'ajout d'un nouvel album ou l'ajout de chansons à un album existant.
+     * 
+     * Cette méthode gère :
+     * - La création d'un nouvel album avec sa pochette
+     * - L'ajout de chansons à un album existant
+     * - L'upload des fichiers audio et l'extraction de leurs métadonnées (durée)
+     * - La création ou récupération des genres musicaux
+     * 
+     * Nécessite une requête POST et le rôle Artiste.
+     * 
+     * @return void
+     */
     public function ajouterAlbum()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -222,7 +292,15 @@ class ControllerAlbum extends Controller
         }
     }
 
-
+    /**
+     * @brief Affiche les détails d'un album avec vue différenciée selon le rôle.
+     * 
+     * Affiche une vue différente selon que l'utilisateur est :
+     * - L'artiste propriétaire de l'album (vue d'édition)
+     * - Un auditeur ou autre artiste (vue de lecture seule)
+     * 
+     * @return void
+     */
     public function afficherDetails()
     {
 
@@ -263,6 +341,15 @@ class ControllerAlbum extends Controller
         ]);
     }
 
+    /**
+     * @brief Modifie les informations d'une chanson.
+     * 
+     * Permet à l'artiste propriétaire d'un album de modifier les informations
+     * d'une chanson (titre, genre).
+     * Nécessite une requête POST et le rôle Artiste.
+     * 
+     * @return void
+     */
     public function modifierChanson()
     {
         // Sécurité : vérifier la méthode, la session et le rôle
@@ -296,7 +383,7 @@ class ControllerAlbum extends Controller
         $genre = $genreDAO->findOrCreateByName($nomGenre);
         $chanson->setGenreChanson($genre);
 
-        $chansonDAO->updateChanson($chanson); // Méthode à créer dans ChansonDAO
+        $chansonDAO->updateChanson($chanson);
 
         // Rediriger vers la page de l'album avec un message de succès
         $this->redirectTo('album', 'afficherDetails', ['idAlbum' => $idAlbum, 'success_update' => 1]);

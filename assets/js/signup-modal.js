@@ -1,4 +1,17 @@
+/**
+ * @file signup-modal.js
+ * @brief Gestionnaire de la modale d'inscription utilisateur multi-étapes
+ * 
+ * @description Ce fichier gère le processus d'inscription en 3 étapes :
+ * - Étape 1 : Choix du type de profil (Artiste ou Auditeur)
+ * - Étape 2 : Saisie des informations personnelles avec validation
+ * - Étape 3 : Confirmation d'inscription et instruction de vérification email
+ * 
+ * Il inclut une validation complète côté client avant envoi au serveur.
+ */
+
 document.addEventListener("DOMContentLoaded", () => {
+  /** @type {HTMLElement|null} Élément de la modale Bootstrap */
   const modalElement = document.getElementById("signupModal");
 
   if (!modalElement) {
@@ -6,52 +19,98 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (typeof bootstrap === "undefined") {
-    // Bootstrap JS est requis pour le modal d'inscription.
+    // Bootstrap JS est requis pour le modal d'inscription
     console.warn("Bootstrap JS est requis pour le modal d'inscription.");
     return;
   }
 
+  /** @type {bootstrap.Modal} Instance de la modale Bootstrap */
   const bootstrapModal = bootstrap.Modal.getOrCreateInstance(modalElement);
+  
+  /** @type {HTMLElement[]} Liste des éléments représentant chaque étape */
   const stepElements = Array.from(modalElement.querySelectorAll("[data-step]"));
+  
+  /** @type {HTMLElement[]} Liste des indicateurs d'étape (cercles numérotés) */
   const stepIndicators = Array.from(
     modalElement.querySelectorAll("[data-step-indicator]")
   );
+  
+  /** @type {HTMLElement|null} Élément affichant le sous-titre de l'étape */
   const subtitleElement = modalElement.querySelector("[data-step-subtitle]");
+  
+  /** @type {HTMLElement|null} Élément d'erreur pour l'étape 1 */
   const errorElement = modalElement.querySelector("[data-step-error]");
+  
+  /** @type {HTMLElement|null} Élément d'affichage des erreurs générales */
   const statusErrorElement = modalElement.querySelector("[data-signup-error]");
+  
+  /** @type {HTMLElement|null} Élément d'affichage des succès */
   const statusSuccessElement = modalElement.querySelector(
     "[data-signup-success]"
   );
+  
+  /** @type {HTMLElement|null} Élément affichant l'email de confirmation */
   const confirmationEmail = modalElement.querySelector(
     "[data-confirmation-email]"
   );
 
+  /** @type {HTMLButtonElement|null} Bouton "Suivant/Valider/Fermer" */
   const nextButton = modalElement.querySelector('[data-action="next"]');
+  
+  /** @type {HTMLButtonElement|null} Bouton "Retour" */
   const backButton = modalElement.querySelector('[data-action="back"]');
 
+  /** @type {number} Étape actuelle du formulaire (1, 2 ou 3) */
   let currentStep = 1;
+  
+  /** @type {string|null} Type d'utilisateur sélectionné ('artiste' ou 'auditeur') */
   let selectedType = null;
+  
+  /** @type {string|null} Dernier email soumis pour l'inscription */
   let lastSubmittedEmail = null;
 
-  // Sous-titres pour chaque étape du formulaire d'inscription
+  /**
+   * @brief Sous-titres affichés pour chaque étape du formulaire
+   * @constant {Object.<number, string>}
+   */
   const subtitles = {
     1: "Choisissez votre profil pour commencer.",
     2: "Renseignez les informations pour finaliser votre inscription.",
     3: "Vérifiez votre boîte mail pour activer votre compte.",
   };
 
-  // Constantes pour validation (doivent correspondre aux limites de la base de données)
+  /**
+   * @brief Constantes de validation (doivent correspondre aux limites de la base de données)
+   * @constant {number}
+   */
   const PASSWORD_MIN_LENGTH = 8;
+  
+  /** @brief Expression régulière pour valider le format du pseudonyme */
   const PSEUDO_REGEX = /^[a-zA-Z0-9_]+$/;
+  
+  /** @brief Expression régulière pour valider le format de l'email */
   const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const EMAIL_MAX_LENGTH = 191;   // VARCHAR(191) dans la BDD
-  const NAME_MAX_LENGTH = 255;    // VARCHAR(255) dans la BDD
-  const WEBSITE_MAX_LENGTH = 255; // VARCHAR(255) dans la BDD
+  
+  /** @brief Longueur maximale de l'email (VARCHAR(191) dans la BDD) */
+  const EMAIL_MAX_LENGTH = 191;
+  
+  /** @brief Longueur maximale du nom (VARCHAR(255) dans la BDD) */
+  const NAME_MAX_LENGTH = 255;
+  
+  /** @brief Longueur maximale de l'URL du site web (VARCHAR(255) dans la BDD) */
+  const WEBSITE_MAX_LENGTH = 255;
 
   /**
-   * Valide la sécurité d'un mot de passe.
+   * @brief Valide la sécurité d'un mot de passe
+   * 
+   * @details Vérifie que le mot de passe respecte les critères de sécurité :
+   * - Longueur minimale de 8 caractères
+   * - Au moins une lettre majuscule
+   * - Au moins un chiffre
+   * - Au moins un caractère spécial
+   * 
    * @param {string} password - Le mot de passe à valider
-   * @returns {{valid: boolean, errors: string[]}} Résultat de la validation
+   * @returns {{valid: boolean, errors: string[]}} Résultat de la validation avec liste des erreurs
    */
   const validatePassword = (password) => {
     const errors = [];
@@ -79,8 +138,13 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   /**
-   * Valide le format du pseudonyme.
-   * @param {string} pseudo - Le pseudo à valider
+   * @brief Valide le format du pseudonyme
+   * 
+   * @details Le pseudonyme doit :
+   * - Contenir entre 3 et 50 caractères
+   * - Ne contenir que des lettres, chiffres et underscores
+   * 
+   * @param {string} pseudo - Le pseudonyme à valider
    * @returns {{valid: boolean, error: string|null}} Résultat de la validation
    */
   const validatePseudo = (pseudo) => {
@@ -94,7 +158,8 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   /**
-   * Valide le format et la longueur de l'adresse e-mail.
+   * @brief Valide le format et la longueur de l'adresse e-mail
+   * 
    * @param {string} email - L'email à valider
    * @returns {{valid: boolean, error: string|null}} Résultat de la validation
    */
@@ -112,7 +177,11 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   /**
-   * Valide le format et la longueur de l'URL.
+   * @brief Valide le format et la longueur de l'URL du site web
+   * 
+   * @details Ce champ est optionnel. Si renseigné, l'URL doit être valide
+   * et ne pas dépasser la longueur maximale autorisée.
+   * 
    * @param {string} url - L'URL à valider
    * @returns {{valid: boolean, error: string|null}} Résultat de la validation
    */
@@ -130,8 +199,12 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   /**
-   * Valide si la personne a au moins 13 ans.
-   * @param {string} birthdate - Date de naissance (format AAAA-MM-JJ)
+   * @brief Valide si l'utilisateur a au moins 13 ans
+   * 
+   * @details Conformément aux réglementations sur la protection des mineurs,
+   * l'âge minimum requis pour créer un compte est de 13 ans.
+   * 
+   * @param {string} birthdate - Date de naissance au format AAAA-MM-JJ
    * @returns {boolean} Vrai si l'utilisateur a au moins 13 ans
    */
   const validateAge = (birthdate) => {
@@ -143,7 +216,9 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   /**
-   * Réinitialise l'affichage des messages d'état (succès/erreur).
+   * @brief Réinitialise l'affichage des messages d'état (succès/erreur)
+   * 
+   * @returns {void}
    */
   const resetStatusMessages = () => {
     if (statusErrorElement) {
@@ -157,8 +232,10 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   /**
-   * Affiche un message d'erreur.
-   * @param {string} message - Message à afficher
+   * @brief Affiche un message d'erreur
+   * 
+   * @param {string} message - Message d'erreur à afficher
+   * @returns {void}
    */
   const showStatusError = (message) => {
     if (!statusErrorElement) {
@@ -172,8 +249,10 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   /**
-   * Affiche un message de succès.
+   * @brief Affiche un message de succès
+   * 
    * @param {string} message - Message de succès à afficher
+   * @returns {void}
    */
   const showStatusSuccess = (message) => {
     if (!statusSuccessElement) {
@@ -187,7 +266,12 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   /**
-   * Met à jour l'affichage et l'état des boutons selon l'étape affichée.
+   * @brief Met à jour l'affichage et l'état des boutons selon l'étape courante
+   * 
+   * @details Configure le texte et la visibilité des boutons "Retour" et "Suivant"
+   * en fonction de l'étape actuelle du formulaire.
+   * 
+   * @returns {void}
    */
   const updateButtons = () => {
     if (currentStep === 1) {
@@ -206,8 +290,16 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   /**
-   * Affiche l'étape demandée dans le formulaire d'inscription.
-   * @param {number} step - Numéro de l'étape à afficher
+   * @brief Affiche l'étape demandée dans le formulaire d'inscription
+   * 
+   * @details Met à jour l'interface pour afficher l'étape spécifiée :
+   * - Affiche/masque les contenus d'étapes
+   * - Met à jour les indicateurs d'étape
+   * - Met à jour le sous-titre
+   * - Configure les boutons
+   * 
+   * @param {number} step - Numéro de l'étape à afficher (1, 2 ou 3)
+   * @returns {void}
    */
   const showStep = (step) => {
     currentStep = step;
@@ -241,8 +333,9 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   /**
-   * Récupère le formulaire d'inscription du type d'utilisateur sélectionné.
-   * @returns {HTMLFormElement|null} Le formulaire actif ou null
+   * @brief Récupère le formulaire d'inscription du type d'utilisateur sélectionné
+   * 
+   * @returns {HTMLFormElement|null} Le formulaire actif correspondant au type sélectionné, ou null
    */
   const getActiveForm = () => {
     if (!selectedType) {
@@ -255,7 +348,12 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   /**
-   * Affiche le formulaire correspondant au type d'utilisateur sélectionné.
+   * @brief Affiche le formulaire correspondant au type d'utilisateur sélectionné
+   * 
+   * @details Masque tous les formulaires sauf celui correspondant au type choisi
+   * (artiste ou auditeur).
+   * 
+   * @returns {void}
    */
   const showFormForSelectedType = () => {
     const forms = modalElement.querySelectorAll(".signup-form");
@@ -265,8 +363,13 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   /**
-   * Affiche ou masque le bouton suivant comme "chargement".
-   * @param {boolean} isLoading - Vrai si en chargement
+   * @brief Gère l'état de chargement du bouton de soumission
+   * 
+   * @details Désactive le bouton et affiche "Création..." pendant le traitement,
+   * puis restaure l'état initial une fois terminé.
+   * 
+   * @param {boolean} isLoading - Vrai pour activer l'état de chargement
+   * @returns {void}
    */
   const setLoading = (isLoading) => {
     if (!nextButton) {
@@ -290,8 +393,13 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   /**
-   * Soumet le formulaire d'inscription (étape 2), avec validation côté client.
-   * Effectue la requête AJAX et affiche les éventuelles erreurs ou le message de confirmation.
+   * @brief Soumet le formulaire d'inscription (étape 2)
+   * 
+   * @details Effectue les opérations suivantes :
+   * 1. Validation complète côté client de tous les champs
+   * 2. Envoi des données au serveur via requête AJAX POST
+   * 3. Gestion de la réponse (succès : passage à l'étape 3, erreur : affichage du message)
+   * 
    * @returns {Promise<void>}
    */
   const submitSignup = async () => {
@@ -318,62 +426,62 @@ document.addEventListener("DOMContentLoaded", () => {
     const nom = formData.get("nom");
     const description = formData.get("description");
 
-    // Tableau pour accumuler toutes les erreurs de validation côté client
+    /** @type {string[]} Tableau pour accumuler toutes les erreurs de validation côté client */
     const validationErrors = [];
 
-    // Valider le nom
+    // Validation du nom
     if (!nom || nom.trim().length < 1) {
       validationErrors.push("Le nom est requis.");
     } else if (nom.trim().length > NAME_MAX_LENGTH) {
       validationErrors.push(`Le nom ne doit pas dépasser ${NAME_MAX_LENGTH} caractères.`);
     }
 
-    // Valider le pseudo
+    // Validation du pseudonyme
     const pseudoValidation = validatePseudo(pseudo);
     if (!pseudoValidation.valid) {
       validationErrors.push(pseudoValidation.error);
     }
 
-    // Valider la description
+    // Validation de la description
     if (!description || description.trim().length < 10) {
       validationErrors.push("La description doit contenir au moins 10 caractères.");
     }
 
-    // Valider l'email
+    // Validation de l'email
     const emailValidation = validateEmail(email);
     if (!emailValidation.valid) {
       validationErrors.push(emailValidation.error);
     }
 
-    // Valider le site web (facultatif)
+    // Validation du site web (facultatif)
     const websiteValidation = validateUrl(website);
     if (!websiteValidation.valid) {
       validationErrors.push(websiteValidation.error);
     }
 
-    // Valider la date de naissance (au moins 13 ans)
+    // Validation de la date de naissance (au moins 13 ans)
     if (!validateAge(birthdate)) {
       validationErrors.push("Vous devez avoir au moins 13 ans pour créer un compte.");
     }
 
-    // Valider la force du mot de passe
+    // Validation de la force du mot de passe
     const passwordValidation = validatePassword(password);
     if (!passwordValidation.valid) {
       validationErrors.push(...passwordValidation.errors);
     }
 
-    // Vérifier la correspondance des mots de passe
+    // Vérification de la correspondance des mots de passe
     if (password !== passwordRepeat) {
       validationErrors.push("Les mots de passe ne correspondent pas.");
     }
 
-    // Afficher les erreurs côté client s'il y en a
+    // Affichage des erreurs côté client s'il y en a
     if (validationErrors.length > 0) {
       showStatusError(validationErrors.join(" "));
       return;
     }
 
-    // Préparer la requête pour envoyer les données en POST
+    // Préparation de la requête pour envoyer les données en POST
     const payload = new URLSearchParams();
     payload.append("type", selectedType);
     formData.forEach((value, key) => {
@@ -423,7 +531,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // Gestion du changement de type d'utilisateur à l'étape 1
+  // ==========================================
+  // ÉCOUTEURS D'ÉVÉNEMENTS
+  // ==========================================
+
+  /**
+   * @brief Gestion du changement de type d'utilisateur à l'étape 1
+   */
   modalElement
     .querySelectorAll('input[name="signupUserType"]')
     .forEach((radio) => {
@@ -434,7 +548,14 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-  // Gestion bouton "Continuer", "Valider" ou "Fermer"
+  /**
+   * @brief Gestion du bouton "Continuer", "Valider" ou "Fermer"
+   * 
+   * @details Comportement selon l'étape courante :
+   * - Étape 1 : Vérifie la sélection du type et passe à l'étape 2
+   * - Étape 2 : Soumet le formulaire d'inscription
+   * - Étape 3 : Ferme la modale
+   */
   nextButton.addEventListener("click", () => {
     if (currentStep === 1) {
       if (!selectedType) {
@@ -456,7 +577,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Gestion bouton "Retour"
+  /**
+   * @brief Gestion du bouton "Retour"
+   * 
+   * @details Permet de revenir à l'étape précédente du formulaire.
+   */
   backButton.addEventListener("click", () => {
     if (currentStep === 2) {
       showStep(1);
@@ -468,7 +593,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Réinitialisation du formulaire lors de la fermeture du modal
+  /**
+   * @brief Réinitialisation du formulaire lors de la fermeture de la modale
+   * 
+   * @details Remet tous les champs et états à leur valeur initiale
+   * pour préparer une nouvelle inscription.
+   */
   modalElement.addEventListener("hidden.bs.modal", () => {
     const forms = modalElement.querySelectorAll(".signup-form");
     forms.forEach((form) => form.reset());

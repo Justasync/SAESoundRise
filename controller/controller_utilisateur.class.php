@@ -1,12 +1,35 @@
 <?php
 
+/**
+ * @file controller_utilisateur.class.php
+ * @brief Fichier contenant le contrôleur de gestion des utilisateurs.
+ * 
+ * Ce fichier gère toutes les fonctionnalités liées aux utilisateurs
+ * dans l'application Paaxio : authentification, inscription, profils.
+ * 
+ */
+
+/**
+ * @class ControllerUtilisateur
+ * @brief Contrôleur dédié à la gestion des utilisateurs.
+ * 
+ * Cette classe gère les opérations sur les utilisateurs :
+ * - Connexion (signin)
+ * - Inscription (signup)
+ * - Déconnexion (logout)
+ * - Création d'utilisateurs par l'admin
+ * - Affichage des chansons likées
+ * - Affichage du profil artiste
+ * 
+ * @extends Controller
+ */
 class ControllerUtilisateur extends Controller
 {
     /**
-     * Constructeur du contrôleur utilisateur.
+     * @brief Constructeur du contrôleur utilisateur.
      *
-     * @param \Twig\Environment $twig Environnement Twig.
-     * @param \Twig\Loader\FilesystemLoader $loader Chargement des templates.
+     * @param \Twig\Environment $twig Environnement Twig pour le rendu des templates.
+     * @param \Twig\Loader\FilesystemLoader $loader Chargeur de fichiers Twig.
      */
     public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader)
     {
@@ -14,10 +37,13 @@ class ControllerUtilisateur extends Controller
     }
 
     /**
-     * Gère la connexion (authentification) d'un utilisateur.
+     * @brief Gère la connexion (authentification) d'un utilisateur.
      *
      * Reçoit une requête POST contenant l'email et le mot de passe.
+     * Valide les données, vérifie les identifiants et initialise la session.
      * Retourne une réponse JSON indiquant le succès ou l'échec de la connexion.
+     * 
+     * @return void Retourne une réponse JSON et termine le script.
      */
     public function signin()
     {
@@ -123,10 +149,15 @@ class ControllerUtilisateur extends Controller
     }
 
     /**
-     * Gère l'inscription d'un nouvel utilisateur (artiste, auditeur ou producteur).
-     * Valide les données, crée le compte et envoie l'e-mail de bienvenue.
+     * @brief Gère l'inscription d'un nouvel utilisateur.
+     * 
+     * Permet l'inscription d'un artiste, auditeur ou producteur.
+     * Valide les données, vérifie l'unicité de l'email et du pseudo,
+     * crée le compte et envoie l'e-mail de bienvenue.
      *
-     * Retourne du JSON indiquant le succès ou l'échec de la création.
+     * Retourne une réponse JSON indiquant le succès ou l'échec de la création.
+     * 
+     * @return void Retourne une réponse JSON et termine le script.
      */
     public function signup()
     {
@@ -233,7 +264,7 @@ class ControllerUtilisateur extends Controller
             $errors[] = 'Les mots de passe ne correspondent pas.';
         }
 
-        // Pour les artistes/producteurs, vérifier la sélection d’un genre
+        // Pour les artistes/producteurs, vérifier la sélection d'un genre
         if ($userType != 'auditeur') {
             if (!$genreId) {
                 $errors[] = 'Veuillez sélectionner un genre musical.';
@@ -269,7 +300,7 @@ class ControllerUtilisateur extends Controller
             return;
         }
 
-        // Parsing de la date de naissance
+        // Analyse de la date de naissance
         $birthDateTime = DateTime::createFromFormat('Y-m-d', $birthdate);
 
         $roleDao = new RoleDao($this->getPDO());
@@ -290,19 +321,19 @@ class ControllerUtilisateur extends Controller
         try {
             $utilisateur = new Utilisateur();
             // Affectation des différents attributs de l'utilisateur
-            $utilisateur->setEmailUtilisateur($email); // adresse e-mail
-            $utilisateur->setNomUtilisateur($nom); // nom
-            $utilisateur->setPseudoUtilisateur($pseudo); // pseudonyme
-            $utilisateur->setMotDePasseUtilisateur($hashedPassword); // mot de passe hashé
+            $utilisateur->setEmailUtilisateur($email);
+            $utilisateur->setNomUtilisateur($nom);
+            $utilisateur->setPseudoUtilisateur($pseudo);
+            $utilisateur->setMotDePasseUtilisateur($hashedPassword);
             $dateNaissance = !empty($birthdate) ? DateTime::createFromFormat('Y-m-d', $birthdate) : null;
-            $utilisateur->setDateDeNaissanceUtilisateur($dateNaissance); // date de naissance
-            $utilisateur->setDateInscriptionUtilisateur(DateTime::createFromFormat('Y-m-d H:i:s', $createdAt)); // date d'inscription
-            $utilisateur->setStatutUtilisateur(\StatutUtilisateur::Actif); // statut par défaut
-            $utilisateur->setGenreUtilisateur(isset($genre) ? $genre : null); // instance de Genre ou null
-            $utilisateur->setEstAbonnee(false); // nouvel utilisateur non abonné par défaut
+            $utilisateur->setDateDeNaissanceUtilisateur($dateNaissance);
+            $utilisateur->setDateInscriptionUtilisateur(DateTime::createFromFormat('Y-m-d H:i:s', $createdAt));
+            $utilisateur->setStatutUtilisateur(\StatutUtilisateur::Actif);
+            $utilisateur->setGenreUtilisateur(isset($genre) ? $genre : null);
+            $utilisateur->setEstAbonnee(false);
             $utilisateur->setDescriptionUtilisateur($description ?? null);
             $utilisateur->setSiteWebUtilisateur((isset($website) && $website !== '') ? $website : null);
-            $utilisateur->setStatutAbonnement(\StatutAbonnement::Inactif); // statut abonnement par défaut
+            $utilisateur->setStatutAbonnement(\StatutAbonnement::Inactif);
             $utilisateur->setDateDebutAbonnement(null);
             $utilisateur->setDateFinAbonnement(null);
             $utilisateur->setPointsDeRenommeeArtiste(null);
@@ -345,7 +376,7 @@ class ControllerUtilisateur extends Controller
     }
 
     /**
-     * Gère la création d'un nouvel utilisateur par l'administrateur.
+     * @brief Gère la création d'un nouvel utilisateur par l'administrateur.
      *
      * Cette méthode effectue les opérations suivantes :
      * 1. Vérifie si l'utilisateur connecté a les droits d'administrateur.
@@ -433,8 +464,10 @@ class ControllerUtilisateur extends Controller
     }
 
     /**
-     * Déconnecte l'utilisateur et détruit la session.
-     * Redirige vers la page d'accueil.
+     * @brief Déconnecte l'utilisateur et détruit la session.
+     * 
+     * Supprime toutes les données de session et le cookie de session,
+     * puis redirige vers la page d'accueil.
      *
      * @return void
      */
@@ -460,7 +493,11 @@ class ControllerUtilisateur extends Controller
     }
 
     /**
-     * Affiche la page des chansons aimées (likées) par l'utilisateur connecté.
+     * @brief Affiche la page des chansons aimées (likées) par l'utilisateur connecté.
+     * 
+     * Récupère toutes les chansons que l'utilisateur a likées et les affiche
+     * dans un format similaire à un album virtuel.
+     * Nécessite que l'utilisateur soit authentifié.
      *
      * @return void
      */
@@ -511,7 +548,10 @@ class ControllerUtilisateur extends Controller
     }
 
     /**
-     * Affichage du profil public d'un artiste à partir de son pseudo.
+     * @brief Affiche le profil public d'un artiste.
+     * 
+     * Récupère l'artiste par son pseudo passé en paramètre GET
+     * et affiche son profil avec ses albums.
      *
      * @return void
      */
@@ -530,6 +570,12 @@ class ControllerUtilisateur extends Controller
         // Recherche de l'artiste via son pseudo
         $utilisateur = $utilisateurDAO->findByPseudo($pseudo);
 
+        // Vérification de l'abonnement si connecté
+        $estAbonneAArtiste = false;
+        if (isset($_SESSION['user_email'])) {
+            $estAbonneAArtiste = $utilisateurDAO->estAbonneAArtiste($_SESSION['user_email'], $utilisateur->getEmailUtilisateur());
+        }
+
         if (!$utilisateur) {
             $this->redirectTo('home', 'afficher');
         }
@@ -543,7 +589,53 @@ class ControllerUtilisateur extends Controller
         echo $template->render([
             'session'     => $_SESSION,
             'utilisateur' => $utilisateur,
-            'albums'      => $albums
+            'albums'      => $albums,
+            'estAbonneAArtiste' => $estAbonneAArtiste
         ]);
+    }
+
+    /**
+     * Gère l'abonnement/désabonnement à un artiste via une requête AJAX.
+     *
+     * Reçoit une requête POST avec l'email de l'artiste.
+     * Retourne une réponse JSON indiquant le succès et l'état de l'abonnement.
+     * 
+     * @return void
+     */
+    public function suivreArtiste()
+    {
+        header('Content-Type: application/json');
+
+        // Vérification de la connexion 
+        if (!isset($_SESSION['user_email'])) {
+            echo json_encode(['success' => false, 'message' => 'Non connecté']);
+            return;
+        }
+
+        $emailArtiste = $_POST['emailArtiste'] ?? null;
+        $emailAbonne = $_SESSION['user_email'];
+
+        // --- SÉCURITÉ : Empêcher l'auto-abonnement ---
+        if ($emailAbonne === $emailArtiste) {
+            echo json_encode([
+                'success' => false, 
+                'message' => 'Vous ne pouvez pas vous abonner à votre propre profil.'
+            ]);
+            return;
+        }
+
+        // Traitement de l'abonnement/désabonnement
+        if ($emailArtiste) {
+            $dao = new UtilisateurDAO($this->getPDO());
+            $result = $dao->basculerAbonnement($emailAbonne, $emailArtiste);
+            
+            echo json_encode([
+                'success' => true, 
+                'action' => $result,
+                'newText' => ($result === 'followed') ? 'Abonné(e)' : 'S\'abonner'
+            ]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Email artiste manquant']);
+        }
     }
 }
