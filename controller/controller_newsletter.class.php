@@ -1,12 +1,42 @@
 <?php
 
+/**
+ * @file controller_newsletter.class.php
+ * @brief Fichier contenant le contrôleur de gestion de la newsletter.
+ * 
+ * Ce fichier gère les fonctionnalités liées à l'inscription
+ * à la newsletter de l'application Paaxio.
+ * 
+ */
+
+/**
+ * @class ControllerNewsletter
+ * @brief Contrôleur dédié à la gestion de la newsletter.
+ * 
+ * Cette classe gère :
+ * - L'affichage du formulaire d'inscription à la newsletter
+ * - L'ajout d'une adresse e-mail à la liste de diffusion
+ * 
+ * @extends Controller
+ */
 class ControllerNewsletter extends Controller
 {
+    /**
+     * @brief Constructeur du contrôleur newsletter.
+     * 
+     * @param \Twig\Environment $twig Environnement Twig pour le rendu des templates.
+     * @param \Twig\Loader\FilesystemLoader $loader Chargeur de fichiers Twig.
+     */
     public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader)
     {
         parent::__construct($loader, $twig);
     }
 
+    /**
+     * @brief Affiche le formulaire d'inscription à la newsletter.
+     * 
+     * @return void
+     */
     public function afficher()
     {
         $template = $this->getTwig()->load('newsletter.html.twig');
@@ -19,6 +49,15 @@ class ControllerNewsletter extends Controller
         ));
     }
 
+    /**
+     * @brief Traite l'inscription à la newsletter.
+     * 
+     * Valide l'adresse e-mail soumise et l'ajoute à la base de données.
+     * Par mesure de sécurité, ne révèle pas si l'e-mail existe déjà.
+     * Nécessite une requête POST.
+     * 
+     * @return void
+     */
     public function ajouter()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
