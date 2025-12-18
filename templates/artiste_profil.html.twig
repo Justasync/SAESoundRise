@@ -123,7 +123,10 @@
                 <div class="description-box text-white">
                     <div class="mb-2 text-dark">
                     <span class="me-3">
-                        {{ utilisateur.getNbAbonnesArtiste() ?? 0 }} abonné(s)
+                        <span id="nb-abonnes">
+                            {{ utilisateur.getNbAbonnesArtiste() ?? 0 }}
+                        </span> 
+                        abonné(s)
                     </span>
                     <span class="me-3">
                         Genre : {{ utilisateur.getGenreUtilisateur() ? utilisateur.getGenreUtilisateur().getNomGenre() : 'Non renseigné' }}
@@ -189,39 +192,47 @@
     </div>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const btn = document.getElementById('btn-abonnement');
-        
-        if (btn) {
-            btn.addEventListener('click', function() {
-                const emailArtiste = this.getAttribute('data-email');
-                const formData = new FormData();
-                formData.append('emailArtiste', emailArtiste);
+        document.addEventListener('DOMContentLoaded', function() {
+            const btn = document.getElementById('btn-abonnement');
+            // On cible le span du compteur
+            const compteurSpan = document.getElementById('nb-abonnes'); 
 
-                // Appel vers votre contrôleur
-                fetch('index.php?controller=utilisateur&method=suivreArtiste', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Mise à jour visuelle du bouton
-                        this.textContent = data.newText;
-                        
-                        if (data.action === 'followed') {
-                            this.classList.replace('btn-subscribe', 'btn-light');
+            if (btn) {
+                btn.addEventListener('click', function() {
+                    const emailArtiste = this.getAttribute('data-email');
+                    const formData = new FormData();
+                    formData.append('emailArtiste', emailArtiste);
+
+                    fetch('index.php?controller=utilisateur&method=suivreArtiste', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // 1. Mise à jour du texte du bouton
+                            this.textContent = data.newText;
+
+                            // 2. Mise à jour du style du bouton
+                            if (data.action === 'followed') {
+                                this.classList.replace('btn-subscribe', 'btn-light');
+                            } else {
+                                this.classList.replace('btn-light', 'btn-subscribe');
+                            }
+
+                            // 3. MISE À JOUR DU COMPTEUR
+                            if (compteurSpan && data.newCount !== undefined) {
+                                compteurSpan.textContent = data.newCount;
+                            }
+
                         } else {
-                            this.classList.replace('btn-light', 'btn-subscribe');
+                            alert(data.message || "Une erreur est survenue.");
                         }
-                    } else {
-                        alert(data.message || "Une erreur est survenue.");
-                    }
-                })
-                .catch(error => console.error('Erreur:', error));
-            });
-        }
-    });
+                    })
+                    .catch(error => console.error('Erreur:', error));
+                });
+            }
+        });
     </script>
 {% endblock %}
 
