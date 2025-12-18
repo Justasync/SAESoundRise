@@ -1,9 +1,25 @@
 <?php
+/**
+ * @file modeles/genre.class.php
+ * @brief Classe représentant un genre musical
+ */
 
 class Genre {
+    /**
+     * @var int|null $idGenre L'identifiant unique du genre.
+     */
     private int|null $idGenre;
+
+    /**
+     * @var string|null $nomGenre Le nom du genre musical.
+     */
     private string|null $nomGenre;
 
+    /**
+     * Constructeur de la classe Genre.
+     * @param int|null $idGenre L'identifiant unique.
+     * @param string|null $nomGenre Le nom du genre.
+     */
     public function __construct(?int $idGenre = null, ?string $nomGenre = null) {
         $this->idGenre = $idGenre;
         $this->nomGenre = $nomGenre;
