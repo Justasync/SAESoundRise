@@ -533,11 +533,6 @@ class ControllerUtilisateur extends Controller
             },
         ];
 
-        // Génération d'un token CSRF si nécessaire
-        if (empty($_SESSION['csrf_token'])) {
-            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-        }
-
         // Chargement du template Twig et affichage
         $template = $this->getTwig()->load('chanson_album.html.twig');
 
@@ -548,8 +543,7 @@ class ControllerUtilisateur extends Controller
                 'description' => "Chansons likées par l'utilisateur"
             ],
             'album' => $albumVirtuel,
-            'chansons' => $chansonsLikees,
-            'csrf_token' => $_SESSION['csrf_token']
+            'chansons' => $chansonsLikees
         ]);
     }
 

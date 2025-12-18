@@ -274,8 +274,7 @@ let wasPlayingBeforeScrub = false;
 
 let isPlaying = false;
 
-// Token CSRF pour la protection
-const csrfToken = '{{ csrf_token|default('') }}';
+// CSRF token removed
 
 // 1. CRÉATION DYNAMIQUE DE LA PLAYLIST À PARTIR DES DONNÉES TWIG
 const playlist = [];{% for chanson in chansons %}playlist.push({id: {{ chanson.getIdChanson() }}, title: "{{ chanson.getTitreChanson()|e('js') }}", src: "{{ chanson.geturlAudioChanson()|default('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3')|e('js') }}", durationFormatted: "{{ (chanson.getDureeChanson() / 60)|round(0, 'floor') }}:{{ (chanson.getDureeChanson() % 60)|number_format(0, '', '02') }}"});{% endfor %}
@@ -436,6 +435,9 @@ return;
 
 const track = playlist[index];
 
+// Autoriser la ré-incrémentation de la même piste sur des lectures séparées
+playedBeyond75.delete(track.id);
+
 // Si c'est la même piste et qu'elle est en pause, on la relance
 if (index === currentTrackIndex && ! isPlaying) {
 audioPlayer.play().catch(e => console.error("Erreur de lecture : ", e));
@@ -522,9 +524,9 @@ playedBeyond75.add(track.id);
 
 // Incrémente le compteur d'écoutes côté serveur
 fetch('/?controller=chanson&method=incrementEcoute', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: 'idChanson=' + encodeURIComponent(track.id) + '&csrfToken=' + encodeURIComponent(csrfToken)
+	method: 'POST',
+	headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+	body: 'idChanson=' + encodeURIComponent(track.id)
 })
 .then(res => res.json())
 .then(data => {

@@ -63,11 +63,6 @@ class ControllerAlbum extends Controller
         $managerChanson = new ChansonDAO($this->getPdo());
         $chansons = $managerChanson->rechercherParAlbum($idAlbum);
 
-        // Génération du token CSRF
-        if (empty($_SESSION['csrf_token'])) {
-            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-        }
-
         // Chargement du template
         $template = $this->getTwig()->load('chanson_album.html.twig');
         echo $template->render([
@@ -78,7 +73,6 @@ class ControllerAlbum extends Controller
             ],
             'album' => $album,
             'chansons' => $chansons,
-            'csrf_token' => $_SESSION['csrf_token']
         ]);
     }
 
@@ -338,18 +332,12 @@ class ControllerAlbum extends Controller
             $template = 'album_details_auditeur.html.twig';
         }
 
-        // Génération du token CSRF
-        if (empty($_SESSION['csrf_token'])) {
-            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-        }
-
         $template = $this->getTwig()->load($template);
         echo $template->render([
             'album' => $album,
             'chansons' => $chansons,
             'chansonSelected' => $idChanson ? (int)$idChanson : null,
             'session' => $_SESSION,
-            'csrf_token' => $_SESSION['csrf_token']
         ]);
     }
 
