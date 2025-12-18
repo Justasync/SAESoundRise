@@ -1,14 +1,30 @@
 <?php
+/**
+ * @file modeles/newsletter.dao.php
+ * @brief DAO pour la gestion des abonnements à la newsletter
+ */
 
 class NewsletterDAO
 {
+    /**
+     * @var PDO|null $pdo L'instance PDO pour la connexion à la base de données.
+     */
     private ?PDO $pdo;
 
+    /**
+     * Constructeur de la classe NewsletterDAO.
+     * @param PDO|null $pdo L'instance PDO pour la connexion à la base de données.
+     */
     public function __construct(?PDO $pdo = null)
     {
         $this->pdo = $pdo;
     }
 
+    /**
+     * Vérifie si une adresse email est déjà abonnée à la newsletter.
+     * @param string $email L'adresse email à vérifier.
+     * @return bool True si l'email existe déjà dans la newsletter.
+     */
     public function existsByEmail(string $email): bool
     {
         $sql = "SELECT COUNT(*) FROM newsletter WHERE email = :email";
