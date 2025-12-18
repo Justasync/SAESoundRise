@@ -1,14 +1,28 @@
 <?php
-
+/**
+ * @file modeles/album.dao.php
+ * @brief DAO pour la gestion des albums musicaux
+ */
 class AlbumDAO
 {
+    /**
+     * @var PDO|null $pdo L'instance PDO pour la connexion à la base de données.
+     */
     private ?PDO $pdo;
 
+    /**
+     * Constructeur de la classe AlbumDAO.
+     * @param PDO|null $pdo L'instance PDO pour la connexion à la base de données.
+     */
     public function __construct(?PDO $pdo = null)
     {
         $this->pdo = $pdo;
     }
 
+    /**
+     * Récupère tous les albums de la base de données.
+     * @return array Une liste d'albums.
+     */
     public function findAll(): array
     {
         $sql = "SELECT * FROM album";
@@ -20,6 +34,11 @@ class AlbumDAO
         return $album;
     }
 
+    /**
+     * Récupère un album par son identifiant.
+     * @param int $id L'identifiant de l'album.
+     * @return Album L'Album correspondant.
+     */
     public function find(int $id): Album
     {
         $sql = "SELECT a.*, u.pseudoUtilisateur 
@@ -44,7 +63,8 @@ class AlbumDAO
 
     /**
      * Récupère les albums d'un artiste en utilisant son pseudo.
-     * Correction: Nécessite une jointure car artisteAlbum stocke l'email, pas le pseudo.
+     * @param string $artistePseudo Le pseudo de l'artiste.
+     * @return array Une liste d'albums.
      */
     public function findByArtiste(string $artistePseudo): array
     {
@@ -62,6 +82,8 @@ class AlbumDAO
 
     /**
      * Récupère les albums d'un artiste en utilisant son email.
+     * @param string $email L'email de l'artiste.
+     * @return array Une liste d'albums.
      */
     public function findAllByArtistEmail(string $email): array
     {
@@ -77,7 +99,11 @@ class AlbumDAO
         return $albums;
     }
 
-
+    /**
+     * Crée un nouvel album dans la base de données.
+     * @param Album $album L'Album à créer.
+     * @return int L'identifiant de l'album créé.
+     */
     public function create(Album $album): int
     {
         $sql = "INSERT INTO album (nomAlbum, dateSortieAlbum, urlPochetteAlbum, artisteAlbum) VALUES (:nomAlbum, :dateSortie, :pochette, :artiste)";
@@ -92,7 +118,11 @@ class AlbumDAO
         return (int)$this->pdo->lastInsertId();
     }
 
-
+    /**
+     * Hydrate un album à partir d'un tableau associatif.
+     * @param array $tableaAssoc Le tableau associatif contenant les données de l'album.
+     * @return Album L'Album hydraté.
+     */
     public function hydrate(array $tableaAssoc): Album
     {
         $album = new Album();
@@ -104,6 +134,11 @@ class AlbumDAO
         return $album;
     }
 
+    /**
+     * Hydrate plusieurs albums à partir d'un tableau de tableaux associatifs.
+     * @param array $tableauxAssoc Le tableau de tableaux associatifs contenant les données des albums.
+     * @return array Une liste d'albums hydratés.
+     */
     public function hydrateMany(array $tableauxAssoc): array
     {
         $albums = [];
@@ -118,6 +153,7 @@ class AlbumDAO
      *
      * @param int $limit Le nombre d'albums à récupérer.
      * @return array Une liste d'albums.
+     * @throws PDOException En cas d'erreur lors de l'exécution de la requête.
      */
     public function findMostListened(int $limit = 8): array
     {
@@ -157,7 +193,8 @@ class AlbumDAO
 
 
     /**
-     * Get the value of pdo
+     * Getter pour la pdo
+     * @return PDO|null
      */
     public function getPdo(): ?PDO
     {
@@ -165,8 +202,8 @@ class AlbumDAO
     }
 
     /**
-     * Set the value of pdo
-     *
+     * Setter pour la pdo
+     * @param PDO|null $pdo
      */
     public function setPdo(?PDO $pdo): void
     {
