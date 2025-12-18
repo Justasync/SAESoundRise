@@ -88,14 +88,26 @@ class ControllerUtilisateur extends Controller
 
             $statut = $utilisateur->getStatutUtilisateur();
             // Vérification que le compte est actif
-            if ($statut && $statut !== StatutUtilisateur::Actif) {
-                header('Content-Type: application/json');
-                echo json_encode([
-                    'success' => false,
-                    'message' => 'Votre compte est ' . ($statut === StatutUtilisateur::Suspendu ? 'suspendu' : 'supprimé') . '.'
-                ]);
-                return;
-            }
+if (!empty($errors)) {
+    // Si es Admin, recargamos la página pasando los errores
+    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin') {
+        $template = $this->getTwig()->load('utilisateur_ajout.html.twig');
+        echo $template->render([
+            'page' => ['title' => 'Ajouter un utilisateur'],
+            'session' => $_SESSION,
+            'errors' => $errors, // Pasamos la lista de errores
+            'formData' => $post  // Pasamos lo que el usuario ya escribió para que no se borre
+        ]);
+        return;
+    }
+
+    // Si no es admin (es la API de registro normal), mantenemos el JSON
+    echo json_encode([
+        'success' => false,
+        'message' => implode(' ', $errors)
+    ]);
+    return;
+}
 
             // Connexion réussie : initialisation de la session
             $_SESSION['user_email'] = $utilisateur->getEmailUtilisateur();
@@ -128,221 +140,137 @@ class ControllerUtilisateur extends Controller
      *
      * Retourne du JSON indiquant le succès ou l'échec de la création.
      */
-    public function signup()
-    {
-        header('Content-Type: application/json');
+  public function signup()
+{
+    // Initialisation des genres pour l'affichage
+    $genreDao = new GenreDAO($this->getPDO());
+    $genres = $genreDao->findAll(); 
 
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            echo json_encode([
-                'success' => false,
-                'message' => 'Méthode non autorisée.'
+    // 1. AFFICHAGE (Requête GET)
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+        $template = $this->getTwig()->load('utilisateur_ajout.html.twig');
+        echo $template->render([
+            'page' => ['title' => 'Ajouter un utilisateur'],
+            'session' => $_SESSION,
+            'genres' => $genres
+        ]);
+        return;
+    }
+
+    // 2. TRAITEMENT (Requête POST)
+    $post = $this->getPost() ?? [];
+
+    // --- CORRECTION ICI : Gestion de l'Enum pour vérifier si l'utilisateur est admin ---
+    $isAdmin = false;
+    if (isset($_SESSION['user_role'])) {
+        // Si c'est un objet Enum, on compare sa valeur, sinon on compare directement
+        $roleValue = ($_SESSION['user_role'] instanceof \RoleEnum) ? $_SESSION['user_role']->value : $_SESSION['user_role'];
+        $isAdmin = (strtolower($roleValue) === 'admin');
+    }
+
+    $allowedTypes = [
+        'admin' => 'admin',
+        'artiste' => 'artiste',
+        'auditeur' => 'auditeur',
+        'producteur' => 'producteur'
+    ];
+
+    $userType = strtolower(trim($post['type'] ?? ''));
+    $nom = trim($post['nom'] ?? '');
+    $pseudo = trim($post['pseudo'] ?? '');
+    $description = trim($post['description'] ?? '');
+    $email = strtolower(trim($post['email'] ?? ''));
+    $birthdate = trim($post['birthdate'] ?? '');
+    $password = $post['password'] ?? '';
+    $passwordRepeat = $post['password_repeat'] ?? '';
+    $genreId = isset($post['genre_id']) ? (int)$post['genre_id'] : null;
+
+    $errors = [];
+
+    // Validations de base
+    if (!array_key_exists($userType, $allowedTypes)) {
+        $errors[] = 'Le type de profil sélectionné est invalide.';
+    }
+
+    $signupRules = [
+        'nom' => ['obligatoire' => true, 'longueur_min' => 1],
+        'pseudo' => ['obligatoire' => true, 'longueur_min' => 3, 'pseudo_format' => true],
+        'description' => ['obligatoire' => true, 'longueur_min' => 10],
+        'email' => ['obligatoire' => true, 'format' => FILTER_VALIDATE_EMAIL],
+        'birthdate' => ['obligatoire' => true, 'age_minimum' => 13],
+        'password' => ['obligatoire' => true, 'longueur_min' => 8, 'mot_de_passe_fort' => true]
+    ];
+
+    $validator = new Validator($signupRules);
+    if (!$validator->valider(['nom'=>$nom, 'pseudo'=>$pseudo, 'description'=>$description, 'email'=>$email, 'birthdate'=>$birthdate, 'password'=>$password])) {
+        $errors = array_merge($errors, $validator->getMessagesErreurs());
+    }
+
+    if ($password !== $passwordRepeat) {
+        $errors[] = 'Les mots de passe ne correspondent pas.';
+    }
+
+    if ($userType !== 'auditeur' && $userType !== 'admin' && !$genreId) {
+    $errors[] = 'Veuillez sélectionner un genre musical.';
+}
+
+    $utilisateurDAO = new UtilisateurDAO($this->getPDO());
+    if ($email !== '' && $utilisateurDAO->existsByEmail($email)) $errors[] = 'Email déjà utilisé.';
+    if ($pseudo !== '' && $utilisateurDAO->existsByPseudo($pseudo)) $errors[] = 'Pseudo déjà utilisé.';
+
+    // --- GESTION DES ERREURS D'AFFICHAGE ---
+    if (!empty($errors)) {
+        if ($isAdmin) {
+            $template = $this->getTwig()->load('utilisateur_ajout.html.twig');
+            echo $template->render([
+                'page' => ['title' => 'Ajouter un utilisateur'],
+                'session' => $_SESSION,
+                'errors' => $errors,
+                'formData' => $post,
+                'genres' => $genres
             ]);
             return;
-        }
-
-        $post = $this->getPost() ?? [];
-
-        // Types de profils autorisés
-        $allowedTypes = [
-            'artiste' => 'artiste',
-            'auditeur' => 'auditeur',
-            'producteur' => 'producteur'
-        ];
-
-        $userType = strtolower(trim($post['type'] ?? ''));
-        $nom = trim($post['nom'] ?? '');
-        $pseudo = trim($post['pseudo'] ?? '');
-        $description = trim($post['description'] ?? '');
-        $website = trim($post['website'] ?? '');
-        $email = strtolower(trim($post['email'] ?? ''));
-        $birthdate = trim($post['birthdate'] ?? '');
-        $password = $post['password'] ?? '';
-        $passwordRepeat = $post['password_repeat'] ?? '';
-        $genreId = isset($post['genre_id']) ? (int)$post['genre_id'] : null;
-
-        $errors = [];
-
-        // Validation préalable du type d'utilisateur (non dans les règles Validator)
-        if (!array_key_exists($userType, $allowedTypes)) {
-            $errors[] = 'Le type de profil sélectionné est invalide.';
-        }
-
-        // Règles de validation des données pour l'inscription
-        $signupRules = [
-            'nom' => [
-                'obligatoire' => true,
-                'type' => 'string',
-                'longueur_min' => 1,
-                'longueur_max' => 255
-            ],
-            'pseudo' => [
-                'obligatoire' => true,
-                'type' => 'string',
-                'longueur_min' => 3,
-                'longueur_max' => 50,
-                'pseudo_format' => true
-            ],
-            'description' => [
-                'obligatoire' => true,
-                'type' => 'string',
-                'longueur_min' => 10,
-                'longueur_max' => 1000
-            ],
-            'website' => [
-                'obligatoire' => false,
-                'format' => FILTER_VALIDATE_URL
-            ],
-            'email' => [
-                'obligatoire' => true,
-                'type' => 'string',
-                'longueur_min' => 5,
-                'longueur_max' => 320,
-                'format' => FILTER_VALIDATE_EMAIL
-            ],
-            'birthdate' => [
-                'obligatoire' => true,
-                'type' => 'string',
-                'age_minimum' => 13
-            ],
-            'password' => [
-                'obligatoire' => true,
-                'type' => 'string',
-                'longueur_min' => 8,
-                'longueur_max' => 128,
-                'mot_de_passe_fort' => true
-            ]
-        ];
-
-        $signupData = [
-            'nom' => $nom,
-            'pseudo' => $pseudo,
-            'description' => $description,
-            'website' => $website,
-            'email' => $email,
-            'birthdate' => $birthdate,
-            'password' => $password
-        ];
-
-        $validator = new Validator($signupRules);
-        if (!$validator->valider($signupData)) {
-            $errors = array_merge($errors, $validator->getMessagesErreurs());
-        }
-
-        // Vérification supplémentaire : confirmation du mot de passe
-        if ($password !== $passwordRepeat) {
-            $errors[] = 'Les mots de passe ne correspondent pas.';
-        }
-
-        // Pour les artistes/producteurs, vérifier la sélection d’un genre
-        if ($userType != 'auditeur') {
-            if (!$genreId) {
-                $errors[] = 'Veuillez sélectionner un genre musical.';
-            } else {
-                $genreDao = new GenreDAO($this->getPDO());
-                try {
-                    $genre = $genreDao->find((int)$genreId);
-                } catch (Exception $e) {
-                    $genre = null;
-                }
-                if (!$genre) {
-                    $errors[] = 'Le genre sélectionné est invalide.';
-                }
-            }
-        }
-
-        // Vérification unicité de l'email et du pseudo
-        $utilisateurDAO = new UtilisateurDAO($this->getPDO());
-
-        if ($email !== '' && $utilisateurDAO->existsByEmail($email)) {
-            $errors[] = 'Un compte existe déjà avec cette adresse e-mail.';
-        }
-
-        if ($pseudo !== '' && $utilisateurDAO->existsByPseudo($pseudo)) {
-            $errors[] = 'Ce nom ou pseudonyme est déjà utilisé.';
-        }
-
-        if (!empty($errors)) {
-            echo json_encode([
-                'success' => false,
-                'message' => implode(' ', $errors)
-            ]);
+        } else {
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => implode(' ', $errors)]);
             return;
         }
+    }
 
-        // Parsing de la date de naissance
-        $birthDateTime = DateTime::createFromFormat('Y-m-d', $birthdate);
-
+    // 3. CRÉATION
+    try {
         $roleDao = new RoleDao($this->getPDO());
         $role = $roleDao->findByType($allowedTypes[$userType]);
 
-        if (!$role) {
-            echo json_encode([
-                'success' => false,
-                'message' => 'Impossible de déterminer le rôle à attribuer à ce compte.'
-            ]);
-            return;
+        $utilisateur = new Utilisateur();
+        $utilisateur->setEmailUtilisateur($email);
+        $utilisateur->setNomUtilisateur($nom);
+        $utilisateur->setPseudoUtilisateur($pseudo);
+        $utilisateur->setMotDePasseUtilisateur(password_hash($password, PASSWORD_ARGON2ID));
+        $utilisateur->setDateDeNaissanceUtilisateur(DateTime::createFromFormat('Y-m-d', $birthdate));
+        $utilisateur->setDateInscriptionUtilisateur(new DateTime());
+        $utilisateur->setStatutUtilisateur(\StatutUtilisateur::Actif);
+        $utilisateur->setStatutAbonnement(\StatutAbonnement::Inactif);
+        $utilisateur->setRoleUtilisateur($role);
+        $utilisateur->setDescriptionUtilisateur($description);
+
+        if ($genreId) {
+            $genreObj = $genreDao->find($genreId);
+            if ($genreObj) $utilisateur->setGenreUtilisateur($genreObj);
         }
 
-        $hashedPassword = password_hash($password, PASSWORD_ARGON2ID);
-        $createdAt = (new DateTime())->format('Y-m-d H:i:s');
-        $pdo = $this->getPDO();
-
-        try {
-            $utilisateur = new Utilisateur();
-            // Affectation des différents attributs de l'utilisateur
-            $utilisateur->setEmailUtilisateur($email); // adresse e-mail
-            $utilisateur->setNomUtilisateur($nom); // nom
-            $utilisateur->setPseudoUtilisateur($pseudo); // pseudonyme
-            $utilisateur->setMotDePasseUtilisateur($hashedPassword); // mot de passe hashé
-            $dateNaissance = !empty($birthdate) ? DateTime::createFromFormat('Y-m-d', $birthdate) : null;
-            $utilisateur->setDateDeNaissanceUtilisateur($dateNaissance); // date de naissance
-            $utilisateur->setDateInscriptionUtilisateur(DateTime::createFromFormat('Y-m-d H:i:s', $createdAt)); // date d'inscription
-            $utilisateur->setStatutUtilisateur(\StatutUtilisateur::Actif); // statut par défaut
-            $utilisateur->setGenreUtilisateur(isset($genre) ? $genre : null); // instance de Genre ou null
-            $utilisateur->setEstAbonnee(false); // nouvel utilisateur non abonné par défaut
-            $utilisateur->setDescriptionUtilisateur($description ?? null);
-            $utilisateur->setSiteWebUtilisateur((isset($website) && $website !== '') ? $website : null);
-            $utilisateur->setStatutAbonnement(\StatutAbonnement::Inactif); // statut abonnement par défaut
-            $utilisateur->setDateDebutAbonnement(null);
-            $utilisateur->setDateFinAbonnement(null);
-            $utilisateur->setPointsDeRenommeeArtiste(null);
-            $utilisateur->setNbAbonnesArtiste(null);
-            $utilisateur->seturlPhotoUtilisateur(null);
-            $utilisateur->setRoleUtilisateur($role);
-
-            $creationReussie = $utilisateurDAO->create($utilisateur);
-
-            if ($creationReussie) {
-
-                $emailSender = new Email($this->getTwig());
-                $emailSender->sendWelcomeEmail(
-                    $utilisateur->getEmailUtilisateur(),
-                    $utilisateur->getPseudoUtilisateur(),
-                    $userType
-                );
-
-                echo json_encode([
-                    'success' => true,
-                    'message' => 'Votre compte a été créé! Vérifiez vos e-mails pour confirmer votre inscription.',
-                    'user' => [
-                        'email' => $utilisateur->getEmailUtilisateur(),
-                        'pseudo' => $utilisateur->getPseudoUtilisateur(),
-                        'type' => $userType
-                    ]
-                ]);
-            } else {
-                echo json_encode([
-                    'success' => false,
-                    'message' => 'Impossible de créer votre compte pour le moment.'
-                ]);
+        if ($utilisateurDAO->create($utilisateur)) {
+            if ($isAdmin) {
+                header('Location: ?controller=admin&method=afficher&success=1');
+                exit;
             }
-        } catch (Exception $e) {
-            echo json_encode([
-                'success' => false,
-                'message' => 'Impossible de créer votre compte pour le moment (' . $e->getMessage() . ').'
-            ]);
+            header('Content-Type: application/json');
+            echo json_encode(['success' => true, 'message' => 'Compte créé !']);
         }
+    } catch (Exception $e) {
+        die("Erreur technique : " . $e->getMessage());
     }
+}
 
     /**
      * Gère la création d'un nouvel utilisateur par l'administrateur.
@@ -359,78 +287,7 @@ class ControllerUtilisateur extends Controller
      * @return void
      * @throws Exception En cas d'erreur lors de la récupération du rôle ou de l'insertion en base de données.
      */
-    public function inscription()
-    {
-        // On vérifie que l'utilisateur courant est bien un administrateur
-        $this->requireRole(RoleEnum::Admin);
-
-        $error = null;
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $pseudo = trim($_POST['pseudo'] ?? '');
-            $email = trim($_POST['email'] ?? '');
-            $password = $_POST['mdp'] ?? '';
-            $roleType = $_POST['role'] ?? 'auditeur';
-
-            $pdo = $this->getPDO();
-            $utilisateurDAO = new UtilisateurDAO($pdo);
-
-            // Vérification si l'e-mail ou le pseudo existe déjà
-            if ($utilisateurDAO->existsByEmail($email)) {
-                $error = "Cet email est déjà utilisé.";
-            } elseif ($utilisateurDAO->existsByPseudo($pseudo)) {
-                $error = "Ce pseudo est déjà pris.";
-            } else {
-                try {
-                    $roleDao = new RoleDao($pdo);
-                    $role = $roleDao->findByType($roleType);
-
-                    if ($role) {
-                        $user = new Utilisateur();
-                        $user->setPseudoUtilisateur($pseudo);
-                        $user->setNomUtilisateur($pseudo);
-                        $user->setEmailUtilisateur($email);
-                        $user->setMotDePasseUtilisateur(password_hash($password, PASSWORD_ARGON2ID));
-                        $user->setRoleUtilisateur($role);
-
-                        $user->setDateInscriptionUtilisateur(new DateTime());
-                        $user->setDateDeNaissanceUtilisateur(new DateTime('2000-01-01'));
-
-                        $user->setStatutUtilisateur(\StatutUtilisateur::Actif);
-                        $user->setEstAbonnee(false);
-                        $user->setStatutAbonnement(\StatutAbonnement::Inactif);
-
-                        $user->setGenreUtilisateur(null);
-                        $user->setDescriptionUtilisateur("Compte créé par admin");
-                        $user->setSiteWebUtilisateur(null);
-                        $user->seturlPhotoUtilisateur(null);
-                        $user->setDateDebutAbonnement(null);
-                        $user->setDateFinAbonnement(null);
-                        $user->setPointsDeRenommeeArtiste(0);
-                        $user->setNbAbonnesArtiste(0);
-
-                        if ($utilisateurDAO->create($user)) {
-                            $this->redirectTo('admin', 'afficher', ['success' => 1]);
-                            exit();
-                        } else {
-                            $error = "Erreur lors de la création en base de données.";
-                        }
-                    } else {
-                        $error = "Rôle introuvable.";
-                    }
-                } catch (Exception $e) {
-                    $error = "Erreur système: " . $e->getMessage();
-                }
-            }
-        }
-
-        $template = $this->getTwig()->load('utilisateur_ajout.html.twig');
-        echo $template->render([
-            'page' => ['title' => 'Ajouter Utilisateur'],
-            'session' => $_SESSION,
-            'error' => $error
-        ]);
-    }
+  
 
     /**
      * Déconnecte l'utilisateur et détruit la session.

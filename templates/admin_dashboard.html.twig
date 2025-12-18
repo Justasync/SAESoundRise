@@ -9,7 +9,7 @@
 
 {% block content %}
 <style>
-    /* Configuration des couleurs de la pagination */
+    /* Variables de couleurs et styles pour la pagination DataTables */
     #usersTable_wrapper {
         --bs-pagination-color: #666;
         --bs-pagination-hover-color: #D99181;
@@ -21,7 +21,7 @@
         --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(217, 145, 129, 0.25);
     }
 
-    /* Style des boutons de pagination arrondis */
+    /* Boutons de pagination circulaires */
     #usersTable_wrapper .page-link {
         border-radius: 50% !important;
         margin: 0 3px;
@@ -33,7 +33,7 @@
         border: 1px solid #dee2e6;
     }
 
-    /* Style des en-têtes de colonnes et indicateurs de tri */
+    /* Style des en-têtes de colonnes */
     #usersTable thead th {
         background-color: #fff;
         color: #6c757d;
@@ -45,7 +45,7 @@
         cursor: pointer;
     }
     
-    /* Icônes de tri (Bootstrap Icons) */
+    /* Configuration des icônes de tri via Bootstrap Icons */
     #usersTable thead th.sorting::after,
     #usersTable thead th.sorting_asc::after,
     #usersTable thead th.sorting_desc::after {
@@ -54,17 +54,13 @@
         right: 10px;
         opacity: 0.3;
     }
+    #usersTable thead th.sorting::after { content: "\f22c"; }
+    #usersTable thead th.sorting_asc::after { content: "\f235"; opacity: 1; color: #D99181; }
+    #usersTable thead th.sorting_desc::after { content: "\f229"; opacity: 1; color: #D99181; }
 
-    #usersTable thead th.sorting::after { content: "\f22c"; } /* Flèches neutres */
-    #usersTable thead th.sorting_asc::after { content: "\f235"; opacity: 1; color: #D99181; } /* Flèche haut */
-    #usersTable thead th.sorting_desc::after { content: "\f229"; opacity: 1; color: #D99181; } /* Flèche bas */
+    #usersTable td { vertical-align: middle; padding: 15px; }
 
-    #usersTable td {
-        vertical-align: middle;
-        padding: 15px;
-    }
-
-    /* Champs de recherche et sélecteurs arrondis */
+    /* Inputs de recherche et sélecteurs arrondis */
     .dataTables_filter input, .dataTables_length select {
         border-radius: 20px !important;
         border: 1px solid #ced4da;
@@ -91,7 +87,7 @@
                 <option value="Auditeur">Auditeur</option>
             </select>
 
-            <a href="?controller=utilisateur&method=inscription" class="btn btn-dark px-4" style="border-radius: 20px;">
+            <a href="?controller=utilisateur&method=signup" class="btn btn-dark px-4" style="border-radius: 20px;">
                 <i class="bi bi-plus-lg me-1"></i> Nouvel Utilisateur
             </a>
         </div>
@@ -114,6 +110,7 @@
                         <tr>
                             <td>
                                 <div class="d-flex align-items-center">
+                                    {# Gestion de l'avatar : Image ou Icône par défaut #}
                                     {% if user.urlPhotoUtilisateur %}
                                         <img src="{{ user.urlPhotoUtilisateur }}" class="rounded-circle me-3" width="40" height="40" style="object-fit: cover;">
                                     {% else %}
@@ -129,22 +126,23 @@
                             </td>
                             <td class="text-secondary">{{ user.emailUtilisateur }}</td>
                             <td>
+                                {# Détermination et affichage du badge de rôle #}
                                 {% set roleName = user.roleUtilisateur.libelleRole|default(user.roleUtilisateur.typeRole|default('Inconnu')) %}
                                 {% set roleLower = roleName|lower %}
                                 
                                 {% if 'admin' in roleLower %}
-                                    <span class="badge rounded-pill" style="background-color: #212529; color: white; padding: 8px 12px;">Admin</span>
+                                    <span class="badge rounded-pill bg-dark">Admin</span>
                                 {% elseif 'artiste' in roleLower %}
-                                    <span class="badge rounded-pill" style="background-color: #D99181; color: white; padding: 8px 12px;">Artiste</span>
+                                    <span class="badge rounded-pill" style="background-color: #D99181;">Artiste</span>
                                 {% elseif 'auditeur' in roleLower %}
-                                    <span class="badge rounded-pill" style="background-color: #0dcaf0; color: white; padding: 8px 12px;">Auditeur</span>
+                                    <span class="badge rounded-pill bg-info text-white">Auditeur</span>
                                 {% else %}
-                                    <span class="badge rounded-pill" style="background-color: #e9ecef; color: #333; padding: 8px 12px;">{{ roleName }}</span>
+                                    <span class="badge rounded-pill bg-light text-dark border">{{ roleName }}</span>
                                 {% endif %}
                             </td>
                             <td class="text-end">
                                 <a href="?controller=admin&method=modifier&id={{ user.emailUtilisateur }}" class="btn btn-sm btn-light text-secondary rounded-circle me-1" title="Modifier"><i class="bi bi-pencil"></i></a>
-                                <a href="?controller=admin&method=supprimer&id={{ user.emailUtilisateur }}" class="btn btn-sm btn-light text-danger rounded-circle" onclick="return confirm('Supprimer ?');" title="Supprimer"><i class="bi bi-trash"></i></a>
+                                <a href="?controller=admin&method=supprimer&id={{ user.emailUtilisateur }}" class="btn btn-sm btn-light text-danger rounded-circle" onclick="return confirm('Confirmer la suppression ?');" title="Supprimer"><i class="bi bi-trash"></i></a>
                             </td>
                         </tr>
                         {% endfor %}
@@ -165,17 +163,18 @@
 
     <script>
         $(document).ready(function() {
+            // Initialisation de DataTables avec traduction française et configuration personnalisée
             var table = $('#usersTable').DataTable({
                 language: {
                     processing:     "Traitement en cours...",
                     search:         "", 
-                    searchPlaceholder: "Rechercher un utilisateur...",
+                    searchPlaceholder: "Rechercher...",
                     lengthMenu:     "Afficher _MENU_",
-                    info:           "Affichage de _START_ à _END_ sur _TOTAL_ utilisateurs",
-                    infoEmpty:      "Affichage de 0 à 0 sur 0 utilisateurs",
-                    infoFiltered:   "(filtré de _MAX_ éléments au total)",
-                    loadingRecords: "Chargement en cours...",
-                    zeroRecords:    "Aucun élément à afficher",
+                    info:           "Affichage de _START_ à _END_ sur _TOTAL_",
+                    infoEmpty:      "Affichage de 0 à 0 sur 0",
+                    infoFiltered:   "(filtré de _MAX_ éléments)",
+                    loadingRecords: "Chargement...",
+                    zeroRecords:    "Aucun résultat trouvé",
                     emptyTable:     "Aucune donnée disponible",
                     paginate: {
                         first:      "Premier",
@@ -185,19 +184,17 @@
                     }
                 },
                 pageLength: 10,
-                // Configuration du DOM (Placement des éléments de recherche et pagination)
+                // Placement des éléments (l=length, f=filter, t=table, r=processing, i=info, p=pagination)
                 dom: "<'row mb-3 align-items-center'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6 text-end'f>>" +
                      "<'row'<'col-sm-12'tr>>" +
                      "<'row mt-3 align-items-center'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-                // Configuration du tri initial
                 order: [[0, 'asc']], 
-                // Désactiver le tri sur la colonne 'Actions'
                 columnDefs: [
-                    { orderable: false, targets: -1 }
+                    { orderable: false, targets: -1 } // Désactive le tri sur la colonne d'actions
                 ]
             });
 
-            // Gestionnaire de filtre par rôle
+            // Logique de filtrage par rôle via le select externe
             $('#roleFilter').on('change', function() {
                 table.column(2).search($(this).val()).draw();
             });
