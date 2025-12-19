@@ -95,6 +95,8 @@ class ControllerAdmin extends Controller
         // 3. Traitement du formulaire (POST)
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $pseudo = trim($_POST['pseudo'] ?? '');
+            $description = trim($_POST['description'] ?? '');
+            $website = trim($_POST['website'] ?? '');
             $roleType = $_POST['role'] ?? 'auditeur';
             $newPassword = $_POST['mdp'] ?? '';
 
@@ -104,6 +106,8 @@ class ControllerAdmin extends Controller
             } else {
                 try {
                     // Mise à jour des infos de base
+                    $user->setDescriptionUtilisateur($description !== '' ? $description : null);
+                    $user->setSiteWebUtilisateur($website !== '' ? $website : null);
                     $user->setPseudoUtilisateur($pseudo);
                     $user->setNomUtilisateur($pseudo);
 
@@ -140,6 +144,26 @@ class ControllerAdmin extends Controller
             'session' => $_SESSION,
             'user' => $user,
             'error' => $error
+        ]);
+    }
+    
+    /**
+ * Affiche le formulaire de création d'utilisateur (Admin seulement).
+ */
+    public function ajouter()
+    {
+        // Seguridad: Solo los admins entran aquí
+        $this->requireRole(RoleEnum::Admin);
+
+        $genreDao = new GenreDAO($this->getPDO());
+        $genres = $genreDao->findAll();
+
+        $template = $this->getTwig()->load('utilisateur_ajout.html.twig');
+        echo $template->render([
+            'page' => ['title' => 'Ajouter un utilisateur'],
+            'session' => $_SESSION,
+            'genres' => $genres,
+            'is_admin_context' => true // Variable para saber que estamos en el panel admin
         ]);
     }
 

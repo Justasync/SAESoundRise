@@ -60,6 +60,16 @@
                             </select>
                         </div>
 
+                        <div class="mb-3">
+                            <label for="description" class="form-label fw-bold" style="color: #555;">Description</label>
+                            <textarea class="form-control rounded-4 px-3" id="description" name="description" rows="3" placeholder="Biographie ou description de l'utilisateur">{{ user.descriptionUtilisateur }}</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="website" class="form-label fw-bold" style="color: #555;">Site Web</label>
+                            <input type="url" class="form-control rounded-pill px-3" id="website" name="website" value="{{ user.siteWebUtilisateur }}" placeholder="https://ejemplo.com">
+                        </div>
+
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn text-white rounded-pill py-2 fw-bold shadow-sm" style="background-color: #D99181; transition: all 0.3s;">
                                 Enregistrer les modifications
