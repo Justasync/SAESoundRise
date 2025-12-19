@@ -272,3 +272,23 @@ CREATE TABLE abonnementArtiste (
     ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+-- ===================== PASSWORD RESET TOKEN =====================
+-- Table pour stocker les tokens de réinitialisation de mot de passe
+-- Les tokens expirent après 1 heure (3600 secondes)
+CREATE TABLE passwordResetToken (
+  idToken INT PRIMARY KEY AUTO_INCREMENT,
+  token VARCHAR(255) NOT NULL UNIQUE,
+  emailUtilisateur VARCHAR(191) NOT NULL,
+  dateCreation DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  dateExpiration DATETIME NOT NULL,
+  estUtilise BOOLEAN NOT NULL DEFAULT 0,
+  
+  INDEX idx_token (token),
+  INDEX idx_email (emailUtilisateur),
+  INDEX idx_expiration (dateExpiration),
+  
+  CONSTRAINT fkPasswordResetUtilisateur
+    FOREIGN KEY (emailUtilisateur) REFERENCES utilisateur(emailUtilisateur)
+    ON DELETE CASCADE ON UPDATE CASCADE
+);
+

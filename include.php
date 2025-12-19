@@ -282,6 +282,16 @@ require_once 'modeles/fichier.class.php';
  */
 require_once 'modeles/fichier.dao.php';
 
+/**
+ * @brief Classe métier des tokens de réinitialisation de mot de passe
+ */
+require_once 'modeles/passwordResetToken.class.php';
+
+/**
+ * @brief DAO des tokens de réinitialisation de mot de passe
+ */
+require_once 'modeles/passwordResetToken.dao.php';
+
 // ==========================================
 // VARIABLES GLOBALES TWIG
 // ==========================================

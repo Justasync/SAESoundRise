@@ -28,6 +28,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /** @type {bootstrap.Modal} Instance de la modale Bootstrap */
   const bootstrapModal = bootstrap.Modal.getOrCreateInstance(signinModal);
+
+  /**
+   * @brief Gestionnaire du bouton "Mot de passe oublié"
+   * 
+   * @details Ferme la modale de connexion et redirige vers la page
+   * de demande de réinitialisation de mot de passe.
+   */
+  const forgotPasswordBtn = document.getElementById("forgotPasswordBtn");
+  if (forgotPasswordBtn) {
+    forgotPasswordBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      // Fermer la modale de connexion
+      bootstrapModal.hide();
+      // Rediriger vers la page de mot de passe oublié
+      window.location.href = "/?controller=utilisateur&method=afficherMotDePasseOublie";
+    });
+  }
   
   /** @type {HTMLElement|null} Élément d'affichage des erreurs */
   const errorAlert = signinModal.querySelector("[data-signin-error]");
