@@ -48,13 +48,11 @@ class ControllerUtilisateur extends Controller
     public function signin()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Content-Type: application/json');
-            echo json_encode([
-                'success' => false,
-                'message' => 'Méthode non autorisée'
-            ]);
+            $this->show405();
             return;
         }
+
+        header('Content-Type: application/json');
 
         $post = $this->getPost();
         $email = trim($post['email'] ?? '');
@@ -80,7 +78,6 @@ class ControllerUtilisateur extends Controller
         ];
 
         if (!$validator->valider($signinData)) {
-            header('Content-Type: application/json');
             echo json_encode([
                 'success' => false,
                 'message' => implode(' ', $validator->getMessagesErreurs())
@@ -93,7 +90,6 @@ class ControllerUtilisateur extends Controller
             $utilisateur = $utilisateurDAO->find($email);
 
             if (!$utilisateur) {
-                header('Content-Type: application/json');
                 echo json_encode([
                     'success' => false,
                     'message' => 'Adresse e-mail ou mot de passe incorrect.'
@@ -104,7 +100,6 @@ class ControllerUtilisateur extends Controller
             $hashedPassword = $utilisateur->getMotDePasseUtilisateur();
 
             if (!password_verify($password, $hashedPassword)) {
-                header('Content-Type: application/json');
                 echo json_encode([
                     'success' => false,
                     'message' => 'Adresse e-mail ou mot de passe incorrect.'
@@ -115,7 +110,6 @@ class ControllerUtilisateur extends Controller
             $statut = $utilisateur->getStatutUtilisateur();
             // Vérification que le compte est actif
             if ($statut && $statut !== StatutUtilisateur::Actif) {
-                header('Content-Type: application/json');
                 echo json_encode([
                     'success' => false,
                     'message' => 'Votre compte est ' . ($statut === StatutUtilisateur::Suspendu ? 'suspendu' : 'supprimé') . '.'
@@ -130,7 +124,6 @@ class ControllerUtilisateur extends Controller
             $_SESSION['user_logged_in'] = true;
 
             // Réponse de succès
-            header('Content-Type: application/json');
             echo json_encode([
                 'success' => true,
                 'message' => 'Connexion réussie!',
@@ -161,15 +154,13 @@ class ControllerUtilisateur extends Controller
      */
     public function signup()
     {
-        header('Content-Type: application/json');
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            echo json_encode([
-                'success' => false,
-                'message' => 'Méthode non autorisée.'
-            ]);
+            $this->show405();
             return;
         }
+
+        header('Content-Type: application/json');
 
         $post = $this->getPost() ?? [];
 
@@ -618,7 +609,7 @@ class ControllerUtilisateur extends Controller
         // --- SÉCURITÉ : Empêcher l'auto-abonnement ---
         if ($emailAbonne === $emailArtiste) {
             echo json_encode([
-                'success' => false, 
+                'success' => false,
                 'message' => 'Vous ne pouvez pas vous abonner à votre propre profil.'
             ]);
             return;
@@ -628,14 +619,316 @@ class ControllerUtilisateur extends Controller
         if ($emailArtiste) {
             $dao = new UtilisateurDAO($this->getPDO());
             $result = $dao->basculerAbonnement($emailAbonne, $emailArtiste);
-            
+
             echo json_encode([
-                'success' => true, 
+                'success' => true,
                 'action' => $result,
                 'newText' => ($result === 'followed') ? 'Abonné(e)' : 'S\'abonner'
             ]);
         } else {
             echo json_encode(['success' => false, 'message' => 'Email artiste manquant']);
         }
+    }
+
+    /**
+     * @brief Affiche le formulaire de mot de passe oublié.
+     * 
+     * Affiche une page permettant à l'utilisateur de saisir son adresse email
+     * pour recevoir un lien de réinitialisation de mot de passe.
+     * 
+     * @return void
+     */
+    public function afficherMotDePasseOublie()
+    {
+        $template = $this->getTwig()->load('forgot_password.html.twig');
+        echo $template->render([
+            'page' => [
+                'title' => 'Mot de passe oublié - Paaxio',
+                'name' => 'forgot_password',
+                'description' => 'Réinitialiser votre mot de passe Paaxio'
+            ],
+            'session' => $_SESSION
+        ]);
+    }
+
+    /**
+     * @brief Traite la demande de réinitialisation de mot de passe.
+     * 
+     * Cette méthode effectue les opérations suivantes :
+     * 1. Valide l'adresse email fournie.
+     * 2. Vérifie l'existence de l'utilisateur en base de données.
+     * 3. Génère un token de réinitialisation valide pendant 1 heure.
+     * 4. Envoie un email contenant le lien de réinitialisation.
+     * 
+     * Pour des raisons de sécurité, le message de succès est identique
+     * que l'email existe ou non dans la base de données.
+     * 
+     * @return void Retourne une réponse JSON.
+     */
+    public function demanderReinitialisation()
+    {
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $this->show405();
+            return;
+        }
+
+        header('Content-Type: application/json');
+
+        $post = $this->getPost();
+        $email = strtolower(trim($post['email'] ?? ''));
+
+        // Validation de l'email
+        $rules = [
+            'email' => [
+                'obligatoire' => true,
+                'type' => 'string',
+                'format' => FILTER_VALIDATE_EMAIL
+            ]
+        ];
+
+        $validator = new Validator($rules);
+        if (!$validator->valider(['email' => $email])) {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Veuillez fournir une adresse email valide.'
+            ]);
+            return;
+        }
+
+        try {
+            $utilisateurDAO = new UtilisateurDAO($this->getPDO());
+            $utilisateur = $utilisateurDAO->find($email);
+
+            // Message de succès identique dans tous les cas (sécurité)
+            $messageSucces = 'Si cette adresse email est associée à un compte, vous recevrez un email de réinitialisation dans quelques instants.';
+
+            // Si l'utilisateur n'existe pas, on retourne quand même un succès
+            // pour éviter l'énumération des adresses email
+            if (!$utilisateur) {
+                echo json_encode([
+                    'success' => true,
+                    'message' => $messageSucces
+                ]);
+                return;
+            }
+
+            // Vérification que le compte est actif
+            $statut = $utilisateur->getStatutUtilisateur();
+            if ($statut && $statut !== StatutUtilisateur::Actif) {
+                echo json_encode([
+                    'success' => true,
+                    'message' => $messageSucces
+                ]);
+                return;
+            }
+
+            // Création du token de réinitialisation
+            $tokenDAO = new PasswordResetTokenDAO($this->getPDO());
+            $token = $tokenDAO->create($email);
+
+            if (!$token) {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Une erreur est survenue. Veuillez réessayer plus tard.'
+                ]);
+                return;
+            }
+
+            // Envoi de l'email de réinitialisation
+            $emailSender = new Email($this->getTwig());
+            $emailSender->sendPasswordResetEmail(
+                $utilisateur->getEmailUtilisateur(),
+                $utilisateur->getPseudoUtilisateur(),
+                $token->getToken()
+            );
+
+            echo json_encode([
+                'success' => true,
+                'message' => $messageSucces
+            ]);
+        } catch (Exception $e) {
+            error_log('Erreur réinitialisation mot de passe: ' . $e->getMessage());
+            echo json_encode([
+                'success' => false,
+                'message' => 'Une erreur est survenue. Veuillez réessayer plus tard.'
+            ]);
+        }
+    }
+
+    /**
+     * @brief Affiche le formulaire de réinitialisation de mot de passe.
+     * 
+     * Vérifie la validité du token fourni dans l'URL avant d'afficher
+     * le formulaire permettant de définir un nouveau mot de passe.
+     * Redirige vers une page d'erreur si le token est invalide ou expiré.
+     * 
+     * @return void
+     */
+    public function resetPassword()
+    {
+        $get = $this->getGet();
+        $tokenValue = $get['token'] ?? '';
+
+        if (empty($tokenValue)) {
+            $this->afficherErreurToken('Lien de réinitialisation invalide.');
+            return;
+        }
+
+        try {
+            $tokenDAO = new PasswordResetTokenDAO($this->getPDO());
+            $token = $tokenDAO->findValidToken($tokenValue);
+
+            if (!$token) {
+                $this->afficherErreurToken('Ce lien de réinitialisation est invalide ou a expiré. Veuillez faire une nouvelle demande.');
+                return;
+            }
+
+            // Récupérer les informations de l'utilisateur
+            $utilisateurDAO = new UtilisateurDAO($this->getPDO());
+            $utilisateur = $utilisateurDAO->find($token->getEmailUtilisateur());
+
+            $template = $this->getTwig()->load('reset_password.html.twig');
+            echo $template->render([
+                'page' => [
+                    'title' => 'Nouveau mot de passe - Paaxio',
+                    'name' => 'reset_password',
+                    'description' => 'Définir un nouveau mot de passe pour votre compte Paaxio'
+                ],
+                'session' => $_SESSION,
+                'token' => $tokenValue,
+                'pseudo' => $utilisateur ? $utilisateur->getPseudoUtilisateur() : ''
+            ]);
+        } catch (Exception $e) {
+            error_log('Erreur affichage reset password: ' . $e->getMessage());
+            $this->afficherErreurToken('Une erreur est survenue. Veuillez réessayer.');
+        }
+    }
+
+    /**
+     * @brief Traite la réinitialisation du mot de passe.
+     * 
+     * Cette méthode effectue les opérations suivantes :
+     * 1. Valide le token de réinitialisation.
+     * 2. Valide le nouveau mot de passe (force, confirmation).
+     * 3. Met à jour le mot de passe de l'utilisateur.
+     * 4. Invalide le token utilisé.
+     * 
+     * @return void Retourne une réponse JSON.
+     */
+    public function traiterReinitialisation()
+    {
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $this->show405();
+            return;
+        }
+
+        header('Content-Type: application/json');
+
+        $post = $this->getPost();
+        $tokenValue = trim($post['token'] ?? '');
+        $password = $post['password'] ?? '';
+        $passwordRepeat = $post['password_repeat'] ?? '';
+
+        // Validation des données
+        $errors = [];
+
+        if (empty($tokenValue)) {
+            $errors[] = 'Token de réinitialisation manquant.';
+        }
+
+        // Règles de validation du mot de passe
+        $passwordRules = [
+            'password' => [
+                'obligatoire' => true,
+                'type' => 'string',
+                'longueur_min' => 8,
+                'longueur_max' => 128,
+                'mot_de_passe_fort' => true
+            ]
+        ];
+
+        $validator = new Validator($passwordRules);
+        if (!$validator->valider(['password' => $password])) {
+            $errors = array_merge($errors, $validator->getMessagesErreurs());
+        }
+
+        // Vérification de la confirmation du mot de passe
+        if ($password !== $passwordRepeat) {
+            $errors[] = 'Les mots de passe ne correspondent pas.';
+        }
+
+        if (!empty($errors)) {
+            echo json_encode([
+                'success' => false,
+                'message' => implode(' ', $errors)
+            ]);
+            return;
+        }
+
+        try {
+            $tokenDAO = new PasswordResetTokenDAO($this->getPDO());
+            $token = $tokenDAO->findValidToken($tokenValue);
+
+            if (!$token) {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Ce lien de réinitialisation est invalide ou a expiré. Veuillez faire une nouvelle demande.'
+                ]);
+                return;
+            }
+
+            // Mettre à jour le mot de passe
+            $updateResult = $tokenDAO->updatePassword($token->getEmailUtilisateur(), $password);
+
+            if (!$updateResult) {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Une erreur est survenue lors de la mise à jour du mot de passe.'
+                ]);
+                return;
+            }
+
+            // Marquer le token comme utilisé
+            $tokenDAO->markAsUsed($tokenValue);
+
+            // Invalider tous les autres tokens de cet utilisateur
+            $tokenDAO->invalidateTokensForUser($token->getEmailUtilisateur());
+
+            echo json_encode([
+                'success' => true,
+                'message' => 'Votre mot de passe a été réinitialisé avec succès. Vous pouvez maintenant vous connecter.'
+            ]);
+        } catch (Exception $e) {
+            error_log('Erreur traitement réinitialisation: ' . $e->getMessage());
+            echo json_encode([
+                'success' => false,
+                'message' => 'Une erreur est survenue. Veuillez réessayer plus tard.'
+            ]);
+        }
+    }
+
+    /**
+     * @brief Affiche une page d'erreur pour les tokens invalides.
+     * 
+     * Méthode utilitaire pour afficher un message d'erreur lorsque
+     * le token de réinitialisation est invalide ou expiré.
+     * 
+     * @param string $message Le message d'erreur à afficher.
+     * @return void
+     */
+    private function afficherErreurToken(string $message): void
+    {
+        $template = $this->getTwig()->load('reset_password_error.html.twig');
+        echo $template->render([
+            'page' => [
+                'title' => 'Lien expiré - Paaxio',
+                'name' => 'reset_password_error',
+                'description' => 'Lien de réinitialisation invalide'
+            ],
+            'session' => $_SESSION,
+            'error_message' => $message
+        ]);
     }
 }

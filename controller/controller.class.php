@@ -305,6 +305,27 @@ class Controller
     }
 
     /**
+     * @brief Affiche une erreur 405 Méthode non autorisée.
+     * 
+     * Affiche une page d'erreur 405 avec un message explicite et quitte le script.
+     * 
+     * @return void
+     */
+    protected function show405(): void
+    {
+        http_response_code(405);
+        $template = $this->getTwig()->load('errors/405.html.twig');
+        echo $template->render([
+            'page' => [
+                'title' => "Erreur 405 - Méthode non autorisée",
+                'name' => "405",
+                'description' => "La méthode HTTP utilisée n'est pas autorisée pour cette ressource."
+            ]
+        ]);
+        exit();
+    }
+
+    /**
      * @brief Exige que l'utilisateur ait un des rôles spécifiés.
      * 
      * Affiche une erreur 403 si le rôle de l'utilisateur ne correspond à aucun des rôles autorisés.
