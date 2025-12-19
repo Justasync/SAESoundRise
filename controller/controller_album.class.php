@@ -388,4 +388,52 @@ class ControllerAlbum extends Controller
         // Rediriger vers la page de l'album avec un message de succès
         $this->redirectTo('album', 'afficherDetails', ['idAlbum' => $idAlbum, 'success_update' => 1]);
     }
+
+    /**
+     * @brief Supprime une chanson (action réservée à l'artiste propriétaire).
+     *
+     * Attend une requête POST avec un champ `id_album` et l'id de la chanson
+     * passé en GET (`idChanson`). Vérifie que l'utilisateur est l'artiste
+     * propriétaire, supprime le fichier audio local si présent, puis supprime
+     * l'enregistrement en base via le DAO.
+     *
+     * @return void
+     */
+    public function supprimerChanson()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $this->redirectTo('home', 'afficher');
+        }
+
+        $this->requireRole(RoleEnum::Artiste);
+
+        $idChanson = $_GET['idChanson'] ?? null;
+        $idAlbum = $_POST['id_album'] ?? null;
+
+        if (!$idChanson || !$idAlbum) {
+            $this->redirectTo('home', 'afficher', ['error' => 1]);
+        }
+
+        $chansonDAO = new ChansonDAO($this->getPDO());
+        $chanson = $chansonDAO->findId((int)$idChanson);
+
+        if (!$chanson || !$chanson->getAlbumChanson() || $chanson->getAlbumChanson()->getArtisteAlbum() !== $_SESSION['user_email']) {
+            $this->redirectTo('home', 'afficher', ['error' => 'unauthorized']);
+        }
+
+        // Supprimer le fichier audio local si présent
+        $urlAudio = $chanson->getUrlAudioChanson();
+        if ($urlAudio && strpos($urlAudio, 'http') !== 0) {
+            // Chemin local attendu
+            if (file_exists($urlAudio) && is_writable($urlAudio)) {
+                @unlink($urlAudio);
+            }
+        }
+
+        // Supprimer la chanson en base
+        $chansonDAO->deleteChanson((int)$idChanson);
+
+        // Rediriger vers la page de détails de l'album
+        $this->redirectTo('album', 'afficherDetails', ['idAlbum' => $idAlbum, 'deleted' => 1]);
+    }
 }

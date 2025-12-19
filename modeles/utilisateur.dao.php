@@ -447,4 +447,23 @@ class UtilisateurDAO
             return 'followed';
         }
     }
+
+    /**
+     * Met à jour le compteur d'abonnés d'un artiste
+     * @param string $emailArtiste
+     * @param int $increment (+1 ou -1)
+     * @return bool
+     */
+    public function updateNbAbonnes(string $emailArtiste, int $increment): bool
+    {
+        $sql = "UPDATE utilisateur 
+                SET nbAbonnesArtiste = nbAbonnesArtiste + :increment 
+                WHERE emailUtilisateur = :emailArtiste";
+                
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            ':increment' => $increment,
+            ':emailArtiste'     => $emailArtiste
+        ]);
+    }
 }

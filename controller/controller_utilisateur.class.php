@@ -620,10 +620,17 @@ class ControllerUtilisateur extends Controller
             $dao = new UtilisateurDAO($this->getPDO());
             $result = $dao->basculerAbonnement($emailAbonne, $emailArtiste);
 
+            $increment = ($result === 'followed') ? 1 : -1;
+            $dao->updateNbAbonnes($emailArtiste, $increment);
+
+            $artisteAJour = $dao->find($emailArtiste);
+            $nouveauNombre = $artisteAJour ? $artisteAJour->getNbAbonnesArtiste() : 0;
+            
             echo json_encode([
                 'success' => true,
                 'action' => $result,
-                'newText' => ($result === 'followed') ? 'Abonné(e)' : 'S\'abonner'
+                'newText' => ($result === 'followed') ? 'Abonné(e)' : 'S\'abonner',
+                'nbAbonnes' => $nouveauNombre
             ]);
         } else {
             echo json_encode(['success' => false, 'message' => 'Email artiste manquant']);

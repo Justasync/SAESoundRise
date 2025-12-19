@@ -127,6 +127,27 @@
 			</div>
 		</div>
 	</div>
+    <!-- Fenêtre Modale pour la suppression de chanson -->
+    <div class="modal fade" id="supprimerChansonModal" tabindex="-1" aria-labelledby="supprimerChansonModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form method="post" id="supprimerChansonForm">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="supprimerChansonModalLabel">Confirmer la suppression</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="id_album" value="{{ album.getIdAlbum() }}">
+                        <p>Êtes-vous sûr de vouloir supprimer la chanson : <strong id="song-to-delete">-</strong> ?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-danger">Supprimer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 	<!-- Fenêtre Modale pour la modification de chanson -->
 	<div class="modal fade" id="modifierChansonModal" tabindex="-1" aria-labelledby="modifierChansonModalLabel" aria-hidden="true">
@@ -185,6 +206,23 @@ genreInput.value = songGenre;
 // Mettre à jour l'action du formulaire pour inclure l'ID de la chanson
 modalForm.action = `/?controller=album&method=modifierChanson&idChanson=${songId}`;
 });
+}
+// Gestion de la modale de suppression
+const supprimerModal = document.getElementById('supprimerChansonModal');
+if (supprimerModal) {
+	supprimerModal.addEventListener('show.bs.modal', function (event) {
+		const button = event.relatedTarget;
+		const songId = button.getAttribute('data-song-id');
+		const songTitle = button.getAttribute('data-song-title');
+		const form = supprimerModal.querySelector('form');
+		const songToDelete = document.getElementById('song-to-delete');
+		if (songToDelete) {
+			songToDelete.textContent = songTitle;
+		}
+		if (form) {
+			form.action = `/?controller=album&method=supprimerChanson&idChanson=${songId}`;
+		}
+	});
 }
 });
 	</script>
