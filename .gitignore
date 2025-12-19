@@ -1,47 +1,50 @@
-# Environment files
+# Fichiers d'environnement
 .env
 .env.*
 /config/config.json
 
-# File to take notes of what's done
+# Fichier pour prendre des notes sur le travail effectué
 COMMIT
 
-# Albums tests files
+# Fichiers de tests des albums
 assets/audio
 assets/images/albums
 assets/images/profile_pictures
 
-# Dependencies
+# Téléchargements
+/downloads/
+
+# Dépendances
 /node_modules/
 /vendor/
 
-# OS generated files
+# Fichiers générés par le système d'exploitation
 .DS_Store
 Thumbs.db
 
-# Log files
+# Fichiers de logs
 *.log
 .cache/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# IDE and editor folders
+# Dossiers des IDE et éditeurs
 .vscode/
 .idea/
 .phpstorm.meta.php
 .vs/
 
-# Build / dist
+# Fichiers de build / distribution
 /dist/
 /build/
 /public/js/*.map
 /public/css/*.map
 
-# keys and certifications
+# Clés et certificats
 *.key
 *.pem
 
-# Other sensitive files
+# Autres fichiers sensibles
 *.key
 *.pem
