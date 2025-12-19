@@ -4,7 +4,7 @@
 
 ### README — Organisation des Documents sur GitHub
 
-Date de dernière mise à jour : **25 novembre 2025**  
+Date de dernière mise à jour : **19 décembre 2025**  
 Contact :
 
 - [BOIX Yohan](https://github.com/Vendettass) — `yboix@iutbayonne.univ-pau.fr`
@@ -17,14 +17,14 @@ Contact :
 
 ---
 
-# 🧩 Projet Web — Installation et Configuration
+# Projet Web — Installation et Configuration
 
 Bienvenue dans **SAEPaaxio**, un projet collaboratif de développement web.  
 Ce document explique comment installer et exécuter le projet en local.
 
 ---
 
-## 🚀 Prérequis
+## Prérequis
 
 Avant de commencer, assurez-vous d’avoir installé :
 
@@ -35,7 +35,7 @@ Avant de commencer, assurez-vous d’avoir installé :
 
 ---
 
-## 📂 Installation du projet
+## Installation du projet
 
 1. **Cloner le dépôt**
 
@@ -72,3 +72,43 @@ Avant de commencer, assurez-vous d’avoir installé :
    ```
 
    Remplacez `root` et `paaxio_db` par votre nom d’utilisateur et le nom de votre base si besoin.
+
+6. **Télécharger les fichiers multimédias** _(Optionnel)_
+
+   > ⚠️ **Cette étape est optionnelle.** Ces fichiers sont uniquement des données de démonstration/test et ne sont pas nécessaires pour le fonctionnement du projet.
+
+   Les fichiers multimédias (images et audio) ne sont pas inclus dans le dépôt Git. Si vous souhaitez utiliser les données de test, vous pouvez les télécharger depuis les liens suivants :
+
+   - **Photos de profil des utilisateurs** :  
+     📥 [https://paaxio.com/downloads/profile_pictures.zip](https://paaxio.com/downloads/profile_pictures.zip)  
+     → À extraire dans `/assets/images/profile_pictures/`
+
+   - **Images des albums** :  
+     📥 [https://paaxio.com/downloads/albums.zip](https://paaxio.com/downloads/albums.zip)  
+     → À extraire dans `/assets/images/albums/`
+
+   - **Fichiers audio (musiques)** :  
+     📥 [https://paaxio.com/downloads/audio.zip](https://paaxio.com/downloads/audio.zip)  
+     → À extraire dans `/assets/audio/`
+
+   **Sources des fichiers de démonstration :**
+
+   - Photos de profil : générées par [This Person Does Not Exist](https://thispersondoesnotexist.com)
+   - Images des albums : générées par [Lorem Picsum](https://picsum.photos/500)
+   - Musiques : provenant de [Pixabay Music](https://pixabay.com/music/) (libres de droits)
+
+   **Exemple de commandes pour télécharger et extraire les fichiers :**
+
+   ```bash
+   # Photos de profil
+   wget https://paaxio.com/downloads/profile_pictures.zip
+   unzip profile_pictures.zip -d assets/images/profile_pictures/
+
+   # Images des albums
+   wget https://paaxio.com/downloads/albums.zip
+   unzip albums.zip -d assets/images/albums/
+
+   # Fichiers audio
+   wget https://paaxio.com/downloads/audio.zip
+   unzip audio.zip -d assets/audio/
+   ```
