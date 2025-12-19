@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file modeles/chanson.dao.php
  * @brief DAO pour la gestion des chansons
@@ -177,6 +178,13 @@ class ChansonDAO
 
     public function filtrerChanson(?int $idGenre = null, ?int $idAlbum = null, string $colonne = 'titreChanson', string $ordre = 'ASC'): array
     {
+        // Protection contre l'injection SQL : validation par liste blanche
+        $colonnesValides = ['titreChanson', 'dateTeleversementChanson', 'nbEcouteChanson', 'idChanson', 'dureeChanson'];
+        $ordresValides = ['ASC', 'DESC'];
+
+        $colonne = in_array($colonne, $colonnesValides, true) ? $colonne : 'titreChanson';
+        $ordre = in_array(strtoupper($ordre), $ordresValides, true) ? strtoupper($ordre) : 'ASC';
+
         $sql = "SELECT * FROM chanson WHERE 1=1";
 
         if ($idGenre !== null) {
