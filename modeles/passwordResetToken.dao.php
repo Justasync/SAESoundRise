@@ -8,7 +8,6 @@
  * opérations de base de données relatives aux tokens de réinitialisation
  * de mot de passe : création, recherche, validation et suppression.
  * 
- * @package Paaxio\Modeles
  */
 
 /**
@@ -276,4 +275,3 @@ class PasswordResetTokenDAO
         $this->pdo = $pdo;
     }
 }
-

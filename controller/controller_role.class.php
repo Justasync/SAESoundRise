@@ -45,7 +45,7 @@ class ControllerRole extends Controller
         $idRole = isset($_GET['idRole']) ? $_GET['idRole'] : null;
 
         // Récupération du rôle
-        $managerRole = new RoleDao($this->getPdo());
+        $managerRole = new RoleDAO($this->getPdo());
         $role = $managerRole->find($idRole);
 
         $template = $this->getTwig()->load('test.html.twig');
@@ -69,7 +69,7 @@ class ControllerRole extends Controller
     public function lister()
     {
         // Récupération des rôles
-        $managerRole = new RoleDao($this->getPdo());
+        $managerRole = new RoleDAO($this->getPdo());
         $roles = $managerRole->findAll();
 
         // Choix du template
@@ -95,7 +95,7 @@ class ControllerRole extends Controller
      */
     public function listerTableau()
     {
-        $managerRole = new RoleDao($this->getPdo());
+        $managerRole = new RoleDAO($this->getPdo());
         $roles = $managerRole->findAll();
 
         // Génération de la vue

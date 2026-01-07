@@ -1,0 +1,484 @@
+# Doxyfile 1.9.8 - Configuration file for Doxygen
+# Documentation Paaxio - Plateforme de streaming musical
+
+#---------------------------------------------------------------------------
+# Project related configuration options
+#---------------------------------------------------------------------------
+
+# Project name displayed in the documentation
+PROJECT_NAME           = "Paaxio"
+
+# Brief project description
+PROJECT_BRIEF          = "Plateforme de streaming musical - SAE IUT Bayonne"
+
+# Project number/version
+PROJECT_NUMBER         = "1.0"
+
+# Project logo (relative to Doxyfile location)
+PROJECT_LOGO           = assets/images/logos/paaxio-black.svg
+
+# Output directory for generated documentation
+OUTPUT_DIRECTORY       = docs
+
+# Language of the documentation
+OUTPUT_LANGUAGE        = French
+
+# Allow Unicode characters in documentation
+DOXYFILE_ENCODING      = UTF-8
+
+#---------------------------------------------------------------------------
+# Build related configuration options
+#---------------------------------------------------------------------------
+
+# Extract all documented entities
+EXTRACT_ALL            = YES
+
+# Extract private class members
+EXTRACT_PRIVATE        = YES
+
+# Extract static members
+EXTRACT_STATIC         = YES
+
+# Extract local classes and enums
+EXTRACT_LOCAL_CLASSES  = YES
+
+# Extract anonymous namespaces
+EXTRACT_ANON_NSPACES   = YES
+
+# Hide undocumented members
+HIDE_UNDOC_MEMBERS     = NO
+
+# Hide undocumented classes
+HIDE_UNDOC_CLASSES     = NO
+
+# Hide friend compounds
+HIDE_FRIEND_COMPOUNDS  = NO
+
+# Brief member descriptions
+BRIEF_MEMBER_DESC      = YES
+
+# Repeat brief descriptions
+REPEAT_BRIEF           = YES
+
+# Abbreviate brief descriptions
+ABBREVIATE_BRIEF       = "The $name class" \
+                         "The $name widget" \
+                         "The $name file" \
+                         is \
+                         provides \
+                         specifies \
+                         contains \
+                         represents \
+                         a \
+                         an \
+                         the
+
+# Always show detailed descriptions
+ALWAYS_DETAILED_SEC    = NO
+
+# Enable inline inherited members
+INLINE_INHERITED_MEMB  = NO
+
+# Full path names - disabled to avoid showing local machine paths
+FULL_PATH_NAMES        = NO
+
+# Strip path from file names (not used when FULL_PATH_NAMES is NO)
+STRIP_FROM_PATH        =
+
+# Sort member docs
+SORT_MEMBER_DOCS       = YES
+
+# Sort brief docs
+SORT_BRIEF_DOCS        = NO
+
+#---------------------------------------------------------------------------
+# Configuration options related to warning and progress messages
+#---------------------------------------------------------------------------
+
+# Quiet mode
+QUIET                  = NO
+
+# Show warnings
+WARNINGS               = YES
+
+# Warn if undocumented
+WARN_IF_UNDOCUMENTED   = YES
+
+# Warn if documentation errors
+WARN_IF_DOC_ERROR      = YES
+
+# Warning format
+WARN_FORMAT            = "$file:$line: $text"
+
+# Log file for warnings
+WARN_LOGFILE           = docs/doxygen_warnings.log
+
+#---------------------------------------------------------------------------
+# Configuration options related to the input files
+#---------------------------------------------------------------------------
+
+# Input directories and files (only project source code)
+INPUT                  = mainpage.dox \
+                         index.php \
+                         include.php \
+                         controller \
+                         modeles \
+                         enums \
+                         config \
+                         assets/js \
+                         sql
+
+# Input encoding
+INPUT_ENCODING         = UTF-8
+
+# File patterns to process
+FILE_PATTERNS          = *.php \
+                         *.sql \
+                         *.js
+
+# Recursive search
+RECURSIVE              = YES
+
+# Exclude directories (absolute paths from project root)
+EXCLUDE                = vendor \
+                         node_modules \
+                         tarteaucitron \
+                         archive \
+                         docs \
+                         downloads \
+                         assets/audio \
+                         assets/images \
+                         assets/css
+
+# Exclude patterns (for files in subdirectories)
+EXCLUDE_PATTERNS       = */vendor/* \
+                         */node_modules/* \
+                         */tarteaucitron/* \
+                         */.git/* \
+                         */bootstrap.bundle.js \
+                         */dataTables*.js \
+                         */bootstrap*.js
+
+# Exclude symlinks
+EXCLUDE_SYMLINKS       = NO
+
+# Example path
+EXAMPLE_PATH           = 
+
+# Image path
+IMAGE_PATH             = assets/images
+
+#---------------------------------------------------------------------------
+# Configuration options related to source browsing
+#---------------------------------------------------------------------------
+
+# Source code browsing
+SOURCE_BROWSER         = YES
+
+# Inline sources
+INLINE_SOURCES         = NO
+
+# Strip code comments
+STRIP_CODE_COMMENTS    = YES
+
+# Referenced by relation
+REFERENCED_BY_RELATION = YES
+
+# References relation
+REFERENCES_RELATION    = YES
+
+# Use htags
+USE_HTAGS              = NO
+
+# Verbatim headers
+VERBATIM_HEADERS       = YES
+
+#---------------------------------------------------------------------------
+# Configuration options related to the alphabetical class index
+#---------------------------------------------------------------------------
+
+# Alphabetical index
+ALPHABETICAL_INDEX     = YES
+
+# Columns in alphabetical index
+COLS_IN_ALPHA_INDEX    = 5
+
+#---------------------------------------------------------------------------
+# Configuration options related to the HTML output
+#---------------------------------------------------------------------------
+
+# Generate HTML output
+GENERATE_HTML          = YES
+
+# HTML output directory
+HTML_OUTPUT            = html
+
+# HTML file extension
+HTML_FILE_EXTENSION    = .html
+
+# HTML header
+HTML_HEADER            = 
+
+# HTML footer
+HTML_FOOTER            = 
+
+# HTML stylesheet
+HTML_STYLESHEET        = 
+
+# HTML extra stylesheet for custom styling
+HTML_EXTRA_STYLESHEET  = 
+
+# HTML colorstyle hue (0-359)
+HTML_COLORSTYLE_HUE    = 220
+
+# HTML colorstyle saturation (0-255)
+HTML_COLORSTYLE_SAT    = 100
+
+# HTML colorstyle gamma (40-240)
+HTML_COLORSTYLE_GAMMA  = 80
+
+# HTML timestamp
+HTML_TIMESTAMP         = YES
+
+# HTML dynamic sections
+HTML_DYNAMIC_SECTIONS  = NO
+
+# HTML index num entries
+HTML_INDEX_NUM_ENTRIES = 100
+
+# Generate treeview
+GENERATE_TREEVIEW      = YES
+
+# Treeview width
+TREEVIEW_WIDTH         = 250
+
+# External links in new window
+EXT_LINKS_IN_WINDOW    = NO
+
+# Formula fontsize
+FORMULA_FONTSIZE       = 10
+
+# Use mathjax
+USE_MATHJAX            = NO
+
+# Searchengine
+SEARCHENGINE           = YES
+
+# Server based search
+SERVER_BASED_SEARCH    = NO
+
+#---------------------------------------------------------------------------
+# Configuration options related to the LaTeX output
+#---------------------------------------------------------------------------
+
+# Generate LaTeX output
+GENERATE_LATEX         = NO
+
+#---------------------------------------------------------------------------
+# Configuration options related to the RTF output
+#---------------------------------------------------------------------------
+
+# Generate RTF output
+GENERATE_RTF           = NO
+
+#---------------------------------------------------------------------------
+# Configuration options related to the man page output
+#---------------------------------------------------------------------------
+
+# Generate man pages
+GENERATE_MAN           = NO
+
+#---------------------------------------------------------------------------
+# Configuration options related to the XML output
+#---------------------------------------------------------------------------
+
+# Generate XML output
+GENERATE_XML           = NO
+
+#---------------------------------------------------------------------------
+# Configuration options related to the DOCBOOK output
+#---------------------------------------------------------------------------
+
+# Generate DOCBOOK output
+GENERATE_DOCBOOK       = NO
+
+#---------------------------------------------------------------------------
+# Configuration options for the AutoGen Definitions output
+#---------------------------------------------------------------------------
+
+# Generate AutoGen definitions
+GENERATE_AUTOGEN_DEF   = NO
+
+#---------------------------------------------------------------------------
+# Configuration options related to the Perl module output
+#---------------------------------------------------------------------------
+
+# Generate Perl module
+GENERATE_PERLMOD       = NO
+
+#---------------------------------------------------------------------------
+# Configuration options related to the preprocessor
+#---------------------------------------------------------------------------
+
+# Enable preprocessing
+ENABLE_PREPROCESSING   = YES
+
+# Macro expansion
+MACRO_EXPANSION        = NO
+
+# Expand only predef
+EXPAND_ONLY_PREDEF     = NO
+
+# Search includes
+SEARCH_INCLUDES        = YES
+
+#---------------------------------------------------------------------------
+# Configuration options related to external references
+#---------------------------------------------------------------------------
+
+# Tag files
+TAGFILES               = 
+
+# Generate tag file
+GENERATE_TAGFILE       = 
+
+# All externals
+ALLEXTERNALS           = NO
+
+# External groups
+EXTERNAL_GROUPS        = YES
+
+# External pages
+EXTERNAL_PAGES         = YES
+
+#---------------------------------------------------------------------------
+# Configuration options related to the dot tool
+#---------------------------------------------------------------------------
+
+# Class diagrams
+CLASS_DIAGRAMS         = YES
+
+# Hide undocumented relations
+HIDE_UNDOC_RELATIONS   = YES
+
+# Have dot
+HAVE_DOT               = YES
+
+# Dot number of threads
+DOT_NUM_THREADS        = 0
+
+# UML look
+UML_LOOK               = YES
+
+# UML limit number of fields
+UML_LIMIT_NUM_FIELDS   = 10
+
+# Template relations
+TEMPLATE_RELATIONS     = NO
+
+# Include graph
+INCLUDE_GRAPH          = YES
+
+# Included by graph
+INCLUDED_BY_GRAPH      = YES
+
+# Call graph
+CALL_GRAPH             = YES
+
+# Caller graph
+CALLER_GRAPH           = YES
+
+# Graphical hierarchy
+GRAPHICAL_HIERARCHY    = YES
+
+# Directory graph
+DIRECTORY_GRAPH        = YES
+
+# Dot image format
+DOT_IMAGE_FORMAT       = svg
+
+# Interactive SVG
+INTERACTIVE_SVG        = YES
+
+# Dot path
+DOT_PATH               = 
+
+# Dot file dirs
+DOTFILE_DIRS           = 
+
+# Max dot graph depth
+MAX_DOT_GRAPH_DEPTH    = 0
+
+# Dot transparent
+DOT_TRANSPARENT        = NO
+
+# Dot multi targets
+DOT_MULTI_TARGETS      = YES
+
+# Generate legend
+GENERATE_LEGEND        = YES
+
+# Dot cleanup
+DOT_CLEANUP            = YES
+
+#---------------------------------------------------------------------------
+# Options related to the search engine
+#---------------------------------------------------------------------------
+
+# Searchengine URL
+SEARCHENGINE_URL       = 
+
+# Search data file
+SEARCHDATA_FILE        = searchdata.xml
+
+#---------------------------------------------------------------------------
+# PHP-specific settings
+#---------------------------------------------------------------------------
+
+# Optimize for PHP
+OPTIMIZE_OUTPUT_FOR_C  = NO
+OPTIMIZE_OUTPUT_FOR_JAVA = YES
+
+# PHP extension
+EXTENSION_MAPPING      = php=PHP
+
+# Built-in STL support
+BUILTIN_STL_SUPPORT    = NO
+
+#---------------------------------------------------------------------------
+# Documentation style
+#---------------------------------------------------------------------------
+
+# Javadoc autobrief
+JAVADOC_AUTOBRIEF      = YES
+
+# Qt autobrief
+QT_AUTOBRIEF           = NO
+
+# Multiline CPP is brief
+MULTILINE_CPP_IS_BRIEF = NO
+
+# Inherit docs
+INHERIT_DOCS           = YES
+
+# Separate member pages
+SEPARATE_MEMBER_PAGES  = NO
+
+# Tab size
+TAB_SIZE               = 4
+
+# Aliases for custom commands
+ALIASES                = "description=\par Description:\n"
+
+# Markdown support
+MARKDOWN_SUPPORT       = YES
+
+# Autolink support
+AUTOLINK_SUPPORT       = YES
+
+# Subgrouping
+SUBGROUPING            = YES
+
+# Inline grouped classes
+INLINE_GROUPED_CLASSES = NO
+

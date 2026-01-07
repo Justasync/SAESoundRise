@@ -41,6 +41,9 @@ yarn-error.log*
 /public/js/*.map
 /public/css/*.map
 
+# Dossiers de documentation générée par Doxygen
+/docs/
+
 # Clés et certificats
 *.key
 *.pem

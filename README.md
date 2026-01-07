@@ -4,7 +4,7 @@
 
 ### README — Organisation des Documents sur GitHub
 
-Date de dernière mise à jour : **19 décembre 2025**  
+Date de dernière mise à jour : **7 janvier 2026**  
 Contact :
 
 - [BOIX Yohan](https://github.com/Vendettass) — `yboix@iutbayonne.univ-pau.fr`
@@ -21,6 +21,20 @@ Contact :
 
 Bienvenue dans **SAEPaaxio**, un projet collaboratif de développement web.  
 Ce document explique comment installer et exécuter le projet en local.
+
+---
+
+## Documentation
+
+La documentation technique détaillée, générée automatiquement avec **Doxygen**, est disponible en ligne à l'adresse suivante :  
+**[docs.paaxio.com](https://docs.paaxio.com)**
+
+La génération de cette documentation se fait à chaque mise à jour du code sur la branche `main`.  
+Le système utilise un workflow GitHub Actions automatisé (voir `.github/workflows/docs.yml`) qui :
+
+- Installe **Doxygen** et **Graphviz** sur un environnement Ubuntu
+- Génère la documentation à partir des fichiers sources du dépôt
+- Publie automatiquement le résultat dans le dossier `docs/html` sur GitHub Pages, rendant la documentation accessible publiquement.
 
 ---
 

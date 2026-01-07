@@ -1,0 +1,199 @@
+/**
+ * @mainpage Documentation Paaxio
+ * 
+ * @section intro_sec Introduction
+ * 
+ * **Paaxio** est une plateforme de streaming musical développée dans le cadre d'un projet SAE
+ * à l'IUT de Bayonne. Cette application web permet aux utilisateurs d'écouter de la musique,
+ * et aux artistes de partager leur musique.
+ * 
+ * @section architecture_sec Architecture du Projet
+ * 
+ * Le projet suit une architecture **MVC** (Modèle-Vue-Contrôleur) :
+ * 
+ * - **Modèles** (`modeles/`) : Classes métier et DAO (Data Access Objects) pour l'accès aux données
+ * - **Vues** (`templates/`) : Templates Twig pour le rendu HTML
+ * - **Contrôleurs** (`controller/`) : Logique applicative et routage des requêtes
+ * 
+ * @section structure_sec Structure des Fichiers
+ * 
+ * @subsection entrypoint Point d'Entrée
+ * - `index.php` : Front controller - reçoit toutes les requêtes HTTP
+ * - `include.php` : Fichier d'inclusion centralisant toutes les dépendances
+ * 
+ * @subsection controllers Contrôleurs
+ * - @ref Controller : Classe de base pour tous les contrôleurs
+ * - @ref ControllerFactory : Fabrique pour instancier les contrôleurs
+ * - @ref ControllerHome : Gestion de la page d'accueil
+ * - @ref ControllerUtilisateur : Gestion des utilisateurs (inscription, connexion, profil)
+ * - @ref ControllerChanson : Gestion des chansons (lecture, likes)
+ * - @ref ControllerAlbum : Gestion des albums
+ * - @ref ControllerPlaylist : Gestion des playlists
+ * - @ref ControllerBattle : Gestion des battles musicales
+ * - @ref ControllerAdmin : Interface d'administration
+ * - @ref ControllerNewsletter : Gestion de la newsletter
+ * 
+ * @subsection models Modèles
+ * 
+ * @subsubsection models_class Classes Métier
+ * - @ref Utilisateur : Représente un utilisateur du système
+ * - @ref Chanson : Représente une chanson
+ * - @ref Album : Représente un album musical
+ * - @ref Playlist : Représente une playlist utilisateur
+ * - @ref Battle : Représente un duel musical entre artistes
+ * - @ref Genre : Représente un genre musical
+ * - @ref Role : Représente un rôle utilisateur
+ * 
+ * @subsubsection models_dao Data Access Objects (DAO)
+ * - @ref UtilisateurDAO : Accès aux données utilisateurs
+ * - @ref ChansonDAO : Accès aux données des chansons
+ * - @ref AlbumDAO : Accès aux données des albums
+ * - @ref PlaylistDAO : Accès aux données des playlists
+ * - @ref BattleDAO : Accès aux données des battles
+ * - @ref GenreDAO : Accès aux données des genres
+ * 
+ * @subsubsection models_util Utilitaires
+ * - @ref bd : Singleton pour la connexion à la base de données (MySQL/PDO)
+ * - @ref Constantes : Gestion de la configuration (config.json)
+ * - @ref Validator : Validation des données utilisateur
+ * - @ref Email : Envoi d'emails via PHPMailer
+ * 
+ * @subsection enums Énumérations
+ * - @ref RoleEnum : Rôles utilisateur (Admin, Artiste, Auditeur, Producteur, Invité)
+ * - @ref StatutUtilisateur : Statuts utilisateur (Actif, Suspendu, Supprimé)
+ * - @ref StatutAbonnement : Statuts d'abonnement
+ * - @ref StatutBattle : Statuts des battles
+ * 
+ * @section features_sec Fonctionnalités
+ * 
+ * @subsection user_features Pour les Utilisateurs
+ * - Ecoute de musique en streaming
+ * - Consultation des playlists
+ * - Système de likes sur les chansons
+ * - Profil utilisateur
+ * - Inscription à la newsletter
+ * 
+ * @subsection artist_features Pour les Artistes
+ * - Upload de chansons et albums/singles
+ * - Statistiques
+ * 
+ * @subsection admin_features Pour les Administrateurs
+ * - Gestion des utilisateurs
+ * 
+ * @section tech_sec Technologies Utilisées
+ * 
+ * | Technologie | Version | Usage |
+ * |-------------|---------|-------|
+ * | PHP | >= 8.2 | Backend |
+ * | MySQL | >= 8.0 | Base de données |
+ * | Twig | 3.x | Templates HTML |
+ * | Bootstrap | 5.x | Framework CSS |
+ * | PHPMailer | 6.x | Envoi d'emails |
+ * | jQuery | 3.x | JavaScript |
+ * 
+ * @section install_sec Installation
+ * 
+ * 1. Cloner le dépôt
+ * 2. Installer les dépendances PHP : `composer install`
+ * 3. Installer les dépendances Node.js : `npm install`
+ * 4. Configurer `config/config.json` à partir de `config.example.json`
+ * 5. Exécuter les scripts SQL dans `sql/`
+ * 
+ * @section authors_sec Auteurs
+ * 
+ * - BOIX Yohan
+ * - BOUSSOU MOUYABI Jarlin
+ * - CECILIA URRA Christopher
+ * - DIDELOT Tim
+ * - HOARAU Erwan
+ * - RAMIREZ BATALLA Angel David
+ * - TEISSEIRE Raphaël
+ * 
+ * @section license_sec Projet SAE - IUT Bayonne
+ * 
+ * Projet réalisé dans le cadre de la SAE
+ * du 3e semestre du BUT Informatique à l'IUT de Bayonne.
+ * 
+ * Date : Janvier 2026
+ */
+
+/**
+ * @namespace Paaxio
+ * @brief Espace de noms principal de l'application Paaxio.
+ * 
+ * Contient tous les composants de la plateforme de streaming musical Paaxio.
+ */
+
+/**
+ * @namespace Paaxio::Controllers
+ * @brief Contrôleurs de l'application.
+ * 
+ * Contient tous les contrôleurs qui gèrent la logique applicative
+ * et le routage des requêtes HTTP.
+ * 
+ * @see Controller Classe de base
+ * @see ControllerFactory Fabrique de contrôleurs
+ * @see ControllerHome Gestion de la page d'accueil
+ * @see ControllerUtilisateur Gestion des utilisateurs
+ * @see ControllerChanson Gestion des chansons
+ * @see ControllerAlbum Gestion des albums
+ * @see ControllerPlaylist Gestion des playlists
+ * @see ControllerBattle Gestion des battles
+ * @see ControllerAdmin Interface d'administration
+ * @see ControllerNewsletter Gestion de la newsletter
+ */
+
+/**
+ * @namespace Paaxio::Models
+ * @brief Classes métier de l'application.
+ * 
+ * Contient les classes représentant les entités du domaine métier.
+ * 
+ * @see Utilisateur Représente un utilisateur
+ * @see Chanson Représente une chanson
+ * @see Album Représente un album musical
+ * @see Playlist Représente une playlist utilisateur
+ * @see Battle Représente un duel musical
+ * @see Genre Représente un genre musical
+ * @see Role Représente un rôle utilisateur
+ */
+
+/**
+ * @namespace Paaxio::DAO
+ * @brief Data Access Objects pour l'accès aux données.
+ * 
+ * Contient les classes DAO qui encapsulent l'accès à la base de données
+ * en utilisant le pattern Data Access Object.
+ * 
+ * @see UtilisateurDAO Accès aux données utilisateurs
+ * @see ChansonDAO Accès aux données des chansons
+ * @see AlbumDAO Accès aux données des albums
+ * @see PlaylistDAO Accès aux données des playlists
+ * @see BattleDAO Accès aux données des battles
+ * @see GenreDAO Accès aux données des genres
+ * @see RoleDAO Accès aux données des rôles
+ */
+
+/**
+ * @namespace Paaxio::Enums
+ * @brief Énumérations PHP de l'application.
+ * 
+ * Contient les types énumérés utilisés dans l'application
+ * pour représenter des valeurs constantes typées.
+ * 
+ * @see RoleEnum Rôles utilisateur (Admin, Artiste, Auditeur, etc.)
+ * @see StatutUtilisateur Statuts utilisateur (Actif, Suspendu, Supprimé)
+ * @see StatutAbonnement Statuts d'abonnement
+ * @see StatutBattle Statuts des battles musicales
+ */
+
+/**
+ * @namespace Paaxio::Utils
+ * @brief Classes utilitaires.
+ * 
+ * @see bd Singleton de connexion à la base de données (MySQL/PDO)
+ * @see Constantes Gestion de la configuration (config.json)
+ * @see Validator Validation des données utilisateur
+ * @see Email Envoi d'emails via PHPMailer
+ * @see Fichier Gestion des fichiers uploadés
+ */
