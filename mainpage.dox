@@ -116,3 +116,84 @@
  * 
  * Date : Janvier 2026
  */
+
+/**
+ * @namespace Paaxio
+ * @brief Espace de noms principal de l'application Paaxio.
+ * 
+ * Contient tous les composants de la plateforme de streaming musical Paaxio.
+ */
+
+/**
+ * @namespace Paaxio::Controllers
+ * @brief Contrôleurs de l'application.
+ * 
+ * Contient tous les contrôleurs qui gèrent la logique applicative
+ * et le routage des requêtes HTTP.
+ * 
+ * @see Controller Classe de base
+ * @see ControllerFactory Fabrique de contrôleurs
+ * @see ControllerHome Gestion de la page d'accueil
+ * @see ControllerUtilisateur Gestion des utilisateurs
+ * @see ControllerChanson Gestion des chansons
+ * @see ControllerAlbum Gestion des albums
+ * @see ControllerPlaylist Gestion des playlists
+ * @see ControllerBattle Gestion des battles
+ * @see ControllerAdmin Interface d'administration
+ * @see ControllerNewsletter Gestion de la newsletter
+ */
+
+/**
+ * @namespace Paaxio::Models
+ * @brief Classes métier de l'application.
+ * 
+ * Contient les classes représentant les entités du domaine métier.
+ * 
+ * @see Utilisateur Représente un utilisateur
+ * @see Chanson Représente une chanson
+ * @see Album Représente un album musical
+ * @see Playlist Représente une playlist utilisateur
+ * @see Battle Représente un duel musical
+ * @see Genre Représente un genre musical
+ * @see Role Représente un rôle utilisateur
+ */
+
+/**
+ * @namespace Paaxio::DAO
+ * @brief Data Access Objects pour l'accès aux données.
+ * 
+ * Contient les classes DAO qui encapsulent l'accès à la base de données
+ * en utilisant le pattern Data Access Object.
+ * 
+ * @see UtilisateurDAO Accès aux données utilisateurs
+ * @see ChansonDAO Accès aux données des chansons
+ * @see AlbumDAO Accès aux données des albums
+ * @see PlaylistDAO Accès aux données des playlists
+ * @see BattleDAO Accès aux données des battles
+ * @see GenreDAO Accès aux données des genres
+ * @see RoleDAO Accès aux données des rôles
+ */
+
+/**
+ * @namespace Paaxio::Enums
+ * @brief Énumérations PHP de l'application.
+ * 
+ * Contient les types énumérés utilisés dans l'application
+ * pour représenter des valeurs constantes typées.
+ * 
+ * @see RoleEnum Rôles utilisateur (Admin, Artiste, Auditeur, etc.)
+ * @see StatutUtilisateur Statuts utilisateur (Actif, Suspendu, Supprimé)
+ * @see StatutAbonnement Statuts d'abonnement
+ * @see StatutBattle Statuts des battles musicales
+ */
+
+/**
+ * @namespace Paaxio::Utils
+ * @brief Classes utilitaires.
+ * 
+ * @see bd Singleton de connexion à la base de données (MySQL/PDO)
+ * @see Constantes Gestion de la configuration (config.json)
+ * @see Validator Validation des données utilisateur
+ * @see Email Envoi d'emails via PHPMailer
+ * @see Fichier Gestion des fichiers uploadés
+ */

@@ -294,7 +294,7 @@ class ControllerUtilisateur extends Controller
         // Analyse de la date de naissance
         $birthDateTime = DateTime::createFromFormat('Y-m-d', $birthdate);
 
-        $roleDao = new RoleDao($this->getPDO());
+        $roleDao = new RoleDAO($this->getPDO());
         $role = $roleDao->findByType($allowedTypes[$userType]);
 
         if (!$role) {
@@ -404,7 +404,7 @@ class ControllerUtilisateur extends Controller
                 $error = "Ce pseudo est déjà pris.";
             } else {
                 try {
-                    $roleDao = new RoleDao($pdo);
+                    $roleDao = new RoleDAO($pdo);
                     $role = $roleDao->findByType($roleType);
 
                     if ($role) {
@@ -625,7 +625,7 @@ class ControllerUtilisateur extends Controller
 
             $artisteAJour = $dao->find($emailArtiste);
             $nouveauNombre = $artisteAJour ? $artisteAJour->getNbAbonnesArtiste() : 0;
-            
+
             echo json_encode([
                 'success' => true,
                 'action' => $result,

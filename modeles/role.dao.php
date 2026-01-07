@@ -1,10 +1,11 @@
 <?php
+
 /**
  * @file modeles/role.dao.php
  * @brief DAO pour la gestion des rôles utilisateurs
  */
 
-class RoleDao
+class RoleDAO
 {
     /**
      * @var PDO|null $pdo L'instance PDO pour la connexion à la base de données.
@@ -12,7 +13,7 @@ class RoleDao
     private ?PDO $pdo;
 
     /**
-     * Constructeur de la classe RoleDao.
+     * Constructeur de la classe RoleDAO.
      * @param PDO|null $pdo L'instance PDO pour la connexion à la base de données.
      */
     public function __construct(?PDO $pdo = null)

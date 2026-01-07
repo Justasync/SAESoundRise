@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file modeles/utilisateur.dao.php
  * @brief DAO pour la gestion des utilisateurs
@@ -175,7 +176,7 @@ class UtilisateurDAO
 
         $role = null;
         if ($row['roleUtilisateur']) {
-            $roleDAO = new RoleDao($this->pdo);
+            $roleDAO = new RoleDAO($this->pdo);
             $role = $roleDAO->find((int)$row['roleUtilisateur']);
         }
 
@@ -417,10 +418,10 @@ class UtilisateurDAO
     }
 
     /** 
-      *Vérifie si un utilisateur est abonné à un artiste
-      * @param string $emailAbonne L'email de l'abonné
-      * @param string $emailArtiste L'email de l'artiste  
-    */
+     *Vérifie si un utilisateur est abonné à un artiste
+     * @param string $emailAbonne L'email de l'abonné
+     * @param string $emailArtiste L'email de l'artiste  
+     */
     public function estAbonneAArtiste(string $emailAbonne, string $emailArtiste): bool
     {
         $sql = "SELECT COUNT(*) FROM abonnementArtiste WHERE emailAbonne = :abonne AND emailArtiste = :artiste";
@@ -459,7 +460,7 @@ class UtilisateurDAO
         $sql = "UPDATE utilisateur 
                 SET nbAbonnesArtiste = nbAbonnesArtiste + :increment 
                 WHERE emailUtilisateur = :emailArtiste";
-                
+
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
             ':increment' => $increment,

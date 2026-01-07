@@ -118,7 +118,7 @@ class ControllerAdmin extends Controller
 
         $pdo = $this->getPDO();
         $utilisateurDAO = new UtilisateurDAO($pdo);
-        $roleDao = new RoleDao($pdo);
+        $roleDao = new RoleDAO($pdo);
 
         $error = null;
         $user = null;

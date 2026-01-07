@@ -8,7 +8,6 @@
  * utilisé pour permettre aux utilisateurs de récupérer l'accès à leur compte.
  * Les tokens ont une durée de validité limitée (1 heure).
  * 
- * @package Paaxio\Modeles
  */
 
 /**
@@ -230,4 +229,3 @@ class PasswordResetToken
         return bin2hex(random_bytes(32));
     }
 }
-
