@@ -10,11 +10,6 @@
  * 
  * @usage Les URLs suivent le format : index.php?controller=xxx&method=yyy
  *        Par défaut (sans paramètres), affiche la page d'accueil.
- * 
- * @example
- * - index.php?controller=home&method=afficher → Page d'accueil
- * - index.php?controller=utilisateur&method=signin → Connexion
- * - index.php?controller=chanson&method=toggleLike → Like d'une chanson
  */
 
 /**
