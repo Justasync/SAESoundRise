@@ -1,0 +1,263 @@
+{% extends 'base_template.html.twig' %}
+
+{% block title %}Consulter Utilisateur - Paaxio{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            
+            <!-- Bouton retour -->
+            <a href="?controller=admin&method=afficher" class="btn btn-outline-secondary rounded-pill mb-4">
+                <i class="bi bi-arrow-left me-2"></i>Retour à la liste
+            </a>
+
+            <!-- Carte Profil Principal -->
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+                <div class="card-body p-4">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            {% if user.urlPhotoUtilisateur %}
+                                <img src="{{ user.urlPhotoUtilisateur }}" class="rounded-circle shadow-sm" width="120" height="120" style="object-fit: cover;" alt="Photo de {{ user.pseudoUtilisateur }}">
+                            {% else %}
+                                <div class="rounded-circle bg-light d-flex align-items-center justify-content-center shadow-sm border" style="width: 120px; height: 120px;">
+                                    <i class="bi bi-person-fill text-secondary" style="font-size: 3rem;"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col">
+                            <h2 class="fw-bold mb-1">{{ user.pseudoUtilisateur }}</h2>
+                            <p class="text-muted mb-2">{{ user.nomUtilisateur }}</p>
+                            
+                            {# On récupère le nom du rôle de l'utilisateur, ou son type si le nom n'est pas défini, sinon on met "Inconnu" #}
+                            {% set roleName = user.roleUtilisateur.libelleRole|default(user.roleUtilisateur.typeRole|default('Inconnu')) %}
+                            {# On met le nom du rôle en minuscules pour faciliter les comparaisons, par exemple pour vérifier si c'est un administrateur #}
+                            {% set roleLower = roleName|lower %}
+                            
+                            {% if 'admin' in roleLower %}
+                                <span class="badge rounded-pill px-3 py-2" style="background-color: #212529; color: white;">
+                                    <i class="bi bi-shield-fill me-1"></i>Admin
+                                </span>
+                            {% elseif 'artiste' in roleLower %}
+                                <span class="badge rounded-pill px-3 py-2" style="background-color: #D99181; color: white;">
+                                    <i class="bi bi-music-note-beamed me-1"></i>Artiste
+                                </span>
+                            {% elseif 'auditeur' in roleLower %}
+                                <span class="badge rounded-pill px-3 py-2" style="background-color: #0dcaf0; color: white;">
+                                    <i class="bi bi-headphones me-1"></i>Auditeur
+                                </span>
+                            {% elseif 'producteur' in roleLower %}
+                                <span class="badge rounded-pill px-3 py-2" style="background-color: #6f42c1; color: white;">
+                                    <i class="bi bi-sliders me-1"></i>Producteur
+                                </span>
+                            {% else %}
+                                <span class="badge rounded-pill px-3 py-2" style="background-color: #e9ecef; color: #333;">
+                                    {{ roleName }}
+                                </span>
+                            {% endif %}
+
+                            {% if user.statutUtilisateur %}
+                                {% if user.statutUtilisateur.value == 'actif' %}
+                                    <span class="badge rounded-pill bg-success px-3 py-2 ms-2">
+                                        <i class="bi bi-check-circle me-1"></i>Actif
+                                    </span>
+                                {% elseif user.statutUtilisateur.value == 'suspendu' %}
+                                    <span class="badge rounded-pill bg-warning text-dark px-3 py-2 ms-2">
+                                        <i class="bi bi-pause-circle me-1"></i>Suspendu
+                                    </span>
+                                {% else %}
+                                    <span class="badge rounded-pill bg-danger px-3 py-2 ms-2">
+                                        <i class="bi bi-x-circle me-1"></i>Supprimé
+                                    </span>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        <div class="col-auto">
+                            <a href="?controller=admin&method=modifier&id={{ user.emailUtilisateur }}" class="btn btn-outline-secondary rounded-pill">
+                                <i class="bi bi-pencil me-1"></i>Modifier
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Informations Générales -->
+                <div class="col-md-6 mb-4">
+                    <div class="card border-0 shadow-sm rounded-4 h-100">
+                        <div class="card-header bg-white border-0 pt-4 pb-0">
+                            <h5 class="fw-bold text-dark mb-0">
+                                <i class="bi bi-person-vcard me-2" style="color: #D99181;"></i>Informations Générales
+                            </h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <ul class="list-unstyled mb-0">
+                                <li class="mb-3">
+                                    <div class="text-muted small text-uppercase fw-bold mb-1">Email</div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-envelope text-secondary me-2"></i>
+                                        <span>{{ user.emailUtilisateur }}</span>
+                                    </div>
+                                </li>
+                                <li class="mb-3">
+                                    <div class="text-muted small text-uppercase fw-bold mb-1">Date de naissance</div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-cake text-secondary me-2"></i>
+                                        <span>{{ user.dateDeNaissanceUtilisateur ? user.dateDeNaissanceUtilisateur|date('d/m/Y') : 'Non renseignée' }}</span>
+                                    </div>
+                                </li>
+                                <li class="mb-3">
+                                    <div class="text-muted small text-uppercase fw-bold mb-1">Date d'inscription</div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-calendar-check text-secondary me-2"></i>
+                                        <span>{{ user.dateInscriptionUtilisateur ? user.dateInscriptionUtilisateur|date('d/m/Y à H:i') : 'Inconnue' }}</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="text-muted small text-uppercase fw-bold mb-1">Genre musical préféré</div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-music-note text-secondary me-2"></i>
+                                        <span>{{ user.genreUtilisateur.nomGenre|default('Non renseigné') }}</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Informations Abonnement -->
+                <div class="col-md-6 mb-4">
+                    <div class="card border-0 shadow-sm rounded-4 h-100">
+                        <div class="card-header bg-white border-0 pt-4 pb-0">
+                            <h5 class="fw-bold text-dark mb-0">
+                                <i class="bi bi-credit-card me-2" style="color: #D99181;"></i>Abonnement
+                            </h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <ul class="list-unstyled mb-0">
+                                <li class="mb-3">
+                                    <div class="text-muted small text-uppercase fw-bold mb-1">Est abonné</div>
+                                    <div class="d-flex align-items-center">
+                                        {% if user.estAbonnee %}
+                                            <span class="badge bg-success rounded-pill"><i class="bi bi-check-lg me-1"></i>Oui</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary rounded-pill"><i class="bi bi-x-lg me-1"></i>Non</span>
+                                        {% endif %}
+                                    </div>
+                                </li>
+                                <li class="mb-3">
+                                    <div class="text-muted small text-uppercase fw-bold mb-1">Statut abonnement</div>
+                                    <div class="d-flex align-items-center">
+                                        {% if user.statutAbonnement %}
+                                            {% if user.statutAbonnement.value == 'actif' %}
+                                                <span class="badge bg-success rounded-pill">Actif</span>
+                                            {% elseif user.statutAbonnement.value == 'expire' %}
+                                                <span class="badge bg-warning text-dark rounded-pill">Expiré</span>
+                                            {% elseif user.statutAbonnement.value == 'annule' %}
+                                                <span class="badge bg-danger rounded-pill">Annulé</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary rounded-pill">Inactif</span>
+                                            {% endif %}
+                                        {% else %}
+                                            <span class="text-muted">Non défini</span>
+                                        {% endif %}
+                                    </div>
+                                </li>
+                                <li class="mb-3">
+                                    <div class="text-muted small text-uppercase fw-bold mb-1">Date début</div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-calendar-plus text-secondary me-2"></i>
+                                        <span>{{ user.dateDebutAbonnement ? user.dateDebutAbonnement|date('d/m/Y') : 'N/A' }}</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="text-muted small text-uppercase fw-bold mb-1">Date fin</div>
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-calendar-x text-secondary me-2"></i>
+                                        <span>{{ user.dateFinAbonnement ? user.dateFinAbonnement|date('d/m/Y') : 'N/A' }}</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Informations Artiste (si applicable) -->
+            {% set roleLower = (user.roleUtilisateur.libelleRole|default(user.roleUtilisateur.typeRole|default('')))|lower %}
+            {% if 'artiste' in roleLower or 'producteur' in roleLower %}
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+                <div class="card-header bg-white border-0 pt-4 pb-0">
+                    <h5 class="fw-bold text-dark mb-0">
+                        <i class="bi bi-star me-2" style="color: #D99181;"></i>Statistiques Artiste
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row text-center">
+                        <div class="col-md-4 mb-3 mb-md-0">
+                            <div class="p-3 rounded-4 bg-light">
+                                <div class="display-6 fw-bold" style="color: #D99181;">{{ user.nbAbonnesArtiste|default(0) }}</div>
+                                <div class="text-muted small text-uppercase fw-bold">Abonnés</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3 mb-md-0">
+                            <div class="p-3 rounded-4 bg-light">
+                                <div class="display-6 fw-bold" style="color: #D99181;">{{ user.pointsDeRenommeeArtiste|default(0) }}</div>
+                                <div class="text-muted small text-uppercase fw-bold">Points de renommée</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 rounded-4 bg-light">
+                                {% if user.siteWebUtilisateur %}
+                                    <a href="{{ user.siteWebUtilisateur }}" target="_blank" class="btn btn-outline-secondary rounded-pill">
+                                        <i class="bi bi-globe me-1"></i>Site Web
+                                    </a>
+                                {% else %}
+                                    <div class="text-muted">
+                                        <i class="bi bi-globe me-1"></i>Aucun site web
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Description -->
+            {% if user.descriptionUtilisateur %}
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+                <div class="card-header bg-white border-0 pt-4 pb-0">
+                    <h5 class="fw-bold text-dark mb-0">
+                        <i class="bi bi-chat-quote me-2" style="color: #D99181;"></i>Description
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <p class="mb-0 text-secondary">{{ user.descriptionUtilisateur }}</p>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Actions -->
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <div class="d-flex flex-wrap gap-2 justify-content-center">
+                        <a href="?controller=admin&method=modifier&id={{ user.emailUtilisateur }}" class="btn rounded-pill px-4 py-2 text-white" style="background-color: #D99181;">
+                            <i class="bi bi-pencil me-2"></i>Modifier
+                        </a>
+                        <a href="?controller=utilisateur&method=afficherProfilArtiste&pseudo={{ user.pseudoUtilisateur }}" class="btn btn-outline-secondary rounded-pill px-4 py-2">
+                            <i class="bi bi-person-circle me-2"></i>Voir profil public
+                        </a>
+                        {% if session.user_email != user.emailUtilisateur %}
+                        <a href="?controller=admin&method=supprimer&id={{ user.emailUtilisateur }}" class="btn btn-outline-danger rounded-pill px-4 py-2" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
+                            <i class="bi bi-trash me-2"></i>Supprimer
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

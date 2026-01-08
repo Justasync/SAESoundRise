@@ -26,8 +26,7 @@ Ce document explique comment installer et exécuter le projet en local.
 
 ## Documentation
 
-La documentation technique détaillée, générée automatiquement avec **Doxygen**, est disponible en ligne à l'adresse suivante :  
-**[docs.paaxio.com](https://docs.paaxio.com)**
+La documentation technique détaillée, générée automatiquement avec **Doxygen**, est disponible en ligne à l'adresse suivante : **[docs.paaxio.com](https://docs.paaxio.com){:target="\_blank"}**
 
 La génération de cette documentation se fait à chaque mise à jour du code sur la branche `main`.  
 Le système utilise un workflow GitHub Actions automatisé (voir `.github/workflows/docs.yml`) qui :

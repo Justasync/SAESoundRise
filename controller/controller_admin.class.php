@@ -99,6 +99,43 @@ class ControllerAdmin extends Controller
     }
 
     /**
+     * @brief Consulte les détails d'un utilisateur.
+     * 
+     * Affiche les informations complètes d'un utilisateur spécifique
+     * identifié par son email passé en paramètre GET.
+     * Nécessite le rôle Admin.
+     * 
+     * @return void
+     */
+    public function consulter()
+    {
+        // Vérification du rôle Admin
+        $this->requireRole(RoleEnum::Admin);
+
+        if (!isset($_GET['id'])) {
+            $this->redirectTo('admin', 'afficher');
+            return;
+        }
+
+        $pdo = Bd::getInstance()->getConnexion();
+        $utilisateurDAO = new UtilisateurDAO($pdo);
+
+        $user = $utilisateurDAO->find($_GET['id']);
+
+        if (!$user) {
+            $this->redirectTo('admin', 'afficher');
+            return;
+        }
+
+        $template = $this->getTwig()->load('admin_utilisateur_consulter.html.twig');
+        echo $template->render([
+            'page' => ['title' => "Consulter Utilisateur - " . $user->getPseudoUtilisateur(), 'name' => "admin"],
+            'session' => $_SESSION,
+            'user' => $user
+        ]);
+    }
+
+    /**
      * @brief Modifie un utilisateur existant.
      * 
      * Permet à l'administrateur de modifier les informations d'un utilisateur :

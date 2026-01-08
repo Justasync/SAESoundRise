@@ -7,6 +7,10 @@
  * à l'IUT de Bayonne. Cette application web permet aux utilisateurs d'écouter de la musique,
  * et aux artistes de partager leur musique.
  * 
+ * @section github_sec Références & Liens
+ * 
+ * [Code source sur GitHub](https://github.com/Justasync/SAEPaaxio)
+ * 
  * @section architecture_sec Architecture du Projet
  * 
  * Le projet suit une architecture **MVC** (Modèle-Vue-Contrôleur) :
@@ -93,11 +97,11 @@
  * 
  * @section install_sec Installation
  * 
- * 1. Cloner le dépôt
+ * 1. Cloner le dépôt : `git clone https://github.com/Justasync/SAEPaaxio.git`
  * 2. Installer les dépendances PHP : `composer install`
  * 3. Installer les dépendances Node.js : `npm install`
- * 4. Configurer `config/config.json` à partir de `config.example.json`
- * 5. Exécuter les scripts SQL dans `sql/`
+ * 4. Copier/modifier `config.example.json` en `config/config.json`
+ * 5. Importer les fichiers SQL du dossier `sql/` dans votre base de données
  * 
  * @section authors_sec Auteurs
  * 
