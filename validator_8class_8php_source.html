@@ -1,0 +1,273 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Paaxio:  Fichier source de validator.class.php</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Paaxio<span id="projectnumber">&#160;1.0</span>
+   </div>
+   <div id="projectbrief">Plateforme de streaming musical - SAE IUT Bayonne</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('validator_8class_8php_source.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">validator.class.php</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="validator_8class_8php.html">Aller à la documentation de ce fichier.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span>&lt;?php</div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="foldopen" id="foldopen00034" data-start="{" data-end="};">
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="classValidator.html">   34</a></span><span class="keyword">class </span><a class="code hl_class" href="classValidator.html">Validator</a></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>{</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="classValidator.html#a4411d59a8df686161c9dda047e9c5586">   39</a></span>    <span class="keyword">private</span> array <a class="code hl_variable" href="classValidator.html#a4411d59a8df686161c9dda047e9c5586">$regles</a>;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="classValidator.html#adcbf1922eb7401b455850e7f97251e70">   44</a></span>    <span class="keyword">private</span> array <a class="code hl_variable" href="classValidator.html#adcbf1922eb7401b455850e7f97251e70">$messagesErreurs</a> = [];</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="classValidator.html#a159c90a82a9d6ff8a0d122eaa920eb41">   50</a></span>    <span class="keyword">private</span> <span class="keyword">const</span> <a class="code hl_variable" href="classValidator.html#a159c90a82a9d6ff8a0d122eaa920eb41">PASSWORD_STRONG_REGEX</a> = <span class="stringliteral">&#39;/^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&amp;*()_+\-=\[\]{}|;:\&#39;&quot;,.&lt;&gt;?\/~`]).{8,}$/&#39;</span>;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="classValidator.html#a3b842632fe2f2c1142ba839ce6b0ed06">   55</a></span>    <span class="keyword">private</span> <span class="keyword">const</span> <a class="code hl_variable" href="classValidator.html#a3b842632fe2f2c1142ba839ce6b0ed06">PSEUDO_REGEX</a> = <span class="stringliteral">&#39;/^[a-zA-Z0-9_]+$/&#39;</span>;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="foldopen" id="foldopen00062" data-start="{" data-end="}">
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="classValidator.html#ab2377d3b1bb5fad6531f2b8536eb29b4">   62</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classValidator.html#ab2377d3b1bb5fad6531f2b8536eb29b4">__construct</a>(array <a class="code hl_variable" href="classValidator.html#a4411d59a8df686161c9dda047e9c5586">$regles</a>)</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    {</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        $this-&gt;regles = <a class="code hl_variable" href="classValidator.html#a4411d59a8df686161c9dda047e9c5586">$regles</a>;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    }</div>
+</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="foldopen" id="foldopen00073" data-start="{" data-end="}">
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="classValidator.html#a57e39ebf3e8a7983b525769646d12eed">   73</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classValidator.html#a57e39ebf3e8a7983b525769646d12eed">valider</a>(array $donnees): bool</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    {</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        $valide = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        $this-&gt;messagesErreurs = []; <span class="comment">// Réinitialise les erreurs à chaque validation</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        <span class="keywordflow">foreach</span> ($this-&gt;regles as $champ =&gt; $reglesChamp) {</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>            $valeur = $donnees[$champ] ?? <span class="keyword">null</span>;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>            <span class="keywordflow">if</span> (!$this-&gt;<a class="code hl_function" href="classValidator.html#ada7dc90f725c594b59be90e02d9777c1">validerChamp</a>($champ, $valeur, $reglesChamp)) {</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>                $valide = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>            }</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        }</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        <span class="keywordflow">return</span> $valide;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    }</div>
+</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
+<div class="foldopen" id="foldopen00097" data-start="{" data-end="}">
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="classValidator.html#ada7dc90f725c594b59be90e02d9777c1">   97</a></span>    <span class="keyword">private</span> <span class="keyword">function</span> <a class="code hl_function" href="classValidator.html#ada7dc90f725c594b59be90e02d9777c1">validerChamp</a>(<span class="keywordtype">string</span> $champ, mixed $valeur, array <a class="code hl_variable" href="classValidator.html#a4411d59a8df686161c9dda047e9c5586">$regles</a>): bool</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    {</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        $estValide = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        <span class="comment">// 1. Vérification préalable de la règle &quot;obligatoire&quot;.</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        <span class="keywordflow">if</span> (isset(<a class="code hl_variable" href="classValidator.html#a4411d59a8df686161c9dda047e9c5586">$regles</a>[<span class="stringliteral">&#39;obligatoire&#39;</span>]) &amp;&amp; <a class="code hl_variable" href="classValidator.html#a4411d59a8df686161c9dda047e9c5586">$regles</a>[<span class="stringliteral">&#39;obligatoire&#39;</span>] &amp;&amp; empty($valeur)) {</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>            $this-&gt;messagesErreurs[] = <span class="stringliteral">&quot;Le champ $champ est obligatoire.&quot;</span>;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>; <span class="comment">// Arrête si champ obligatoire vide</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        }</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>        <span class="comment">// 2. Si le champ est vide et non obligatoire, aucune autre validation nécessaire.</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        <span class="keywordflow">if</span> (empty($valeur) &amp;&amp; (!isset(<a class="code hl_variable" href="classValidator.html#a4411d59a8df686161c9dda047e9c5586">$regles</a>[<span class="stringliteral">&#39;obligatoire&#39;</span>]) || !<a class="code hl_variable" href="classValidator.html#a4411d59a8df686161c9dda047e9c5586">$regles</a>[<span class="stringliteral">&#39;obligatoire&#39;</span>])) {</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>        }</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>        <span class="comment">// 3. Application des autres règles de validation.</span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        <span class="keywordflow">foreach</span> (<a class="code hl_variable" href="classValidator.html#a4411d59a8df686161c9dda047e9c5586">$regles</a> as $regle =&gt; $parametre) {</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>            <span class="keywordflow">switch</span> ($regle) {</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>                <span class="keywordflow">case</span> <span class="stringliteral">&#39;type&#39;</span>:</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>                    <span class="keywordflow">if</span> ($parametre === <span class="stringliteral">&#39;string&#39;</span> &amp;&amp; !is_string($valeur)) {</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>                        $this-&gt;messagesErreurs[] = <span class="stringliteral">&quot;Le champ $champ doit être une chaîne de caractères.&quot;</span>;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>                        $estValide = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>                    } elseif ($parametre === <span class="stringliteral">&#39;integer&#39;</span> &amp;&amp; !filter_var($valeur, FILTER_VALIDATE_INT)) {</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>                        $this-&gt;messagesErreurs[] = <span class="stringliteral">&quot;Le champ $champ doit être un nombre entier.&quot;</span>;</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>                        $estValide = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>                    } elseif ($parametre === <span class="stringliteral">&#39;numeric&#39;</span> &amp;&amp; !is_numeric($valeur)) {</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>                        $this-&gt;messagesErreurs[] = <span class="stringliteral">&quot;Le champ $champ doit être une valeur numérique.&quot;</span>;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>                        $estValide = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>                    }</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>                <span class="keywordflow">case</span> <span class="stringliteral">&#39;longueur_min&#39;</span>:</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>                    <span class="keywordflow">if</span> (strlen($valeur) &lt; $parametre) {</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>                        $this-&gt;messagesErreurs[] = <span class="stringliteral">&quot;Le champ $champ doit comporter au moins $parametre caractères.&quot;</span>;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>                        $estValide = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>                    }</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>                <span class="keywordflow">case</span> <span class="stringliteral">&#39;longueur_max&#39;</span>:</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>                    <span class="keywordflow">if</span> (strlen($valeur) &gt; $parametre) {</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>                        $this-&gt;messagesErreurs[] = <span class="stringliteral">&quot;Le champ $champ ne doit pas dépasser $parametre caractères.&quot;</span>;</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>                        $estValide = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>                    }</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>                <span class="keywordflow">case</span> <span class="stringliteral">&#39;longueur_exacte&#39;</span>:</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>                    <span class="keywordflow">if</span> (strlen($valeur) !== $parametre) {</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>                        $this-&gt;messagesErreurs[] = <span class="stringliteral">&quot;Le champ $champ doit comporter exactement $parametre caractères.&quot;</span>;</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>                        $estValide = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>                    }</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>                <span class="keywordflow">case</span> <span class="stringliteral">&#39;format&#39;</span>:</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>                    <span class="keywordflow">if</span> (is_string($parametre) &amp;&amp; !preg_match($parametre, $valeur)) {</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>                        $this-&gt;messagesErreurs[] = <span class="stringliteral">&quot;Le format du champ $champ est invalide.&quot;</span>;</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>                        $estValide = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>                    } elseif ($parametre === FILTER_VALIDATE_EMAIL &amp;&amp; !filter_var($valeur, FILTER_VALIDATE_EMAIL)) {</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>                        $this-&gt;messagesErreurs[] = <span class="stringliteral">&quot;L&#39;adresse email est invalide.&quot;</span>;</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>                        $estValide = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>                    } elseif ($parametre === FILTER_VALIDATE_URL &amp;&amp; !filter_var($valeur, FILTER_VALIDATE_URL)) {</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>                        $this-&gt;messagesErreurs[] = <span class="stringliteral">&quot;L&#39;URL du site web est invalide.&quot;</span>;</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>                        $estValide = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>                    }</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>                <span class="keywordflow">case</span> <span class="stringliteral">&#39;plage_min&#39;</span>:</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>                    <span class="keywordflow">if</span> ($valeur &lt; $parametre) {</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>                        $this-&gt;messagesErreurs[] = <span class="stringliteral">&quot;La valeur de $champ doit être au minimum $parametre.&quot;</span>;</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>                        $estValide = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>                    }</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>                <span class="keywordflow">case</span> <span class="stringliteral">&#39;plage_max&#39;</span>:</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>                    <span class="keywordflow">if</span> ($valeur &gt; $parametre) {</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>                        $this-&gt;messagesErreurs[] = <span class="stringliteral">&quot;La valeur de $champ ne doit pas dépasser $parametre.&quot;</span>;</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>                        $estValide = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>                    }</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>                <span class="keywordflow">case</span> <span class="stringliteral">&#39;mot_de_passe_fort&#39;</span>:</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>                    <span class="keywordflow">if</span> ($parametre &amp;&amp; !preg_match(self::PASSWORD_STRONG_REGEX, $valeur)) {</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>                        $this-&gt;messagesErreurs[] = <span class="stringliteral">&quot;Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un symbole.&quot;</span>;</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>                        $estValide = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>                    }</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>                <span class="keywordflow">case</span> <span class="stringliteral">&#39;pseudo_format&#39;</span>:</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>                    <span class="keywordflow">if</span> ($parametre &amp;&amp; !preg_match(self::PSEUDO_REGEX, $valeur)) {</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>                        $this-&gt;messagesErreurs[] = <span class="stringliteral">&quot;Le champ $champ ne doit contenir que des lettres, des chiffres et des underscores, sans espaces.&quot;</span>;</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>                        $estValide = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>                    }</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>                <span class="keywordflow">case</span> <span class="stringliteral">&#39;age_minimum&#39;</span>:</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>                    <span class="comment">// Vérifie que l&#39;utilisateur a au moins $parametre années.</span></div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>                    $birthDate = \DateTime::createFromFormat(<span class="stringliteral">&#39;Y-m-d&#39;</span>, $valeur);</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>                    <span class="keywordflow">if</span> ($birthDate) {</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>                        $aujourdhui = new \DateTimeImmutable();</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>                        $dateMinimum = $aujourdhui-&gt;modify(<span class="stringliteral">&quot;-{$parametre} years&quot;</span>);</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>                        <span class="keywordflow">if</span> ($birthDate &gt; $dateMinimum) {</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>                            $this-&gt;messagesErreurs[] = <span class="stringliteral">&quot;Vous devez avoir au moins $parametre ans.&quot;</span>;</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>                            $estValide = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>                        }</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>                    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>                        $this-&gt;messagesErreurs[] = <span class="stringliteral">&quot;La date de naissance fournie est invalide.&quot;</span>;</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>                        $estValide = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>                    }</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>                    <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>            }</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>        }</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span> </div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>        <span class="keywordflow">return</span> $estValide;</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    }</div>
+</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span> </div>
+<div class="foldopen" id="foldopen00207" data-start="{" data-end="}">
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno"><a class="line" href="classValidator.html#add23d865e3bdda26829d7bba678c6745">  207</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classValidator.html#add23d865e3bdda26829d7bba678c6745">getMessagesErreurs</a>(): array</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    {</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classValidator.html#adcbf1922eb7401b455850e7f97251e70">$this-&gt;messagesErreurs</a>;</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>    }</div>
+</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>}</div>
+</div>
+<div class="ttc" id="aclassValidator_html"><div class="ttname"><a href="classValidator.html">Validator</a></div><div class="ttdoc">Permet de valider des données selon des règles spécifiées.</div><div class="ttdef"><b>Definition</b> <a href="validator_8class_8php_source.html#l00034">validator.class.php:35</a></div></div>
+<div class="ttc" id="aclassValidator_html_a159c90a82a9d6ff8a0d122eaa920eb41"><div class="ttname"><a href="classValidator.html#a159c90a82a9d6ff8a0d122eaa920eb41">Validator\PASSWORD_STRONG_REGEX</a></div><div class="ttdeci">const PASSWORD_STRONG_REGEX</div><div class="ttdoc">Expression régulière pour valider la force d'un mot de passe : Au moins 8 caractères,...</div><div class="ttdef"><b>Definition</b> <a href="validator_8class_8php_source.html#l00050">validator.class.php:50</a></div></div>
+<div class="ttc" id="aclassValidator_html_a3b842632fe2f2c1142ba839ce6b0ed06"><div class="ttname"><a href="classValidator.html#a3b842632fe2f2c1142ba839ce6b0ed06">Validator\PSEUDO_REGEX</a></div><div class="ttdeci">const PSEUDO_REGEX</div><div class="ttdoc">Expression régulière pour valider un pseudo : uniquement lettres, chiffres et underscores.</div><div class="ttdef"><b>Definition</b> <a href="validator_8class_8php_source.html#l00055">validator.class.php:55</a></div></div>
+<div class="ttc" id="aclassValidator_html_a4411d59a8df686161c9dda047e9c5586"><div class="ttname"><a href="classValidator.html#a4411d59a8df686161c9dda047e9c5586">Validator\$regles</a></div><div class="ttdeci">array $regles</div><div class="ttdef"><b>Definition</b> <a href="validator_8class_8php_source.html#l00039">validator.class.php:39</a></div></div>
+<div class="ttc" id="aclassValidator_html_a57e39ebf3e8a7983b525769646d12eed"><div class="ttname"><a href="classValidator.html#a57e39ebf3e8a7983b525769646d12eed">Validator\valider</a></div><div class="ttdeci">valider(array $donnees)</div><div class="ttdoc">Valide les données fournies par rapport aux règles de validation définies.</div><div class="ttdef"><b>Definition</b> <a href="validator_8class_8php_source.html#l00073">validator.class.php:73</a></div></div>
+<div class="ttc" id="aclassValidator_html_ab2377d3b1bb5fad6531f2b8536eb29b4"><div class="ttname"><a href="classValidator.html#ab2377d3b1bb5fad6531f2b8536eb29b4">Validator\__construct</a></div><div class="ttdeci">__construct(array $regles)</div><div class="ttdoc">Constructeur de la classe Validator.</div><div class="ttdef"><b>Definition</b> <a href="validator_8class_8php_source.html#l00062">validator.class.php:62</a></div></div>
+<div class="ttc" id="aclassValidator_html_ada7dc90f725c594b59be90e02d9777c1"><div class="ttname"><a href="classValidator.html#ada7dc90f725c594b59be90e02d9777c1">Validator\validerChamp</a></div><div class="ttdeci">validerChamp(string $champ, mixed $valeur, array $regles)</div><div class="ttdoc">Valide un champ spécifique selon ses règles.</div><div class="ttdef"><b>Definition</b> <a href="validator_8class_8php_source.html#l00097">validator.class.php:97</a></div></div>
+<div class="ttc" id="aclassValidator_html_adcbf1922eb7401b455850e7f97251e70"><div class="ttname"><a href="classValidator.html#adcbf1922eb7401b455850e7f97251e70">Validator\$messagesErreurs</a></div><div class="ttdeci">array $messagesErreurs</div><div class="ttdef"><b>Definition</b> <a href="validator_8class_8php_source.html#l00044">validator.class.php:44</a></div></div>
+<div class="ttc" id="aclassValidator_html_add23d865e3bdda26829d7bba678c6745"><div class="ttname"><a href="classValidator.html#add23d865e3bdda26829d7bba678c6745">Validator\getMessagesErreurs</a></div><div class="ttdeci">getMessagesErreurs()</div><div class="ttdoc">Retourne les messages d'erreur générés lors de la validation.</div><div class="ttdef"><b>Definition</b> <a href="validator_8class_8php_source.html#l00207">validator.class.php:207</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_94350f523feee7bac2b3c4d6268d38b5.html">modeles</a></li><li class="navelem"><a class="el" href="validator_8class_8php.html">validator.class.php</a></li>
+    <li class="footer">Généré le Jeudi 8 Janvier 2026 09:37:44 pour Paaxio par <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

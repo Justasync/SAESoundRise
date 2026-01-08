@@ -1,0 +1,5 @@
+<map id="Constantes\getInstance" name="Constantes\getInstance">
+<area shape="rect" id="Node000001" title="Retourne l&#39;instance unique de la classe Constantes (pattern Singleton)." alt="" coords="169,5,344,31"/>
+<area shape="rect" id="Node000002" href="$classbd.html#a4a2288b05ac3dfea4f4174aa8297f07e" title="Constructeur privé pour empêcher l&#39;instanciation directe." alt="" coords="5,5,121,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="155,21,122,21,122,15,155,15"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="BattleDAO\hydrateMany" name="BattleDAO\hydrateMany">
+<area shape="rect" id="Node000001" title="Hydrate plusieurs battles à partir d&#39;un tableau de tableaux associatifs." alt="" coords="188,5,368,31"/>
+<area shape="rect" id="Node000002" href="$classBattleDAO.html#a68a7261df3e7ac3b78a1a8770f117aec" title="Récupère toutes les battles de la base de données." alt="" coords="5,5,140,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="174,21,140,21,140,15,174,15"/>
+</map>

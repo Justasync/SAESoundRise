@@ -1,0 +1,249 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Paaxio:  Fichier source de battle.dao.php</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Paaxio<span id="projectnumber">&#160;1.0</span>
+   </div>
+   <div id="projectbrief">Plateforme de streaming musical - SAE IUT Bayonne</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('battle_8dao_8php_source.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">battle.dao.php</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="battle_8dao_8php.html">Aller à la documentation de ce fichier.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span>&lt;?php</div>
+<div class="foldopen" id="foldopen00006" data-start="{" data-end="};">
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="classBattleDAO.html">    6</a></span><span class="keyword">class </span><a class="code hl_class" href="classBattleDAO.html">BattleDAO</a> {</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="classBattleDAO.html#a66f95d0944e61a228c6d417f935020ad">   10</a></span>    <span class="keyword">private</span> ?PDO <a class="code hl_variable" href="classBattleDAO.html#a66f95d0944e61a228c6d417f935020ad">$pdo</a>;</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="foldopen" id="foldopen00016" data-start="{" data-end="}">
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="classBattleDAO.html#ab5f2a50f6d8db3c749053b8493063e4a">   16</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattleDAO.html#ab5f2a50f6d8db3c749053b8493063e4a">__construct</a>(?PDO <a class="code hl_variable" href="classBattleDAO.html#a66f95d0944e61a228c6d417f935020ad">$pdo</a> = <span class="keyword">null</span>)</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    {</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        $this-&gt;pdo = <a class="code hl_variable" href="classBattleDAO.html#a66f95d0944e61a228c6d417f935020ad">$pdo</a>;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    }</div>
+</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="foldopen" id="foldopen00025" data-start="{" data-end="}">
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="classBattleDAO.html#a68a7261df3e7ac3b78a1a8770f117aec">   25</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattleDAO.html#a68a7261df3e7ac3b78a1a8770f117aec">findAll</a>(): array</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    {</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        $sql = <span class="stringliteral">&quot;SELECT * FROM battle&quot;</span>;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        $pdoStatement = $this-&gt;pdo-&gt;prepare($sql);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>        $pdoStatement-&gt;execute();</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        $pdoStatement-&gt;setFetchMode(PDO::FETCH_ASSOC);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        $tableau = $pdoStatement-&gt;fetchAll();</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        $battle = $this-&gt;<a class="code hl_function" href="classBattleDAO.html#ac960bd74514a1626eb931976170884a1">hydrateMany</a>($tableau);</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        <span class="keywordflow">return</span> $battle;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    }</div>
+</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="foldopen" id="foldopen00041" data-start="{" data-end="}">
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="classBattleDAO.html#aaf028ef6cee5f45701eaf226944d7f46">   41</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattleDAO.html#aaf028ef6cee5f45701eaf226944d7f46">find</a>(<span class="keywordtype">int</span> $id): <a class="code hl_class" href="classBattle.html">Battle</a></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    {</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        $sql = <span class="stringliteral">&quot;SELECT * FROM battle WHERE idBattle = :id&quot;</span>;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        $pdoStatement = $this-&gt;pdo-&gt;prepare($sql);</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        $pdoStatement-&gt;execute(array(</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>            <span class="stringliteral">&#39;:id&#39;</span> =&gt; $id</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        ));</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        $pdoStatement-&gt;setFetchMode(PDO::FETCH_ASSOC);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        $tableau = $pdoStatement-&gt;fetch();</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        $battle = $this-&gt;<a class="code hl_function" href="classBattleDAO.html#a27ff5b496c7fbc73102bf36f5d1ceb16">hydrate</a>($tableau);</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        <span class="keywordflow">return</span> $battle;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    }</div>
+</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="foldopen" id="foldopen00060" data-start="{" data-end="}">
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classBattleDAO.html#a27ff5b496c7fbc73102bf36f5d1ceb16">   60</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattleDAO.html#a27ff5b496c7fbc73102bf36f5d1ceb16">hydrate</a>(array $data): <a class="code hl_class" href="classBattle.html">Battle</a></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    {</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        $battle = <span class="keyword">new</span> <a class="code hl_class" href="classBattle.html">Battle</a>();</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        $battle-&gt;setIdBattle(isset($data[<span class="stringliteral">&#39;idBattle&#39;</span>]) ? (<span class="keywordtype">int</span>)$data[<span class="stringliteral">&#39;idBattle&#39;</span>] : <span class="keyword">null</span>);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        $battle-&gt;setTitreBattle($data[<span class="stringliteral">&#39;titreBattle&#39;</span>] ?? <span class="keyword">null</span>);</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        <span class="comment">// Conversion sécurisée des dates SQL → objets DateTime</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        $battle-&gt;setDateDebutBattle(</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>            !empty($data[<span class="stringliteral">&#39;dateDebutBattle&#39;</span>]) ? <span class="keyword">new</span> DateTime($data[<span class="stringliteral">&#39;dateDebutBattle&#39;</span>]) : null</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        );</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        $battle-&gt;setDateFinBattle(</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>            !empty($data[<span class="stringliteral">&#39;dateFinBattle&#39;</span>]) ? <span class="keyword">new</span> DateTime($data[<span class="stringliteral">&#39;dateFinBattle&#39;</span>]) : null</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        );</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        <span class="comment">// Conversion du statut (enum)</span></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        <span class="keywordflow">if</span> (!empty($data[<span class="stringliteral">&#39;statutBattle&#39;</span>])) {</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>            $battle-&gt;setStatutBattle(StatutBattle::from($data[<span class="stringliteral">&#39;statutBattle&#39;</span>]));</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        }</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        $battle-&gt;setEmailCreateurBattle($data[<span class="stringliteral">&#39;emailCreateurBattle&#39;</span>] ?? <span class="keyword">null</span>);</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        $battle-&gt;setEmailParticipantBattle($data[<span class="stringliteral">&#39;emailParticipantBattle&#39;</span>] ?? <span class="keyword">null</span>);</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        <span class="keywordflow">return</span> $battle;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    }</div>
+</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="foldopen" id="foldopen00092" data-start="{" data-end="}">
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="classBattleDAO.html#ac960bd74514a1626eb931976170884a1">   92</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattleDAO.html#ac960bd74514a1626eb931976170884a1">hydrateMany</a>(array $rows): array</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    {</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        $battles = [];</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        <span class="keywordflow">foreach</span> ($rows as $row) {</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            $battles[] = $this-&gt;<a class="code hl_function" href="classBattleDAO.html#a27ff5b496c7fbc73102bf36f5d1ceb16">hydrate</a>($row);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        }</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        <span class="keywordflow">return</span> $battles;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    }</div>
+</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="foldopen" id="foldopen00105" data-start="{" data-end="}">
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="classBattleDAO.html#abbc3c569865fb4ee2ad067def85552b6">  105</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattleDAO.html#abbc3c569865fb4ee2ad067def85552b6">getPdo</a>(): ?PDO</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    {</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classBattleDAO.html#a66f95d0944e61a228c6d417f935020ad">$this-&gt;pdo</a>;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    }</div>
+</div>
+<div class="foldopen" id="foldopen00113" data-start="{" data-end="}">
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="classBattleDAO.html#aa8201136093162a89d00ae53131b8ac4">  113</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattleDAO.html#aa8201136093162a89d00ae53131b8ac4">setPdo</a>(?PDO <a class="code hl_variable" href="classBattleDAO.html#a66f95d0944e61a228c6d417f935020ad">$pdo</a>): void</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    {</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        $this-&gt;pdo = <a class="code hl_variable" href="classBattleDAO.html#a66f95d0944e61a228c6d417f935020ad">$pdo</a>;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    }</div>
+</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
+<div class="foldopen" id="foldopen00124" data-start="{" data-end="}">
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="classBattleDAO.html#a05d25adaed973d2cdfb9f8e2d6a8e148">  124</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattleDAO.html#a05d25adaed973d2cdfb9f8e2d6a8e148">countBattlesWon</a>(<span class="keywordtype">string</span> $emailArtiste): int</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    {</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        <span class="comment">// Cette requête compte les battles terminées où l&#39;artiste a plus de votes que son adversaire</span></div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        $sql = <span class="stringliteral">&quot;SELECT COUNT(*) as wins FROM (</span></div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span><span class="stringliteral">                    SELECT </span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="stringliteral">                        b.idBattle,</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="stringliteral">                        b.emailCreateurBattle,</span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="stringliteral">                        b.emailParticipantBattle,</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="stringliteral">                        COALESCE(SUM(CASE WHEN v.emailVotee = b.emailCreateurBattle THEN 1 ELSE 0 END), 0) as votes_createur,</span></div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="stringliteral">                        COALESCE(SUM(CASE WHEN v.emailVotee = b.emailParticipantBattle THEN 1 ELSE 0 END), 0) as votes_participant</span></div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="stringliteral">                    FROM battle b</span></div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="stringliteral">                    LEFT JOIN vote v ON b.idBattle = v.idBattle</span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span><span class="stringliteral">                    WHERE b.statutBattle = &#39;terminee&#39;</span></div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="stringliteral">                      AND (b.emailCreateurBattle = :email1 OR b.emailParticipantBattle = :email2)</span></div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span><span class="stringliteral">                    GROUP BY b.idBattle, b.emailCreateurBattle, b.emailParticipantBattle</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span><span class="stringliteral">                ) AS battle_stats</span></div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span><span class="stringliteral">                WHERE </span></div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span><span class="stringliteral">                    (emailCreateurBattle = :email3 AND votes_createur &gt; votes_participant)</span></div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span><span class="stringliteral">                    OR (emailParticipantBattle = :email4 AND votes_participant &gt; votes_createur)&quot;</span>;</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>        $stmt = $this-&gt;pdo-&gt;prepare($sql);</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>        $stmt-&gt;execute([</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>            <span class="stringliteral">&#39;:email1&#39;</span> =&gt; $emailArtiste,</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>            <span class="stringliteral">&#39;:email2&#39;</span> =&gt; $emailArtiste,</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>            <span class="stringliteral">&#39;:email3&#39;</span> =&gt; $emailArtiste,</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>            <span class="stringliteral">&#39;:email4&#39;</span> =&gt; $emailArtiste</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>        ]);</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>        <span class="keywordflow">return</span> (<span class="keywordtype">int</span>)$stmt-&gt;fetchColumn();</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    }</div>
+</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>}</div>
+</div>
+<div class="ttc" id="aclassBattleDAO_html"><div class="ttname"><a href="classBattleDAO.html">BattleDAO</a></div><div class="ttdef"><b>Definition</b> <a href="battle_8dao_8php_source.html#l00006">battle.dao.php:6</a></div></div>
+<div class="ttc" id="aclassBattleDAO_html_a05d25adaed973d2cdfb9f8e2d6a8e148"><div class="ttname"><a href="classBattleDAO.html#a05d25adaed973d2cdfb9f8e2d6a8e148">BattleDAO\countBattlesWon</a></div><div class="ttdeci">countBattlesWon(string $emailArtiste)</div><div class="ttdoc">Compte le nombre de battles gagnées par un artiste Une battle est gagnée si l'artiste a reçu plus de ...</div><div class="ttdef"><b>Definition</b> <a href="battle_8dao_8php_source.html#l00124">battle.dao.php:124</a></div></div>
+<div class="ttc" id="aclassBattleDAO_html_a27ff5b496c7fbc73102bf36f5d1ceb16"><div class="ttname"><a href="classBattleDAO.html#a27ff5b496c7fbc73102bf36f5d1ceb16">BattleDAO\hydrate</a></div><div class="ttdeci">hydrate(array $data)</div><div class="ttdoc">Hydrate une battle à partir d'un tableau associatif.</div><div class="ttdef"><b>Definition</b> <a href="battle_8dao_8php_source.html#l00060">battle.dao.php:60</a></div></div>
+<div class="ttc" id="aclassBattleDAO_html_a66f95d0944e61a228c6d417f935020ad"><div class="ttname"><a href="classBattleDAO.html#a66f95d0944e61a228c6d417f935020ad">BattleDAO\$pdo</a></div><div class="ttdeci">PDO $pdo</div><div class="ttdef"><b>Definition</b> <a href="battle_8dao_8php_source.html#l00010">battle.dao.php:10</a></div></div>
+<div class="ttc" id="aclassBattleDAO_html_a68a7261df3e7ac3b78a1a8770f117aec"><div class="ttname"><a href="classBattleDAO.html#a68a7261df3e7ac3b78a1a8770f117aec">BattleDAO\findAll</a></div><div class="ttdeci">findAll()</div><div class="ttdoc">Récupère toutes les battles de la base de données.</div><div class="ttdef"><b>Definition</b> <a href="battle_8dao_8php_source.html#l00025">battle.dao.php:25</a></div></div>
+<div class="ttc" id="aclassBattleDAO_html_aa8201136093162a89d00ae53131b8ac4"><div class="ttname"><a href="classBattleDAO.html#aa8201136093162a89d00ae53131b8ac4">BattleDAO\setPdo</a></div><div class="ttdeci">setPdo(?PDO $pdo)</div><div class="ttdoc">Setter pour la pdo.</div><div class="ttdef"><b>Definition</b> <a href="battle_8dao_8php_source.html#l00113">battle.dao.php:113</a></div></div>
+<div class="ttc" id="aclassBattleDAO_html_aaf028ef6cee5f45701eaf226944d7f46"><div class="ttname"><a href="classBattleDAO.html#aaf028ef6cee5f45701eaf226944d7f46">BattleDAO\find</a></div><div class="ttdeci">find(int $id)</div><div class="ttdoc">Récupère une battle par son identifiant.</div><div class="ttdef"><b>Definition</b> <a href="battle_8dao_8php_source.html#l00041">battle.dao.php:41</a></div></div>
+<div class="ttc" id="aclassBattleDAO_html_ab5f2a50f6d8db3c749053b8493063e4a"><div class="ttname"><a href="classBattleDAO.html#ab5f2a50f6d8db3c749053b8493063e4a">BattleDAO\__construct</a></div><div class="ttdeci">__construct(?PDO $pdo=null)</div><div class="ttdoc">Constructeur de la classe BattleDAO.</div><div class="ttdef"><b>Definition</b> <a href="battle_8dao_8php_source.html#l00016">battle.dao.php:16</a></div></div>
+<div class="ttc" id="aclassBattleDAO_html_abbc3c569865fb4ee2ad067def85552b6"><div class="ttname"><a href="classBattleDAO.html#abbc3c569865fb4ee2ad067def85552b6">BattleDAO\getPdo</a></div><div class="ttdeci">getPdo()</div><div class="ttdoc">Getter pour la pdo.</div><div class="ttdef"><b>Definition</b> <a href="battle_8dao_8php_source.html#l00105">battle.dao.php:105</a></div></div>
+<div class="ttc" id="aclassBattleDAO_html_ac960bd74514a1626eb931976170884a1"><div class="ttname"><a href="classBattleDAO.html#ac960bd74514a1626eb931976170884a1">BattleDAO\hydrateMany</a></div><div class="ttdeci">hydrateMany(array $rows)</div><div class="ttdoc">Hydrate plusieurs battles à partir d'un tableau de tableaux associatifs.</div><div class="ttdef"><b>Definition</b> <a href="battle_8dao_8php_source.html#l00092">battle.dao.php:92</a></div></div>
+<div class="ttc" id="aclassBattle_html"><div class="ttname"><a href="classBattle.html">Battle</a></div><div class="ttdoc">Classe représentant une battle musicale.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00024">battle.class.php:24</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_94350f523feee7bac2b3c4d6268d38b5.html">modeles</a></li><li class="navelem"><a class="el" href="battle_8dao_8php.html">battle.dao.php</a></li>
+    <li class="footer">Généré le Jeudi 8 Janvier 2026 09:37:44 pour Paaxio par <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Paaxio: Documentation Paaxio</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Paaxio<span id="projectnumber">&#160;1.0</span>
+   </div>
+   <div id="projectbrief">Plateforme de streaming musical - SAE IUT Bayonne</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('index.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
+</div>
+
+<div><div class="header">
+  <div class="headertitle"><div class="title">Documentation <a class="el" href="namespacePaaxio.html" title="Espace de noms principal de l&#39;application Paaxio.">Paaxio</a> </div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><h1><a class="anchor" id="intro_sec"></a>
+Introduction</h1>
+<p><b><a class="el" href="namespacePaaxio.html" title="Espace de noms principal de l&#39;application Paaxio.">Paaxio</a></b> est une plateforme de streaming musical développée dans le cadre d'un projet SAE à l'IUT de Bayonne. Cette application web permet aux utilisateurs d'écouter de la musique, et aux artistes de partager leur musique.</p>
+<h1><a class="anchor" id="github_sec"></a>
+Code source</h1>
+<p><a href="https://github.com/Justasync/SAEPaaxio">Sur GitHub</a></p>
+<h1><a class="anchor" id="architecture_sec"></a>
+Architecture du Projet</h1>
+<p>Le projet suit une architecture <b>MVC</b> (Modèle-Vue-Contrôleur) :</p>
+<ul>
+<li><b>Modèles</b> (<code>modeles/</code>) : Classes métier et DAO (Data Access Objects) pour l'accès aux données</li>
+<li><b>Vues</b> (<code>templates/</code>) : Templates Twig pour le rendu HTML</li>
+<li><b>Contrôleurs</b> (<code>controller/</code>) : Logique applicative et routage des requêtes</li>
+</ul>
+<h1><a class="anchor" id="structure_sec"></a>
+Structure des Fichiers</h1>
+<h2><a class="anchor" id="entrypoint"></a>
+Point d'Entrée</h2>
+<ul>
+<li><code><a class="el" href="index_8php.html" title="Point d&#39;entrée principal de l&#39;application Paaxio.">index.php</a></code> : Front controller - reçoit toutes les requêtes HTTP</li>
+<li><code><a class="el" href="include_8php.html" title="Fichier d&#39;inclusion principal de l&#39;application Paaxio.">include.php</a></code> : <a class="el" href="classFichier.html">Fichier</a> d'inclusion centralisant toutes les dépendances</li>
+</ul>
+<h2><a class="anchor" id="controllers"></a>
+Contrôleurs</h2>
+<ul>
+<li><a class="el" href="classController.html">Controller</a> : Classe de base pour tous les contrôleurs</li>
+<li><a class="el" href="classControllerFactory.html">ControllerFactory</a> : Fabrique pour instancier les contrôleurs</li>
+<li><a class="el" href="classControllerHome.html">ControllerHome</a> : Gestion de la page d'accueil</li>
+<li><a class="el" href="classControllerUtilisateur.html">ControllerUtilisateur</a> : Gestion des utilisateurs (inscription, connexion, profil)</li>
+<li><a class="el" href="classControllerChanson.html">ControllerChanson</a> : Gestion des chansons (lecture, likes)</li>
+<li><a class="el" href="classControllerAlbum.html">ControllerAlbum</a> : Gestion des albums</li>
+<li><a class="el" href="classControllerPlaylist.html">ControllerPlaylist</a> : Gestion des playlists</li>
+<li><a class="el" href="classControllerBattle.html">ControllerBattle</a> : Gestion des battles musicales</li>
+<li><a class="el" href="classControllerAdmin.html">ControllerAdmin</a> : Interface d'administration</li>
+<li><a class="el" href="classControllerNewsletter.html">ControllerNewsletter</a> : Gestion de la newsletter</li>
+</ul>
+<h2><a class="anchor" id="models"></a>
+Modèles</h2>
+<h3><a class="anchor" id="models_class"></a>
+Classes Métier</h3>
+<ul>
+<li><a class="el" href="classUtilisateur.html">Utilisateur</a> : Représente un utilisateur du système</li>
+<li><a class="el" href="classChanson.html">Chanson</a> : Représente une chanson</li>
+<li><a class="el" href="classAlbum.html">Album</a> : Représente un album musical</li>
+<li><a class="el" href="classPlaylist.html">Playlist</a> : Représente une playlist utilisateur</li>
+<li><a class="el" href="classBattle.html">Battle</a> : Représente un duel musical entre artistes</li>
+<li><a class="el" href="classGenre.html">Genre</a> : Représente un genre musical</li>
+<li><a class="el" href="classRole.html">Role</a> : Représente un rôle utilisateur</li>
+</ul>
+<h3><a class="anchor" id="models_dao"></a>
+Data Access Objects (DAO)</h3>
+<ul>
+<li><a class="el" href="classUtilisateurDAO.html">UtilisateurDAO</a> : Accès aux données utilisateurs</li>
+<li><a class="el" href="classChansonDAO.html">ChansonDAO</a> : Accès aux données des chansons</li>
+<li><a class="el" href="classAlbumDAO.html">AlbumDAO</a> : Accès aux données des albums</li>
+<li><a class="el" href="classPlaylistDAO.html">PlaylistDAO</a> : Accès aux données des playlists</li>
+<li><a class="el" href="classBattleDAO.html">BattleDAO</a> : Accès aux données des battles</li>
+<li><a class="el" href="classGenreDAO.html">GenreDAO</a> : Accès aux données des genres</li>
+</ul>
+<h3><a class="anchor" id="models_util"></a>
+Utilitaires</h3>
+<ul>
+<li><a class="el" href="classbd.html">bd</a> : Singleton pour la connexion à la base de données (MySQL/PDO)</li>
+<li><a class="el" href="classConstantes.html">Constantes</a> : Gestion de la configuration (config.json)</li>
+<li><a class="el" href="classValidator.html">Validator</a> : Validation des données utilisateur</li>
+<li><a class="el" href="classEmail.html">Email</a> : Envoi d'emails via PHPMailer</li>
+</ul>
+<h2><a class="anchor" id="enums"></a>
+Énumérations</h2>
+<ul>
+<li><a class="el" href="Role_8enum_8php.html#ae55b9a358213ee3802037f28998aa71a">RoleEnum</a> : Rôles utilisateur (Admin, Artiste, Auditeur, Producteur, Invité)</li>
+<li><a class="el" href="utilisateur_8class_8php.html#afe7bbe19eb4424e1850c48b584ab07b1">StatutUtilisateur</a> : Statuts utilisateur (Actif, Suspendu, Supprimé)</li>
+<li><a class="el" href="utilisateur_8class_8php.html#a76111d218185e55fbf92b41d84c28ba0">StatutAbonnement</a> : Statuts d'abonnement</li>
+<li><a class="el" href="battle_8class_8php.html#aabfa451edee96474a4ea638c55d58aa5">StatutBattle</a> : Statuts des battles</li>
+</ul>
+<h1><a class="anchor" id="features_sec"></a>
+Fonctionnalités</h1>
+<h2><a class="anchor" id="user_features"></a>
+Pour les Utilisateurs</h2>
+<ul>
+<li>Ecoute de musique en streaming</li>
+<li>Consultation des playlists</li>
+<li>Système de likes sur les chansons</li>
+<li>Profil utilisateur</li>
+<li>Inscription à la newsletter</li>
+</ul>
+<h2><a class="anchor" id="artist_features"></a>
+Pour les Artistes</h2>
+<ul>
+<li>Upload de chansons et albums/singles</li>
+<li>Statistiques</li>
+</ul>
+<h2><a class="anchor" id="admin_features"></a>
+Pour les Administrateurs</h2>
+<ul>
+<li>Gestion des utilisateurs</li>
+</ul>
+<h1><a class="anchor" id="tech_sec"></a>
+Technologies Utilisées</h1>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Technologie   </th><th class="markdownTableHeadNone">Version   </th><th class="markdownTableHeadNone">Usage    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">PHP   </td><td class="markdownTableBodyNone">&gt;= 8.2   </td><td class="markdownTableBodyNone">Backend    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">MySQL   </td><td class="markdownTableBodyNone">&gt;= 8.0   </td><td class="markdownTableBodyNone">Base de données    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Twig   </td><td class="markdownTableBodyNone">3.x   </td><td class="markdownTableBodyNone">Templates HTML    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">Bootstrap   </td><td class="markdownTableBodyNone">5.x   </td><td class="markdownTableBodyNone">Framework CSS    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">PHPMailer   </td><td class="markdownTableBodyNone">6.x   </td><td class="markdownTableBodyNone">Envoi d'emails    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">jQuery   </td><td class="markdownTableBodyNone">3.x   </td><td class="markdownTableBodyNone">JavaScript   </td></tr>
+</table>
+<h1><a class="anchor" id="install_sec"></a>
+Installation</h1>
+<ol type="1">
+<li>Cloner le dépôt : <code>git clone <a href="https://github.com/Justasync/SAEPaaxio.git">https://github.com/Justasync/SAEPaaxio.git</a></code></li>
+<li>Installer les dépendances PHP : <code>composer install</code></li>
+<li>Installer les dépendances Node.js : <code>npm install</code></li>
+<li>Copier/modifier <code>config.example.json</code> en <code>config/config.json</code></li>
+<li>Importer les fichiers SQL du dossier <code>sql/</code> dans votre base de données</li>
+</ol>
+<h1><a class="anchor" id="authors_sec"></a>
+Auteurs</h1>
+<ul>
+<li>BOIX Yohan</li>
+<li>BOUSSOU MOUYABI Jarlin</li>
+<li>CECILIA URRA Christopher</li>
+<li>DIDELOT Tim</li>
+<li>HOARAU Erwan</li>
+<li>RAMIREZ BATALLA Angel David</li>
+<li>TEISSEIRE Raphaël</li>
+</ul>
+<h1><a class="anchor" id="license_sec"></a>
+Projet SAE - IUT Bayonne</h1>
+<p>Projet réalisé dans le cadre de la SAE du 3e semestre du BUT Informatique à l'IUT de Bayonne.</p>
+<p>Date : Janvier 2026 </p>
+</div></div><!-- PageDoc -->
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Généré le Jeudi 8 Janvier 2026 09:37:44 pour Paaxio par <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<map id="ChansonDAO\createChanson" name="ChansonDAO\createChanson">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,169,213,195"/>
+<area shape="rect" id="Node000002" href="$classChanson.html#a6412dbbabae463265f3d93429eaa80c2" title="Get the value of albumChanson." alt="" coords="276,5,477,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="118,168,174,106,214,71,260,41,279,33,281,37,263,46,218,75,177,110,122,171"/>
+<area shape="rect" id="Node000003" href="$classChanson.html#abaca0e393c9fc5b0fa13f1e5a17619f6" title="Get the value of dateTeleversementChanson." alt="" coords="261,55,492,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="132,167,189,137,260,105,283,97,284,102,262,110,192,141,134,172"/>
+<area shape="rect" id="Node000004" href="$classChanson.html#ac47f79c6b43ca91348c632ac9fc6e5e0" title="Get the value of dureeChanson." alt="" coords="277,120,476,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="178,167,293,145,294,151,179,172"/>
+<area shape="rect" id="Node000005" href="$classChanson.html#adc8b0e1bb44bee52af42c2a5977a998c" title="Get the value of emailPublicateur." alt="" coords="270,169,483,195"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="213,179,256,179,256,185,213,185"/>
+<area shape="rect" id="Node000006" href="$classChanson.html#a5d211f9f2b3c3a33b95e47f113628502" title="Get the value of genreChanson." alt="" coords="277,219,476,244"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="179,192,294,213,293,219,178,197"/>
+<area shape="rect" id="Node000007" href="$classChanson.html#a806cf9c62b0160b3500a0bdf24935277" title="Get the value of nbEcouteChanson." alt="" coords="266,268,487,293"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="134,193,191,223,262,253,294,262,292,267,260,258,189,227,132,197"/>
+<area shape="rect" id="Node000008" href="$classChanson.html#adbb3d4c53f48da4a850e6abd87521957" title="Get the value of titreChanson." alt="" coords="282,317,471,343"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="124,193,180,246,219,277,263,302,283,311,281,316,260,307,216,281,177,250,120,197"/>
+</map>

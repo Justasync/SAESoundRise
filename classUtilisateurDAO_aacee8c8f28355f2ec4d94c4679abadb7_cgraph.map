@@ -1,0 +1,10 @@
+<map id="UtilisateurDAO\findAllArtistes" name="UtilisateurDAO\findAllArtistes">
+<area shape="rect" id="Node000001" title="Récupère une liste d&#39;artistes populaires, en priorisant ceux du même genre que l&#39;utilisateur donné." alt="" coords="5,31,220,56"/>
+<area shape="rect" id="Node000002" href="$classUtilisateurDAO.html#a36e6fb6c12395f1a4841b47db810f59c" title="Récupère un utilisateur par son adresse email." alt="" coords="290,5,437,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="220,30,276,24,277,29,221,35"/>
+<area shape="rect" id="Node000004" href="$classUtilisateurDAO.html#ac3dabdb7502fad39bf2a68f38252f0a7" title="Hydrate plusieurs utilisateurs à partir d&#39;un tableau de données." alt="" coords="268,55,459,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="221,51,254,54,254,60,220,56"/>
+<area shape="rect" id="Node000003" href="$classUtilisateurDAO.html#a1f8a8172fdd6a8b059a0ea0580dacb61" title="Hydrate un tableau de données en une instance de Utilisateur." alt="" coords="507,31,680,56"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="438,23,493,30,493,35,437,29"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="459,55,493,51,493,56,459,60"/>
+</map>

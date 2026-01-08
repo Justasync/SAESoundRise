@@ -1,0 +1,15 @@
+<map id="AlbumDAO\hydrate" name="AlbumDAO\hydrate">
+<area shape="rect" id="Node000001" title="Hydrate un album à partir d&#39;un tableau associatif." alt="" coords="500,55,647,80"/>
+<area shape="rect" id="Node000002" href="$classAlbumDAO.html#ac37fa93cbe2fd44bb015e73a971f94ec" title="Récupère un album par son identifiant." alt="" coords="287,5,409,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="501,54,406,33,407,28,502,49"/>
+<area shape="rect" id="Node000003" href="$classAlbumDAO.html#a4d8baca5809c251ee2c06ab01f1e60d8" title="Récupère les albums les plus écoutés." alt="" coords="244,55,452,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="486,70,452,70,452,65,486,65"/>
+<area shape="rect" id="Node000004" href="$classAlbumDAO.html#a630a91c9a8e86ab85772dd0461c8f235" title="Hydrate plusieurs albums à partir d&#39;un tableau de tableaux associatifs." alt="" coords="257,104,439,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="502,86,407,107,406,101,501,80"/>
+<area shape="rect" id="Node000005" href="$classAlbumDAO.html#a994a65f33e2f7764e7547a2e7409855f" title="Récupère tous les albums de la base de données." alt="" coords="31,47,170,72"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="278,103,156,75,157,69,280,98"/>
+<area shape="rect" id="Node000006" href="$classAlbumDAO.html#ab01d941e55482986f0ebe0988915335d" title="Récupère les albums d&#39;un artiste en utilisant son email." alt="" coords="5,97,196,137"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="243,119,196,119,196,114,243,114"/>
+<area shape="rect" id="Node000007" href="$classAlbumDAO.html#a2cefe4747ac3d75c28c42f390b4d3787" title="Récupère les albums d&#39;un artiste en utilisant son pseudo." alt="" coords="10,161,191,187"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="280,135,157,164,156,159,278,130"/>
+</map>

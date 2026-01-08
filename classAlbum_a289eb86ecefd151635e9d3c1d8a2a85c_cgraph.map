@@ -1,0 +1,5 @@
+<map id="Album\getTitreAlbum" name="Album\getTitreAlbum">
+<area shape="rect" id="Node000001" title="Getter pour le titre de l&#39;album." alt="" coords="5,5,167,31"/>
+<area shape="rect" id="Node000002" href="$classAlbum.html#acc9dd6d896eeefb54b8a6f5ef71d867a" title="Getter pour le nom de l&#39;album." alt="" coords="215,5,377,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="167,15,201,15,201,21,167,21"/>
+</map>

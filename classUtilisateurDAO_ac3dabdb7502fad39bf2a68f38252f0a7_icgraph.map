@@ -1,0 +1,9 @@
+<map id="UtilisateurDAO\hydrateAll" name="UtilisateurDAO\hydrateAll">
+<area shape="rect" id="Node000001" title="Hydrate plusieurs utilisateurs à partir d&#39;un tableau de données." alt="" coords="268,55,459,80"/>
+<area shape="rect" id="Node000002" href="$classUtilisateurDAO.html#ab94b718fb47dbde9cc7507526999dca4" title="Récupère tous les utilisateurs de la base de données." alt="" coords="31,5,195,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="284,55,178,33,179,28,285,49"/>
+<area shape="rect" id="Node000003" href="$classUtilisateurDAO.html#aacee8c8f28355f2ec4d94c4679abadb7" title="Récupère une liste d&#39;artistes populaires, en priorisant ceux du même genre que l&#39;utilisateur donné." alt="" coords="5,55,220,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="254,70,220,70,220,65,254,65"/>
+<area shape="rect" id="Node000004" href="$classUtilisateurDAO.html#a53e0280dbd11e8bc64ca78062290028c" title="Récupère les artistes en tendance sur la plateforme." alt="" coords="11,104,214,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="285,85,179,107,178,101,284,80"/>
+</map>

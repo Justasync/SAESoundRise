@@ -1,0 +1,7 @@
+<map id="AlbumDAO\findByArtiste" name="AlbumDAO\findByArtiste">
+<area shape="rect" id="Node000001" title="Récupère les albums d&#39;un artiste en utilisant son pseudo." alt="" coords="5,5,187,31"/>
+<area shape="rect" id="Node000002" href="$classAlbumDAO.html#a630a91c9a8e86ab85772dd0461c8f235" title="Hydrate plusieurs albums à partir d&#39;un tableau de tableaux associatifs." alt="" coords="235,5,417,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="187,15,221,15,221,21,187,21"/>
+<area shape="rect" id="Node000003" href="$classAlbumDAO.html#a46b67cb5e8f7a16329720a866aff9e17" title="Hydrate un album à partir d&#39;un tableau associatif." alt="" coords="465,5,612,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="418,15,451,15,451,21,418,21"/>
+</map>

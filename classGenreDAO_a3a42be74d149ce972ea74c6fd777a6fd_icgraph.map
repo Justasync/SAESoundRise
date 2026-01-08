@@ -1,0 +1,16 @@
+<map id="GenreDAO\hydrate" name="GenreDAO\hydrate">
+<area shape="rect" id="Node000001" title=" " alt="" coords="513,55,657,80"/>
+<area shape="rect" id="Node000002" href="$classGenreDAO.html#a18aad41316262fc8d8ac94fa7717b7c4" title=" " alt="" coords="316,5,435,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="517,54,430,33,431,28,518,49"/>
+<area shape="rect" id="Node000004" href="$classGenreDAO.html#ab9a7053dd5f550e84b01bde9f4121d9d" title=" " alt="" coords="288,55,463,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="500,70,463,70,463,65,500,65"/>
+<area shape="rect" id="Node000005" href="$classGenreDAO.html#abd0565276bbb552233aac00f04f2c1ed" title=" " alt="" coords="285,104,465,129"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="518,86,431,107,430,101,517,81"/>
+<area shape="rect" id="Node000003" href="$classGenreDAO.html#a4ebe1eaed0f03cc04b4d60b88f9e974d" title=" " alt="" coords="5,17,237,43"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="302,24,238,27,237,22,302,19"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="275,55,208,45,209,40,275,50"/>
+<area shape="rect" id="Node000006" href="$classGenreDAO.html#ae5d1f281aa34a4946800bc08217c6aa9" title="Récupère tous les genres de la base de données." alt="" coords="54,79,189,104"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="271,109,189,101,189,95,272,104"/>
+<area shape="rect" id="Node000007" href="$classGenreDAO.html#a552fff5abbc9121d62f7dd9b337e6470" title=" " alt="" coords="14,128,229,153"/>
+<area shape="poly" id="edge7_Node000005_Node000007" title=" " alt="" coords="272,129,229,133,228,128,271,124"/>
+</map>

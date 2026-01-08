@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Paaxio:  Fichier source de newsletter.class.php</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Paaxio<span id="projectnumber">&#160;1.0</span>
+   </div>
+   <div id="projectbrief">Plateforme de streaming musical - SAE IUT Bayonne</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('newsletter_8class_8php_source.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">newsletter.class.php</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="newsletter_8class_8php.html">Aller à la documentation de ce fichier.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span>&lt;?php</div>
+<div class="foldopen" id="foldopen00007" data-start="{" data-end="};">
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="classNewsletter.html">    7</a></span><span class="keyword">class </span><a class="code hl_class" href="classNewsletter.html">Newsletter</a></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>{</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="classNewsletter.html#a85bd887516c90e7d762197b4bb7e73b1">   12</a></span>    <span class="keyword">private</span> ?<span class="keywordtype">string</span> <a class="code hl_variable" href="classNewsletter.html#a85bd887516c90e7d762197b4bb7e73b1">$email</a> = <span class="keyword">null</span>;</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="classNewsletter.html#a3e5fb44a99562f24d9d06c557347d2c8">   17</a></span>    <span class="keyword">private</span> ?DateTime <a class="code hl_variable" href="classNewsletter.html#a3e5fb44a99562f24d9d06c557347d2c8">$dateInscription</a> = <span class="keyword">null</span>;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
+<div class="foldopen" id="foldopen00023" data-start="{" data-end="}">
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="classNewsletter.html#a57a9465b62f9c92e033f0e0c1dfa2fab">   23</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classNewsletter.html#a57a9465b62f9c92e033f0e0c1dfa2fab">getEmail</a>(): ?string</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    {</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classNewsletter.html#a85bd887516c90e7d762197b4bb7e73b1">$this-&gt;email</a>;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    }</div>
+</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="foldopen" id="foldopen00033" data-start="{" data-end="}">
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="classNewsletter.html#acc8a970cc162076c00399fee88b86f37">   33</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classNewsletter.html#acc8a970cc162076c00399fee88b86f37">setEmail</a>(?<span class="keywordtype">string</span> <a class="code hl_variable" href="classNewsletter.html#a85bd887516c90e7d762197b4bb7e73b1">$email</a>): void</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    {</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        $this-&gt;email = <a class="code hl_variable" href="classNewsletter.html#a85bd887516c90e7d762197b4bb7e73b1">$email</a>;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    }</div>
+</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="foldopen" id="foldopen00042" data-start="{" data-end="}">
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="classNewsletter.html#ad13e7337dc87e9fe95c0c3685384502b">   42</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classNewsletter.html#ad13e7337dc87e9fe95c0c3685384502b">getDateInscription</a>(): ?DateTime</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    {</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classNewsletter.html#a3e5fb44a99562f24d9d06c557347d2c8">$this-&gt;dateInscription</a>;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    }</div>
+</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="foldopen" id="foldopen00052" data-start="{" data-end="}">
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="classNewsletter.html#acf5dc76332b671f70cfaea02005a12b2">   52</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classNewsletter.html#acf5dc76332b671f70cfaea02005a12b2">setDateInscription</a>(?DateTime <a class="code hl_variable" href="classNewsletter.html#a3e5fb44a99562f24d9d06c557347d2c8">$dateInscription</a>): void</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    {</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        $this-&gt;dateInscription = <a class="code hl_variable" href="classNewsletter.html#a3e5fb44a99562f24d9d06c557347d2c8">$dateInscription</a>;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    }</div>
+</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>}</div>
+</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="ttc" id="aclassNewsletter_html"><div class="ttname"><a href="classNewsletter.html">Newsletter</a></div><div class="ttdef"><b>Definition</b> <a href="newsletter_8class_8php_source.html#l00007">newsletter.class.php:8</a></div></div>
+<div class="ttc" id="aclassNewsletter_html_a3e5fb44a99562f24d9d06c557347d2c8"><div class="ttname"><a href="classNewsletter.html#a3e5fb44a99562f24d9d06c557347d2c8">Newsletter\$dateInscription</a></div><div class="ttdeci">DateTime $dateInscription</div><div class="ttdef"><b>Definition</b> <a href="newsletter_8class_8php_source.html#l00017">newsletter.class.php:17</a></div></div>
+<div class="ttc" id="aclassNewsletter_html_a57a9465b62f9c92e033f0e0c1dfa2fab"><div class="ttname"><a href="classNewsletter.html#a57a9465b62f9c92e033f0e0c1dfa2fab">Newsletter\getEmail</a></div><div class="ttdeci">getEmail()</div><div class="ttdoc">Getter pour l'email de l'abonné</div><div class="ttdef"><b>Definition</b> <a href="newsletter_8class_8php_source.html#l00023">newsletter.class.php:23</a></div></div>
+<div class="ttc" id="aclassNewsletter_html_a85bd887516c90e7d762197b4bb7e73b1"><div class="ttname"><a href="classNewsletter.html#a85bd887516c90e7d762197b4bb7e73b1">Newsletter\$email</a></div><div class="ttdeci">string $email</div><div class="ttdef"><b>Definition</b> <a href="newsletter_8class_8php_source.html#l00012">newsletter.class.php:12</a></div></div>
+<div class="ttc" id="aclassNewsletter_html_acc8a970cc162076c00399fee88b86f37"><div class="ttname"><a href="classNewsletter.html#acc8a970cc162076c00399fee88b86f37">Newsletter\setEmail</a></div><div class="ttdeci">setEmail(?string $email)</div><div class="ttdoc">Setter pour l'email de l'abonné</div><div class="ttdef"><b>Definition</b> <a href="newsletter_8class_8php_source.html#l00033">newsletter.class.php:33</a></div></div>
+<div class="ttc" id="aclassNewsletter_html_acf5dc76332b671f70cfaea02005a12b2"><div class="ttname"><a href="classNewsletter.html#acf5dc76332b671f70cfaea02005a12b2">Newsletter\setDateInscription</a></div><div class="ttdeci">setDateInscription(?DateTime $dateInscription)</div><div class="ttdoc">Setter pour la date d'inscription.</div><div class="ttdef"><b>Definition</b> <a href="newsletter_8class_8php_source.html#l00052">newsletter.class.php:52</a></div></div>
+<div class="ttc" id="aclassNewsletter_html_ad13e7337dc87e9fe95c0c3685384502b"><div class="ttname"><a href="classNewsletter.html#ad13e7337dc87e9fe95c0c3685384502b">Newsletter\getDateInscription</a></div><div class="ttdeci">getDateInscription()</div><div class="ttdoc">Getter pour la date d'inscription.</div><div class="ttdef"><b>Definition</b> <a href="newsletter_8class_8php_source.html#l00042">newsletter.class.php:42</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_94350f523feee7bac2b3c4d6268d38b5.html">modeles</a></li><li class="navelem"><a class="el" href="newsletter_8class_8php.html">newsletter.class.php</a></li>
+    <li class="footer">Généré le Jeudi 8 Janvier 2026 09:37:44 pour Paaxio par <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

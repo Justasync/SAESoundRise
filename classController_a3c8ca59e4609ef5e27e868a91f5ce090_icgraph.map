@@ -1,0 +1,21 @@
+<map id="Controller\requireRole" name="Controller\requireRole">
+<area shape="rect" id="Node000001" title="Exige que l&#39;utilisateur ait un rôle spécifique." alt="" coords="273,227,439,252"/>
+<area shape="rect" id="Node000002" href="$classControllerAdmin.html#a112f35682ab86e6256d923e59b49a125" title="Affiche le tableau de bord de l&#39;administrateur." alt="" coords="25,5,206,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="343,215,326,177,300,130,266,84,224,46,200,33,202,28,227,41,270,81,305,127,330,174,348,213"/>
+<area shape="rect" id="Node000003" href="$classControllerAlbum.html#a6302c1b131eead7adc950353217b4a8c" title="Affiche le formulaire d&#39;ajout d&#39;album." alt="" coords="25,55,206,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="335,217,289,163,258,134,224,110,200,98,202,93,227,105,261,130,293,159,339,214"/>
+<area shape="rect" id="Node000004" href="$classControllerAlbum.html#a2fb955c9315c73e221f81baff694f4d2" title="Traite l&#39;ajout d&#39;un nouvel album ou l&#39;ajout de chansons à un album existant." alt="" coords="5,120,225,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="327,221,280,189,224,159,190,148,192,143,226,154,283,184,330,216"/>
+<area shape="rect" id="Node000005" href="$classControllerAdmin.html#a18818beb5443fb827766f982ff9b4762" title="Consulte les détails d&#39;un utilisateur." alt="" coords="19,169,211,195"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="290,226,225,210,171,197,173,192,226,205,291,221"/>
+<area shape="rect" id="Node000006" href="$classControllerUtilisateur.html#abbfd16bafa283856d06476b006239871" title="Gère la création d&#39;un nouvel utilisateur par l&#39;administrateur." alt="" coords="38,219,193,259"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="259,242,193,242,193,237,259,237"/>
+<area shape="rect" id="Node000007" href="$classControllerAdmin.html#a65506a5e6ff98256bd5c39307db816f0" title="Modifie un utilisateur existant." alt="" coords="22,284,209,309"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="291,258,226,274,173,287,171,281,225,269,290,253"/>
+<area shape="rect" id="Node000008" href="$classControllerAlbum.html#a39a4e1d517fac239f47665a9e8110cdd" title="Modifie les informations d&#39;une chanson." alt="" coords="22,334,209,374"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="328,262,282,293,226,323,192,336,190,331,224,318,279,289,325,258"/>
+<area shape="rect" id="Node000009" href="$classControllerAdmin.html#a21a27101a5c5e6a978ec048813cbbcf1" title="Supprime un utilisateur spécifique." alt="" coords="16,399,215,424"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="342,266,296,328,264,361,227,388,198,401,196,396,224,384,260,357,292,324,338,262"/>
+<area shape="rect" id="Node000010" href="$classControllerAlbum.html#aad96094767cc4b5a0520a29b22f7c77d" title="Supprime une chanson (action réservée à l&#39;artiste propriétaire)." alt="" coords="16,449,215,489"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="347,266,330,304,304,350,269,397,227,437,204,451,201,446,224,433,265,393,299,347,325,301,342,263"/>
+</map>

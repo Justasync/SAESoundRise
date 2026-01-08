@@ -1,0 +1,5 @@
+<map id="ControllerHome\afficherGenerales" name="ControllerHome\afficherGenerales">
+<area shape="rect" id="Node000001" title="Affiche la page des conditions générales." alt="" coords="5,5,249,31"/>
+<area shape="rect" id="Node000002" href="$classController.html#afd7d94db564ae6e196ac7ac0461e0989" title="Récupère l&#39;environnement Twig." alt="" coords="297,5,437,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="249,15,283,15,283,21,249,21"/>
+</map>

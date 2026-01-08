@@ -1,0 +1,26 @@
+var classChansonDAO =
+[
+    [ "__construct", "classChansonDAO.html#adc5272d1c12c5d2c9d14ee2bc2645c1f", null ],
+    [ "addChansonLikee", "classChansonDAO.html#ab661c8531ae990fba533a2cdc9f9dfa0", null ],
+    [ "createChanson", "classChansonDAO.html#a571f3d96b5c32b26059289c7f2fe619d", null ],
+    [ "deleteChanson", "classChansonDAO.html#a81594e0f93ab76a274a183427131c14c", null ],
+    [ "filtrerChanson", "classChansonDAO.html#af2522bc396a36979dbab1604ed7ee15c", null ],
+    [ "findAll", "classChansonDAO.html#ada2ec15fd8bf73fc2ed30325cbd8bef6", null ],
+    [ "findAllFromUser", "classChansonDAO.html#a35e91d1d120b298571c35c00b0142884", null ],
+    [ "findByTitreExact", "classChansonDAO.html#ade76e12959e5def97fc72f64cc4fc1f4", null ],
+    [ "findChansonsLikees", "classChansonDAO.html#a738aad8562808b99c7174ceabd22577d", null ],
+    [ "findId", "classChansonDAO.html#aa9f3b3c091b0f9db6a1ab3f9b04fdc47", null ],
+    [ "findTrending", "classChansonDAO.html#a96d28dc22bbfae9f3dd6370f1d87a489", null ],
+    [ "getPdo", "classChansonDAO.html#a6099d63ca3c3f5df525b45306b7766f4", null ],
+    [ "getTotalEcoutesByArtiste", "classChansonDAO.html#a7cc4a7d154756b51035ed846eca8ee1a", null ],
+    [ "hydrate", "classChansonDAO.html#aba82b82cc565dac393f403cf9e460508", null ],
+    [ "hydrateMany", "classChansonDAO.html#a3c5a1384e8cc52cfe9be658f73e9db98", null ],
+    [ "incrementNbEcoute", "classChansonDAO.html#aaee3bb22aa78d6eecfa5ac129822d531", null ],
+    [ "rechercherParAlbum", "classChansonDAO.html#a6c84de03aba88179e451db46e84356e3", null ],
+    [ "rechercherParTitre", "classChansonDAO.html#a0dd0bcfda435e1410f21d29e912e3969", null ],
+    [ "setPdo", "classChansonDAO.html#acbce21c4e1973d1f71950a40d2c4626b", null ],
+    [ "toggleLike", "classChansonDAO.html#acfd301d7b3979184dbb46ffcb8df28ea", null ],
+    [ "updateChanson", "classChansonDAO.html#a18df19770282a473369d097673c07a2d", null ],
+    [ "updateChansonLikee", "classChansonDAO.html#a8b9d94cc09f646e441c4d9a0d28fa292", null ],
+    [ "$pdo", "classChansonDAO.html#a49743d67dfbcf5c7fdaf0f61ca8df2b7", null ]
+];

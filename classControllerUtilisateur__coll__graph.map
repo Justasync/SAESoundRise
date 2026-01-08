@@ -1,0 +1,6 @@
+<map id="ControllerUtilisateur" name="ControllerUtilisateur">
+<area shape="rect" id="Node000001" title="Contrôleur dédié à la gestion des utilisateurs." alt="" coords="5,519,215,824"/>
+<area shape="rect" id="Node000002" href="$classController.html" title="Classe de base pour tous les contrôleurs de l&#39;application." alt="" coords="41,5,179,471"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="104,484,104,518,99,518,98,484"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="122,484,121,518,116,518,116,484"/>
+</map>

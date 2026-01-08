@@ -1,0 +1,6 @@
+<map id="ControllerNewsletter" name="ControllerNewsletter">
+<area shape="rect" id="Node000001" title="Contrôleur dédié à la gestion de la newsletter." alt="" coords="5,519,155,624"/>
+<area shape="rect" id="Node000002" href="$classController.html" title="Classe de base pour tous les contrôleurs de l&#39;application." alt="" coords="11,5,149,471"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="75,484,76,518,71,519,69,484"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="91,484,89,519,84,518,85,484"/>
+</map>

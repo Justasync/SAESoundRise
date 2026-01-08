@@ -1,0 +1,5 @@
+<map id="ControllerUtilisateur\afficherErreurToken" name="ControllerUtilisateur\afficherErreurToken">
+<area shape="rect" id="Node000001" title="Affiche une page d&#39;erreur pour les tokens invalides." alt="" coords="208,5,363,45"/>
+<area shape="rect" id="Node000002" href="$classControllerUtilisateur.html#aaabd0c49bb15aac96b9358753608db1d" title="Affiche le formulaire de réinitialisation de mot de passe." alt="" coords="5,5,160,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,28,161,28,161,23,194,23"/>
+</map>

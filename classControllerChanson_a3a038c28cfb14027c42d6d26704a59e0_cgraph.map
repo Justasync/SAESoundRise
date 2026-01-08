@@ -1,0 +1,5 @@
+<map id="ControllerChanson\afficher" name="ControllerChanson\afficher">
+<area shape="rect" id="Node000001" title="Affiche les détails d&#39;une chanson spécifique." alt="" coords="5,5,200,31"/>
+<area shape="rect" id="Node000002" href="$classController.html#afd7d94db564ae6e196ac7ac0461e0989" title="Récupère l&#39;environnement Twig." alt="" coords="248,5,388,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="200,15,235,15,235,21,200,21"/>
+</map>

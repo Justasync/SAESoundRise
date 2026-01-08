@@ -1,0 +1,5 @@
+<map id="ControllerGenre\afficher" name="ControllerGenre\afficher">
+<area shape="rect" id="Node000001" title="Affiche les détails d&#39;un genre spécifique." alt="" coords="5,5,184,31"/>
+<area shape="rect" id="Node000002" href="$classController.html#afd7d94db564ae6e196ac7ac0461e0989" title="Récupère l&#39;environnement Twig." alt="" coords="232,5,372,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="185,15,218,15,218,21,185,21"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="Email\sendEmail" name="Email\sendEmail">
+<area shape="rect" id="Node000001" title="Envoie un email générique." alt="" coords="5,5,136,31"/>
+<area shape="rect" id="Node000002" href="$classEmail.html#ad45a36acb02ab1c873e93ccbb98de680" title="Crée et configure une instance PHPMailer." alt="" coords="184,5,329,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="136,15,170,15,170,21,136,21"/>
+</map>

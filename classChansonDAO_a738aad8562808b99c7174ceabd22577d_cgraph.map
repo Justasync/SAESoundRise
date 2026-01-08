@@ -1,0 +1,5 @@
+<map id="ChansonDAO\findChansonsLikees" name="ChansonDAO\findChansonsLikees">
+<area shape="rect" id="Node000001" title="Récupère les chansons likées par un utilisateur." alt="" coords="5,5,244,31"/>
+<area shape="rect" id="Node000002" href="$classChansonDAO.html#aba82b82cc565dac393f403cf9e460508" title=" " alt="" coords="292,5,453,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="244,15,278,15,278,21,244,21"/>
+</map>

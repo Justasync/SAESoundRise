@@ -1,0 +1,7 @@
+<map id="GenreDAO\hydrateMany" name="GenreDAO\hydrateMany">
+<area shape="rect" id="Node000001" title=" " alt="" coords="268,31,448,56"/>
+<area shape="rect" id="Node000002" href="$classGenreDAO.html#ae5d1f281aa34a4946800bc08217c6aa9" title="Récupère tous les genres de la base de données." alt="" coords="45,5,180,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="254,35,180,28,180,22,255,30"/>
+<area shape="rect" id="Node000003" href="$classGenreDAO.html#a552fff5abbc9121d62f7dd9b337e6470" title=" " alt="" coords="5,55,220,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="254,56,221,59,220,54,254,51"/>
+</map>

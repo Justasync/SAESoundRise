@@ -1,0 +1,27 @@
+<map id="Graphe hiérarchique des classes" name="Graphe hiérarchique des classes">
+<area shape="rect" id="Node000000" href="$classController.html" title="Classe de base pour tous les contrôleurs de l&#39;application." alt="" coords="5,277,92,303"/>
+<area shape="rect" id="Node000001" href="$classControllerAdmin.html" title="Contrôleur dédié à la gestion de l&#39;administration." alt="" coords="155,5,283,31"/>
+<area shape="poly" id="edge1_Node000000_Node000001" title=" " alt="" coords="49,263,56,216,71,156,98,94,116,65,138,40,155,29,158,33,142,44,120,69,102,96,77,158,62,217,55,264"/>
+<area shape="rect" id="Node000002" href="$classControllerAlbum.html" title="Contrôleur dédié à la gestion des albums." alt="" coords="155,55,283,80"/>
+<area shape="poly" id="edge2_Node000000_Node000002" title=" " alt="" coords="52,263,62,225,78,178,103,131,138,89,156,78,159,82,142,93,108,134,83,180,67,227,57,265"/>
+<area shape="rect" id="Node000003" href="$classControllerBattle.html" title="Contrôleur dédié à la gestion des battles." alt="" coords="156,104,281,129"/>
+<area shape="poly" id="edge3_Node000000_Node000003" title=" " alt="" coords="56,263,86,201,109,167,138,139,158,127,161,132,142,143,114,171,91,204,61,266"/>
+<area shape="rect" id="Node000004" href="$classControllerChanson.html" title="Contrôleur dédié à la gestion des chansons." alt="" coords="147,153,290,179"/>
+<area shape="poly" id="edge4_Node000000_Node000004" title=" " alt="" coords="64,264,95,225,139,188,162,176,164,181,141,192,99,229,68,268"/>
+<area shape="rect" id="Node000005" href="$classControllerFichier.html" title="Contrôleur dédié à la gestion des fichiers." alt="" coords="154,203,283,228"/>
+<area shape="poly" id="edge5_Node000000_Node000005" title=" " alt="" coords="80,268,139,237,170,226,171,231,141,242,82,273"/>
+<area shape="rect" id="Node000006" href="$classControllerGenre.html" title="Contrôleur dédié à la gestion des genres musicaux." alt="" coords="156,252,281,277"/>
+<area shape="poly" id="edge6_Node000000_Node000006" title=" " alt="" coords="105,279,155,271,156,277,106,284"/>
+<area shape="rect" id="Node000007" href="$classControllerHome.html" title="Contrôleur dédié à la gestion de la page d&#39;accueil." alt="" coords="156,301,281,327"/>
+<area shape="poly" id="edge7_Node000000_Node000007" title=" " alt="" coords="106,295,156,302,155,308,105,301"/>
+<area shape="rect" id="Node000008" href="$classControllerMusique.html" title="Contrôleur dédié à la gestion de la bibliothèque musicale de l&#39;utilisateur." alt="" coords="148,351,289,376"/>
+<area shape="poly" id="edge8_Node000000_Node000008" title=" " alt="" coords="84,307,141,336,175,348,173,353,139,340,82,312"/>
+<area shape="rect" id="Node000009" href="$classControllerNewsletter.html" title="Contrôleur dédié à la gestion de la newsletter." alt="" coords="140,400,297,425"/>
+<area shape="poly" id="edge9_Node000000_Node000009" title=" " alt="" coords="69,313,100,350,141,385,167,398,165,402,139,390,96,354,65,316"/>
+<area shape="rect" id="Node000010" href="$classControllerPlaylist.html" title="Contrôleur dédié à la gestion des playlists." alt="" coords="151,449,286,475"/>
+<area shape="poly" id="edge10_Node000000_Node000010" title=" " alt="" coords="62,314,91,375,114,407,142,435,163,447,161,452,138,439,110,410,87,378,57,317"/>
+<area shape="rect" id="Node000011" href="$classControllerRole.html" title="Contrôleur dédié à la gestion des rôles utilisateurs." alt="" coords="161,499,276,524"/>
+<area shape="poly" id="edge11_Node000000_Node000011" title=" " alt="" coords="58,316,68,354,84,399,109,445,142,484,162,497,160,501,138,488,104,448,79,401,63,355,53,317"/>
+<area shape="rect" id="Node000012" href="$classControllerUtilisateur.html" title="Contrôleur dédié à la gestion des utilisateurs." alt="" coords="141,548,296,573"/>
+<area shape="poly" id="edge12_Node000000_Node000012" title=" " alt="" coords="55,316,62,362,77,421,103,481,121,509,142,533,160,546,157,550,138,537,116,512,98,484,72,422,57,363,50,317"/>
+</map>

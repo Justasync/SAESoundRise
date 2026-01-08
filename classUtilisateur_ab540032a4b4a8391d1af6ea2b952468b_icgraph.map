@@ -1,0 +1,7 @@
+<map id="Utilisateur\getRoleUtilisateur" name="Utilisateur\getRoleUtilisateur">
+<area shape="rect" id="Node000001" title="Getter pour roleUtilisateur." alt="" coords="221,31,433,56"/>
+<area shape="rect" id="Node000002" href="$classUtilisateurDAO.html#aa5a57157f00d003aae66738846c900f5" title="Crée un nouvel utilisateur dans la base de données." alt="" coords="7,5,171,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="207,33,171,29,172,24,208,28"/>
+<area shape="rect" id="Node000003" href="$classUtilisateurDAO.html#a8fe8ba6718c1488ce18bf42b2aea94c8" title="Met à jour un utilisateur dans la base de données." alt="" coords="5,55,173,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="208,58,174,62,173,56,207,53"/>
+</map>

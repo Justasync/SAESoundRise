@@ -1,0 +1,25 @@
+var classBattle =
+[
+    [ "__construct", "classBattle.html#a15f5c6da0c227ec07976f34965840403", null ],
+    [ "getDateDebutBattle", "classBattle.html#a978bfafbff6e4b126607b2fef798390d", null ],
+    [ "getDateFinBattle", "classBattle.html#a8308580f00281dd81f0e1f2772a5f329", null ],
+    [ "getEmailCreateurBattle", "classBattle.html#a0d0f5857ee87816d050012d256610e93", null ],
+    [ "getEmailParticipantBattle", "classBattle.html#a4446f63a61abed5f8837fcaa30da0a3d", null ],
+    [ "getIdBattle", "classBattle.html#aeb5c70abc6a12d87ac0107a9146930c3", null ],
+    [ "getStatutBattle", "classBattle.html#a478dd28b05d6fe290d3302b60be42954", null ],
+    [ "getTitreBattle", "classBattle.html#a13f34d69f076d4510a2ffacbe7db9cab", null ],
+    [ "setDateDebutBattle", "classBattle.html#ab025d52f2aa1efc1f45bb6a9ed22ae08", null ],
+    [ "setDateFinBattle", "classBattle.html#a2325450ed961fcdf10bda34a14b551a3", null ],
+    [ "setEmailCreateurBattle", "classBattle.html#a1002769a83d7ef60b6869382824c5e68", null ],
+    [ "setEmailParticipantBattle", "classBattle.html#a04cdc8c8f0e295a1435436f36a3e9bbd", null ],
+    [ "setIdBattle", "classBattle.html#afef65dbf4b07e377eb8f696a2d61528f", null ],
+    [ "setStatutBattle", "classBattle.html#a8c03e68cc5823fe1d47d0192fcf2292a", null ],
+    [ "setTitreBattle", "classBattle.html#ad82e36b0bf33bf9fc66088c2b19f3e8c", null ],
+    [ "$dateDebutBattle", "classBattle.html#a3339f7242876922e66f4dd92d8fb8331", null ],
+    [ "$dateFinBattle", "classBattle.html#a0968332f1d5c7e70448cdfb0abbdd525", null ],
+    [ "$emailCreateurBattle", "classBattle.html#a08d02434149a8935eb89f7389035b9bd", null ],
+    [ "$emailParticipantBattle", "classBattle.html#a4172e097b3cd636eea3aa8be6367bcd9", null ],
+    [ "$idBattle", "classBattle.html#ae5dac7a0e034c77eeb4f4ab79f8b4e2e", null ],
+    [ "$statutBattle", "classBattle.html#aec0eeef25ee5b33b16e0aac294235e2d", null ],
+    [ "$titreBattle", "classBattle.html#a3d16f74a91805c629fcd112b518e086c", null ]
+];

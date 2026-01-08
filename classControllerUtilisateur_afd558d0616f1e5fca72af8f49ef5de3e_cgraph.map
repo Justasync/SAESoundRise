@@ -1,0 +1,11 @@
+<map id="ControllerUtilisateur\signin" name="ControllerUtilisateur\signin">
+<area shape="rect" id="Node000001" title="Gère la connexion (authentification) d&#39;un utilisateur." alt="" coords="5,47,160,87"/>
+<area shape="rect" id="Node000002" href="$classController.html#aed88cab8d9c1a6735fd3aac0993e5021" title="Récupère la connexion PDO." alt="" coords="213,5,351,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="159,46,216,32,217,37,161,51"/>
+<area shape="rect" id="Node000003" href="$classController.html#a0a0442c56d3fede8d9d7c2c24a04839c" title="Récupère les données POST." alt="" coords="213,55,351,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="160,65,199,65,199,70,160,70"/>
+<area shape="rect" id="Node000004" href="$classController.html#a566566403ccbb3fcb71380014da08c46" title="Affiche une erreur 405 Méthode non autorisée." alt="" coords="208,104,356,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="161,84,217,98,216,103,159,89"/>
+<area shape="rect" id="Node000005" href="$classController.html#afd7d94db564ae6e196ac7ac0461e0989" title="Récupère l&#39;environnement Twig." alt="" coords="404,104,544,129"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="357,114,390,114,390,119,357,119"/>
+</map>

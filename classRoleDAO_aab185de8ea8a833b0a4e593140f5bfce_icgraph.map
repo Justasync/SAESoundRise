@@ -1,0 +1,11 @@
+<map id="RoleDAO\hydrate" name="RoleDAO\hydrate">
+<area shape="rect" id="Node000001" title=" " alt="" coords="397,55,532,80"/>
+<area shape="rect" id="Node000002" href="$classRoleDAO.html#a70969c2ae9d91d55654f59a617bca8b9" title=" " alt="" coords="210,5,318,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="399,54,316,33,317,28,400,49"/>
+<area shape="rect" id="Node000003" href="$classRoleDAO.html#aeaf328077b37dc09ed58687e5fc0715a" title=" " alt="" coords="187,55,341,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="383,70,342,70,342,65,383,65"/>
+<area shape="rect" id="Node000004" href="$classRoleDAO.html#ad1e6ac938c188e15ac0667b7624c15bb" title=" " alt="" coords="179,104,349,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="400,86,317,107,316,101,399,81"/>
+<area shape="rect" id="Node000005" href="$classRoleDAO.html#ab56aa199e9fb3b3de9c205770b3ec703" title="Récupère tous les rôles de la base de données." alt="" coords="5,104,131,129"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="165,119,131,119,131,114,165,114"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="ControllerBattle\lister" name="ControllerBattle\lister">
+<area shape="rect" id="Node000001" title="Liste toutes les battles de la plateforme." alt="" coords="5,5,168,31"/>
+<area shape="rect" id="Node000002" href="$classController.html#afd7d94db564ae6e196ac7ac0461e0989" title="Récupère l&#39;environnement Twig." alt="" coords="216,5,356,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="169,15,202,15,202,21,169,21"/>
+</map>

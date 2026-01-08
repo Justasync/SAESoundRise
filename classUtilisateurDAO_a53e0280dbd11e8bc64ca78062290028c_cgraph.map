@@ -1,0 +1,7 @@
+<map id="UtilisateurDAO\findTrending" name="UtilisateurDAO\findTrending">
+<area shape="rect" id="Node000001" title="Récupère les artistes en tendance sur la plateforme." alt="" coords="5,5,208,31"/>
+<area shape="rect" id="Node000002" href="$classUtilisateurDAO.html#ac3dabdb7502fad39bf2a68f38252f0a7" title="Hydrate plusieurs utilisateurs à partir d&#39;un tableau de données." alt="" coords="256,5,447,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="208,15,242,15,242,21,208,21"/>
+<area shape="rect" id="Node000003" href="$classUtilisateurDAO.html#a1f8a8172fdd6a8b059a0ea0580dacb61" title="Hydrate un tableau de données en une instance de Utilisateur." alt="" coords="495,5,668,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="447,15,481,15,481,21,447,21"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="ChansonDAO\addChansonLikee" name="ChansonDAO\addChansonLikee">
+<area shape="rect" id="Node000001" title="Ajoute un like pour une chanson (user + chanson)" alt="" coords="232,5,457,31"/>
+<area shape="rect" id="Node000002" href="$classChansonDAO.html#acfd301d7b3979184dbb46ffcb8df28ea" title="Bascule le like d&#39;une chanson (ajoute ou supprime)" alt="" coords="5,5,184,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="218,21,184,21,184,15,218,15"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="Email\sendWelcomeEmail" name="Email\sendWelcomeEmail">
+<area shape="rect" id="Node000001" title="Envoie un email de bienvenue à un nouvel utilisateur." alt="" coords="5,31,196,56"/>
+<area shape="rect" id="Node000002" href="$classEmail.html#ae28ae8c6b6977c4fa419438f93f5ea3a" title="Récupère l&#39;URL du site." alt="" coords="245,5,373,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,29,232,25,232,30,197,34"/>
+<area shape="rect" id="Node000003" href="$classEmail.html#a9aca469b70f5907964a1ee99dc76d787" title="Envoie un email générique." alt="" coords="244,55,375,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="197,52,230,56,230,61,196,57"/>
+<area shape="rect" id="Node000004" href="$classEmail.html#ad45a36acb02ab1c873e93ccbb98de680" title="Crée et configure une instance PHPMailer." alt="" coords="423,55,568,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="375,65,408,65,408,70,375,70"/>
+</map>

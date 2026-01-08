@@ -1,0 +1,21 @@
+<map id="ChansonDAO\hydrate" name="ChansonDAO\hydrate">
+<area shape="rect" id="Node000001" title=" " alt="" coords="555,80,716,105"/>
+<area shape="rect" id="Node000002" href="$classChansonDAO.html#a738aad8562808b99c7174ceabd22577d" title="Récupère les chansons likées par un utilisateur." alt="" coords="268,31,507,56"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="557,80,452,59,453,53,558,75"/>
+<area shape="rect" id="Node000003" href="$classChansonDAO.html#aa9f3b3c091b0f9db6a1ab3f9b04fdc47" title=" " alt="" coords="314,80,461,105"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="541,95,461,95,461,90,541,90"/>
+<area shape="rect" id="Node000004" href="$classChansonDAO.html#a3c5a1384e8cc52cfe9be658f73e9db98" title=" " alt="" coords="289,129,486,155"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="558,111,453,132,452,127,557,105"/>
+<area shape="rect" id="Node000005" href="$classChansonDAO.html#af2522bc396a36979dbab1604ed7ee15c" title=" " alt="" coords="11,5,214,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="279,126,266,119,249,100,241,80,234,61,218,44,198,33,200,28,222,40,239,59,246,78,254,97,270,115,281,122"/>
+<area shape="rect" id="Node000006" href="$classChansonDAO.html#ada2ec15fd8bf73fc2ed30325cbd8bef6" title="Récupère toutes les chansons de la base de données." alt="" coords="37,55,189,80"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="298,129,267,119,243,106,219,94,182,83,183,78,221,89,245,102,269,114,299,123"/>
+<area shape="rect" id="Node000007" href="$classChansonDAO.html#a35e91d1d120b298571c35c00b0142884" title=" " alt="" coords="5,104,220,129"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="275,134,220,129,221,124,275,129"/>
+<area shape="rect" id="Node000008" href="$classChansonDAO.html#a96d28dc22bbfae9f3dd6370f1d87a489" title=" " alt="" coords="17,153,208,179"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="275,154,208,160,208,155,275,149"/>
+<area shape="rect" id="Node000009" href="$classChansonDAO.html#a6c84de03aba88179e451db46e84356e3" title=" " alt="" coords="13,203,213,243"/>
+<area shape="poly" id="edge8_Node000004_Node000009" title=" " alt="" coords="331,161,182,206,180,201,330,156"/>
+<area shape="rect" id="Node000010" href="$classChansonDAO.html#a0dd0bcfda435e1410f21d29e912e3969" title=" " alt="" coords="13,267,213,307"/>
+<area shape="poly" id="edge9_Node000004_Node000010" title=" " alt="" coords="362,166,300,211,221,258,192,270,190,265,219,253,297,207,358,161"/>
+</map>

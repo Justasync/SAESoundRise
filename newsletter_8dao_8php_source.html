@@ -1,0 +1,167 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Paaxio:  Fichier source de newsletter.dao.php</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Paaxio<span id="projectnumber">&#160;1.0</span>
+   </div>
+   <div id="projectbrief">Plateforme de streaming musical - SAE IUT Bayonne</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('newsletter_8dao_8php_source.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">newsletter.dao.php</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="newsletter_8dao_8php.html">Aller à la documentation de ce fichier.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span>&lt;?php</div>
+<div class="foldopen" id="foldopen00007" data-start="{" data-end="};">
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="classNewsletterDAO.html">    7</a></span><span class="keyword">class </span><a class="code hl_class" href="classNewsletterDAO.html">NewsletterDAO</a></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>{</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="classNewsletterDAO.html#ad0ee2877364bf0039e7c0ea4fa9e0322">   12</a></span>    <span class="keyword">private</span> ?PDO <a class="code hl_variable" href="classNewsletterDAO.html#ad0ee2877364bf0039e7c0ea4fa9e0322">$pdo</a>;</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="foldopen" id="foldopen00018" data-start="{" data-end="}">
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classNewsletterDAO.html#a185fb71171eb5f28fb8e0e6218cc6c5d">   18</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classNewsletterDAO.html#a185fb71171eb5f28fb8e0e6218cc6c5d">__construct</a>(?PDO <a class="code hl_variable" href="classNewsletterDAO.html#ad0ee2877364bf0039e7c0ea4fa9e0322">$pdo</a> = <span class="keyword">null</span>)</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    {</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        $this-&gt;pdo = <a class="code hl_variable" href="classNewsletterDAO.html#ad0ee2877364bf0039e7c0ea4fa9e0322">$pdo</a>;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    }</div>
+</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="foldopen" id="foldopen00028" data-start="{" data-end="}">
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classNewsletterDAO.html#a8a1276606b574ac1a5ff523d94d5141c">   28</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classNewsletterDAO.html#a8a1276606b574ac1a5ff523d94d5141c">existsByEmail</a>(<span class="keywordtype">string</span> $email): bool</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    {</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        $sql = <span class="stringliteral">&quot;SELECT COUNT(*) FROM newsletter WHERE email = :email&quot;</span>;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        $stmt = $this-&gt;pdo-&gt;prepare($sql);</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        $stmt-&gt;execute([<span class="stringliteral">&#39;:email&#39;</span> =&gt; $email]);</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        <span class="keywordflow">return</span> (<span class="keywordtype">bool</span>)$stmt-&gt;fetchColumn();</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    }</div>
+</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="foldopen" id="foldopen00036" data-start="{" data-end="}">
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="classNewsletterDAO.html#a98eefc76c55a62259e8eda5ba81b8ede">   36</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classNewsletterDAO.html#a98eefc76c55a62259e8eda5ba81b8ede">create</a>(<a class="code hl_class" href="classNewsletter.html">Newsletter</a> $newsletter): bool</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        $sql = <span class="stringliteral">&quot;INSERT INTO newsletter (email, dateInscription) VALUES (:email, :dateInscription)&quot;</span>;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        $stmt = $this-&gt;pdo-&gt;prepare($sql);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        $dateInscription = $newsletter-&gt;<a class="code hl_function" href="classNewsletter.html#ad13e7337dc87e9fe95c0c3685384502b">getDateInscription</a>()?-&gt;format(<span class="stringliteral">&#39;Y-m-d H:i:s&#39;</span>);</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        <span class="keywordflow">return</span> $stmt-&gt;execute([</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>            <span class="stringliteral">&#39;:email&#39;</span> =&gt; $newsletter-&gt;<a class="code hl_function" href="classNewsletter.html#a57a9465b62f9c92e033f0e0c1dfa2fab">getEmail</a>(),</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>            <span class="stringliteral">&#39;:dateInscription&#39;</span> =&gt; $dateInscription ?? date(<span class="stringliteral">&#39;Y-m-d H:i:s&#39;</span>),</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        ]);</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    }</div>
+</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="foldopen" id="foldopen00047" data-start="{" data-end="}">
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="classNewsletterDAO.html#a13687de6bd8d7acc3897b76e19608d30">   47</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classNewsletterDAO.html#a13687de6bd8d7acc3897b76e19608d30">hydrate</a>(array $row): <a class="code hl_class" href="classNewsletter.html">Newsletter</a></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    {</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        $n = <span class="keyword">new</span> <a class="code hl_class" href="classNewsletter.html">Newsletter</a>();</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        $n-&gt;setEmail($row[<span class="stringliteral">&#39;email&#39;</span>] ?? <span class="keyword">null</span>);</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        $n-&gt;setDateInscription(!empty($row[<span class="stringliteral">&#39;dateInscription&#39;</span>]) ? <span class="keyword">new</span> DateTime($row[<span class="stringliteral">&#39;dateInscription&#39;</span>]) : <span class="keyword">null</span>);</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        <span class="keywordflow">return</span> $n;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    }</div>
+</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>}</div>
+</div>
+<div class="ttc" id="aclassNewsletterDAO_html"><div class="ttname"><a href="classNewsletterDAO.html">NewsletterDAO</a></div><div class="ttdef"><b>Definition</b> <a href="newsletter_8dao_8php_source.html#l00007">newsletter.dao.php:8</a></div></div>
+<div class="ttc" id="aclassNewsletterDAO_html_a13687de6bd8d7acc3897b76e19608d30"><div class="ttname"><a href="classNewsletterDAO.html#a13687de6bd8d7acc3897b76e19608d30">NewsletterDAO\hydrate</a></div><div class="ttdeci">hydrate(array $row)</div><div class="ttdef"><b>Definition</b> <a href="newsletter_8dao_8php_source.html#l00047">newsletter.dao.php:47</a></div></div>
+<div class="ttc" id="aclassNewsletterDAO_html_a185fb71171eb5f28fb8e0e6218cc6c5d"><div class="ttname"><a href="classNewsletterDAO.html#a185fb71171eb5f28fb8e0e6218cc6c5d">NewsletterDAO\__construct</a></div><div class="ttdeci">__construct(?PDO $pdo=null)</div><div class="ttdoc">Constructeur de la classe NewsletterDAO.</div><div class="ttdef"><b>Definition</b> <a href="newsletter_8dao_8php_source.html#l00018">newsletter.dao.php:18</a></div></div>
+<div class="ttc" id="aclassNewsletterDAO_html_a8a1276606b574ac1a5ff523d94d5141c"><div class="ttname"><a href="classNewsletterDAO.html#a8a1276606b574ac1a5ff523d94d5141c">NewsletterDAO\existsByEmail</a></div><div class="ttdeci">existsByEmail(string $email)</div><div class="ttdoc">Vérifie si une adresse email est déjà abonnée à la newsletter.</div><div class="ttdef"><b>Definition</b> <a href="newsletter_8dao_8php_source.html#l00028">newsletter.dao.php:28</a></div></div>
+<div class="ttc" id="aclassNewsletterDAO_html_a98eefc76c55a62259e8eda5ba81b8ede"><div class="ttname"><a href="classNewsletterDAO.html#a98eefc76c55a62259e8eda5ba81b8ede">NewsletterDAO\create</a></div><div class="ttdeci">create(Newsletter $newsletter)</div><div class="ttdef"><b>Definition</b> <a href="newsletter_8dao_8php_source.html#l00036">newsletter.dao.php:36</a></div></div>
+<div class="ttc" id="aclassNewsletterDAO_html_ad0ee2877364bf0039e7c0ea4fa9e0322"><div class="ttname"><a href="classNewsletterDAO.html#ad0ee2877364bf0039e7c0ea4fa9e0322">NewsletterDAO\$pdo</a></div><div class="ttdeci">PDO $pdo</div><div class="ttdef"><b>Definition</b> <a href="newsletter_8dao_8php_source.html#l00012">newsletter.dao.php:12</a></div></div>
+<div class="ttc" id="aclassNewsletter_html"><div class="ttname"><a href="classNewsletter.html">Newsletter</a></div><div class="ttdef"><b>Definition</b> <a href="newsletter_8class_8php_source.html#l00007">newsletter.class.php:8</a></div></div>
+<div class="ttc" id="aclassNewsletter_html_a57a9465b62f9c92e033f0e0c1dfa2fab"><div class="ttname"><a href="classNewsletter.html#a57a9465b62f9c92e033f0e0c1dfa2fab">Newsletter\getEmail</a></div><div class="ttdeci">getEmail()</div><div class="ttdoc">Getter pour l'email de l'abonné</div><div class="ttdef"><b>Definition</b> <a href="newsletter_8class_8php_source.html#l00023">newsletter.class.php:23</a></div></div>
+<div class="ttc" id="aclassNewsletter_html_ad13e7337dc87e9fe95c0c3685384502b"><div class="ttname"><a href="classNewsletter.html#ad13e7337dc87e9fe95c0c3685384502b">Newsletter\getDateInscription</a></div><div class="ttdeci">getDateInscription()</div><div class="ttdoc">Getter pour la date d'inscription.</div><div class="ttdef"><b>Definition</b> <a href="newsletter_8class_8php_source.html#l00042">newsletter.class.php:42</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_94350f523feee7bac2b3c4d6268d38b5.html">modeles</a></li><li class="navelem"><a class="el" href="newsletter_8dao_8php.html">newsletter.dao.php</a></li>
+    <li class="footer">Généré le Jeudi 8 Janvier 2026 09:37:44 pour Paaxio par <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

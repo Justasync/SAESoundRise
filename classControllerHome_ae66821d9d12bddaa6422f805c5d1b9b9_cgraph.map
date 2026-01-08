@@ -1,0 +1,7 @@
+<map id="ControllerHome\auditeurDashboard" name="ControllerHome\auditeurDashboard">
+<area shape="rect" id="Node000001" title="Affiche le tableau de bord de l&#39;auditeur connecté." alt="" coords="5,31,259,56"/>
+<area shape="rect" id="Node000002" href="$classController.html#aed88cab8d9c1a6735fd3aac0993e5021" title="Récupère la connexion PDO." alt="" coords="307,5,446,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="254,28,293,24,294,29,255,33"/>
+<area shape="rect" id="Node000003" href="$classController.html#afd7d94db564ae6e196ac7ac0461e0989" title="Récupère l&#39;environnement Twig." alt="" coords="307,55,447,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="259,53,293,56,293,62,259,58"/>
+</map>

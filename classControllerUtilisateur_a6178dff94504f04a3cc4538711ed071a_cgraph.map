@@ -1,0 +1,9 @@
+<map id="ControllerUtilisateur\afficherProfilArtiste" name="ControllerUtilisateur\afficherProfilArtiste">
+<area shape="rect" id="Node000001" title="Affiche le profil public d&#39;un artiste." alt="" coords="5,47,160,87"/>
+<area shape="rect" id="Node000002" href="$classController.html#aed88cab8d9c1a6735fd3aac0993e5021" title="Récupère la connexion PDO." alt="" coords="216,5,355,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,46,218,31,220,37,161,51"/>
+<area shape="rect" id="Node000003" href="$classController.html#afd7d94db564ae6e196ac7ac0461e0989" title="Récupère l&#39;environnement Twig." alt="" coords="215,55,355,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="160,65,202,65,202,70,160,70"/>
+<area shape="rect" id="Node000004" href="$classController.html#a56c96fd35f673f4d5084ef7ad0cd395c" title="Redirige vers un contrôleur et une méthode donnés." alt="" coords="208,104,363,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="161,84,220,98,218,103,160,89"/>
+</map>

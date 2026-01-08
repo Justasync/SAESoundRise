@@ -1,0 +1,13 @@
+<map id="Controller\getPost" name="Controller\getPost">
+<area shape="rect" id="Node000001" title="Récupère les données POST." alt="" coords="244,141,383,166"/>
+<area shape="rect" id="Node000002" href="$classControllerNewsletter.html#abf7e574941e852179163eb9830dda5cf" title="Traite l&#39;inscription à la newsletter." alt="" coords="22,5,179,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="288,133,247,96,195,60,169,48,172,43,197,55,250,92,292,129"/>
+<area shape="rect" id="Node000003" href="$classControllerUtilisateur.html#a0e6ff8b903944ba1de24d13278ec3082" title="Traite la demande de réinitialisation de mot de passe." alt="" coords="5,69,196,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="256,139,167,112,169,107,258,134"/>
+<area shape="rect" id="Node000004" href="$classControllerUtilisateur.html#afd558d0616f1e5fca72af8f49ef5de3e" title="Gère la connexion (authentification) d&#39;un utilisateur." alt="" coords="23,133,178,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="230,156,178,156,178,151,230,151"/>
+<area shape="rect" id="Node000005" href="$classControllerUtilisateur.html#a6a37c32b8d27a485a0706ac537fcf191" title="Gère l&#39;inscription d&#39;un nouvel utilisateur." alt="" coords="23,197,178,237"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="258,173,169,200,167,195,256,168"/>
+<area shape="rect" id="Node000006" href="$classControllerUtilisateur.html#ac23258d9876caad56dba0ffcb0669d53" title="Traite la réinitialisation du mot de passe." alt="" coords="19,261,183,301"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="292,178,250,215,197,252,172,264,169,259,195,247,247,211,288,174"/>
+</map>

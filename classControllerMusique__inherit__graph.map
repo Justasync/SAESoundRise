@@ -1,0 +1,6 @@
+<map id="ControllerMusique" name="ControllerMusique">
+<area shape="rect" id="Node000001" title="Contrôleur dédié à la gestion de la bibliothèque musicale de l&#39;utilisateur." alt="" coords="8,519,141,604"/>
+<area shape="rect" id="Node000002" href="$classController.html" title="Classe de base pour tous les contrôleurs de l&#39;application." alt="" coords="5,5,144,471"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="70,484,71,518,66,519,64,484"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="85,484,84,519,78,518,80,484"/>
+</map>

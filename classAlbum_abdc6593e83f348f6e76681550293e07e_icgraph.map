@@ -1,0 +1,5 @@
+<map id="Album\getArtisteAlbum" name="Album\getArtisteAlbum">
+<area shape="rect" id="Node000001" title="Getter pour le nom de l&#39;artiste de l&#39;album." alt="" coords="192,5,367,31"/>
+<area shape="rect" id="Node000002" href="$classAlbumDAO.html#a5771d5f4461249d24ebc4ed9787cc596" title="Crée un nouvel album dans la base de données." alt="" coords="5,5,144,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="178,21,144,21,144,15,178,15"/>
+</map>

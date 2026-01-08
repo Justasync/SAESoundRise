@@ -1,0 +1,511 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Paaxio:  Fichier source de utilisateur.class.php</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Paaxio<span id="projectnumber">&#160;1.0</span>
+   </div>
+   <div id="projectbrief">Plateforme de streaming musical - SAE IUT Bayonne</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('utilisateur_8class_8php_source.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">utilisateur.class.php</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="utilisateur_8class_8php.html">Aller à la documentation de ce fichier.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span>&lt;?php</div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="foldopen" id="foldopen00014" data-start="{" data-end="};">
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="utilisateur_8class_8php.html#afe7bbe19eb4424e1850c48b584ab07b1">   14</a></span><span class="keyword">enum</span> <a class="code hl_enumeration" href="utilisateur_8class_8php.html#afe7bbe19eb4424e1850c48b584ab07b1">StatutUtilisateur</a>: <span class="keywordtype">string</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>{</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keywordflow">case</span> Actif = <span class="stringliteral">&#39;actif&#39;</span>;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="keywordflow">case</span> Suspendu = <span class="stringliteral">&#39;suspendu&#39;</span>;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="utilisateur_8class_8php.html#afe7bbe19eb4424e1850c48b584ab07b1afa7b68827549c45510254ffa32a3463d">Supprimee</a> = <span class="stringliteral">&#39;supprimee&#39;</span>;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="utilisateur_8class_8php.html#afe7bbe19eb4424e1850c48b584ab07b1afa7b68827549c45510254ffa32a3463d">   19</a></span>}</div>
+</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="foldopen" id="foldopen00028" data-start="{" data-end="};">
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="utilisateur_8class_8php.html#a76111d218185e55fbf92b41d84c28ba0">   28</a></span><span class="keyword">enum</span> <a class="code hl_enumeration" href="utilisateur_8class_8php.html#a76111d218185e55fbf92b41d84c28ba0">StatutAbonnement</a>: <span class="keywordtype">string</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>{</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keywordflow">case</span> Actif = <span class="stringliteral">&#39;actif&#39;</span>;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keywordflow">case</span> Expire = <span class="stringliteral">&#39;expire&#39;</span>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keywordflow">case</span> Annule = <span class="stringliteral">&#39;annule&#39;</span>;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="utilisateur_8class_8php.html#a76111d218185e55fbf92b41d84c28ba0a5881c2d32c5aaa94e7978c752b0b6f6a">Inactif</a> = <span class="stringliteral">&#39;inactif&#39;</span>;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="utilisateur_8class_8php.html#a76111d218185e55fbf92b41d84c28ba0a5881c2d32c5aaa94e7978c752b0b6f6a">   34</a></span>}</div>
+</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="foldopen" id="foldopen00036" data-start="{" data-end="};">
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="classUtilisateur.html">   36</a></span><span class="keyword">class </span><a class="code hl_class" href="classUtilisateur.html">Utilisateur</a></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>{</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno"><a class="line" href="classUtilisateur.html#afff4d3eb540c24c52810e72947531164">   41</a></span>    <span class="keyword">private</span> ?<span class="keywordtype">string</span> <a class="code hl_variable" href="classUtilisateur.html#afff4d3eb540c24c52810e72947531164">$emailUtilisateur</a>;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a801bf14c9e9c7f481cff396c807443d0">   45</a></span>    <span class="keyword">private</span> ?<span class="keywordtype">string</span> <a class="code hl_variable" href="classUtilisateur.html#a801bf14c9e9c7f481cff396c807443d0">$nomUtilisateur</a>;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a6293e15ffa69d13d0a4418cb7beba788">   49</a></span>    <span class="keyword">private</span> ?<span class="keywordtype">string</span> <a class="code hl_variable" href="classUtilisateur.html#a6293e15ffa69d13d0a4418cb7beba788">$pseudoUtilisateur</a>;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a745ee1655f23e28a3520fb5049771638">   53</a></span>    <span class="keyword">private</span> ?<span class="keywordtype">string</span> <a class="code hl_variable" href="classUtilisateur.html#a745ee1655f23e28a3520fb5049771638">$motDePasseUtilisateur</a>;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a5ef688b7ca1c0de1a2b6155e7521229b">   57</a></span>    <span class="keyword">private</span> ?DateTime <a class="code hl_variable" href="classUtilisateur.html#a5ef688b7ca1c0de1a2b6155e7521229b">$dateDeNaissanceUtilisateur</a>;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="classUtilisateur.html#ae44b21df9468f5df99e6269f228119c6">   61</a></span>    <span class="keyword">private</span> ?DateTime <a class="code hl_variable" href="classUtilisateur.html#ae44b21df9468f5df99e6269f228119c6">$dateInscriptionUtilisateur</a>;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a178ea61416daec22694525a620f8726a">   65</a></span>    <span class="keyword">private</span> ?<a class="code hl_enumeration" href="utilisateur_8class_8php.html#afe7bbe19eb4424e1850c48b584ab07b1">StatutUtilisateur</a> <a class="code hl_variable" href="classUtilisateur.html#a178ea61416daec22694525a620f8726a">$statutUtilisateur</a>;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a53110225f300ae64a2728243b1daaa15">   69</a></span>    <span class="keyword">private</span> ?<a class="code hl_class" href="classGenre.html">Genre</a> <a class="code hl_variable" href="classUtilisateur.html#a53110225f300ae64a2728243b1daaa15">$genreUtilisateur</a>;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="classUtilisateur.html#abeee0dcce52ef032c9c6b28b6a2acc27">   73</a></span>    <span class="keyword">private</span> ?<span class="keywordtype">bool</span> <a class="code hl_variable" href="classUtilisateur.html#abeee0dcce52ef032c9c6b28b6a2acc27">$estAbonnee</a>;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a0635be7f3996b4cd7ac15e2c90f7a559">   77</a></span>    <span class="keyword">private</span> ?<span class="keywordtype">string</span> <a class="code hl_variable" href="classUtilisateur.html#a0635be7f3996b4cd7ac15e2c90f7a559">$descriptionUtilisateur</a>;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="classUtilisateur.html#adc119cf8c37610962553316bd35e22af">   81</a></span>    <span class="keyword">private</span> ?<span class="keywordtype">string</span> <a class="code hl_variable" href="classUtilisateur.html#adc119cf8c37610962553316bd35e22af">$siteWebUtilisateur</a>;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="classUtilisateur.html#addd42cfcece5227515bf9923be043bcb">   85</a></span>    <span class="keyword">private</span> ?<a class="code hl_enumeration" href="utilisateur_8class_8php.html#a76111d218185e55fbf92b41d84c28ba0">StatutAbonnement</a> <a class="code hl_variable" href="classUtilisateur.html#addd42cfcece5227515bf9923be043bcb">$statutAbonnement</a>;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a153551dc29d3f89fff2bf99230b5e78e">   89</a></span>    <span class="keyword">private</span> ?DateTime <a class="code hl_variable" href="classUtilisateur.html#a153551dc29d3f89fff2bf99230b5e78e">$dateDebutAbonnement</a>;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a147fddad1b5bc1cbf48e630705ed1ec6">   93</a></span>    <span class="keyword">private</span> ?DateTime <a class="code hl_variable" href="classUtilisateur.html#a147fddad1b5bc1cbf48e630705ed1ec6">$dateFinAbonnement</a>;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="classUtilisateur.html#acc41e4c8bd569734d0ed2382f0c5100e">   97</a></span>    <span class="keyword">private</span> ?<span class="keywordtype">int</span> <a class="code hl_variable" href="classUtilisateur.html#acc41e4c8bd569734d0ed2382f0c5100e">$pointsDeRenommeeArtiste</a>;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a9b6573a2a1aff808ea07fe0c73f02491">  101</a></span>    <span class="keyword">private</span> ?<span class="keywordtype">int</span> <a class="code hl_variable" href="classUtilisateur.html#a9b6573a2a1aff808ea07fe0c73f02491">$nbAbonnesArtiste</a>;</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a2ac2328ce3698938da341a25fdb7b8dc">  105</a></span>    <span class="keyword">private</span> ?<span class="keywordtype">string</span> <a class="code hl_variable" href="classUtilisateur.html#a2ac2328ce3698938da341a25fdb7b8dc">$urlPhotoUtilisateur</a>;</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="classUtilisateur.html#ab0a62333d6685bdb61fce5b506dad1c4">  109</a></span>    <span class="keyword">private</span> ?<a class="code hl_class" href="classRole.html">Role</a> <a class="code hl_variable" href="classUtilisateur.html#ab0a62333d6685bdb61fce5b506dad1c4">$roleUtilisateur</a>;</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="foldopen" id="foldopen00132" data-start="{" data-end="}">
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno"><a class="line" href="classUtilisateur.html#aa868777333b2becca3dda7f3d5357250">  132</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#aa868777333b2becca3dda7f3d5357250">__construct</a>(</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>        ?<span class="keywordtype">string</span> <a class="code hl_variable" href="classUtilisateur.html#afff4d3eb540c24c52810e72947531164">$emailUtilisateur</a> = <span class="keyword">null</span>,</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>        ?<span class="keywordtype">string</span> <a class="code hl_variable" href="classUtilisateur.html#a801bf14c9e9c7f481cff396c807443d0">$nomUtilisateur</a> = <span class="keyword">null</span>,</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>        ?<span class="keywordtype">string</span> <a class="code hl_variable" href="classUtilisateur.html#a6293e15ffa69d13d0a4418cb7beba788">$pseudoUtilisateur</a> = <span class="keyword">null</span>,</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>        ?<span class="keywordtype">string</span> <a class="code hl_variable" href="classUtilisateur.html#a745ee1655f23e28a3520fb5049771638">$motDePasseUtilisateur</a> = <span class="keyword">null</span>,</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>        ?DateTime <a class="code hl_variable" href="classUtilisateur.html#a5ef688b7ca1c0de1a2b6155e7521229b">$dateDeNaissanceUtilisateur</a> = <span class="keyword">null</span>,</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>        ?DateTime <a class="code hl_variable" href="classUtilisateur.html#ae44b21df9468f5df99e6269f228119c6">$dateInscriptionUtilisateur</a> = <span class="keyword">null</span>,</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>        ?<a class="code hl_enumeration" href="utilisateur_8class_8php.html#afe7bbe19eb4424e1850c48b584ab07b1">StatutUtilisateur</a> <a class="code hl_variable" href="classUtilisateur.html#a178ea61416daec22694525a620f8726a">$statutUtilisateur</a> = <span class="keyword">null</span>,</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>        ?<a class="code hl_class" href="classGenre.html">Genre</a> <a class="code hl_variable" href="classUtilisateur.html#a53110225f300ae64a2728243b1daaa15">$genreUtilisateur</a> = <span class="keyword">null</span>,</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>        ?<span class="keywordtype">bool</span> <a class="code hl_variable" href="classUtilisateur.html#abeee0dcce52ef032c9c6b28b6a2acc27">$estAbonnee</a> = <span class="keyword">null</span>,</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>        ?<span class="keywordtype">string</span> <a class="code hl_variable" href="classUtilisateur.html#a0635be7f3996b4cd7ac15e2c90f7a559">$descriptionUtilisateur</a> = <span class="keyword">null</span>,</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>        ?<span class="keywordtype">string</span> <a class="code hl_variable" href="classUtilisateur.html#adc119cf8c37610962553316bd35e22af">$siteWebUtilisateur</a> = <span class="keyword">null</span>,</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>        ?<a class="code hl_enumeration" href="utilisateur_8class_8php.html#a76111d218185e55fbf92b41d84c28ba0">StatutAbonnement</a> <a class="code hl_variable" href="classUtilisateur.html#addd42cfcece5227515bf9923be043bcb">$statutAbonnement</a> = <span class="keyword">null</span>,</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>        ?DateTime <a class="code hl_variable" href="classUtilisateur.html#a153551dc29d3f89fff2bf99230b5e78e">$dateDebutAbonnement</a> = <span class="keyword">null</span>,</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>        ?DateTime <a class="code hl_variable" href="classUtilisateur.html#a147fddad1b5bc1cbf48e630705ed1ec6">$dateFinAbonnement</a> = <span class="keyword">null</span>,</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>        ?<span class="keywordtype">int</span> <a class="code hl_variable" href="classUtilisateur.html#acc41e4c8bd569734d0ed2382f0c5100e">$pointsDeRenommeeArtiste</a> = <span class="keyword">null</span>,</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>        ?<span class="keywordtype">int</span> <a class="code hl_variable" href="classUtilisateur.html#a9b6573a2a1aff808ea07fe0c73f02491">$nbAbonnesArtiste</a> = <span class="keyword">null</span>,</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>        ?<span class="keywordtype">string</span> <a class="code hl_variable" href="classUtilisateur.html#a2ac2328ce3698938da341a25fdb7b8dc">$urlPhotoUtilisateur</a> = <span class="keyword">null</span>,</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>        ?<a class="code hl_class" href="classRole.html">Role</a> <a class="code hl_variable" href="classUtilisateur.html#ab0a62333d6685bdb61fce5b506dad1c4">$roleUtilisateur</a> = <span class="keyword">null</span></div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    ) {</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        $this-&gt;<a class="code hl_function" href="classUtilisateur.html#a52bb359dfbf731c7d2f5306c7b8d79bc">setEmailUtilisateur</a>($emailUtilisateur);</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>        $this-&gt;<a class="code hl_function" href="classUtilisateur.html#ac22e9a35b9c58f09a0ce422766695509">setNomUtilisateur</a>($nomUtilisateur);</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>        $this-&gt;<a class="code hl_function" href="classUtilisateur.html#a2c275cee8027ead6b4015886572e2dd8">setPseudoUtilisateur</a>($pseudoUtilisateur);</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>        $this-&gt;<a class="code hl_function" href="classUtilisateur.html#a704c5a1df04a8af259c053acb998f214">setMotDePasseUtilisateur</a>($motDePasseUtilisateur);</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>        $this-&gt;<a class="code hl_function" href="classUtilisateur.html#a5e00a33acee780a18eeb4d26628fc3fa">setDateDeNaissanceUtilisateur</a>($dateDeNaissanceUtilisateur);</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>        $this-&gt;<a class="code hl_function" href="classUtilisateur.html#aea47df1bfb3f24606de4fe047edff84a">setDateInscriptionUtilisateur</a>($dateInscriptionUtilisateur);</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>        $this-&gt;<a class="code hl_function" href="classUtilisateur.html#ad277695186236be19add8e8a4f30850a">setStatutUtilisateur</a>($statutUtilisateur);</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>        $this-&gt;<a class="code hl_function" href="classUtilisateur.html#abeee5e6961889baf76216a276138e1da">setGenreUtilisateur</a>($genreUtilisateur);</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>        $this-&gt;<a class="code hl_function" href="classUtilisateur.html#a5b54f574c3140ce3fb41f296019fd7a5">setEstAbonnee</a>($estAbonnee);</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>        $this-&gt;<a class="code hl_function" href="classUtilisateur.html#a4de47396b30760b89222214a2a19bdc0">setDescriptionUtilisateur</a>($descriptionUtilisateur);</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>        $this-&gt;<a class="code hl_function" href="classUtilisateur.html#a127209934f72ce1741f9597689671295">setSiteWebUtilisateur</a>($siteWebUtilisateur);</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>        $this-&gt;<a class="code hl_function" href="classUtilisateur.html#a2339bdd8941646761b8689d0742ecaa5">setStatutAbonnement</a>($statutAbonnement);</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>        $this-&gt;<a class="code hl_function" href="classUtilisateur.html#a64b780a116dd44040aaa8b7b13b126d7">setDateDebutAbonnement</a>($dateDebutAbonnement);</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>        $this-&gt;<a class="code hl_function" href="classUtilisateur.html#a4f4f65fa887e60f955b3ee9ef8e02b3d">setDateFinAbonnement</a>($dateFinAbonnement);</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>        $this-&gt;<a class="code hl_function" href="classUtilisateur.html#ae7b71433439f7720fc913cd386efa1df">setPointsDeRenommeeArtiste</a>($pointsDeRenommeeArtiste);</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>        $this-&gt;<a class="code hl_function" href="classUtilisateur.html#a0835ebb7c92952b2ef6e8b80f1430e72">setNbAbonnesArtiste</a>($nbAbonnesArtiste);</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>        $this-&gt;<a class="code hl_function" href="classUtilisateur.html#ace61a8bbc1cbe7bd5113436175a28d7c">seturlPhotoUtilisateur</a>($urlPhotoUtilisateur);</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>        $this-&gt;<a class="code hl_function" href="classUtilisateur.html#af3f8de81932f1c232ab1d137ed40405e">setRoleUtilisateur</a>($roleUtilisateur);</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    }</div>
+</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span> </div>
+<div class="foldopen" id="foldopen00176" data-start="{" data-end="}">
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno"><a class="line" href="classUtilisateur.html#ae4ee6c81a734142f6463068e51ccd200">  176</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#ae4ee6c81a734142f6463068e51ccd200">getGenreUtilisateur</a>(): ?<a class="code hl_class" href="classGenre.html">Genre</a></div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    {</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classUtilisateur.html#a53110225f300ae64a2728243b1daaa15">$this-&gt;genreUtilisateur</a>;</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    }</div>
+</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span> </div>
+<div class="foldopen" id="foldopen00186" data-start="{" data-end="}">
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno"><a class="line" href="classUtilisateur.html#abeee5e6961889baf76216a276138e1da">  186</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#abeee5e6961889baf76216a276138e1da">setGenreUtilisateur</a>(<a class="code hl_variable" href="classUtilisateur.html#a53110225f300ae64a2728243b1daaa15">$genreUtilisateur</a>): void </div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    {</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>        $this-&gt;genreUtilisateur = <a class="code hl_variable" href="classUtilisateur.html#a53110225f300ae64a2728243b1daaa15">$genreUtilisateur</a>;</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    }</div>
+</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
+<div class="foldopen" id="foldopen00195" data-start="{" data-end="}">
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a2b7f07f6f2f8348fbe15920cb5995301">  195</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#a2b7f07f6f2f8348fbe15920cb5995301">getNomUtilisateur</a>(): ?string</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    {</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classUtilisateur.html#a801bf14c9e9c7f481cff396c807443d0">$this-&gt;nomUtilisateur</a>;</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    }</div>
+</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
+<div class="foldopen" id="foldopen00205" data-start="{" data-end="}">
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno"><a class="line" href="classUtilisateur.html#ac22e9a35b9c58f09a0ce422766695509">  205</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#ac22e9a35b9c58f09a0ce422766695509">setNomUtilisateur</a>(<a class="code hl_variable" href="classUtilisateur.html#a801bf14c9e9c7f481cff396c807443d0">$nomUtilisateur</a>): void</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    {</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>        $this-&gt;nomUtilisateur = <a class="code hl_variable" href="classUtilisateur.html#a801bf14c9e9c7f481cff396c807443d0">$nomUtilisateur</a>;</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    }</div>
+</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span> </div>
+<div class="foldopen" id="foldopen00214" data-start="{" data-end="}">
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a9de32d421ad9988b9eed437621c66145">  214</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#a9de32d421ad9988b9eed437621c66145">getEmailUtilisateur</a>(): ?string</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    {</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classUtilisateur.html#afff4d3eb540c24c52810e72947531164">$this-&gt;emailUtilisateur</a>;</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>    }</div>
+</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span> </div>
+<div class="foldopen" id="foldopen00224" data-start="{" data-end="}">
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a52bb359dfbf731c7d2f5306c7b8d79bc">  224</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#a52bb359dfbf731c7d2f5306c7b8d79bc">setEmailUtilisateur</a>(<a class="code hl_variable" href="classUtilisateur.html#afff4d3eb540c24c52810e72947531164">$emailUtilisateur</a>): void</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>    {</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>        $this-&gt;emailUtilisateur = <a class="code hl_variable" href="classUtilisateur.html#afff4d3eb540c24c52810e72947531164">$emailUtilisateur</a>;</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>    }</div>
+</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span> </div>
+<div class="foldopen" id="foldopen00233" data-start="{" data-end="}">
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a772e4d855f933fe74c57ede51115c854">  233</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#a772e4d855f933fe74c57ede51115c854">getPseudoUtilisateur</a>(): ?string</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    {</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classUtilisateur.html#a6293e15ffa69d13d0a4418cb7beba788">$this-&gt;pseudoUtilisateur</a>;</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>    }</div>
+</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span> </div>
+<div class="foldopen" id="foldopen00243" data-start="{" data-end="}">
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a2c275cee8027ead6b4015886572e2dd8">  243</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#a2c275cee8027ead6b4015886572e2dd8">setPseudoUtilisateur</a>(<a class="code hl_variable" href="classUtilisateur.html#a6293e15ffa69d13d0a4418cb7beba788">$pseudoUtilisateur</a>): void</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    {</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>        $this-&gt;pseudoUtilisateur = <a class="code hl_variable" href="classUtilisateur.html#a6293e15ffa69d13d0a4418cb7beba788">$pseudoUtilisateur</a>;</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    }</div>
+</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span> </div>
+<div class="foldopen" id="foldopen00252" data-start="{" data-end="}">
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a94dd42b9e5b879f53b18f30bbea5ef18">  252</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#a94dd42b9e5b879f53b18f30bbea5ef18">getMotDePasseUtilisateur</a>(): ?string</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>    {</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classUtilisateur.html#a745ee1655f23e28a3520fb5049771638">$this-&gt;motDePasseUtilisateur</a>;</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>    }</div>
+</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span> </div>
+<div class="foldopen" id="foldopen00262" data-start="{" data-end="}">
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a704c5a1df04a8af259c053acb998f214">  262</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#a704c5a1df04a8af259c053acb998f214">setMotDePasseUtilisateur</a>(<a class="code hl_variable" href="classUtilisateur.html#a745ee1655f23e28a3520fb5049771638">$motDePasseUtilisateur</a>): void</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>    {</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>        $this-&gt;motDePasseUtilisateur = <a class="code hl_variable" href="classUtilisateur.html#a745ee1655f23e28a3520fb5049771638">$motDePasseUtilisateur</a>;</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>    }</div>
+</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span> </div>
+<div class="foldopen" id="foldopen00271" data-start="{" data-end="}">
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a578683d9d4a4fcdcf71a09078d3bc477">  271</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#a578683d9d4a4fcdcf71a09078d3bc477">getDateDeNaissanceUtilisateur</a>(): ?DateTime</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>    {</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classUtilisateur.html#a5ef688b7ca1c0de1a2b6155e7521229b">$this-&gt;dateDeNaissanceUtilisateur</a>;</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>    }</div>
+</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span> </div>
+<div class="foldopen" id="foldopen00281" data-start="{" data-end="}">
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a5e00a33acee780a18eeb4d26628fc3fa">  281</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#a5e00a33acee780a18eeb4d26628fc3fa">setDateDeNaissanceUtilisateur</a>(<a class="code hl_variable" href="classUtilisateur.html#a5ef688b7ca1c0de1a2b6155e7521229b">$dateDeNaissanceUtilisateur</a>): void</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    {</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>        $this-&gt;dateDeNaissanceUtilisateur = <a class="code hl_variable" href="classUtilisateur.html#a5ef688b7ca1c0de1a2b6155e7521229b">$dateDeNaissanceUtilisateur</a>;</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>    }</div>
+</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span> </div>
+<div class="foldopen" id="foldopen00290" data-start="{" data-end="}">
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a2d059d7e690568b1291dad2b9ccb61d3">  290</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#a2d059d7e690568b1291dad2b9ccb61d3">getDateInscriptionUtilisateur</a>(): ?DateTime</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>    {</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classUtilisateur.html#ae44b21df9468f5df99e6269f228119c6">$this-&gt;dateInscriptionUtilisateur</a>;</div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>    }</div>
+</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span> </div>
+<div class="foldopen" id="foldopen00300" data-start="{" data-end="}">
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno"><a class="line" href="classUtilisateur.html#aea47df1bfb3f24606de4fe047edff84a">  300</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#aea47df1bfb3f24606de4fe047edff84a">setDateInscriptionUtilisateur</a>(<a class="code hl_variable" href="classUtilisateur.html#ae44b21df9468f5df99e6269f228119c6">$dateInscriptionUtilisateur</a>): void</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>    {</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>        $this-&gt;dateInscriptionUtilisateur = <a class="code hl_variable" href="classUtilisateur.html#ae44b21df9468f5df99e6269f228119c6">$dateInscriptionUtilisateur</a>;</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>    }</div>
+</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span> </div>
+<div class="foldopen" id="foldopen00309" data-start="{" data-end="}">
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno"><a class="line" href="classUtilisateur.html#ae9443c9f56d13fa1b4f1ed5faeb27bde">  309</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#ae9443c9f56d13fa1b4f1ed5faeb27bde">getStatutUtilisateur</a>(): ?<a class="code hl_enumeration" href="utilisateur_8class_8php.html#afe7bbe19eb4424e1850c48b584ab07b1">StatutUtilisateur</a></div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>    {</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classUtilisateur.html#a178ea61416daec22694525a620f8726a">$this-&gt;statutUtilisateur</a>;</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>    }</div>
+</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span> </div>
+<div class="foldopen" id="foldopen00319" data-start="{" data-end="}">
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno"><a class="line" href="classUtilisateur.html#ad277695186236be19add8e8a4f30850a">  319</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#ad277695186236be19add8e8a4f30850a">setStatutUtilisateur</a>(<a class="code hl_variable" href="classUtilisateur.html#a178ea61416daec22694525a620f8726a">$statutUtilisateur</a>): void</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>    {</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>        $this-&gt;statutUtilisateur = <a class="code hl_variable" href="classUtilisateur.html#a178ea61416daec22694525a620f8726a">$statutUtilisateur</a>;</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>    }</div>
+</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span> </div>
+<div class="foldopen" id="foldopen00328" data-start="{" data-end="}">
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno"><a class="line" href="classUtilisateur.html#adeaed5e2ebda7592bada6469900cb755">  328</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#adeaed5e2ebda7592bada6469900cb755">getEstAbonnee</a>(): ?bool</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>    {</div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classUtilisateur.html#abeee0dcce52ef032c9c6b28b6a2acc27">$this-&gt;estAbonnee</a>;</div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>    }</div>
+</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span> </div>
+<div class="foldopen" id="foldopen00338" data-start="{" data-end="}">
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a5b54f574c3140ce3fb41f296019fd7a5">  338</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#a5b54f574c3140ce3fb41f296019fd7a5">setEstAbonnee</a>(<a class="code hl_variable" href="classUtilisateur.html#abeee0dcce52ef032c9c6b28b6a2acc27">$estAbonnee</a>): void</div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>    {</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>        $this-&gt;estAbonnee = <a class="code hl_variable" href="classUtilisateur.html#abeee0dcce52ef032c9c6b28b6a2acc27">$estAbonnee</a>;</div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>    }</div>
+</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span> </div>
+<div class="foldopen" id="foldopen00347" data-start="{" data-end="}">
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a7a1076f86d0c81cda031f07c6c61a137">  347</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#a7a1076f86d0c81cda031f07c6c61a137">getDescriptionUtilisateur</a>(): ?string</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>    {</div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classUtilisateur.html#a0635be7f3996b4cd7ac15e2c90f7a559">$this-&gt;descriptionUtilisateur</a>;</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>    }</div>
+</div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span> </div>
+<div class="foldopen" id="foldopen00357" data-start="{" data-end="}">
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a4de47396b30760b89222214a2a19bdc0">  357</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#a4de47396b30760b89222214a2a19bdc0">setDescriptionUtilisateur</a>(<a class="code hl_variable" href="classUtilisateur.html#a0635be7f3996b4cd7ac15e2c90f7a559">$descriptionUtilisateur</a>): void</div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>    {</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>        $this-&gt;descriptionUtilisateur = <a class="code hl_variable" href="classUtilisateur.html#a0635be7f3996b4cd7ac15e2c90f7a559">$descriptionUtilisateur</a>;</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>    }</div>
+</div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span> </div>
+<div class="foldopen" id="foldopen00366" data-start="{" data-end="}">
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a8859a67bc9c3bd95d7ffc0dfb1307d22">  366</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#a8859a67bc9c3bd95d7ffc0dfb1307d22">getSiteWebUtilisateur</a>(): ?string</div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>    {</div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classUtilisateur.html#adc119cf8c37610962553316bd35e22af">$this-&gt;siteWebUtilisateur</a>;</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>    }</div>
+</div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span> </div>
+<div class="foldopen" id="foldopen00376" data-start="{" data-end="}">
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a127209934f72ce1741f9597689671295">  376</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#a127209934f72ce1741f9597689671295">setSiteWebUtilisateur</a>(<a class="code hl_variable" href="classUtilisateur.html#adc119cf8c37610962553316bd35e22af">$siteWebUtilisateur</a>): void</div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>    {</div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>        $this-&gt;siteWebUtilisateur = <a class="code hl_variable" href="classUtilisateur.html#adc119cf8c37610962553316bd35e22af">$siteWebUtilisateur</a>;</div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>    }</div>
+</div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span> </div>
+<div class="foldopen" id="foldopen00385" data-start="{" data-end="}">
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a26b03cb1ba77b133f4926798ad051540">  385</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#a26b03cb1ba77b133f4926798ad051540">getStatutAbonnement</a>(): ?<a class="code hl_enumeration" href="utilisateur_8class_8php.html#a76111d218185e55fbf92b41d84c28ba0">StatutAbonnement</a></div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>    {</div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classUtilisateur.html#addd42cfcece5227515bf9923be043bcb">$this-&gt;statutAbonnement</a>;</div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>    }</div>
+</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span> </div>
+<div class="foldopen" id="foldopen00395" data-start="{" data-end="}">
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a2339bdd8941646761b8689d0742ecaa5">  395</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#a2339bdd8941646761b8689d0742ecaa5">setStatutAbonnement</a>(<a class="code hl_variable" href="classUtilisateur.html#addd42cfcece5227515bf9923be043bcb">$statutAbonnement</a>): void</div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>    {</div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>        $this-&gt;statutAbonnement = <a class="code hl_variable" href="classUtilisateur.html#addd42cfcece5227515bf9923be043bcb">$statutAbonnement</a>;</div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>    }</div>
+</div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span> </div>
+<div class="foldopen" id="foldopen00404" data-start="{" data-end="}">
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno"><a class="line" href="classUtilisateur.html#abf7d571f136cf48f6c7127db9a8fb310">  404</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#abf7d571f136cf48f6c7127db9a8fb310">getDateDebutAbonnement</a>(): ?DateTime </div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>    {</div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classUtilisateur.html#a153551dc29d3f89fff2bf99230b5e78e">$this-&gt;dateDebutAbonnement</a>;</div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>    }</div>
+</div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span> </div>
+<div class="foldopen" id="foldopen00414" data-start="{" data-end="}">
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a64b780a116dd44040aaa8b7b13b126d7">  414</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#a64b780a116dd44040aaa8b7b13b126d7">setDateDebutAbonnement</a>(<a class="code hl_variable" href="classUtilisateur.html#a153551dc29d3f89fff2bf99230b5e78e">$dateDebutAbonnement</a>): void</div>
+<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>    {</div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>        $this-&gt;dateDebutAbonnement = <a class="code hl_variable" href="classUtilisateur.html#a153551dc29d3f89fff2bf99230b5e78e">$dateDebutAbonnement</a>;</div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>    }</div>
+</div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span> </div>
+<div class="foldopen" id="foldopen00423" data-start="{" data-end="}">
+<div class="line"><a id="l00423" name="l00423"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a85517ba68a1f7b866d4291d1bddaf8e5">  423</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#a85517ba68a1f7b866d4291d1bddaf8e5">getDateFinAbonnement</a>(): ?DateTime</div>
+<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>    {</div>
+<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classUtilisateur.html#a147fddad1b5bc1cbf48e630705ed1ec6">$this-&gt;dateFinAbonnement</a>;</div>
+<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>    }</div>
+</div>
+<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span> </div>
+<div class="foldopen" id="foldopen00433" data-start="{" data-end="}">
+<div class="line"><a id="l00433" name="l00433"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a4f4f65fa887e60f955b3ee9ef8e02b3d">  433</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#a4f4f65fa887e60f955b3ee9ef8e02b3d">setDateFinAbonnement</a>(<a class="code hl_variable" href="classUtilisateur.html#a147fddad1b5bc1cbf48e630705ed1ec6">$dateFinAbonnement</a>): void</div>
+<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span>    {</div>
+<div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span>        $this-&gt;dateFinAbonnement = <a class="code hl_variable" href="classUtilisateur.html#a147fddad1b5bc1cbf48e630705ed1ec6">$dateFinAbonnement</a>;</div>
+<div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span>    }</div>
+</div>
+<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span> </div>
+<div class="foldopen" id="foldopen00442" data-start="{" data-end="}">
+<div class="line"><a id="l00442" name="l00442"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a43ea065478ba5f28182870d054b56acd">  442</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#a43ea065478ba5f28182870d054b56acd">getPointsDeRenommeeArtiste</a>(): ?int</div>
+<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span>    {</div>
+<div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classUtilisateur.html#acc41e4c8bd569734d0ed2382f0c5100e">$this-&gt;pointsDeRenommeeArtiste</a>;</div>
+<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span>    }</div>
+</div>
+<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span> </div>
+<div class="foldopen" id="foldopen00452" data-start="{" data-end="}">
+<div class="line"><a id="l00452" name="l00452"></a><span class="lineno"><a class="line" href="classUtilisateur.html#ae7b71433439f7720fc913cd386efa1df">  452</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#ae7b71433439f7720fc913cd386efa1df">setPointsDeRenommeeArtiste</a>(<a class="code hl_variable" href="classUtilisateur.html#acc41e4c8bd569734d0ed2382f0c5100e">$pointsDeRenommeeArtiste</a>): void</div>
+<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span>    {</div>
+<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span>        $this-&gt;pointsDeRenommeeArtiste = <a class="code hl_variable" href="classUtilisateur.html#acc41e4c8bd569734d0ed2382f0c5100e">$pointsDeRenommeeArtiste</a>;</div>
+<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span>    }</div>
+</div>
+<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span> </div>
+<div class="foldopen" id="foldopen00461" data-start="{" data-end="}">
+<div class="line"><a id="l00461" name="l00461"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a065c5859952a686264c337ef63e461c2">  461</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#a065c5859952a686264c337ef63e461c2">getNbAbonnesArtiste</a>(): ?int</div>
+<div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span>    {</div>
+<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classUtilisateur.html#a9b6573a2a1aff808ea07fe0c73f02491">$this-&gt;nbAbonnesArtiste</a>;</div>
+<div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span>    }</div>
+</div>
+<div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span> </div>
+<div class="foldopen" id="foldopen00471" data-start="{" data-end="}">
+<div class="line"><a id="l00471" name="l00471"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a0835ebb7c92952b2ef6e8b80f1430e72">  471</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#a0835ebb7c92952b2ef6e8b80f1430e72">setNbAbonnesArtiste</a>(<a class="code hl_variable" href="classUtilisateur.html#a9b6573a2a1aff808ea07fe0c73f02491">$nbAbonnesArtiste</a>): void</div>
+<div class="line"><a id="l00472" name="l00472"></a><span class="lineno">  472</span>    {</div>
+<div class="line"><a id="l00473" name="l00473"></a><span class="lineno">  473</span>        $this-&gt;nbAbonnesArtiste = <a class="code hl_variable" href="classUtilisateur.html#a9b6573a2a1aff808ea07fe0c73f02491">$nbAbonnesArtiste</a>;</div>
+<div class="line"><a id="l00474" name="l00474"></a><span class="lineno">  474</span>    }</div>
+</div>
+<div class="line"><a id="l00475" name="l00475"></a><span class="lineno">  475</span> </div>
+<div class="foldopen" id="foldopen00480" data-start="{" data-end="}">
+<div class="line"><a id="l00480" name="l00480"></a><span class="lineno"><a class="line" href="classUtilisateur.html#a7f642a5639c034ebee4bcafde01552ae">  480</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#a7f642a5639c034ebee4bcafde01552ae">geturlPhotoUtilisateur</a>(): ?string</div>
+<div class="line"><a id="l00481" name="l00481"></a><span class="lineno">  481</span>    {</div>
+<div class="line"><a id="l00482" name="l00482"></a><span class="lineno">  482</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classUtilisateur.html#a2ac2328ce3698938da341a25fdb7b8dc">$this-&gt;urlPhotoUtilisateur</a>;</div>
+<div class="line"><a id="l00483" name="l00483"></a><span class="lineno">  483</span>    }</div>
+</div>
+<div class="line"><a id="l00484" name="l00484"></a><span class="lineno">  484</span> </div>
+<div class="foldopen" id="foldopen00490" data-start="{" data-end="}">
+<div class="line"><a id="l00490" name="l00490"></a><span class="lineno"><a class="line" href="classUtilisateur.html#ace61a8bbc1cbe7bd5113436175a28d7c">  490</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#ace61a8bbc1cbe7bd5113436175a28d7c">seturlPhotoUtilisateur</a>(<a class="code hl_variable" href="classUtilisateur.html#a2ac2328ce3698938da341a25fdb7b8dc">$urlPhotoUtilisateur</a>): void</div>
+<div class="line"><a id="l00491" name="l00491"></a><span class="lineno">  491</span>    {</div>
+<div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span>        $this-&gt;urlPhotoUtilisateur = <a class="code hl_variable" href="classUtilisateur.html#a2ac2328ce3698938da341a25fdb7b8dc">$urlPhotoUtilisateur</a>;</div>
+<div class="line"><a id="l00493" name="l00493"></a><span class="lineno">  493</span>    }</div>
+</div>
+<div class="line"><a id="l00494" name="l00494"></a><span class="lineno">  494</span> </div>
+<div class="foldopen" id="foldopen00499" data-start="{" data-end="}">
+<div class="line"><a id="l00499" name="l00499"></a><span class="lineno"><a class="line" href="classUtilisateur.html#ab540032a4b4a8391d1af6ea2b952468b">  499</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#ab540032a4b4a8391d1af6ea2b952468b">getRoleUtilisateur</a>(): ?<a class="code hl_class" href="classRole.html">Role</a></div>
+<div class="line"><a id="l00500" name="l00500"></a><span class="lineno">  500</span>    {</div>
+<div class="line"><a id="l00501" name="l00501"></a><span class="lineno">  501</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classUtilisateur.html#ab0a62333d6685bdb61fce5b506dad1c4">$this-&gt;roleUtilisateur</a>;</div>
+<div class="line"><a id="l00502" name="l00502"></a><span class="lineno">  502</span>    }</div>
+</div>
+<div class="line"><a id="l00503" name="l00503"></a><span class="lineno">  503</span> </div>
+<div class="foldopen" id="foldopen00509" data-start="{" data-end="}">
+<div class="line"><a id="l00509" name="l00509"></a><span class="lineno"><a class="line" href="classUtilisateur.html#af3f8de81932f1c232ab1d137ed40405e">  509</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classUtilisateur.html#af3f8de81932f1c232ab1d137ed40405e">setRoleUtilisateur</a>(<a class="code hl_variable" href="classUtilisateur.html#ab0a62333d6685bdb61fce5b506dad1c4">$roleUtilisateur</a>): void</div>
+<div class="line"><a id="l00510" name="l00510"></a><span class="lineno">  510</span>    {</div>
+<div class="line"><a id="l00511" name="l00511"></a><span class="lineno">  511</span>        $this-&gt;roleUtilisateur = <a class="code hl_variable" href="classUtilisateur.html#ab0a62333d6685bdb61fce5b506dad1c4">$roleUtilisateur</a>;</div>
+<div class="line"><a id="l00512" name="l00512"></a><span class="lineno">  512</span>    }</div>
+</div>
+<div class="line"><a id="l00513" name="l00513"></a><span class="lineno">  513</span>}</div>
+</div>
+<div class="ttc" id="aclassGenre_html"><div class="ttname"><a href="classGenre.html">Genre</a></div><div class="ttdef"><b>Definition</b> <a href="genre_8class_8php_source.html#l00007">genre.class.php:7</a></div></div>
+<div class="ttc" id="aclassRole_html"><div class="ttname"><a href="classRole.html">Role</a></div><div class="ttdef"><b>Definition</b> <a href="role_8class_8php_source.html#l00007">role.class.php:8</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html"><div class="ttname"><a href="classUtilisateur.html">Utilisateur</a></div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00036">utilisateur.class.php:37</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a0635be7f3996b4cd7ac15e2c90f7a559"><div class="ttname"><a href="classUtilisateur.html#a0635be7f3996b4cd7ac15e2c90f7a559">Utilisateur\$descriptionUtilisateur</a></div><div class="ttdeci">string $descriptionUtilisateur</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00077">utilisateur.class.php:77</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a065c5859952a686264c337ef63e461c2"><div class="ttname"><a href="classUtilisateur.html#a065c5859952a686264c337ef63e461c2">Utilisateur\getNbAbonnesArtiste</a></div><div class="ttdeci">getNbAbonnesArtiste()</div><div class="ttdoc">Getter pour nbAbonnesArtiste.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00461">utilisateur.class.php:461</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a0835ebb7c92952b2ef6e8b80f1430e72"><div class="ttname"><a href="classUtilisateur.html#a0835ebb7c92952b2ef6e8b80f1430e72">Utilisateur\setNbAbonnesArtiste</a></div><div class="ttdeci">setNbAbonnesArtiste($nbAbonnesArtiste)</div><div class="ttdoc">Setter pour nbAbonnesArtiste.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00471">utilisateur.class.php:471</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a127209934f72ce1741f9597689671295"><div class="ttname"><a href="classUtilisateur.html#a127209934f72ce1741f9597689671295">Utilisateur\setSiteWebUtilisateur</a></div><div class="ttdeci">setSiteWebUtilisateur($siteWebUtilisateur)</div><div class="ttdoc">Setter pour siteWebUtilisateur.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00376">utilisateur.class.php:376</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a147fddad1b5bc1cbf48e630705ed1ec6"><div class="ttname"><a href="classUtilisateur.html#a147fddad1b5bc1cbf48e630705ed1ec6">Utilisateur\$dateFinAbonnement</a></div><div class="ttdeci">DateTime $dateFinAbonnement</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00093">utilisateur.class.php:93</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a153551dc29d3f89fff2bf99230b5e78e"><div class="ttname"><a href="classUtilisateur.html#a153551dc29d3f89fff2bf99230b5e78e">Utilisateur\$dateDebutAbonnement</a></div><div class="ttdeci">DateTime $dateDebutAbonnement</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00089">utilisateur.class.php:89</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a178ea61416daec22694525a620f8726a"><div class="ttname"><a href="classUtilisateur.html#a178ea61416daec22694525a620f8726a">Utilisateur\$statutUtilisateur</a></div><div class="ttdeci">StatutUtilisateur $statutUtilisateur</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00065">utilisateur.class.php:65</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a2339bdd8941646761b8689d0742ecaa5"><div class="ttname"><a href="classUtilisateur.html#a2339bdd8941646761b8689d0742ecaa5">Utilisateur\setStatutAbonnement</a></div><div class="ttdeci">setStatutAbonnement($statutAbonnement)</div><div class="ttdoc">Setter pour statutAbonnement.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00395">utilisateur.class.php:395</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a26b03cb1ba77b133f4926798ad051540"><div class="ttname"><a href="classUtilisateur.html#a26b03cb1ba77b133f4926798ad051540">Utilisateur\getStatutAbonnement</a></div><div class="ttdeci">getStatutAbonnement()</div><div class="ttdoc">Getter pour statutAbonnement.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00385">utilisateur.class.php:385</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a2ac2328ce3698938da341a25fdb7b8dc"><div class="ttname"><a href="classUtilisateur.html#a2ac2328ce3698938da341a25fdb7b8dc">Utilisateur\$urlPhotoUtilisateur</a></div><div class="ttdeci">string $urlPhotoUtilisateur</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00105">utilisateur.class.php:105</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a2b7f07f6f2f8348fbe15920cb5995301"><div class="ttname"><a href="classUtilisateur.html#a2b7f07f6f2f8348fbe15920cb5995301">Utilisateur\getNomUtilisateur</a></div><div class="ttdeci">getNomUtilisateur()</div><div class="ttdoc">Getter pour le nom de l'utilisateur.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00195">utilisateur.class.php:195</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a2c275cee8027ead6b4015886572e2dd8"><div class="ttname"><a href="classUtilisateur.html#a2c275cee8027ead6b4015886572e2dd8">Utilisateur\setPseudoUtilisateur</a></div><div class="ttdeci">setPseudoUtilisateur($pseudoUtilisateur)</div><div class="ttdoc">Setter pour le pseudo de l'utilisateur.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00243">utilisateur.class.php:243</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a2d059d7e690568b1291dad2b9ccb61d3"><div class="ttname"><a href="classUtilisateur.html#a2d059d7e690568b1291dad2b9ccb61d3">Utilisateur\getDateInscriptionUtilisateur</a></div><div class="ttdeci">getDateInscriptionUtilisateur()</div><div class="ttdoc">Getter pour la date d'inscription de l'utilisateur.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00290">utilisateur.class.php:290</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a43ea065478ba5f28182870d054b56acd"><div class="ttname"><a href="classUtilisateur.html#a43ea065478ba5f28182870d054b56acd">Utilisateur\getPointsDeRenommeeArtiste</a></div><div class="ttdeci">getPointsDeRenommeeArtiste()</div><div class="ttdoc">Getter pour pointsDeRenommeeArtiste.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00442">utilisateur.class.php:442</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a4de47396b30760b89222214a2a19bdc0"><div class="ttname"><a href="classUtilisateur.html#a4de47396b30760b89222214a2a19bdc0">Utilisateur\setDescriptionUtilisateur</a></div><div class="ttdeci">setDescriptionUtilisateur($descriptionUtilisateur)</div><div class="ttdoc">Setter pour descriptionUtilisateur.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00357">utilisateur.class.php:357</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a4f4f65fa887e60f955b3ee9ef8e02b3d"><div class="ttname"><a href="classUtilisateur.html#a4f4f65fa887e60f955b3ee9ef8e02b3d">Utilisateur\setDateFinAbonnement</a></div><div class="ttdeci">setDateFinAbonnement($dateFinAbonnement)</div><div class="ttdoc">Setter pour dateFinAbonnement.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00433">utilisateur.class.php:433</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a52bb359dfbf731c7d2f5306c7b8d79bc"><div class="ttname"><a href="classUtilisateur.html#a52bb359dfbf731c7d2f5306c7b8d79bc">Utilisateur\setEmailUtilisateur</a></div><div class="ttdeci">setEmailUtilisateur($emailUtilisateur)</div><div class="ttdoc">Setter pour l'email de l'utilisateur.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00224">utilisateur.class.php:224</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a53110225f300ae64a2728243b1daaa15"><div class="ttname"><a href="classUtilisateur.html#a53110225f300ae64a2728243b1daaa15">Utilisateur\$genreUtilisateur</a></div><div class="ttdeci">Genre $genreUtilisateur</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00069">utilisateur.class.php:69</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a578683d9d4a4fcdcf71a09078d3bc477"><div class="ttname"><a href="classUtilisateur.html#a578683d9d4a4fcdcf71a09078d3bc477">Utilisateur\getDateDeNaissanceUtilisateur</a></div><div class="ttdeci">getDateDeNaissanceUtilisateur()</div><div class="ttdoc">Getter pour la date de naissance de l'utilisateur.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00271">utilisateur.class.php:271</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a5b54f574c3140ce3fb41f296019fd7a5"><div class="ttname"><a href="classUtilisateur.html#a5b54f574c3140ce3fb41f296019fd7a5">Utilisateur\setEstAbonnee</a></div><div class="ttdeci">setEstAbonnee($estAbonnee)</div><div class="ttdoc">Setter pour estAbonnee.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00338">utilisateur.class.php:338</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a5e00a33acee780a18eeb4d26628fc3fa"><div class="ttname"><a href="classUtilisateur.html#a5e00a33acee780a18eeb4d26628fc3fa">Utilisateur\setDateDeNaissanceUtilisateur</a></div><div class="ttdeci">setDateDeNaissanceUtilisateur($dateDeNaissanceUtilisateur)</div><div class="ttdoc">Setter pour la date de naissance de l'utilisateur.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00281">utilisateur.class.php:281</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a5ef688b7ca1c0de1a2b6155e7521229b"><div class="ttname"><a href="classUtilisateur.html#a5ef688b7ca1c0de1a2b6155e7521229b">Utilisateur\$dateDeNaissanceUtilisateur</a></div><div class="ttdeci">DateTime $dateDeNaissanceUtilisateur</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00057">utilisateur.class.php:57</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a6293e15ffa69d13d0a4418cb7beba788"><div class="ttname"><a href="classUtilisateur.html#a6293e15ffa69d13d0a4418cb7beba788">Utilisateur\$pseudoUtilisateur</a></div><div class="ttdeci">string $pseudoUtilisateur</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00049">utilisateur.class.php:49</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a64b780a116dd44040aaa8b7b13b126d7"><div class="ttname"><a href="classUtilisateur.html#a64b780a116dd44040aaa8b7b13b126d7">Utilisateur\setDateDebutAbonnement</a></div><div class="ttdeci">setDateDebutAbonnement($dateDebutAbonnement)</div><div class="ttdoc">Setter pour dateDebutAbonnement.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00414">utilisateur.class.php:414</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a704c5a1df04a8af259c053acb998f214"><div class="ttname"><a href="classUtilisateur.html#a704c5a1df04a8af259c053acb998f214">Utilisateur\setMotDePasseUtilisateur</a></div><div class="ttdeci">setMotDePasseUtilisateur($motDePasseUtilisateur)</div><div class="ttdoc">Setter pour le mot de passe de l'utilisateur.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00262">utilisateur.class.php:262</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a745ee1655f23e28a3520fb5049771638"><div class="ttname"><a href="classUtilisateur.html#a745ee1655f23e28a3520fb5049771638">Utilisateur\$motDePasseUtilisateur</a></div><div class="ttdeci">string $motDePasseUtilisateur</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00053">utilisateur.class.php:53</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a772e4d855f933fe74c57ede51115c854"><div class="ttname"><a href="classUtilisateur.html#a772e4d855f933fe74c57ede51115c854">Utilisateur\getPseudoUtilisateur</a></div><div class="ttdeci">getPseudoUtilisateur()</div><div class="ttdoc">Getter pour le pseudo de l'utilisateur.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00233">utilisateur.class.php:233</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a7a1076f86d0c81cda031f07c6c61a137"><div class="ttname"><a href="classUtilisateur.html#a7a1076f86d0c81cda031f07c6c61a137">Utilisateur\getDescriptionUtilisateur</a></div><div class="ttdeci">getDescriptionUtilisateur()</div><div class="ttdoc">Getter pour descriptionUtilisateur.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00347">utilisateur.class.php:347</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a7f642a5639c034ebee4bcafde01552ae"><div class="ttname"><a href="classUtilisateur.html#a7f642a5639c034ebee4bcafde01552ae">Utilisateur\geturlPhotoUtilisateur</a></div><div class="ttdeci">geturlPhotoUtilisateur()</div><div class="ttdoc">Getter pour urlPhotoUtilisateur.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00480">utilisateur.class.php:480</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a801bf14c9e9c7f481cff396c807443d0"><div class="ttname"><a href="classUtilisateur.html#a801bf14c9e9c7f481cff396c807443d0">Utilisateur\$nomUtilisateur</a></div><div class="ttdeci">string $nomUtilisateur</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00045">utilisateur.class.php:45</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a85517ba68a1f7b866d4291d1bddaf8e5"><div class="ttname"><a href="classUtilisateur.html#a85517ba68a1f7b866d4291d1bddaf8e5">Utilisateur\getDateFinAbonnement</a></div><div class="ttdeci">getDateFinAbonnement()</div><div class="ttdoc">Getter pour dateFinAbonnement.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00423">utilisateur.class.php:423</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a8859a67bc9c3bd95d7ffc0dfb1307d22"><div class="ttname"><a href="classUtilisateur.html#a8859a67bc9c3bd95d7ffc0dfb1307d22">Utilisateur\getSiteWebUtilisateur</a></div><div class="ttdeci">getSiteWebUtilisateur()</div><div class="ttdoc">Getter pour siteWebUtilisateur.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00366">utilisateur.class.php:366</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a94dd42b9e5b879f53b18f30bbea5ef18"><div class="ttname"><a href="classUtilisateur.html#a94dd42b9e5b879f53b18f30bbea5ef18">Utilisateur\getMotDePasseUtilisateur</a></div><div class="ttdeci">getMotDePasseUtilisateur()</div><div class="ttdoc">Getter pour le mot de passe de l'utilisateur.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00252">utilisateur.class.php:252</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a9b6573a2a1aff808ea07fe0c73f02491"><div class="ttname"><a href="classUtilisateur.html#a9b6573a2a1aff808ea07fe0c73f02491">Utilisateur\$nbAbonnesArtiste</a></div><div class="ttdeci">int $nbAbonnesArtiste</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00101">utilisateur.class.php:101</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_a9de32d421ad9988b9eed437621c66145"><div class="ttname"><a href="classUtilisateur.html#a9de32d421ad9988b9eed437621c66145">Utilisateur\getEmailUtilisateur</a></div><div class="ttdeci">getEmailUtilisateur()</div><div class="ttdoc">Getter pour l'email de l'utilisateur.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00214">utilisateur.class.php:214</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_aa868777333b2becca3dda7f3d5357250"><div class="ttname"><a href="classUtilisateur.html#aa868777333b2becca3dda7f3d5357250">Utilisateur\__construct</a></div><div class="ttdeci">__construct(?string $emailUtilisateur=null, ?string $nomUtilisateur=null, ?string $pseudoUtilisateur=null, ?string $motDePasseUtilisateur=null, ?DateTime $dateDeNaissanceUtilisateur=null, ?DateTime $dateInscriptionUtilisateur=null, ?StatutUtilisateur $statutUtilisateur=null, ?Genre $genreUtilisateur=null, ?bool $estAbonnee=null, ?string $descriptionUtilisateur=null, ?string $siteWebUtilisateur=null, ?StatutAbonnement $statutAbonnement=null, ?DateTime $dateDebutAbonnement=null, ?DateTime $dateFinAbonnement=null, ?int $pointsDeRenommeeArtiste=null, ?int $nbAbonnesArtiste=null, ?string $urlPhotoUtilisateur=null, ?Role $roleUtilisateur=null)</div><div class="ttdoc">Constructeur de la classe Utilisateur.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00132">utilisateur.class.php:132</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_ab0a62333d6685bdb61fce5b506dad1c4"><div class="ttname"><a href="classUtilisateur.html#ab0a62333d6685bdb61fce5b506dad1c4">Utilisateur\$roleUtilisateur</a></div><div class="ttdeci">Role $roleUtilisateur</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00109">utilisateur.class.php:109</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_ab540032a4b4a8391d1af6ea2b952468b"><div class="ttname"><a href="classUtilisateur.html#ab540032a4b4a8391d1af6ea2b952468b">Utilisateur\getRoleUtilisateur</a></div><div class="ttdeci">getRoleUtilisateur()</div><div class="ttdoc">Getter pour roleUtilisateur.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00499">utilisateur.class.php:499</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_abeee0dcce52ef032c9c6b28b6a2acc27"><div class="ttname"><a href="classUtilisateur.html#abeee0dcce52ef032c9c6b28b6a2acc27">Utilisateur\$estAbonnee</a></div><div class="ttdeci">bool $estAbonnee</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00073">utilisateur.class.php:73</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_abeee5e6961889baf76216a276138e1da"><div class="ttname"><a href="classUtilisateur.html#abeee5e6961889baf76216a276138e1da">Utilisateur\setGenreUtilisateur</a></div><div class="ttdeci">setGenreUtilisateur($genreUtilisateur)</div><div class="ttdoc">Setter pour le genre musical préféré</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00186">utilisateur.class.php:186</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_abf7d571f136cf48f6c7127db9a8fb310"><div class="ttname"><a href="classUtilisateur.html#abf7d571f136cf48f6c7127db9a8fb310">Utilisateur\getDateDebutAbonnement</a></div><div class="ttdeci">getDateDebutAbonnement()</div><div class="ttdoc">Getter pour dateDebutAbonnement.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00404">utilisateur.class.php:404</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_ac22e9a35b9c58f09a0ce422766695509"><div class="ttname"><a href="classUtilisateur.html#ac22e9a35b9c58f09a0ce422766695509">Utilisateur\setNomUtilisateur</a></div><div class="ttdeci">setNomUtilisateur($nomUtilisateur)</div><div class="ttdoc">Setter pour le nom de l'utilisateur.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00205">utilisateur.class.php:205</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_acc41e4c8bd569734d0ed2382f0c5100e"><div class="ttname"><a href="classUtilisateur.html#acc41e4c8bd569734d0ed2382f0c5100e">Utilisateur\$pointsDeRenommeeArtiste</a></div><div class="ttdeci">int $pointsDeRenommeeArtiste</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00097">utilisateur.class.php:97</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_ace61a8bbc1cbe7bd5113436175a28d7c"><div class="ttname"><a href="classUtilisateur.html#ace61a8bbc1cbe7bd5113436175a28d7c">Utilisateur\seturlPhotoUtilisateur</a></div><div class="ttdeci">seturlPhotoUtilisateur($urlPhotoUtilisateur)</div><div class="ttdoc">Setter pour urlPhotoUtilisateur.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00490">utilisateur.class.php:490</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_ad277695186236be19add8e8a4f30850a"><div class="ttname"><a href="classUtilisateur.html#ad277695186236be19add8e8a4f30850a">Utilisateur\setStatutUtilisateur</a></div><div class="ttdeci">setStatutUtilisateur($statutUtilisateur)</div><div class="ttdoc">Setter pour le statut de l'utilisateur.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00319">utilisateur.class.php:319</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_adc119cf8c37610962553316bd35e22af"><div class="ttname"><a href="classUtilisateur.html#adc119cf8c37610962553316bd35e22af">Utilisateur\$siteWebUtilisateur</a></div><div class="ttdeci">string $siteWebUtilisateur</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00081">utilisateur.class.php:81</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_addd42cfcece5227515bf9923be043bcb"><div class="ttname"><a href="classUtilisateur.html#addd42cfcece5227515bf9923be043bcb">Utilisateur\$statutAbonnement</a></div><div class="ttdeci">StatutAbonnement $statutAbonnement</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00085">utilisateur.class.php:85</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_adeaed5e2ebda7592bada6469900cb755"><div class="ttname"><a href="classUtilisateur.html#adeaed5e2ebda7592bada6469900cb755">Utilisateur\getEstAbonnee</a></div><div class="ttdeci">getEstAbonnee()</div><div class="ttdoc">Getter pour estAbonnee.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00328">utilisateur.class.php:328</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_ae44b21df9468f5df99e6269f228119c6"><div class="ttname"><a href="classUtilisateur.html#ae44b21df9468f5df99e6269f228119c6">Utilisateur\$dateInscriptionUtilisateur</a></div><div class="ttdeci">DateTime $dateInscriptionUtilisateur</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00061">utilisateur.class.php:61</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_ae4ee6c81a734142f6463068e51ccd200"><div class="ttname"><a href="classUtilisateur.html#ae4ee6c81a734142f6463068e51ccd200">Utilisateur\getGenreUtilisateur</a></div><div class="ttdeci">getGenreUtilisateur()</div><div class="ttdoc">Getter pour le genre musical préféré</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00176">utilisateur.class.php:176</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_ae7b71433439f7720fc913cd386efa1df"><div class="ttname"><a href="classUtilisateur.html#ae7b71433439f7720fc913cd386efa1df">Utilisateur\setPointsDeRenommeeArtiste</a></div><div class="ttdeci">setPointsDeRenommeeArtiste($pointsDeRenommeeArtiste)</div><div class="ttdoc">Setter pour pointsDeRenommeeArtiste.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00452">utilisateur.class.php:452</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_ae9443c9f56d13fa1b4f1ed5faeb27bde"><div class="ttname"><a href="classUtilisateur.html#ae9443c9f56d13fa1b4f1ed5faeb27bde">Utilisateur\getStatutUtilisateur</a></div><div class="ttdeci">getStatutUtilisateur()</div><div class="ttdoc">Getter pour le statut de l'utilisateur.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00309">utilisateur.class.php:309</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_aea47df1bfb3f24606de4fe047edff84a"><div class="ttname"><a href="classUtilisateur.html#aea47df1bfb3f24606de4fe047edff84a">Utilisateur\setDateInscriptionUtilisateur</a></div><div class="ttdeci">setDateInscriptionUtilisateur($dateInscriptionUtilisateur)</div><div class="ttdoc">Setter pour la date d'inscription de l'utilisateur.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00300">utilisateur.class.php:300</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_af3f8de81932f1c232ab1d137ed40405e"><div class="ttname"><a href="classUtilisateur.html#af3f8de81932f1c232ab1d137ed40405e">Utilisateur\setRoleUtilisateur</a></div><div class="ttdeci">setRoleUtilisateur($roleUtilisateur)</div><div class="ttdoc">Setter pour roleUtilisateur.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00509">utilisateur.class.php:509</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html_afff4d3eb540c24c52810e72947531164"><div class="ttname"><a href="classUtilisateur.html#afff4d3eb540c24c52810e72947531164">Utilisateur\$emailUtilisateur</a></div><div class="ttdeci">string $emailUtilisateur</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00041">utilisateur.class.php:41</a></div></div>
+<div class="ttc" id="autilisateur_8class_8php_html_a76111d218185e55fbf92b41d84c28ba0"><div class="ttname"><a href="utilisateur_8class_8php.html#a76111d218185e55fbf92b41d84c28ba0">StatutAbonnement</a></div><div class="ttdeci">StatutAbonnement</div><div class="ttdoc">Énumération des statuts possibles pour un abonnement utilisateur @case Actif L'abonnement est actif.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00028">utilisateur.class.php:29</a></div></div>
+<div class="ttc" id="autilisateur_8class_8php_html_a76111d218185e55fbf92b41d84c28ba0a5881c2d32c5aaa94e7978c752b0b6f6a"><div class="ttname"><a href="utilisateur_8class_8php.html#a76111d218185e55fbf92b41d84c28ba0a5881c2d32c5aaa94e7978c752b0b6f6a">Inactif</a></div><div class="ttdeci">@ Inactif</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00034">utilisateur.class.php:33</a></div></div>
+<div class="ttc" id="autilisateur_8class_8php_html_afe7bbe19eb4424e1850c48b584ab07b1"><div class="ttname"><a href="utilisateur_8class_8php.html#afe7bbe19eb4424e1850c48b584ab07b1">StatutUtilisateur</a></div><div class="ttdeci">StatutUtilisateur</div><div class="ttdoc">Énumération des statuts possibles pour un utilisateur @case Actif L'utilisateur est actif.</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00014">utilisateur.class.php:15</a></div></div>
+<div class="ttc" id="autilisateur_8class_8php_html_afe7bbe19eb4424e1850c48b584ab07b1afa7b68827549c45510254ffa32a3463d"><div class="ttname"><a href="utilisateur_8class_8php.html#afe7bbe19eb4424e1850c48b584ab07b1afa7b68827549c45510254ffa32a3463d">Supprimee</a></div><div class="ttdeci">@ Supprimee</div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00019">utilisateur.class.php:18</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_94350f523feee7bac2b3c4d6268d38b5.html">modeles</a></li><li class="navelem"><a class="el" href="utilisateur_8class_8php.html">utilisateur.class.php</a></li>
+    <li class="footer">Généré le Jeudi 8 Janvier 2026 09:37:44 pour Paaxio par <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>
