@@ -64,6 +64,12 @@
         padding: 15px;
     }
 
+    /* Style pour les lignes cliquables */
+    #usersTable tbody tr.user-row:hover {
+        background-color: rgba(217, 145, 129, 0.08);
+        transition: background-color 0.2s ease;
+    }
+
     /* Champs de recherche et sélecteurs arrondis */
     .dataTables_filter input, .dataTables_length select {
         border-radius: 20px !important;
@@ -111,7 +117,7 @@
                     </thead>
                     <tbody>
                         {% for user in utilisateurs %}
-                        <tr>
+                        <tr class="user-row" data-href="?controller=admin&method=consulter&id={{ user.emailUtilisateur }}" style="cursor: pointer;">
                             <td>
                                 <div class="d-flex align-items-center">
                                     {% if user.urlPhotoUtilisateur %}
@@ -143,6 +149,7 @@
                                 {% endif %}
                             </td>
                             <td class="text-end">
+                                <a href="?controller=admin&method=consulter&id={{ user.emailUtilisateur }}" class="btn btn-sm btn-light text-primary rounded-circle me-1" title="Consulter"><i class="bi bi-eye"></i></a>
                                 <a href="?controller=admin&method=modifier&id={{ user.emailUtilisateur }}" class="btn btn-sm btn-light text-secondary rounded-circle me-1" title="Modifier"><i class="bi bi-pencil"></i></a>
                                 <a href="?controller=admin&method=supprimer&id={{ user.emailUtilisateur }}" class="btn btn-sm btn-light text-danger rounded-circle" onclick="return confirm('Supprimer ?');" title="Supprimer"><i class="bi bi-trash"></i></a>
                             </td>
@@ -200,6 +207,13 @@
             // Gestionnaire de filtre par rôle
             $('#roleFilter').on('change', function() {
                 table.column(2).search($(this).val()).draw();
+            });
+
+            // Clic sur une ligne pour consulter l'utilisateur
+            $('#usersTable tbody').on('click', 'tr.user-row', function(e) {
+                // Ne pas naviguer si on clique sur un bouton d'action
+                if ($(e.target).closest('a, button').length) return;
+                window.location.href = $(this).data('href');
             });
         });
     </script>
