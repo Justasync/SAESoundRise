@@ -7,41 +7,133 @@
 	{{ parent() }}
 	<link rel="stylesheet" href="/assets/css/newsletter.css">
 {% endblock %}
-{% block content %}
-	<div class="container py-5">
-		<form action="/?controller=newsletter&method=ajouter" method="post" class="form-newsletter">
-			<h2>Tenez vous à l'écoute !</h2>
-			<p>Recevez les dernières actualités de Paaxio directement dans votre boîte mail.
-			</p>
-			{% if success %}
-				<div class="alert alert-success" role="alert">
-					{{ success }}
-				</div>
-				<div id="music-rain"></div>
-			{% endif %}
-			{% if errors is defined and errors|length > 0 %}
-				<div class="alert alert-danger" role="alert">
-					<ul class="mb-0">
-						{% for error in errors %}
-							<li>{{ error }}</li>
-						{% endfor %}
-					</ul>
-				</div>
-			{% endif %}
-			<label for="email">Adresse e-mail:
-			</label>
-			<input type="email" id="email" name="email" required placeholder="Votre adresse e-mail" value="{{ form.email|default('') }}">
+{% block header %}
+	{{ parent() }}
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+	<style>
+		:root {
+			--paaxio-turquoise: #2A9D8F;
+			--paaxio-background: #F4E1D2;
+			--paaxio-card-bg: #E07A5F;
+			--paaxio-border: #91c9c4;
+			--paaxio-rounded-3xl: 1.5rem;
+		}
 
-			<div class="form-check my-3">
-				<input class="form-check-input" type="checkbox" id="consent_newsletter" name="consent_newsletter" required>
-				<label class="form-check-label" for="consent_newsletter">
-					J'accepte de m'abonner à la newsletter pour recevoir les dernières actualités par courriel et j'accepte les termes et conditions. <a href="/?controller=home&method=afficherGenerales">Voir la politique de confidentialité</a>
-				</label>
+		.main-content-container {
+			border: 1px solid var(--paaxio-border);
+			border-radius: 0.75rem;
+			padding-bottom: 3rem;
+		}
+
+		.form-newsletter {
+			max-width: 500px;
+			margin: 0 auto;
+		}
+
+		.form-newsletter h2 {
+			color: var(--paaxio-turquoise);
+			font-weight: 700;
+			margin-bottom: 1rem;
+		}
+
+		.form-newsletter p {
+			color: #6b7280;
+			margin-bottom: 1.5rem;
+		}
+
+		.form-newsletter label[for="email"] {
+			font-weight: 600;
+			color: #374151;
+			display: block;
+			margin-bottom: 0.5rem;
+		}
+
+		.form-newsletter input[type="email"] {
+			width: 100%;
+			padding: 0.75rem 1rem;
+			border: 1px solid #d1d5db;
+			border-radius: 0.5rem;
+			font-size: 1rem;
+			transition: border-color 0.2s, box-shadow 0.2s;
+		}
+
+		.form-newsletter input[type="email"]:focus {
+			outline: none;
+			border-color: var(--paaxio-turquoise);
+			box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.15);
+		}
+
+		.form-newsletter button[type="submit"] {
+			width: 100%;
+			padding: 0.75rem 1.5rem;
+			background-color: var(--paaxio-card-bg);
+			color: white;
+			border: none;
+			border-radius: 0.5rem;
+			font-weight: 600;
+			font-size: 1rem;
+			cursor: pointer;
+			transition: background-color 0.2s, transform 0.2s;
+		}
+
+		.form-newsletter button[type="submit"]:hover {
+			background-color: #c96a50;
+			transform: translateY(-2px);
+		}
+
+		.form-newsletter .form-check-label {
+			font-size: 0.875rem;
+			color: #6b7280;
+		}
+
+		.form-newsletter .form-check-label a {
+			color: var(--paaxio-turquoise);
+		}
+	</style>
+{% endblock %}
+{% block content %}
+<main class="container-xl py-5">
+	<div class="main-content-container bg-white">
+		<div class="container-fluid pt-4 pb-2">
+			<div class="text-center mb-4">
+				<h1 class="fw-bold" style="color: var(--paaxio-turquoise);">Newsletter</h1>
 			</div>
 
-			<button type="submit">S'abonner</button>
-		</form>
+			<form action="/?controller=newsletter&method=ajouter" method="post" class="form-newsletter px-3">
+				<h2 class="text-center">Tenez vous à l'écoute !</h2>
+				<p class="text-center">Recevez les dernières actualités de Paaxio directement dans votre boîte mail.</p>
+				
+				{% if success %}
+					<div class="alert alert-success" role="alert">
+						{{ success }}
+					</div>
+					<div id="music-rain"></div>
+				{% endif %}
+				{% if errors is defined and errors|length > 0 %}
+					<div class="alert alert-danger" role="alert">
+						<ul class="mb-0">
+							{% for error in errors %}
+								<li>{{ error }}</li>
+							{% endfor %}
+						</ul>
+					</div>
+				{% endif %}
+
+				<label for="email">Adresse e-mail:</label>
+				<input type="email" id="email" name="email" required placeholder="Votre adresse e-mail" value="{{ form.email|default('') }}">
+
+				<div class="form-check my-3">
+					<input class="form-check-input" type="checkbox" id="consent_newsletter" name="consent_newsletter" required>
+					<label class="form-check-label" for="consent_newsletter">
+						J'accepte de m'abonner à la newsletter pour recevoir les dernières actualités par courriel et j'accepte les termes et conditions. <a href="/?controller=home&method=afficherGenerales">Voir la politique de confidentialité</a>
+					</label>
+				</div>
+
+				<button type="submit">S'abonner</button>
+			</form>
+		</div>
 	</div>
+</main>
 
 	{% if success %}
 	<script>
