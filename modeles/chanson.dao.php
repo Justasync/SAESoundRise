@@ -118,15 +118,17 @@ class ChansonDAO
         $chanson->setNbecoutechanson(isset($tableaAssoc['nbEcouteChanson']) ? (int)$tableaAssoc['nbEcouteChanson'] : null);
         $chanson->seturlAudioChanson($tableaAssoc['urlAudioChanson'] ?? null);
 
-        //albumChanson et genreChanson sont des objets, il faut les récupérer via leur DAO respectif
         // Album : création d’un objet minimal
         if (!empty($tableaAssoc['albumChanson'])) {
             $albumDAO = new AlbumDAO($this->pdo);
             $album = $albumDAO->find((int)$tableaAssoc['albumChanson']);
-            $chanson->setAlbumChanson($album);
-        } else {
-            $chanson->setAlbumChanson(null);
-        }
+            
+            if ($album) {
+                $chanson->setAlbumChanson($album);
+            } else {
+                $chanson->setAlbumChanson(null);
+            }
+        }  
 
         // Genre : création d’un objet minimal
         if (!empty($tableaAssoc['genreChanson'])) {
@@ -153,15 +155,18 @@ class ChansonDAO
 
     public function rechercherParTitre(string $titre): array
     {
-        $sql = "SELECT * FROM chanson WHERE titreChanson LIKE :titre";
+        $sql = "SELECT * FROM chanson 
+                WHERE titreChanson LIKE :titre 
+                ORDER BY nbEcouteChanson DESC 
+                LIMIT 3"; 
+            
         $pdoStatement = $this->pdo->prepare($sql);
         $likeTitre = '%' . $titre . '%';
         $pdoStatement->bindParam(':titre', $likeTitre, PDO::PARAM_STR);
         $pdoStatement->execute();
         $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
         $tableau = $pdoStatement->fetchAll();
-        $chansons = $this->hydrateMany($tableau);
-        return $chansons;
+        return $this->hydrateMany($tableau);
     }
 
     public function rechercherParAlbum(int $idAlbum): array
@@ -234,11 +239,11 @@ class ChansonDAO
         ]);
     }
 
-    public function findByTitreExact(string $titre, int $idAlbum): ?Chanson
-    {
-        // Implémentation future si nécessaire pour éviter les doublons
-        return null;
-    }
+    // public function findByTitreExact(string $titre, int $idAlbum): ?Chanson
+    // {
+    //     // Implémentation future si nécessaire pour éviter les doublons
+    //     return null;
+    // }
 
     public function updateChanson(Chanson $chanson): bool
     {
