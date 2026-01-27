@@ -105,10 +105,13 @@
 										</li>
 									{% endif %}
 								</ul>
-							</div>
-							<form class="d-flex" role="search">
-								<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+						<div class="position-relative"> 
+							<form action="index.php" method="get" class="d-flex" role="search">
+								<input id="searchInput" name="term" class="form-control me-2" type="search" placeholder="Rechercher" autocomplete="off">
 							</form>
+							<div id="searchResults" class="list-group position-absolute w-100 shadow" 
+								style="display: none; z-index: 9999; top: 100%; left: 0; background: white; max-height: 300px; overflow-y: auto;">
+							</div>
 						</div>
 					</div>
 				</nav>
@@ -476,6 +479,7 @@
 			</script>
 			<script src="assets/js/signup-modal.js?v=1.0b3"></script>
 			<script src="assets/js/signin-modal.js?v=1.0b4"></script>
+			<script src="assets/js/search.js"></script>
 		</body>
 	</body>
 </html>

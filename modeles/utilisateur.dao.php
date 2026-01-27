@@ -26,6 +26,23 @@ class UtilisateurDAO
      * @param string|null $emailUtilisateur L'adresse email à rechercher.
      * @return Utilisateur|null L'utilisateur correspondant ou null si introuvable.
      */
+
+    public function rechercher(string $term): array{
+        $sql = "SELECT u.* 
+            FROM utilisateur u
+            JOIN role r ON u.roleUtilisateur = r.idRole
+            WHERE r.typeRole = 'artiste'
+              AND u.pseudoUtilisateur LIKE :term
+            ORDER BY u.pointsDeRenommeeArtiste DESC, u.nbAbonnesArtiste DESC 
+            LIMIT 3";
+    
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':term' => '%' . $term . '%']);
+    
+        return $this->hydrateAll($stmt->fetchAll(PDO::FETCH_ASSOC));
+    }
+
+    
     public function find(?string $emailUtilisateur): ?Utilisateur
     {
         $sql = "SELECT * FROM utilisateur WHERE emailUtilisateur = :emailUtilisateur";

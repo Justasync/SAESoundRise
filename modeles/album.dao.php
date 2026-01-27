@@ -35,26 +35,57 @@ class AlbumDAO
     }
 
     /**
+     * Recherche albums par titre.
+     * @param string $term Le terme de recherche.
+     * @return array Une liste d'albums correspondants.
+     */
+    public function rechercher(string $term): array
+    {
+        $sql = "SELECT a.*, u.pseudoUtilisateur, 
+                   (SELECT SUM(nbEcouteChanson) FROM chanson WHERE albumChanson = a.idAlbum) as totalEcoutes
+            FROM album a
+            JOIN utilisateur u ON a.artisteAlbum = u.emailUtilisateur
+            WHERE a.nomAlbum LIKE :term
+            ORDER BY totalEcoutes DESC 
+            LIMIT 3"; 
+            
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':term' => '%' . $term . '%']);
+    
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $albums = [];
+        foreach ($results as $row) {
+            $album = $this->hydrate($row);
+            if (isset($row['pseudoUtilisateur'])) {
+                $album->setPseudoArtiste($row['pseudoUtilisateur']);
+            }
+            $albums[] = $album;
+        }
+        return $albums;
+    }
+
+    /**
      * Récupère un album par son identifiant.
      * @param int $id L'identifiant de l'album.
      * @return Album L'Album correspondant.
      */
-    public function find(int $id): Album
+    public function find(int $id): ?Album 
     {
         $sql = "SELECT a.*, u.pseudoUtilisateur 
                 FROM album a
                 JOIN utilisateur u ON a.artisteAlbum = u.emailUtilisateur
                 WHERE a.idAlbum = :id";
         $pdoStatement = $this->pdo->prepare($sql);
-        // Correction mineure : utilisation de la syntaxe [] au lieu de array()
-        $pdoStatement->execute([
-            ':id' => $id
-        ]);
+        $pdoStatement->execute([':id' => $id]);
 
         $pdoStatement->setFetchMode(PDO::FETCH_ASSOC);
         $tableau = $pdoStatement->fetch();
+        
+        if (!$tableau) {
+            return null;
+        }
+
         $album = $this->hydrate($tableau);
-        // Set the pseudo if available
         if (isset($tableau['pseudoUtilisateur'])) {
             $album->setPseudoArtiste($tableau['pseudoUtilisateur']);
         }

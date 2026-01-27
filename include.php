@@ -170,6 +170,13 @@ require_once 'controller/controller_playlist.class.php';
 require_once 'controller/controller_battle.class.php';
 
 /**
+ * @brief Contrôleur de la recherche
+ * 
+ * Gère la recherche d'artistes par pseudo et de musique.
+ */
+require_once 'controller/controller_search.class.php';   
+
+/**
  * @brief Contrôleur des fichiers
  * 
  * Gère l'upload et la gestion des fichiers (audio, images).
