@@ -916,6 +916,8 @@ class ControllerUtilisateur extends Controller
         }
     }
 
+
+
     /**
      * @brief Affiche une page d'erreur pour les tokens invalides.
      * 
@@ -938,4 +940,123 @@ class ControllerUtilisateur extends Controller
             'error_message' => $message
         ]);
     }
+
+    /**
+     * @brief Affiche la page de gestion du profil de l'utilisateur connecté.
+     * 
+     * Cette méthode permet à l'utilisateur de visualiser ses informations actuelles
+     * dans un formulaire de modification. Elle prépare les données de la session
+     * et de la base de données, notamment en segmentant la date de naissance.
+     * 
+     * @return void
+     */
+    public function afficherGestionProfil()
+    {
+        // Vérifier si l'utilisateur est connecté
+        if (!isset($_SESSION['user_email'])) {
+            $this->redirectTo('home', 'afficher');
+        }
+
+        $uDAO = new UtilisateurDAO($this->getPDO());
+        $user = $uDAO->find($_SESSION['user_email']);
+
+        // Préparation de la date de naissance pour les trois champs du formulaire
+        $dateParts = ['j' => '', 'm' => '', 'a' => ''];
+        if ($user && $user->getDateDeNaissanceUtilisateur()) {
+            $dt = $user->getDateDeNaissanceUtilisateur();
+            $dateParts = [
+                'j' => $dt->format('d'),
+                'm' => $dt->format('m'),
+                'a' => $dt->format('Y')
+            ];
+        }
+
+        $template = $this->getTwig()->load('utilisateur_gestion_profil.html.twig');
+        echo $template->render([
+            'page' => [
+                'title' => "Gestion du Profil",
+                'name' => "gestion_profil"
+            ],
+            'user' => $user,
+            'dateParts' => $dateParts,
+            'session' => $_SESSION
+        ]);
+    }
+
+    /**
+     * @brief Traite et enregistre les modifications du profil utilisateur.
+     * 
+     * Cette méthode récupère les données du formulaire POST, gère le téléversement
+     * de la nouvelle photo de profil, reconstruit la date de naissance et met à jour
+     * l'utilisateur dans la base de datos via le DAO.
+     * 
+     * @return void
+     */
+    public function enregistrerProfil()
+    {
+        // Sécurité : vérifier la session et la méthode POST
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_SESSION['user_email'])) {
+            $this->redirectTo('home', 'afficher');
+        }
+
+        $uDAO = new UtilisateurDAO($this->getPDO());
+        $user = $uDAO->find($_SESSION['user_email']);
+
+        if (!$user) {
+            $this->redirectTo('home', 'afficher');
+        }
+
+        // Mise à jour des champs textuels
+        $user->setPseudoUtilisateur($_POST['pseudo'] ?? $user->getPseudoUtilisateur());
+        $user->setDescriptionUtilisateur($_POST['description'] ?? $user->getDescriptionUtilisateur());
+        
+        // Gestion de la date de naissance (reconstruction à partir de J/M/A)
+        $day = $_POST['day'] ?? '';
+        $month = $_POST['month'] ?? '';
+        $year = $_POST['year'] ?? '';
+        if (!empty($day) && !empty($month) && !empty($year)) {
+            try {
+                $dateStr = sprintf('%04d-%02d-%02d', $year, $month, $day);
+                $user->setDateDeNaissanceUtilisateur(new DateTime($dateStr));
+            } catch (Exception $e) {
+                // En cas de date invalide, on garde l'ancienne ou on gère l'erreur
+            }
+        }
+
+        // Gestion du téléversement de la photo de profil
+        if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = 'assets/images/profile_pictures/';
+            
+            // Créer le dossier s'il n'existe pas
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
+            $extension = pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
+            $nomFichier = 'profile_' . uniqid() . '.' . $extension;
+            $cheminCible = $uploadDir . $nomFichier;
+
+            if (move_uploaded_file($_FILES['photo']['tmp_name'], $cheminCible)) {
+                // Supprimer l'ancienne photo si ce n'est pas la photo par défaut
+                $anciennePhoto = $user->geturlPhotoUtilisateur();
+                if ($anciennePhoto && strpos($anciennePhoto, 'default.png') === false && file_exists($anciennePhoto)) {
+                    @unlink($anciennePhoto);
+                }
+                $user->seturlPhotoUtilisateur($cheminCible);
+            }
+        }
+
+        // Persistance des modifications
+        if ($uDAO->update($user)) {
+            // Mettre à jour la session si nécessaire
+            $_SESSION['user_pseudo'] = $user->getPseudoUtilisateur();
+            
+            // Redirection avec message de succès
+            $this->redirectTo('utilisateur', 'afficherGestionProfil', ['success' => 1]);
+        } else {
+            // Redirection con mensaje de error
+            $this->redirectTo('utilisateur', 'afficherGestionProfil', ['error' => 1]);
+        }
+    }
+    
 }
