@@ -1,0 +1,110 @@
+{% extends 'base_template.html.twig' %}
+
+{% block title %}Gestion du Profil - Paaxio
+{% endblock %}
+
+{% block stylesheets %}
+	<style>
+		.bg-profil {
+			background-color: #FDF5F0;
+			min-height: 100vh;
+			padding-bottom: 50px;
+		}
+
+		.nav-profil-btns .btn {
+			border-radius: 25px;
+			background-color: #E68A6E;
+			color: white;
+			border: 1px solid #C46A54;
+			padding: 8px 40px;
+			font-weight: bold;
+		}
+		.btn-inactive {
+			opacity: 0.5;
+		}
+
+		.form-label {
+			font-weight: 900;
+			color: #000;
+			margin-top: 25px;
+			font-size: 1.1rem;
+		}
+
+		.custom-input {
+			background-color: #F2C4B5 !important;
+			border: 1.5px solid #888;
+			border-radius: 15px !important;
+			padding: 12px 15px;
+		}
+
+		.profile-pic-round {
+			width: 110px;
+			height: 110px;
+			border-radius: 50%;
+			overflow: hidden;
+			border: 3px solid #E68A6E;
+		}
+		.profile-pic-round img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+
+		.btn-save-profil {
+			background-color: #E68A6E;
+			color: white;
+			border-radius: 15px;
+			padding: 10px 60px;
+			border: none;
+			font-weight: bold;
+			font-size: 1.2rem;
+			margin-top: 40px;
+		}
+	</style>
+{% endblock %}
+
+{% block content %}
+	<div class="bg-profil">
+		<div class="container" style="max-width: 700px;">
+
+			<div class="nav-profil-btns d-flex justify-content-between pt-5 mb-5">
+				<button class="btn">Compte</button>
+				<button class="btn btn-inactive">Sécurité</button>
+				<button class="btn btn-inactive">Abonnement</button>
+			</div>
+
+			<form action="?controller=utilisateur&method=enregistrerProfil" method="POST" enctype="multipart/form-data">
+
+				<label class="form-label d-block">Photo de profil</label>
+				<div class="profile-pic-round mb-3">
+					<img src="{{ user.urlPhotoUtilisateur ?: 'assets/images/profile_pictures/default.png' }}" alt="Photo">
+				</div>
+				<input type="file" name="photo" class="form-control form-control-sm mb-4" style="max-width: 300px;">
+
+				<label for="description" class="form-label">Description</label>
+				<textarea name="description" id="description" class="form-control custom-input" rows="5">{{ user.descriptionUtilisateur }}</textarea>
+
+				<label for="pseudo" class="form-label">Nom d'utilisateur</label>
+				<input type="text" id="pseudo" name="pseudo" class="form-control custom-input" value="{{ user.pseudoUtilisateur }}">
+
+				<label for="email" class="form-label">Adresse e-mail</label>
+				<input type="email" id="email" name="email" class="form-control custom-input" value="{{ user.emailUtilisateur }}">
+
+				<label class="form-label">Date de naissance</label>
+				<div class="row g-2">
+					<div class="col-3">
+						<input type="text" name="day" class="form-control custom-input text-center" placeholder="Jour" value="{{ dateParts.j }}">
+					</div>
+					<div class="col-5">
+						<input type="text" name="month" class="form-control custom-input text-center" placeholder="Mois" value="{{ dateParts.m }}">
+					</div>
+					<div class="col-4">
+						<input type="text" name="year" class="form-control custom-input text-center" placeholder="Année" value="{{ dateParts.a }}">
+					</div>
+				</div>
+
+				<button type="submit" class="btn btn-save-profil">Enregistrer</button>
+			</form>
+		</div>
+	</div>
+{% endblock %}
