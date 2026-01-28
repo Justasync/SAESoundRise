@@ -1,7 +1,7 @@
 <?php
 /** 
- * @file Classe Message
- * @brief Représente un message dans le système de messagerie
+ * @file modeles/message.dao.php
+ * @brief DAO pour la gestion des messages.
  */
 
 class MessageDAO
@@ -12,7 +12,7 @@ class MessageDAO
     private ?PDO $pdo;
 
     /**
-     * Constructeur de la classe NewsletterDAO.
+     * Constructeur de la classe MessageDAO.
      * @param PDO|null $pdo L'instance PDO pour la connexion à la base de données.
      */
     public function __construct(?PDO $pdo = null)
@@ -20,6 +20,12 @@ class MessageDAO
         $this->pdo = $pdo;
     }
 
+    /**
+     * Crée un nouveau message dans la base de données.
+     *
+     * @param Message $message
+     * @return boolean
+     */
     public function create(Message $message): bool
     {
         $sql = "INSERT INTO message (dateMessage, contenuMessage, estLuMessage, expediteurMessage, destinataireMessage) VALUES (:dateMessage, :contenuMessage, :estLuMessage, :expediteurMessage, :destinataireMessage)";
@@ -37,6 +43,13 @@ class MessageDAO
         ]);
     }
 
+    /**
+     * Recupère les messages de la conversation entre deux utilisateurs
+     *
+     * @param Utilisateur $utilisateur1
+     * @param Utilisateur $utilisateur2
+     * @return array
+     */
     public function getConversation(Utilisateur $utilisateur1, Utilisateur $utilisateur2): array
     {
         $sql = "SELECT * FROM message WHERE (expediteurMessage = :utilisateur1 AND destinataireMessage = :utilisateur2) OR (expediteurMessage = :utilisateur2 AND destinataireMessage = :utilisateur1) ORDER BY dateMessage ASC";
@@ -61,6 +74,12 @@ class MessageDAO
         return $messages;
     }
 
+    /**
+     * Marque un message comme lu.
+     *
+     * @param int $idMessage
+     * @return bool
+     */
     public function markAsRead(int $idMessage): bool
     {
         $sql = "UPDATE message SET estLuMessage = 1 WHERE idMessage = :idMessage";
@@ -68,6 +87,12 @@ class MessageDAO
         return $stmt->execute([':idMessage' => $idMessage]);
     }
 
+    /**
+     * Crée la liste de toutes les discutions d'un utilisateur
+     *
+     * @param Utilisateur $utilisateur
+     * @return array
+     */
     public function getListeDiscutions(Utilisateur $utilisateur): array
     {
         $sql = "SELECT * FROM message WHERE expediteurMessage = :utilisateur OR destinataireMessage = :utilisateur ORDER BY dateMessage DESC";
