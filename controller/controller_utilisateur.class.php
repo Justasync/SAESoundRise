@@ -1062,4 +1062,94 @@ class ControllerUtilisateur extends Controller
         }
     }
     
+    /**
+     * @brief Affiche la page de sécurité (modification du mot de passe).
+     * 
+     * @return void
+     */
+    public function afficherSecurite()
+    {
+        if (!isset($_SESSION['user_email'])) {
+            $this->redirectTo('home', 'afficher');
+        }
+
+        $template = $this->getTwig()->load('utilisateur_securite.html.twig');
+        echo $template->render([
+            'page' => ['title' => "Sécurité - Paaxio", 'name' => "securite"],
+            'session' => $_SESSION
+        ]);
+    }
+
+    /**
+     * @brief Traite la modification du mot de passe avec vérifications de sécurité.
+     * 
+     * Vérifie le mot de passe actuel, la force du nouveau mot de passe 
+     * (10 caractères, 1 lettre, 1 chiffre/spécial) et la correspondance du doublon.
+     * 
+     * @return void
+     */
+    public function modifierMotDePasse()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_SESSION['user_email'])) {
+            $this->redirectTo('home', 'afficher');
+        }
+
+        $uDAO = new UtilisateurDAO($this->getPDO());
+        $user = $uDAO->find($_SESSION['user_email']);
+
+        $actuel = $_POST['ancien_mdp'] ?? '';
+        $nouveau = $_POST['nouveau_mdp'] ?? '';
+        $repeter = $_POST['repeter_mdp'] ?? '';
+
+        // Vérifier le mot de passe actuel
+        if (!password_verify($actuel, $user->getMotDePasseUtilisateur())) {
+            $this->redirectTo('utilisateur', 'afficherSecurite', ['error' => 'actuel']);
+        }
+
+        // Vérifier la correspondance des deux nouveaux mots de passe
+        if ($nouveau !== $repeter) {
+            $this->redirectTo('utilisateur', 'afficherSecurite', ['error' => 'match']);
+        }
+
+        // Vérifier la force du mot de passe (Regex)
+        $regex = '/^(?=.*[a-zA-Z])(?=.*[0-9!@#$%^&*(),.?":{}|<>]).{10,}$/';
+        if (!preg_match($regex, $nouveau)) {
+            $this->redirectTo('utilisateur', 'afficherSecurite', ['error' => 'force']);
+        }
+
+        // Hachage et mise à jour
+        $user->setMotDePasseUtilisateur(password_hash($nouveau, PASSWORD_ARGON2ID));
+        
+        if ($uDAO->update($user)) {
+            $this->redirectTo('utilisateur', 'afficherSecurite', ['success' => 1]);
+        } else {
+            $this->redirectTo('utilisateur', 'afficherSecurite', ['error' => 'db']);
+        }
+    }
+
+    /**
+     * @brief Supprime définitivement le compte de l'utilisateur connecté.
+     * 
+     * Cette méthode supprime l'entrée de l'utilisateur dans la base de données,
+     * détruit sa session et redirige vers la page d'accueil.
+     * 
+     * @return void
+     */
+    public function supprimerCompte()
+    {
+        if (!isset($_SESSION['user_email'])) {
+            $this->redirectTo('home', 'afficher');
+        }
+
+        $uDAO = new UtilisateurDAO($this->getPDO());
+        
+        // Suppression en base de données
+        if ($uDAO->delete($_SESSION['user_email'])) {
+            // Destruction de la session
+            session_destroy();
+            $this->redirectTo('home', 'afficher', ['account_deleted' => 1]);
+        } else {
+            $this->redirectTo('utilisateur', 'afficherSecurite', ['error' => 'delete_fail']);
+        }
+    }
 }
