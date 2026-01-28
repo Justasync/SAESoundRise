@@ -11,7 +11,8 @@
 		<script src="tarteaucitron_init.js"></script>
 
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-		<link rel="stylesheet" href="/assets/css/signup-modal.css"> {% block stylesheets %}{% endblock %}
+		<link rel="stylesheet" href="/assets/css/signup-modal.css">
+		<link rel="stylesheet" href="/assets/css/utilisateur_gestion_profil.css">
 
 		<!-- Meta OG -->
 		<meta property="og:title" content="{{ page.title is defined ? page.title : 'Paaxio' }}"/>
@@ -457,30 +458,29 @@
 
 						<script>
 							document.addEventListener('DOMContentLoaded', function () { // Afficher la modale de connexion lorsque "Se connecter" est cliqué
-var triggerLoginModal = document.getElementById('trigger-login-modal');
-if (triggerLoginModal) {
-triggerLoginModal.addEventListener('click', function (e) {
-e.preventDefault();
-var signinModal = new bootstrap.Modal(document.getElementById('signinModal'));
-signinModal.show();
-});
-}
-// Afficher la modale d'inscription lorsque "S'inscrire" est cliqué
-var triggerSignupModal = document.getElementById('trigger-signup-modal');
-if (triggerSignupModal) {
-triggerSignupModal.addEventListener('click', function (e) {
-e.preventDefault();
-var signupModal = new bootstrap.Modal(document.getElementById('signupModal'));
-signupModal.show();
-});
-}
-});
+								var triggerLoginModal = document.getElementById('trigger-login-modal');
+								if (triggerLoginModal) {
+										t riggerLoginModal.addEventListener('click', function (e) {
+											e.preventDefault();
+											var signinModal = new bootstrap.Modal(document.getElementById('signinModal'));
+											signinModal.show();
+										});
+								}
+								// Afficher la modale d'inscription lorsque "S'inscrire" est cliqué
+								var triggerSignupModal = document.getElementById('trigger-signup-modal');
+								if (triggerSignupModal) {
+										t riggerSignupModal.addEventListener('click', function (e) {
+										e.preventDefault();
+										var signupModal = new bootstrap.Modal(document.getElementById('signupModal'));
+										signupModal.show();
+									});
+								}
+							});
 						</script>
-					</script>
-					<script src="assets/js/signup-modal.js?v=1.0b3"></script>
-					<script src="assets/js/signin-modal.js?v=1.0b4"></script>
-					<script src="assets/js/search.js"></script>
+						<script src="assets/js/signup-modal.js?v=1.0b3"></script>
+						<script src="assets/js/signin-modal.js?v=1.0b4"></script>
+						<script src="assets/js/search.js"></script>
+					</body>
 				</body>
-			</body>
 		</body>
 	</html>

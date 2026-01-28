@@ -4,63 +4,7 @@
 {% endblock %}
 
 {% block stylesheets %}
-	<style>
-		.bg-profil {
-			background-color: #FDF5F0;
-			min-height: 100vh;
-			padding-bottom: 50px;
-		}
-
-		.nav-profil-btns .btn {
-			border-radius: 25px;
-			background-color: #E68A6E;
-			color: white;
-			border: 1px solid #C46A54;
-			padding: 8px 40px;
-			font-weight: bold;
-		}
-		.btn-inactive {
-			opacity: 0.5;
-		}
-
-		.form-label {
-			font-weight: 900;
-			color: #000;
-			margin-top: 25px;
-			font-size: 1.1rem;
-		}
-
-		.custom-input {
-			background-color: #F2C4B5 !important;
-			border: 1.5px solid #888;
-			border-radius: 15px !important;
-			padding: 12px 15px;
-		}
-
-		.profile-pic-round {
-			width: 110px;
-			height: 110px;
-			border-radius: 50%;
-			overflow: hidden;
-			border: 3px solid #E68A6E;
-		}
-		.profile-pic-round img {
-			width: 100%;
-			height: 100%;
-			object-fit: cover;
-		}
-
-		.btn-save-profil {
-			background-color: #E68A6E;
-			color: white;
-			border-radius: 15px;
-			padding: 10px 60px;
-			border: none;
-			font-weight: bold;
-			font-size: 1.2rem;
-			margin-top: 40px;
-		}
-	</style>
+	<link rel="stylesheet" href="assets/css/utilisateur_gestion_profil.css">
 {% endblock %}
 
 {% block content %}
@@ -73,38 +17,96 @@
 				<button class="btn btn-inactive">Abonnement</button>
 			</div>
 
-			<form action="?controller=utilisateur&method=enregistrerProfil" method="POST" enctype="multipart/form-data">
+			<form
+				id="formulaireProfil" action="?controller=utilisateur&method=enregistrerProfil" method="POST" enctype="multipart/form-data">
 
+				<!-- Photo Profil -->
 				<label class="form-label d-block">Photo de profil</label>
 				<div class="profile-pic-round mb-3">
-					<img src="{{ user.urlPhotoUtilisateur ?: 'assets/images/profile_pictures/default.png' }}" alt="Photo">
+					<img src="/{{ user.urlPhotoUtilisateur ?: 'assets/images/profile_pictures/default.png' }}" alt="Photo">
 				</div>
-				<input type="file" name="photo" class="form-control form-control-sm mb-4" style="max-width: 300px;">
+				<input
+				type="file" name="photo" class="form-control form-control-sm mb-4" style="max-width: 300px;">
 
-				<label for="description" class="form-label">Description</label>
-				<textarea name="description" id="description" class="form-control custom-input" rows="5">{{ user.descriptionUtilisateur }}</textarea>
-
-				<label for="pseudo" class="form-label">Nom d'utilisateur</label>
-				<input type="text" id="pseudo" name="pseudo" class="form-control custom-input" value="{{ user.pseudoUtilisateur }}">
-
-				<label for="email" class="form-label">Adresse e-mail</label>
-				<input type="email" id="email" name="email" class="form-control custom-input" value="{{ user.emailUtilisateur }}">
-
-				<label class="form-label">Date de naissance</label>
-				<div class="row g-2">
-					<div class="col-3">
-						<input type="text" name="day" class="form-control custom-input text-center" placeholder="Jour" value="{{ dateParts.j }}">
-					</div>
-					<div class="col-5">
-						<input type="text" name="month" class="form-control custom-input text-center" placeholder="Mois" value="{{ dateParts.m }}">
-					</div>
-					<div class="col-4">
-						<input type="text" name="year" class="form-control custom-input text-center" placeholder="Année" value="{{ dateParts.a }}">
-					</div>
+				<!-- Description -->
+				<div class="mb-3">
+					<label for="description" class="form-label">Description</label>
+					<textarea name="description" id="description" class="form-control custom-input" rows="4">{{ user.descriptionUtilisateur }}</textarea>
 				</div>
 
-				<button type="submit" class="btn btn-save-profil">Enregistrer</button>
+				<!-- Nom Complet -->
+				<div class="mb-3">
+					<label for="nom" class="form-label">Nom complet</label>
+					<input type="text" id="nom" name="nom" class="form-control custom-input" value="{{ user.nomUtilisateur }}" required>
+				</div>
+
+				<!-- Pseudo -->
+				<div class="mb-3">
+					<label for="pseudo" class="form-label">Nom d'utilisateur</label>
+					<input type="text" id="pseudo" name="pseudo" class="form-control custom-input" value="{{ user.pseudoUtilisateur }}" required minlength="3">
+				</div>
+
+				<!--Mail-->
+				<div class="mb-3">
+					<label for="email" class="form-label">Adresse e-mail</label>
+					<input type="email" id="email" name="email" class="form-control custom-input" value="{{ user.emailUtilisateur }}" required>
+				</div>
+
+				{% set role = user.roleUtilisateur.typeRole|lower %}
+				{% if role == 'artiste' or role == 'producteur' %}
+					<div class="mb-3">
+						<label for="genre" class="form-label">Genre musical</label>
+						<select name="genre_id" id="genre" class="form-select custom-input" required>
+							<option value="" disabled>Choisissez un genre</option>
+							{% for genre in genres %}
+								<option value="{{ genre.idGenre }}" {{ (user.genreUtilisateur and user.genreUtilisateur.idGenre == genre.idGenre) ? 'selected' : '' }}>
+									{{ genre.nomGenre }}
+								</option>
+							{% endfor %}
+						</select>
+					</div>
+				{% endif %}
+
+				<!-- Date de naissance -->
+				<div class="mb-3">
+					<label for="birthdate" class="form-label">Date de naissance</label>
+					<input type="date" 
+						id="birthdate" 
+						name="birthdate" 
+						class="form-control custom-input" 
+						value="{{ dateNaissance }}"
+						required>
+					</div>
+
+				<!-- Enregistrer -->
+				<div class="text-start mt-4">
+					<button type="button" id="boutonOuvrirModal" class="btn btn-save-profil">Enregistrer</button>
+				</div>
 			</form>
 		</div>
 	</div>
+
+	<!-- Modal de Confirmation -->
+	<div class="modal fade" id="modalConfirmation" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content custom-popup-content">
+				<div class="modal-body text-center p-5">
+					<h2 class="fw-bold mb-3" style="color: #333;">Enregistrer</h2>
+					<p class="mb-5" style="font-size: 1.1rem; color: #555;">
+						Vous êtes sûr de vouloir modifier
+						<br>
+						vos informations?
+					</p>
+					<div class="d-flex justify-content-around">
+						<button type="button" class="btn btn-popup-annuler" data-bs-dismiss="modal">Annuler</button>
+						<button type="button" class="btn btn-popup-enregistrer" id="boutonConfirmer">Enregistrer</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block script %}
+	<script src="assets/js/utilisateur_gestion_profil.js"></script>
 {% endblock %}

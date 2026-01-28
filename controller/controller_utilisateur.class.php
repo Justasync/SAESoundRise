@@ -950,8 +950,7 @@ class ControllerUtilisateur extends Controller
      * 
      * @return void
      */
-    public function afficherGestionProfil()
-    {
+    public function afficherGestionProfil(){
         // Vérifier si l'utilisateur est connecté
         if (!isset($_SESSION['user_email'])) {
             $this->redirectTo('home', 'afficher');
@@ -960,15 +959,10 @@ class ControllerUtilisateur extends Controller
         $uDAO = new UtilisateurDAO($this->getPDO());
         $user = $uDAO->find($_SESSION['user_email']);
 
-        // Préparation de la date de naissance pour les trois champs du formulaire
-        $dateParts = ['j' => '', 'm' => '', 'a' => ''];
+        // Préparation de la date pour l'input HTML5 (format YYYY-MM-DD)
+        $dateNaissance = "";
         if ($user && $user->getDateDeNaissanceUtilisateur()) {
-            $dt = $user->getDateDeNaissanceUtilisateur();
-            $dateParts = [
-                'j' => $dt->format('d'),
-                'm' => $dt->format('m'),
-                'a' => $dt->format('Y')
-            ];
+            $dateNaissance = $user->getDateDeNaissanceUtilisateur()->format('Y-m-d');
         }
 
         $template = $this->getTwig()->load('utilisateur_gestion_profil.html.twig');
@@ -978,7 +972,7 @@ class ControllerUtilisateur extends Controller
                 'name' => "gestion_profil"
             ],
             'user' => $user,
-            'dateParts' => $dateParts,
+            'dateNaissance' => $dateNaissance,
             'session' => $_SESSION
         ]);
     }
@@ -987,8 +981,8 @@ class ControllerUtilisateur extends Controller
      * @brief Traite et enregistre les modifications du profil utilisateur.
      * 
      * Cette méthode récupère les données du formulaire POST, gère le téléversement
-     * de la nouvelle photo de profil, reconstruit la date de naissance et met à jour
-     * l'utilisateur dans la base de datos via le DAO.
+     * de la nouvelle photo de profil, traite la date de naissance unique et met à jour
+     * l'utilisateur dans la base de données via le DAO.
      * 
      * @return void
      */
@@ -1010,16 +1004,26 @@ class ControllerUtilisateur extends Controller
         $user->setPseudoUtilisateur($_POST['pseudo'] ?? $user->getPseudoUtilisateur());
         $user->setDescriptionUtilisateur($_POST['description'] ?? $user->getDescriptionUtilisateur());
         
-        // Gestion de la date de naissance (reconstruction à partir de J/M/A)
-        $day = $_POST['day'] ?? '';
-        $month = $_POST['month'] ?? '';
-        $year = $_POST['year'] ?? '';
-        if (!empty($day) && !empty($month) && !empty($year)) {
+        // Gestion de la date de naissance
+        $birthdate = $_POST['birthdate'] ?? '';
+        if (!empty($birthdate)) {
             try {
-                $dateStr = sprintf('%04d-%02d-%02d', $year, $month, $day);
-                $user->setDateDeNaissanceUtilisateur(new DateTime($dateStr));
+                $dateObj = new DateTime($birthdate);
+                // Vérification de sécurité : année supérieure à 1920
+                if ($dateObj->format('Y') > 1920) {
+                    $user->setDateDeNaissanceUtilisateur($dateObj);
+                }
             } catch (Exception $e) {
-                // En cas de date invalide, on garde l'ancienne ou on gère l'erreur
+                // En cas d'erreur de format, on ne change rien
+            }
+        }
+
+        // Gestion du genre
+        if (isset($_POST['genre_id'])) {
+            $genreDAO = new GenreDAO($this->getPDO());
+            $genre = $genreDAO->find((int)$_POST['genre_id']);
+            if ($genre) {
+                $user->setGenreUtilisateur($genre);
             }
         }
 
@@ -1027,7 +1031,6 @@ class ControllerUtilisateur extends Controller
         if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
             $uploadDir = 'assets/images/profile_pictures/';
             
-            // Créer le dossier s'il n'existe pas
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
@@ -1037,8 +1040,8 @@ class ControllerUtilisateur extends Controller
             $cheminCible = $uploadDir . $nomFichier;
 
             if (move_uploaded_file($_FILES['photo']['tmp_name'], $cheminCible)) {
-                // Supprimer l'ancienne photo si ce n'est pas la photo par défaut
                 $anciennePhoto = $user->geturlPhotoUtilisateur();
+                // Supprimer l'ancienne photo si elle existe y no es la default
                 if ($anciennePhoto && strpos($anciennePhoto, 'default.png') === false && file_exists($anciennePhoto)) {
                     @unlink($anciennePhoto);
                 }
@@ -1046,15 +1049,15 @@ class ControllerUtilisateur extends Controller
             }
         }
 
-        // Persistance des modifications
+        //Persistance des modifications
         if ($uDAO->update($user)) {
-            // Mettre à jour la session si nécessaire
+            // Mettre à jour la session
             $_SESSION['user_pseudo'] = $user->getPseudoUtilisateur();
             
             // Redirection avec message de succès
             $this->redirectTo('utilisateur', 'afficherGestionProfil', ['success' => 1]);
         } else {
-            // Redirection con mensaje de error
+            // Redirection avec message d'erreur
             $this->redirectTo('utilisateur', 'afficherGestionProfil', ['error' => 1]);
         }
     }
