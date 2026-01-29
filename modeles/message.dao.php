@@ -44,34 +44,35 @@ class MessageDAO
     }
 
     /**
-     * Recupère les messages de la conversation entre deux utilisateurs
-     *
-     * @param Utilisateur $utilisateur1
-     * @param Utilisateur $utilisateur2
-     * @return array
+     * Récupère la liste des utilisateurs avec qui l'utilisateur courant a discuté (Inbox).
+     * @param string $myEmail Email de l'utilisateur connecté
+     * @return array Tableau d'objets Utilisateur (les contacts)
      */
-    public function getConversation(Utilisateur $utilisateur1, Utilisateur $utilisateur2): array
+    public function getConversations(string $myEmail): array
     {
-        $sql = "SELECT * FROM message WHERE (expediteurMessage = :utilisateur1 AND destinataireMessage = :utilisateur2) OR (expediteurMessage = :utilisateur2 AND destinataireMessage = :utilisateur1) ORDER BY dateMessage ASC";
+        $sql = "
+            SELECT DISTINCT u.*
+            FROM utilisateur u
+            JOIN message m ON (u.emailUtilisateur = m.expediteurMessage OR u.emailUtilisateur = m.destinataireMessage)
+            WHERE (m.expediteurMessage = :myEmail OR m.destinataireMessage = :myEmail)
+            AND u.emailUtilisateur != :myEmail
+        ";
+        
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([
-            ':utilisateur1' => $utilisateur1->getEmailUtilisateur(),
-            ':utilisateur2' => $utilisateur2->getEmailUtilisateur()
-        ]);
-
-        $messages = [];
+        $stmt->execute([':myEmail' => $myEmail]);
+        
+        $contacts = [];
+        // On suppose que tu as une classe UtilisateurDAO ou que tu hydrates manuellement
+        // Ici, je fais une hydration simple basée sur ta classe Utilisateur
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $message = new Message(
-                (int)$row['idMessage'],
-                $row['contenuMessage'],
-                new DateTime($row['dateMessage']),
-                (bool)$row['estLuMessage'],
-                new Utilisateur($row['expediteurMessage']),
-                new Utilisateur($row['destinataireMessage'])
-            );
-            $messages[] = $message;
+            // Note: Idéalement, utilise ton UtilisateurDAO pour créer l'objet proprement
+            $user = new Utilisateur($row['emailUtilisateur']);
+            $user->setNomUtilisateur($row['nomUtilisateur']);
+            $user->setPseudoUtilisateur($row['pseudoUtilisateur']);
+            $user->setUrlPhotoUtilisateur($row['urlPhotoUtilisateur']);
+            $contacts[] = $user;
         }
-        return $messages;
+        return $contacts;
     }
 
     /**
@@ -88,28 +89,35 @@ class MessageDAO
     }
 
     /**
-     * Crée la liste de toutes les discutions d'un utilisateur
-     *
-     * @param Utilisateur $utilisateur
-     * @return array
+     * Récupère l'historique de discussion entre deux personnes.
+     * @param string $myEmail
+     * @param string $contactEmail
+     * @return array Tableau d'objets Message
      */
-    public function getListeDiscutions(Utilisateur $utilisateur): array
+    public function getMessagesConversation(string $myEmail, string $contactEmail): array
     {
-        $sql = "SELECT * FROM message WHERE expediteurMessage = :utilisateur OR destinataireMessage = :utilisateur ORDER BY dateMessage DESC";
+        $sql = "SELECT * FROM message 
+                WHERE (expediteurMessage = :me AND destinataireMessage = :other)
+                   OR (expediteurMessage = :other AND destinataireMessage = :me)
+                ORDER BY dateMessage ASC"; // ASC pour lire du plus vieux au plus récent (flux de chat)
+
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':utilisateur' => $utilisateur->getEmailUtilisateur()]);
+        $stmt->execute([':me' => $myEmail, ':other' => $contactEmail]);
 
         $messages = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $message = new Message(
+            // On recrée les objets Utilisateur juste avec l'email pour l'instant
+            $expediteur = new Utilisateur($row['expediteurMessage']);
+            $destinataire = new Utilisateur($row['destinataireMessage']);
+
+            $messages[] = new Message(
                 (int)$row['idMessage'],
                 $row['contenuMessage'],
                 new DateTime($row['dateMessage']),
                 (bool)$row['estLuMessage'],
-                new Utilisateur($row['expediteurMessage']),
-                new Utilisateur($row['destinataireMessage'])
+                $expediteur,
+                $destinataire
             );
-            $messages[] = $message;
         }
         return $messages;
     }
