@@ -994,7 +994,8 @@ class ControllerUtilisateur extends Controller
         }
 
         $uDAO = new UtilisateurDAO($this->getPDO());
-        $user = $uDAO->find($_SESSION['user_email']);
+        $emailActuel = $_SESSION['user_email']; //Pour récupérer l'ancien email
+        $user = $uDAO->find($emailActuel);
 
         if (!$user) {
             $this->redirectTo('home', 'afficher');
@@ -1003,6 +1004,8 @@ class ControllerUtilisateur extends Controller
         // Mise à jour des champs textuels
         $user->setPseudoUtilisateur($_POST['pseudo'] ?? $user->getPseudoUtilisateur());
         $user->setDescriptionUtilisateur($_POST['description'] ?? $user->getDescriptionUtilisateur());
+        $user->setNomUtilisateur($_POST['nom'] ?? $user->getNomUtilisateur());
+        $user->setEmailUtilisateur($_POST['email'] ?? $user->getEmailUtilisateur());
         
         // Gestion de la date de naissance
         $birthdate = $_POST['birthdate'] ?? '';
@@ -1050,15 +1053,15 @@ class ControllerUtilisateur extends Controller
         }
 
         //Persistance des modifications
-        if ($uDAO->update($user)) {
+        if ($uDAO->update($user, $emailActuel)) {
             // Mettre à jour la session
             $_SESSION['user_pseudo'] = $user->getPseudoUtilisateur();
             
             // Redirection avec message de succès
+            $_SESSION['user_email'] = $user->getEmailUtilisateur();
+
+            // Redirection avec message de succès
             $this->redirectTo('utilisateur', 'afficherGestionProfil', ['success' => 1]);
-        } else {
-            // Redirection avec message d'erreur
-            $this->redirectTo('utilisateur', 'afficherGestionProfil', ['error' => 1]);
         }
     }
     
@@ -1080,11 +1083,12 @@ class ControllerUtilisateur extends Controller
         ]);
     }
 
-    /**
+/**
      * @brief Traite la modification du mot de passe avec vérifications de sécurité.
      * 
-     * Vérifie le mot de passe actuel, la force du nouveau mot de passe 
-     * (10 caractères, 1 lettre, 1 chiffre/spécial) et la correspondance du doublon.
+     * Cette méthode vérifie le mot de passe actuel, valide la force du nouveau,
+     * met à jour la base de données et déconnecte l'utilisateur pour forcer
+     * une nouvelle connexion sécurisée.
      * 
      * @return void
      */
@@ -1096,6 +1100,11 @@ class ControllerUtilisateur extends Controller
 
         $uDAO = new UtilisateurDAO($this->getPDO());
         $user = $uDAO->find($_SESSION['user_email']);
+
+        // Clause de garde : vérifier si l'utilisateur existe toujours en base
+        if (!$user) {
+            $this->redirectTo('home', 'afficher');
+        }
 
         $actuel = $_POST['ancien_mdp'] ?? '';
         $nouveau = $_POST['nouveau_mdp'] ?? '';
@@ -1117,11 +1126,13 @@ class ControllerUtilisateur extends Controller
             $this->redirectTo('utilisateur', 'afficherSecurite', ['error' => 'force']);
         }
 
-        // Hachage et mise à jour
+        // Hachage avec ARGON2ID et mise à jour
         $user->setMotDePasseUtilisateur(password_hash($nouveau, PASSWORD_ARGON2ID));
         
         if ($uDAO->update($user)) {
-            $this->redirectTo('utilisateur', 'afficherSecurite', ['success' => 1]);
+            // Déconnexion forcée après changement réussi pour obliger la reconnexion
+            session_destroy();
+            $this->redirectTo('home', 'afficher', ['success_psw' => 1]);
         } else {
             $this->redirectTo('utilisateur', 'afficherSecurite', ['error' => 'db']);
         }

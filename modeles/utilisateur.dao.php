@@ -292,14 +292,36 @@ class UtilisateurDAO
         ]);
     }
 
-    /**
+/**
      * Met à jour un utilisateur dans la base de données.
-     * @param Utilisateur $utilisateur L'utilisateur à mettre à jour.
+     * @param Utilisateur $utilisateur L'utilisateur avec les nouvelles données.
+     * @param string $emailActuel L'email actuel stocké en session (pour la clause WHERE).
      * @return bool Vrai si la mise à jour a réussi, faux sinon.
      */
-    public function update(Utilisateur $utilisateur): bool
+    public function update(Utilisateur $utilisateur, string $emailActuel): bool
     {
-        $sql = "UPDATE utilisateur SET pseudoUtilisateur = :pseudoUtilisateur, motDePasseUtilisateur = :motDePasseUtilisateur, dateDeNaissanceUtilisateur = :dateDeNaissanceUtilisateur, dateInscriptionUtilisateur = :dateInscriptionUtilisateur, statutUtilisateur = :statutUtilisateur, estAbonnee = :estAbonnee, statutAbonnement = :statutAbonnement, dateDebutAbonnement = :dateDebutAbonnement, dateFinAbonnement = :dateFinAbonnement, pointsDeRenommeeArtiste = :pointsDeRenommeeArtiste, nbAbonnesArtiste = :nbAbonnesArtiste, urlPhotoUtilisateur = :urlPhotoUtilisateur, roleUtilisateur = :roleUtilisateur, descriptionUtilisateur = :descriptionUtilisateur, siteWebUtilisateur = :siteWebUtilisateur, genreUtilisateur = :genreUtilisateur, nomUtilisateur = :nomUtilisateur WHERE emailUtilisateur = :emailUtilisateur";
+        // Changement ici : on cherche par :emailActuel (l'ancien email)
+        $sql = "UPDATE utilisateur SET 
+                    emailUtilisateur = :emailUtilisateur, 
+                    pseudoUtilisateur = :pseudoUtilisateur, 
+                    motDePasseUtilisateur = :motDePasseUtilisateur, 
+                    dateDeNaissanceUtilisateur = :dateDeNaissanceUtilisateur, 
+                    dateInscriptionUtilisateur = :dateInscriptionUtilisateur, 
+                    statutUtilisateur = :statutUtilisateur, 
+                    estAbonnee = :estAbonnee, 
+                    statutAbonnement = :statutAbonnement, 
+                    dateDebutAbonnement = :dateDebutAbonnement, 
+                    dateFinAbonnement = :dateFinAbonnement, 
+                    pointsDeRenommeeArtiste = :pointsDeRenommeeArtiste, 
+                    nbAbonnesArtiste = :nbAbonnesArtiste, 
+                    urlPhotoUtilisateur = :urlPhotoUtilisateur, 
+                    roleUtilisateur = :roleUtilisateur, 
+                    descriptionUtilisateur = :descriptionUtilisateur, 
+                    siteWebUtilisateur = :siteWebUtilisateur, 
+                    genreUtilisateur = :genreUtilisateur, 
+                    nomUtilisateur = :nomUtilisateur 
+                WHERE emailUtilisateur = :emailActuel";
+
         $stmt = $this->pdo->prepare($sql);
 
         $dateDeNaissance = $utilisateur->getDateDeNaissanceUtilisateur()?->format('Y-m-d');
@@ -330,9 +352,9 @@ class UtilisateurDAO
             ':siteWebUtilisateur' => $utilisateur->getSiteWebUtilisateur(),
             ':genreUtilisateur' => $genreId,
             ':nomUtilisateur' => $utilisateur->getNomUtilisateur(),
+            ':emailActuel' => $emailActuel,
         ]);
     }
-
     /**
      * Supprime un utilisateur de la base de données.
      * @param string|null $emailUtilisateur L'adresse email de l'utilisateur à supprimer.
