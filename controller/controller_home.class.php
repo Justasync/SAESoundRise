@@ -328,4 +328,17 @@ class ControllerHome extends Controller
             ],
         ));
     }
+
+    /** @brief Affiche la page de consentement à la diffusion et à la republication. */
+    public function afficherConsentement()
+    {
+        $template = $this->getTwig()->load('consentement.html.twig');
+        echo $template->render(array(
+            "page" => [
+                'title' => "Consentement à la diffusion et à la republication",
+                'name' => "consentement",
+                'description' => "Consentement à la diffusion et à la republication de Paaxio"
+            ],
+        ));
+    }
 }

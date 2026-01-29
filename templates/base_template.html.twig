@@ -243,6 +243,15 @@
 														<label for="artistePasswordRepeat" class="form-label">Réinsérez votre mot de passe</label>
 														<input type="password" class="form-control" id="artistePasswordRepeat" name="password_repeat" required minlength="8" maxlength="128" autocomplete="new-password" placeholder="••••••••" title="Répétez le même mot de passe.">
 													</div>
+
+													<!-- Case de consentement -->
+													<div class="col-md-12">
+														<div class="form-check">
+															<input class="form-check-input" type="checkbox" id="artisteConsentement" name="consentement" required>
+															<label class="form-check-label" for="artisteConsentement">
+																J'ai lu et j'accepte le <a href="/?controller=home&method=afficherConsentement" target="_blank" rel="noopener">consentement à la diffusion et à la republication</a>.
+															</label>
+														</div>
 												</div>
 											</form>
 

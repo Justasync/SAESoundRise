@@ -100,6 +100,21 @@ document.addEventListener("DOMContentLoaded", () => {
   /** @brief Longueur maximale de l'URL du site web (VARCHAR(255) dans la BDD) */
   const WEBSITE_MAX_LENGTH = 255;
 
+  /**@brief Gestion du consentement à la diffusion et à la republication */
+  let consentChecked = false;
+
+  /**
+   * @brief Met à jour l'état du bouton "Valider" selon le consentement
+   */
+  const updateConsentButtonState = () => {
+    if (currentStep !== 2) {
+      nextButton.disabled = false;
+      return;
+    }
+
+    nextButton.disabled = !consentChecked;
+  };
+
   /**
    * @brief Valide la sécurité d'un mot de passe
    * 
@@ -322,6 +337,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (step !== 2) {
+      consentChecked = false;
+      updateConsentButtonState();
       resetStatusMessages();
     }
 
@@ -548,6 +565,14 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
+  /** @brief Gestion du consentement à la diffusion et à la republication */
+  modalElement.addEventListener("change", (event) => {
+    if (event.target.name === "consent") {
+      consentChecked = event.target.checked;
+      updateConsentButtonState();
+    }
+  });
+
   /**
    * @brief Gestion du bouton "Continuer", "Valider" ou "Fermer"
    * 
@@ -614,5 +639,6 @@ document.addEventListener("DOMContentLoaded", () => {
     errorElement?.classList.add("d-none");
     resetStatusMessages();
     showStep(1);
+    consentChecked = false;
   });
 });
