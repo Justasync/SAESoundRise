@@ -4,6 +4,7 @@
 
 
 {% block stylesheets %}
+    <link rel="stylesheet" href="/assets/css/profil_global.css">
     <link rel="stylesheet" href="/assets/css/utilisateur_securite.css">
 {% endblock %}
 
@@ -14,8 +15,8 @@
         <!-- Onglets -->
         <div class="nav-profil-btns d-flex justify-content-between pt-5 mb-5">
             <a href="?controller=utilisateur&method=afficherGestionProfil" class="btn btn-inactive">Compte</a>
-            <button class="btn">Sécurité</button>
-            <button class="btn btn-inactive">Abonnement</button>
+            <a href="#" class="btn">Sécurité</a>
+            <a href="?controller=utilisateur&method=afficherAbonnement" class="btn btn-inactive">Abonnement</a>
         </div>
 
         <h2 class="fw-bold mb-4">Modifier votre mot de passe</h2>
