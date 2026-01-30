@@ -1163,4 +1163,30 @@ class ControllerUtilisateur extends Controller
             $this->redirectTo('utilisateur', 'afficherSecurite', ['error' => 'delete_fail']);
         }
     }
+    
+    /**
+     * @brief Affiche la page de gestion de l'abonnement.
+     * 
+     * Cette méthode permet à l'utilisateur de voir son abonnement actuel
+     * (Classique ou Premium) et les options de renouvellement ou de changement.
+     * 
+     * @return void
+     */
+    public function afficherAbonnement()
+    {
+        if (!isset($_SESSION['user_email'])) {
+            $this->redirectTo('home', 'afficher');
+        }
+
+        $uDAO = new UtilisateurDAO($this->getPDO());
+        $user = $uDAO->find($_SESSION['user_email']);
+
+        $template = $this->getTwig()->load('utilisateur_abonnement.html.twig');
+        echo $template->render([
+            'page' => ['title' => "Abonnement - Paaxio", 'name' => "abonnement"],
+            'user' => $user,
+            'session' => $_SESSION
+        ]);
+    }
+    
 }

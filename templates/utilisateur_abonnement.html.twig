@@ -1,0 +1,140 @@
+{% extends 'base_template.html.twig' %}
+
+{% block title %}Abonnement - Paaxio{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="/assets/css/profil_global.css">
+    <link rel="stylesheet" href="/assets/css/utilisateur_abonnement.css">
+{% endblock %}
+
+{% block content %}
+<div class="bg-profil">
+    <div class="container" style="max-width: 900px;">
+        
+        <!-- Onglets de navigation -->
+        <div class="nav-profil-btns d-flex justify-content-between pt-5 mb-5">
+            <a href="?controller=utilisateur&method=afficherGestionProfil" class="btn btn-inactive">Compte</a>
+            <a href="?controller=utilisateur&method=afficherSecurite" class="btn btn-inactive">Sécurité</a>
+            <a href="#" class="btn">Abonnement</a>
+        </div>
+
+        <!-- Carte Abonnement Actuel -->
+        <div class="subscription-card mb-5">
+            <div class="subscription-header">Abonnement actuel</div>
+            <div class="subscription-body d-flex justify-content-between align-items-center">
+                <div class="subscription-info">
+                    <h2 class="fw-bold">Classique</h2>
+                    <p>. Inclut des publicités</p>
+                    <div class="subscription-price">
+                        00,00 € <br>
+                        <span>par mois</span>
+                    </div>
+                </div>
+                <button class="btn btn-subscription-action">Sélectionner</button>
+            </div>
+        </div>
+
+        <!-- Carte Abonnement Disponible -->
+        <div class="subscription-card">
+            <div class="subscription-header">Abonnement disponible</div>
+            <div class="subscription-body d-flex justify-content-between align-items-center">
+                <div class="subscription-info">
+                    <h2 class="fw-bold">Premium</h2>
+                    <p>. Sans publicités</p>
+                    <p>. Annulez à tout moment</p>
+                    <div class="subscription-price">
+                        XX,XX € <br>
+                        <span>par mois</span>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-subscription-action" data-bs-toggle="modal" data-bs-target="#modalPaiement">
+                    Renouveler <br> maintenant
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Paiement-->
+<div class="modal fade" id="modalPaiement" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content custom-payment-content">
+            <div class="modal-header custom-payment-header justify-content-center">
+                <h2 class="fw-bold text-white mb-0">Paiement</h2>
+            </div>
+            <div class="modal-body p-5">
+                <div class="mb-4">
+                    <h3 class="fw-bold">Premium</h3>
+                    <p class="mb-0">. Sans des publicités</p>
+                    <p class="mb-0">. Annulez à tout moment</p>
+                </div>
+
+                <form id="formPaiement">
+                    <div class="mb-4">
+                        <h4 class="fw-bold">Coordonnées de paiement</h4>
+                        <!-- Numéro de carte avec ID et Maxlength -->
+                        <input type="text" id="card_number" class="form-control payment-input mb-2" 
+                            placeholder="0000 0000 0000 0000" maxlength="19" required>
+                        
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <!-- Date d'expiration avec ID -->
+                                <input type="text" id="card_expiry" class="form-control payment-input text-center" 
+                                    placeholder="MM/AA" maxlength="5" required>
+                            </div>
+                            <div class="col-6">
+                                <!-- CVV avec ID -->
+                                <input type="text" id="card_cvv" class="form-control payment-input text-center" 
+                                    placeholder="CVV" maxlength="3" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h4 class="fw-bold">Titulaire de la carte</h4>
+                        <input type="text" id="card_name" class="form-control payment-input" 
+                            placeholder="Nom exact du titulaire" required>
+                    </div>
+
+                    <!-- ZONE D'ERREUR -->
+                    <div id="payment-errors" class="alert alert-danger small py-2" style="display:none; border-radius: 10px;"></div>
+
+                    <div class="d-flex justify-content-between align-items-center mt-4">
+                        <div class="price-tag">
+                            <span class="fw-bold fs-3">XX,XX €</span><br>
+                            <span>par mois</span>
+                        </div>
+                        <div class="d-flex gap-3">
+                            <button type="button" class="btn btn-payment-secondary" data-bs-dismiss="modal">Précédent</button>
+                            <button type="button" class="btn btn-payment-primary" id="btnValiderPaiement">Mettre à jour l'abonnement</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Félicitations-->
+<div class="modal fade" id="modalFelicitation" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content custom-felicitation-content">
+            <div class="modal-header custom-felicitation-header justify-content-center">
+                <h2 class="fw-bold text-white mb-0">Félicitations !</h2>
+            </div>
+            <div class="modal-body text-center p-5">
+                <p class="fw-bold mb-5" style="font-size: 1.3rem; color: #000; line-height: 1.4;">
+                    Vous avez souscrit à l'abonnement premium, <br>
+                    profitez-en sans limites, merci de votre <br>
+                    confiance.
+                </p>
+                <button type="button" class="btn btn-continuer" data-bs-dismiss="modal">Continuer</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+    <script src="/assets/js/utilisateur_abonnement.js"></script>
+{% endblock %}
