@@ -28,7 +28,7 @@ class MessageDAO
      */
     public function create(Message $message): bool
     {
-        $sql = "INSERT INTO message (dateMessage, contenuMessage, estLuMessage, expediteurMessage, destinataireMessage) VALUES (:dateMessage, :contenuMessage, :estLuMessage, :expediteurMessage, :destinataireMessage)";
+        $sql = "INSERT INTO message (dateMessage, contenuMessage, estLuMessage, emailExpediteur, emailDestinataire) VALUES (:dateMessage, :contenuMessage, :estLuMessage, :emailExpediteur, :emailDestinataire)";
         $stmt = $this->pdo->prepare($sql);
         $dateEnvoi = $message->getDateEnvoi()?->format('Y-m-d H:i:s');
         $emailExpediteur = $message->getEmailExpediteur()?->getEmailUtilisateur();
@@ -38,8 +38,8 @@ class MessageDAO
             ':dateMessage' => $dateEnvoi ?? date('Y-m-d H:i:s'),
             ':contenuMessage' => $message->getContenu(),
             ':estLuMessage' => $message->getEstLu() ? 1 : 0,
-            ':expediteurMessage' => $emailExpediteur,
-            ':destinataireMessage' => $emailDestinataire
+            ':emailExpediteur' => $emailExpediteur,
+            ':emailDestinataire' => $emailDestinataire
         ]);
     }
 
@@ -53,8 +53,8 @@ class MessageDAO
         $sql = "
             SELECT DISTINCT u.*
             FROM utilisateur u
-            JOIN message m ON (u.emailUtilisateur = m.expediteurMessage OR u.emailUtilisateur = m.destinataireMessage)
-            WHERE (m.expediteurMessage = :myEmail OR m.destinataireMessage = :myEmail)
+            JOIN message m ON (u.emailUtilisateur = m.emailExpediteur OR u.emailUtilisateur = m.emailDestinataire)
+            WHERE (m.emailExpediteur = :myEmail OR m.emailDestinataire = :myEmail)
             AND u.emailUtilisateur != :myEmail
         ";
         
@@ -97,8 +97,8 @@ class MessageDAO
     public function getMessagesConversation(string $myEmail, string $contactEmail): array
     {
         $sql = "SELECT * FROM message 
-                WHERE (expediteurMessage = :me AND destinataireMessage = :other)
-                   OR (expediteurMessage = :other AND destinataireMessage = :me)
+                WHERE (emailExpediteur = :me AND emailDestinataire = :other)
+                   OR (emailExpediteur = :other AND emailDestinataire = :me)
                 ORDER BY dateMessage ASC"; // ASC pour lire du plus vieux au plus récent (flux de chat)
 
         $stmt = $this->pdo->prepare($sql);
@@ -107,8 +107,8 @@ class MessageDAO
         $messages = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             // On recrée les objets Utilisateur juste avec l'email pour l'instant
-            $expediteur = new Utilisateur($row['expediteurMessage']);
-            $destinataire = new Utilisateur($row['destinataireMessage']);
+            $expediteur = new Utilisateur($row['emailExpediteur']);
+            $destinataire = new Utilisateur($row['emailDestinataire']);
 
             $messages[] = new Message(
                 (int)$row['idMessage'],

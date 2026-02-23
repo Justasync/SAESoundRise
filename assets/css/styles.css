@@ -6,3 +6,165 @@
     font-optical-sizing: auto;
     font-style: normal;
 }
+
+/* =========================================
+   MESSAGERIE - CHAT PAAXIO
+   ========================================= */
+
+:root {
+    --paaxio-brand: #000000; /* Couleur principale de Paaxio (noir/sombre) */
+    --paaxio-brand-hover: #333333;
+    --chat-bg: #f9f9fa;
+    --chat-border: #eaeaea;
+    --msg-received-bg: #e4e6eb;
+    --msg-received-text: #050505;
+    --msg-sent-bg: var(--paaxio-brand);
+    --msg-sent-text: #ffffff;
+}
+
+.chat-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    height: 100%;
+}
+
+.chat-container {
+    width: 100%;
+    max-width: 800px;
+    background-color: #ffffff;
+    border: 1px solid var(--chat-border);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    height: 75vh;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+}
+
+.chat-header {
+    padding: 16px 24px;
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--chat-border);
+    display: flex;
+    align-items: center;
+    z-index: 10;
+}
+
+.chat-header img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    margin-right: 16px;
+    object-fit: cover;
+    border: 2px solid var(--chat-border);
+}
+
+.chat-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background-color: var(--chat-bg);
+}
+
+.message-bubble {
+    max-width: 70%;
+    padding: 12px 18px;
+    border-radius: 20px;
+    line-height: 1.5;
+    position: relative;
+    word-wrap: break-word;
+    font-size: 0.95rem;
+}
+
+/* Message reçu (Contact) - Aligné à gauche */
+.message-received {
+    background-color: var(--msg-received-bg);
+    color: var(--msg-received-text);
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+}
+
+/* Message envoyé (Toi) - Aligné à droite */
+.message-sent {
+    background-color: var(--msg-sent-bg);
+    color: var(--msg-sent-text);
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+}
+
+.message-time {
+    font-size: 0.7rem;
+    opacity: 0.7;
+    margin-top: 6px;
+    text-align: right;
+    display: block;
+}
+
+.message-received .message-time {
+    text-align: left;
+}
+
+.chat-empty-state {
+    text-align: center;
+    color: #888;
+    margin: auto;
+    font-weight: 500;
+}
+
+.chat-input-area {
+    padding: 16px 24px;
+    background-color: #ffffff;
+    border-top: 1px solid var(--chat-border);
+}
+
+.chat-input-form {
+    display: flex;
+    gap: 12px;
+}
+
+.chat-input {
+    flex: 1;
+    padding: 14px 24px;
+    background-color: #f0f2f5;
+    border: 1px solid transparent;
+    border-radius: 30px;
+    outline: none;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.chat-input:focus {
+    background-color: #ffffff;
+    border-color: var(--paaxio-brand);
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+.chat-send-btn {
+    padding: 12px 28px;
+    background-color: var(--paaxio-brand);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: background-color 0.2s ease, transform 0.1s;
+}
+
+.chat-send-btn:hover {
+    background-color: var(--paaxio-brand-hover);
+}
+
+.chat-send-btn:active {
+    transform: scale(0.96);
+}
