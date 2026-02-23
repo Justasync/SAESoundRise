@@ -57,13 +57,308 @@ class ControllerAdmin extends Controller
             if ($_GET['success'] == 2) $successMessage = "L'utilisateur a été modifié avec succès !";
         }
 
+        $restoreSuccess = null;
+        $restoreError = null;
+        if (isset($_GET['restore']) && $_GET['restore'] == 1) {
+            $restoreSuccess = "La base de données a été restaurée avec succès.";
+        }
+        if (!empty($_GET['restore_error'])) {
+            $restoreError = $_GET['restore_error'];
+        }
+
+        $availableBackups = $this->getAvailableBackups();
+
         $template = $this->getTwig()->load('admin_dashboard.html.twig');
         echo $template->render([
             'page' => ['title' => "Admin Dashboard", 'name' => "admin"],
             'session' => $_SESSION,
             'utilisateurs' => $utilisateurs,
-            'success' => $successMessage
+            'success' => $successMessage,
+            'restoreSuccess' => $restoreSuccess,
+            'restoreError' => $restoreError,
+            'availableBackups' => $availableBackups
         ]);
+    }
+
+    /**
+     * @brief Restaure la base de données depuis un fichier SQL (.sql, .gz, .sql.gz).
+     *
+    * Nécessite le rôle Admin et une requête POST avec soit un fichier uploadé,
+    * soit un fichier déjà présent dans le dossier backups.
+     *
+     * @return void
+     */
+    public function restaurer()
+    {
+        $this->requireRole(RoleEnum::Admin);
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $this->show405();
+            return;
+        }
+
+        try {
+            $sqlContent = null;
+
+            $backupName = trim($_POST['backup_name'] ?? '');
+            if ($backupName !== '') {
+                $backupPath = $this->resolveBackupPath($backupName);
+                if ($backupPath === null || !is_file($backupPath)) {
+                    throw new RuntimeException('Le fichier de sauvegarde sélectionné est introuvable.');
+                }
+                $sqlContent = $this->readSqlContentFromFile($backupPath);
+            } elseif (isset($_FILES['backup_file']) && $_FILES['backup_file']['error'] === UPLOAD_ERR_OK) {
+                $uploadedFile = $_FILES['backup_file'];
+                $tmpPath = $uploadedFile['tmp_name'] ?? '';
+
+                if (!is_uploaded_file($tmpPath)) {
+                    throw new RuntimeException('Fichier de restauration invalide.');
+                }
+
+                $sqlContent = $this->readSqlContentFromFile($tmpPath, $uploadedFile['name'] ?? '');
+            } else {
+                throw new RuntimeException('Aucun fichier de sauvegarde sélectionné.');
+            }
+
+            $sqlContent = trim($sqlContent);
+            if ($sqlContent === '') {
+                throw new RuntimeException('Le fichier de restauration est vide.');
+            }
+
+            $pdo = $this->getPDO();
+            $pdo->beginTransaction();
+            $pdo->exec('SET FOREIGN_KEY_CHECKS = 0');
+
+            $statements = $this->splitSqlStatements($sqlContent);
+            foreach ($statements as $statement) {
+                $trimmedStatement = trim($statement);
+                if ($trimmedStatement === '') {
+                    continue;
+                }
+                $pdo->exec($trimmedStatement);
+            }
+
+            $pdo->exec('SET FOREIGN_KEY_CHECKS = 1');
+            $pdo->commit();
+
+            $this->redirectTo('admin', 'afficher', ['restore' => 1]);
+        } catch (Throwable $e) {
+            $pdo = $this->getPDO();
+            if ($pdo instanceof PDO) {
+                if ($pdo->inTransaction()) {
+                    $pdo->rollBack();
+                }
+                try {
+                    $pdo->exec('SET FOREIGN_KEY_CHECKS = 1');
+                } catch (Throwable $ignored) {
+                }
+            }
+
+            $this->redirectTo('admin', 'afficher', ['restore_error' => 'Restauration échouée : ' . $e->getMessage()]);
+        }
+    }
+
+    /**
+     * @brief Lit le contenu SQL d'un fichier backup (compressé ou non).
+     *
+     * @param string $path Chemin réel du fichier.
+     * @param string|null $originalName Nom du fichier pour vérifier l'extension.
+     * @return string
+     */
+    private function readSqlContentFromFile(string $path, ?string $originalName = null): string
+    {
+        $filename = strtolower($originalName ?? basename($path));
+        $isSql = str_ends_with($filename, '.sql');
+        $isGz = str_ends_with($filename, '.gz');
+
+        if (!$isSql && !$isGz) {
+            throw new RuntimeException('Format non supporté. Utilisez un fichier .sql, .gz ou .sql.gz');
+        }
+
+        $rawContent = file_get_contents($path);
+        if ($rawContent === false) {
+            throw new RuntimeException('Lecture du fichier impossible.');
+        }
+
+        if ($isGz) {
+            $decoded = gzdecode($rawContent);
+            if ($decoded === false) {
+                throw new RuntimeException('Le fichier compressé est invalide ou corrompu.');
+            }
+            return $decoded;
+        }
+
+        return $rawContent;
+    }
+
+    /**
+     * @brief Retourne le chemin du dossier des sauvegardes.
+     *
+     * @return string
+     */
+    private function getBackupsDirectory(): string
+    {
+        return realpath(__DIR__ . '/../') . '/backups';
+    }
+
+    /**
+     * @brief Vérifie qu'un nom de fichier backup est autorisé.
+     *
+     * @param string $filename
+     * @return bool
+     */
+    private function isAllowedBackupName(string $filename): bool
+    {
+        return (bool) preg_match('/^[a-zA-Z0-9._-]+\.(sql|gz)$/', $filename);
+    }
+
+    /**
+     * @brief Résout et valide le chemin d'un fichier backup local.
+     *
+     * @param string $filename
+     * @return string|null
+     */
+    private function resolveBackupPath(string $filename): ?string
+    {
+        $basename = basename($filename);
+        if (!$this->isAllowedBackupName($basename)) {
+            return null;
+        }
+
+        $directory = $this->getBackupsDirectory();
+        $fullPath = $directory . '/' . $basename;
+        $realPath = realpath($fullPath);
+
+        if ($realPath === false) {
+            return null;
+        }
+
+        $directoryRealPath = realpath($directory);
+        if ($directoryRealPath === false || strpos($realPath, $directoryRealPath) !== 0) {
+            return null;
+        }
+
+        return $realPath;
+    }
+
+    /**
+     * @brief Liste les sauvegardes disponibles dans le dossier backups.
+     *
+     * @return array
+     */
+    private function getAvailableBackups(): array
+    {
+        $directory = $this->getBackupsDirectory();
+        if (!is_dir($directory)) {
+            return [];
+        }
+
+        $entries = scandir($directory);
+        if ($entries === false) {
+            return [];
+        }
+
+        $backups = [];
+        foreach ($entries as $entry) {
+            if ($entry === '.' || $entry === '..') {
+                continue;
+            }
+
+            if (!$this->isAllowedBackupName($entry)) {
+                continue;
+            }
+
+            $resolvedPath = $this->resolveBackupPath($entry);
+            if ($resolvedPath === null || !is_file($resolvedPath)) {
+                continue;
+            }
+
+            $backups[] = [
+                'name' => $entry,
+                'size' => filesize($resolvedPath) ?: 0,
+                'mtime' => filemtime($resolvedPath) ?: 0,
+            ];
+        }
+
+        usort($backups, function ($a, $b) {
+            return $b['mtime'] <=> $a['mtime'];
+        });
+
+        return $backups;
+    }
+
+    /**
+     * @brief Découpe un script SQL en requêtes individuelles.
+     *
+     * @param string $sql Script SQL brut.
+     * @return array Tableau de requêtes SQL.
+     */
+    private function splitSqlStatements(string $sql): array
+    {
+        $statements = [];
+        $buffer = '';
+
+        $inSingleQuote = false;
+        $inDoubleQuote = false;
+        $inBacktick = false;
+
+        $length = strlen($sql);
+        for ($i = 0; $i < $length; $i++) {
+            $char = $sql[$i];
+            $nextChar = ($i + 1 < $length) ? $sql[$i + 1] : '';
+            $prevChar = ($i > 0) ? $sql[$i - 1] : '';
+
+            if (!$inSingleQuote && !$inDoubleQuote && !$inBacktick) {
+                if ($char === '-' && $nextChar === '-' && ($i === 0 || ctype_space($prevChar))) {
+                    while ($i < $length && $sql[$i] !== "\n") {
+                        $i++;
+                    }
+                    continue;
+                }
+
+                if ($char === '#') {
+                    while ($i < $length && $sql[$i] !== "\n") {
+                        $i++;
+                    }
+                    continue;
+                }
+
+                if ($char === '/' && $nextChar === '*') {
+                    $i += 2;
+                    while ($i + 1 < $length && !($sql[$i] === '*' && $sql[$i + 1] === '/')) {
+                        $i++;
+                    }
+                    $i++;
+                    continue;
+                }
+            }
+
+            if ($char === "'" && !$inDoubleQuote && !$inBacktick && $prevChar !== '\\') {
+                $inSingleQuote = !$inSingleQuote;
+            } elseif ($char === '"' && !$inSingleQuote && !$inBacktick && $prevChar !== '\\') {
+                $inDoubleQuote = !$inDoubleQuote;
+            } elseif ($char === '`' && !$inSingleQuote && !$inDoubleQuote) {
+                $inBacktick = !$inBacktick;
+            }
+
+            if ($char === ';' && !$inSingleQuote && !$inDoubleQuote && !$inBacktick) {
+                $trimmed = trim($buffer);
+                if ($trimmed !== '') {
+                    $statements[] = $trimmed;
+                }
+                $buffer = '';
+                continue;
+            }
+
+            $buffer .= $char;
+        }
+
+        $trimmed = trim($buffer);
+        if ($trimmed !== '') {
+            $statements[] = $trimmed;
+        }
+
+        return $statements;
     }
 
     /**

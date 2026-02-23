@@ -84,6 +84,27 @@
 </style>
 
 <div class="container py-5">
+    {% if success %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ success }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+
+    {% if restoreSuccess %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ restoreSuccess }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+
+    {% if restoreError %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ restoreError }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3 class="fw-bold text-dark mb-0">
             <i class="bi bi-people me-2"></i>Liste des Utilisateurs
@@ -100,6 +121,67 @@
             <a href="?controller=utilisateur&method=inscription" class="btn btn-dark px-4" style="border-radius: 20px;">
                 <i class="bi bi-plus-lg me-1"></i> Nouvel Utilisateur
             </a>
+        </div>
+    </div>
+
+    <div class="card rounded-4 bg-white border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+            <h5 class="fw-bold mb-3">
+                <i class="bi bi-database-up me-2"></i>Restauration d'une sauvegarde SQL
+            </h5>
+            <form action="?controller=admin&method=restaurer" method="post" enctype="multipart/form-data" class="row g-3 align-items-end">
+                <div class="col-md-9">
+                    <label for="backup_file" class="form-label">Fichier de sauvegarde (.sql, .gz, .sql.gz)</label>
+                    <input type="file" class="form-control" id="backup_file" name="backup_file" accept=".sql,.gz" required>
+                </div>
+                <div class="col-md-3 d-grid">
+                    <button type="submit" class="btn btn-dark">
+                        <i class="bi bi-arrow-clockwise me-1"></i> Restaurer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card rounded-4 bg-white border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+            <h5 class="fw-bold mb-3">
+                <i class="bi bi-folder2-open me-2"></i>Sauvegardes disponibles sur le serveur
+            </h5>
+
+            {% if availableBackups is not empty %}
+                <div class="table-responsive">
+                    <table class="table table-sm align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Fichier</th>
+                                <th>Taille</th>
+                                <th>Dernière modification</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for backup in availableBackups %}
+                                <tr>
+                                    <td>{{ backup.name }}</td>
+                                    <td>{{ (backup.size / 1024)|number_format(2, ',', ' ') }} Ko</td>
+                                    <td>{{ backup.mtime ? backup.mtime|date('d/m/Y H:i:s') : '-' }}</td>
+                                    <td class="text-end">
+                                        <form action="?controller=admin&method=restaurer" method="post" class="d-inline">
+                                            <input type="hidden" name="backup_name" value="{{ backup.name }}">
+                                            <button type="submit" class="btn btn-sm btn-outline-dark" onclick="return confirm('Restaurer cette sauvegarde ? Cette action remplacera les données actuelles.');">
+                                                <i class="bi bi-arrow-clockwise me-1"></i> Restaurer
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-muted mb-0">Aucune sauvegarde trouvée dans le dossier serveur <code>backups</code>.</p>
+            {% endif %}
         </div>
     </div>
 
