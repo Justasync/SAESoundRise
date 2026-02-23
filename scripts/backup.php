@@ -58,4 +58,26 @@ foreach ($tables as $table) {
 
 gzclose($gz);
 
+// ===== SUPPRESSION AUTOMATIQUE DES BACKUPS > 7 JOURS =====
+
+$files = glob($backupDir . "/*.sql.gz");
+
+$now = time();
+$limit = 7 * 24 * 60 * 60; // 7 jours en secondes
+
+foreach ($files as $file) {
+
+    if (!preg_match('/(\d{4}-\d{2}-\d{2}_\d{2}-\d{2})/', basename($file), $matches)) {
+        continue;
+    }
+
+    $fileDate = DateTime::createFromFormat("Y-m-d_H-i", $matches[1]);
+
+    if (!$fileDate) continue;
+
+    if (($now - $fileDate->getTimestamp()) > $limit) {
+        unlink($file);
+    }
+}
+
 echo "Sauvegarde universelle réussie : " . basename($backupFile);
