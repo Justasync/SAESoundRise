@@ -1,68 +1,61 @@
 <?php
 
-// ===== CHEMIN DU CONFIG =====
 $configPath = __DIR__ . "/../config/config.json";
+$config = json_decode(file_get_contents($configPath), true);
 
-if (!file_exists($configPath)) {
-    die("Le fichier config.json est introuvable.");
+$db = $config['db'];
+
+try {
+    $pdo = new PDO(
+        "mysql:host={$db['host']};port={$db['port']};dbname={$db['dbname']};charset=utf8mb4",
+        $db['username'],
+        $db['password'],
+        [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+    );
+} catch (PDOException $e) {
+    die("Erreur connexion BDD : " . $e->getMessage());
 }
 
-// ===== LECTURE JSON =====
-$configContent = file_get_contents($configPath);
-$config = json_decode($configContent, true);
-
-if (json_last_error() !== JSON_ERROR_NONE) {
-    die("Erreur dans le format du config.json.");
-}
-
-if (!isset($config['db'])) {
-    die("Section 'db' manquante dans config.json.");
-}
-
-// ===== RECUPERATION DES DONNEES =====
-$dbHost = $config['db']['host'] ?? 'localhost';
-$dbPort = $config['db']['port'] ?? 3306;
-$dbUser = $config['db']['username'] ?? null;
-$dbPassword = $config['db']['password'] ?? null;
-$dbName = $config['db']['dbname'] ?? null;
-
-if (!$dbUser || !$dbName) {
-    die("Configuration base de données incomplète.");
-}
-
-// ===== DOSSIER BACKUP =====
 $backupDir = realpath(__DIR__ . "/../") . "/backups";
-
 if (!file_exists($backupDir)) {
     mkdir($backupDir, 0755, true);
 }
 
 $date = date("Y-m-d_H-i");
-$backupFile = "{$backupDir}/{$dbName}_{$date}.sql.gz";
+$backupFile = "{$backupDir}/{$db['dbname']}_{$date}.sql.gz";
 
-// ===== COMMANDE MYSQLDUMP + GZIP =====
-$mysqldumpPath = "C:\\xampp\\mysql\\bin\\mysqldump.exe";
+$gz = gzopen($backupFile, 'w9');
 
-$command = "\"$mysqldumpPath\" " .
-    "-h " . escapeshellarg($dbHost) . " " .
-    "-P " . escapeshellarg($dbPort) . " " .
-    "-u " . escapeshellarg($dbUser) . " " .
-    "--password=" . escapeshellarg($dbPassword) . " " .
-    escapeshellarg($dbName) .
-    " > " . escapeshellarg($backupFile);
+// Récupération des tables
+$tables = $pdo->query("SHOW TABLES")->fetchAll(PDO::FETCH_COLUMN);
 
-// ===== EXECUTION AVEC CAPTURE ERREUR =====
-$output = [];
-$resultCode = 0;
+foreach ($tables as $table) {
 
-// 2>&1 permet de rediriger les erreurs vers la sortie standard
-exec($command . " 2>&1", $output, $resultCode);
+    // Structure
+    $create = $pdo->query("SHOW CREATE TABLE `$table`")->fetch(PDO::FETCH_ASSOC);
+    gzwrite($gz, "\n\n" . $create['Create Table'] . ";\n\n");
 
-if ($resultCode === 0) {    
-    echo "Sauvegarde réussie : " . basename($backupFile);
-} else {
-    echo "Erreur lors de la sauvegarde<br><br>";
-    echo "<strong>Code retour :</strong> $resultCode<br><br>";
-    echo "<strong>Détail :</strong><br>";
-    echo "<pre>" . implode("\n", $output) . "</pre>";
+    // Données
+    $rows = $pdo->query("SELECT * FROM `$table`");
+
+    while ($row = $rows->fetch(PDO::FETCH_ASSOC)) {
+
+        $columns = array_map(fn($col) => "`$col`", array_keys($row));
+        $values = array_map(
+            fn($val) => isset($val) ? $pdo->quote($val) : "NULL",
+            array_values($row)
+        );
+
+        $sql = "INSERT INTO `$table` (" .
+               implode(",", $columns) .
+               ") VALUES (" .
+               implode(",", $values) .
+               ");\n";
+
+        gzwrite($gz, $sql);
+    }
 }
+
+gzclose($gz);
+
+echo "Sauvegarde universelle réussie : " . basename($backupFile);
