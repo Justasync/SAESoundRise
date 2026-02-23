@@ -51,3 +51,6 @@ yarn-error.log*
 # Autres fichiers sensibles
 *.key
 *.pem
+
+# Fichiers de sauvegarde
+/backups/
