@@ -111,7 +111,7 @@ $songNouns = ['Sky', 'River', 'City', 'Street', 'Night', 'Day', 'Sun', 'Moon', '
 // ==========================================
 
 try {
-    $pdo = bd::getInstance()->getConnexion();
+    $pdo = bd::getInstance()->getConnexion(bd::ROLE_DB_ADMINISTRATEUR);
     echo "[INFO] Connexion à la base de données établie.\n";
 } catch (Exception $e) {
     die("[ERREUR] Échec de la connexion : " . $e->getMessage());
