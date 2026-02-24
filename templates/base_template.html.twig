@@ -80,7 +80,7 @@
 										<a class="nav-link fs-4 {% if page.name is defined and page.name == 'maMusique' %}active{% endif %}" aria-current="page" href="/?controller=musique&method=afficher">Ma Musique</a>
 									</li>
 									<li class="nav-item">
-										<a class="nav-link fs-4 {% if page.name is defined and page.name == 'decouvrir' %}active{% endif %}" aria-current="page" href="#">Découvrir</a>
+										<a class="nav-link fs-4 {% if page.name is defined and page.name == 'decouvrir' %}active{% endif %}" aria-current="page" href="/?controller=home&method=decouvrir">Découvrir</a>
 									</li>
 									{%endif%}
 								{% endif %}
@@ -134,7 +134,7 @@
 								<div class="modal-content">
 									<div class="modal-header">
 										<div>
-											<h1 class="modal-title fs-3 mb-0" id="signupModalLabel">Créer un compte</h1>
+											<h1 class="modal-title fs-3 mb-0" id="signupModalLabel">S’inscrire</h1>
 											<p class="text-secondary mb-0" data-step-subtitle>Choisissez votre profil pour commencer.</p>
 										</div>
 										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -153,26 +153,27 @@
 											<div class="row g-3">
 												<div class="col-md-4">
 													<input type="radio" class="btn-check" name="signupUserType" id="signupTypeArtiste" value="artiste" autocomplete="off">
-													<label class="btn btn-outline-primary w-100 h-100 text-start p-3" for="signupTypeArtiste">
+													<label class="btn btn-outline-primary w-100 h-100 text-start p-3 signup-type-card" for="signupTypeArtiste">
 														<span class="d-block fw-semibold">🎤 Artiste</span>
 														<span class="small">Montrez votre musique au monde entier, connectez-vous avec vos fans et producteurs.</span>
 													</label>
 												</div>
 												<div class="col-md-4">
 													<input type="radio" class="btn-check" name="signupUserType" id="signupTypeAuditeur" value="auditeur" autocomplete="off">
-													<label class="btn btn-outline-primary w-100 h-100 text-start p-3" for="signupTypeAuditeur">
+													<label class="btn btn-outline-primary w-100 h-100 text-start p-3 signup-type-card" for="signupTypeAuditeur">
 														<span class="d-block fw-semibold">🎧 Auditeur</span>
 														<span class="small">Découvrez de nouvelles musiques, créez des playlists et suivez vos nouveaux artistes préférés.</span>
 													</label>
 												</div>
 												<div class="col-md-4">
 													<input type="radio" class="btn-check" name="signupUserType" id="signupTypeProducteur" value="producteur" autocomplete="off">
-													<label class="btn btn-outline-primary w-100 h-100 text-start p-3" for="signupTypeProducteur">
+													<label class="btn btn-outline-primary w-100 h-100 text-start p-3 signup-type-card" for="signupTypeProducteur">
 														<span class="d-block fw-semibold">🎚️ Producteur</span>
 														<span class="small">Trouvez des talents, proposez vos services et collaborez à de nouveaux projets.</span>
 													</label>
 												</div>
 											</div>
+											<p class="signup-selected-feedback mt-3 mb-0 d-none" data-selected-type-feedback aria-live="polite"></p>
 											<p class="text-danger small mt-3 d-none" data-step-error>Choisissez un type de profil pour continuer.</p>
 										</div>
 
@@ -320,25 +321,23 @@
 											</form>
 
 											<form class="signup-form d-none" data-user-type="producteur">
-												<h2 class="fs-4 mb-3">Informations producteur</h2>
+												<h2 class="fs-4 mb-3">Nom et pseudonyme de producteur</h2>
 												<div
 													class="row g-3">
 													<!-- Nom -->
 													<div class="col-md-12">
-														<label for="producteurNom" class="form-label">Nom</label>
-														<input type="text" class="form-control" id="producteurNom" name="nom" placeholder="Ex: Jean Dupont" required minlength="1" maxlength="255" autocomplete="given-name" title="Entrez votre nom complet (1 à 255 caractères).">
+														<input type="text" class="form-control" id="producteurNom" name="nom" placeholder="Entrez votre nom" required minlength="1" maxlength="255" autocomplete="given-name" title="Entrez votre nom complet (1 à 255 caractères).">
 													</div>
 
 													<!-- Pseudonyme -->
 													<div class="col-md-12">
-														<label for="producteurPseudonyme" class="form-label">Pseudonyme</label>
-														<input type="text" class="form-control" id="producteurPseudonyme" name="pseudo" placeholder="Ex: BeatMaker_Pro" required minlength="3" maxlength="50" autocomplete="nickname" pattern="^[a-zA-Z0-9_]+$" title="Entrez un pseudonyme de 3 à 50 caractères (lettres, chiffres et underscores uniquement, sans espaces).">
+														<input type="text" class="form-control" id="producteurPseudonyme" name="pseudo" placeholder="Entrez votre pseudonyme" required minlength="3" maxlength="50" autocomplete="nickname" pattern="^[a-zA-Z0-9_]+$" title="Entrez un pseudonyme de 3 à 50 caractères (lettres, chiffres et underscores uniquement, sans espaces).">
 													</div>
 
 													<!-- Description -->
 													<div class="col-md-12">
 														<label for="producteurDescription" class="form-label">Description</label>
-														<textarea class="form-control" id="producteurDescription" name="description" rows="2" required placeholder="Ex: Producteur spécialisé en hip-hop..." minlength="10" maxlength="1000" title="Décrivez-vous en quelques mots (10 à 1000 caractères)."></textarea>
+														<textarea class="form-control" id="producteurDescription" name="description" rows="2" required placeholder="Décrivez-vous en quelques mots..." minlength="10" maxlength="1000" title="Décrivez-vous en quelques mots (10 à 1000 caractères)."></textarea>
 													</div>
 
 													<!-- Informations supplémentaires -->
@@ -349,14 +348,14 @@
 														<label for="producteurWebsite" class="form-label">Site web
 															<span class="text-secondary">(Facultatif)</span>
 														</label>
-														<input type="url" class="form-control" id="producteurWebsite" name="website" placeholder="https://votresite.com" autocomplete="url" title="Entrez une URL valide commençant par http:// ou https://." maxlength="255">
+														<input type="url" class="form-control" id="producteurWebsite" name="website" placeholder="Site web (Facultatif)" autocomplete="url" title="Entrez une URL valide commençant par http:// ou https://." maxlength="255">
 													</div>
 
 													<!-- Genres -->
 													<div class="col-md-12">
 														<label for="producteurGenre" class="form-label">Genre musical</label>
 														<select class="form-select" id="producteurGenre" name="genre_id" required title="Sélectionnez votre genre musical principal.">
-															<option value="" selected disabled>Choisissez un genre</option>
+															<option value="" selected disabled>Genre musical</option>
 															{% if genres is defined %}
 																{% for genre in genres %}
 																	<option value="{{ genre.idGenre }}">{{ genre.nomGenre }}</option>
@@ -368,7 +367,7 @@
 													<!-- Courrier électronique -->
 													<div class="col-md-6">
 														<label for="producteurEmail" class="form-label">Courrier électronique</label>
-														<input type="email" class="form-control" id="producteurEmail" name="email" required autocomplete="email" placeholder="Ex: votre@email.com" title="Entrez une adresse e-mail valide." maxlength="191">
+														<input type="email" class="form-control" id="producteurEmail" name="email" required autocomplete="email" placeholder="Courrier électronique" title="Entrez une adresse e-mail valide." maxlength="191">
 													</div>
 
 													<!-- Date de naissance -->
@@ -380,14 +379,14 @@
 													<!-- Mot de passe -->
 													<div class="col-md-6">
 														<label for="producteurPassword" class="form-label">Mot de passe</label>
-														<input type="password" class="form-control" id="producteurPassword" name="password" required minlength="8" maxlength="128" autocomplete="new-password" pattern="^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=\[\]{}|;:',.<>?/~`]).{8,}$" placeholder="••••••••" title="Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un symbole (!@#$%^&*...).">
+														<input type="password" class="form-control" id="producteurPassword" name="password" required minlength="8" maxlength="128" autocomplete="new-password" pattern="^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=\[\]{}|;:',.<>?/~`]).{8,}$" placeholder="Mot de passe" title="Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un symbole (!@#$%^&*...).">
 														<div class="form-text">8 caractères minimum, 1 majuscule, 1 chiffre, 1 symbole.</div>
 													</div>
 
 													<!-- Réinsérez votre mot de passe -->
 													<div class="col-md-6">
 														<label for="producteurPasswordRepeat" class="form-label">Réinsérez votre mot de passe</label>
-														<input type="password" class="form-control" id="producteurPasswordRepeat" name="password_repeat" required minlength="8" maxlength="128" autocomplete="new-password" placeholder="••••••••" title="Répétez le même mot de passe.">
+														<input type="password" class="form-control" id="producteurPasswordRepeat" name="password_repeat" required minlength="8" maxlength="128" autocomplete="new-password" placeholder="Réinsérez votre mot de passe" title="Répétez le même mot de passe.">
 													</div>
 												</div>
 											</form>
@@ -407,7 +406,7 @@
 										</div>
 									</div>
 									<div class="modal-footer justify-content-between">
-										<button type="button" class="btn btn-outline-secondary" data-action="back">Retour</button>
+										<button type="button" class="btn btn-outline-secondary" data-action="back">Précédent</button>
 										<div class="d-flex gap-2">
 											<button type="button" class="btn btn-outline-secondary d-none" data-action="secondary"></button>
 											<button type="button" class="btn btn-primary" data-action="next">Continuer</button>

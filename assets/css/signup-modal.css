@@ -43,3 +43,95 @@
 .signup-success-icon .bi {
     line-height: 1;
 }
+
+#signupModal .modal-content {
+    border: none;
+    border-radius: 1.5rem;
+    background: #F2E3D6;
+}
+
+#signupModal .modal-header,
+#signupModal .modal-footer {
+    border: none;
+    background: #F2E3D6;
+}
+
+#signupModal .modal-title {
+    font-weight: 700;
+    color: #1f1f1f;
+}
+
+#signupModal .btn-close {
+    background-color: #E07A5F;
+    border-radius: 50%;
+    opacity: 1;
+    font-size: 0.75rem;
+    padding: 0.5rem;
+}
+
+#signupModal .signup-progress-indicator li.active {
+    color: #E07A5F;
+    border-color: #E07A5F;
+}
+
+#signupModal .signup-progress-indicator li.completed {
+    border-color: rgba(224, 122, 95, 0.55);
+}
+
+#signupModal .form-control,
+#signupModal .form-select {
+    border: none;
+    background: #E7A58E;
+    color: #2b2b2b;
+    border-radius: 0.55rem;
+}
+
+#signupModal .form-control::placeholder {
+    color: #7a5d54;
+}
+
+#signupModal .form-control:focus,
+#signupModal .form-select:focus {
+    box-shadow: 0 0 0 0.2rem rgba(224, 122, 95, 0.25);
+}
+
+#signupModal .btn-outline-primary,
+#signupModal .btn-outline-secondary {
+    border: none;
+    background: #E07A5F;
+    color: #fff;
+}
+
+#signupModal .btn-outline-primary:hover,
+#signupModal .btn-outline-secondary:hover,
+#signupModal .btn-primary:hover {
+    background: #cf694f;
+    color: #fff;
+}
+
+#signupModal .btn-primary {
+    border: none;
+    background: #E07A5F;
+    color: #fff;
+}
+
+#signupModal .signup-step .form-label,
+#signupModal .signup-step h2 {
+    color: #1f1f1f;
+}
+
+#signupModal .signup-type-card {
+    transition: all 0.2s ease;
+}
+
+#signupModal .signup-type-card.is-selected {
+    background: #cf694f;
+    color: #fff;
+    box-shadow: 0 0 0 3px rgba(224, 122, 95, 0.35);
+    transform: translateY(-1px);
+}
+
+#signupModal .signup-selected-feedback {
+    color: #7c3f2f;
+    font-weight: 600;
+}

@@ -41,7 +41,7 @@ class ControllerHome extends Controller
      * - Artiste : tableau de bord artiste
      * - Admin : tableau de bord admin
      * - Auditeur : tableau de bord auditeur
-     * - Producteur : page de bienvenue
+    * - Producteur : page découvrir (recherche de talents)
      * - Invité ou non connecté : dashboard public
      * 
      * @return void
@@ -65,7 +65,7 @@ class ControllerHome extends Controller
                 $this->auditeurDashboard();
                 break;
             case RoleEnum::Producteur:
-                $this->homeBienvenue();
+                $this->producteurDashboard();
                 break;
             case RoleEnum::Invite:
                 $this->openDashboard();
@@ -141,6 +141,53 @@ class ControllerHome extends Controller
                 'description' => "Page d'accueil de Paaxio"
             ],
             'session' => $_SESSION
+        ]);
+    }
+
+    /**
+     * @brief Affiche la page Découvrir pour rechercher de nouveaux talents.
+     *
+     * Reprend le dashboard public orienté découverte (artistes/chansons/albums)
+     * avec un contexte de page dédié pour la navigation connectée.
+     *
+     * @return void
+     */
+    public function decouvrir()
+    {
+        $aristesDAO = new UtilisateurDAO($this->getPDO());
+        $artistesPopulaires = $aristesDAO->findTrending(8, 7);
+
+        $chansonsDAO = new ChansonDAO($this->getPDO());
+        $chansonsPopulaires = $chansonsDAO->findTrending(8, 7);
+
+        $chansonsPopulairesAvecArtistePseudo = [];
+        foreach ($chansonsPopulaires as $chanson) {
+            $artistePseudo = null;
+            if ($chanson->getEmailPublicateur()) {
+                $utilisateurDAO = new UtilisateurDAO($this->getPDO());
+                $utilisateur = $utilisateurDAO->find($chanson->getEmailPublicateur());
+                $artistePseudo = $utilisateur ? $utilisateur->getPseudoUtilisateur() : null;
+            }
+            $chansonsPopulairesAvecArtistePseudo[] = [
+                'chanson' => $chanson,
+                'artistePseudo' => $artistePseudo,
+            ];
+        }
+
+        $albumDAO = new AlbumDAO($this->getPDO());
+        $albumsPopulaires = $albumDAO->findMostListened(8);
+
+        $template = $this->getTwig()->load('open_dashboard.html.twig');
+        echo $template->render([
+            'page' => [
+                'title' => 'Découvrir',
+                'name' => 'decouvrir',
+                'description' => 'Découvrez de nouveaux talents et les tendances musicales sur Paaxio.'
+            ],
+            'session' => $_SESSION,
+            'artistes' => $artistesPopulaires,
+            'chansons' => $chansonsPopulairesAvecArtistePseudo,
+            'albums' => $albumsPopulaires,
         ]);
     }
 
@@ -272,6 +319,67 @@ class ControllerHome extends Controller
             'session' => $_SESSION,
             'artistes' => $artistesSuggere,
             'albums' => $albumsPopulaires,
+        ]);
+    }
+
+    /**
+     * @brief Affiche le tableau de bord du producteur connecté.
+     *
+     * Affiche :
+     * - Les artistes les plus écoutés
+     * - Des statistiques globales de découverte
+     * - Les albums/singles les plus écoutés
+     *
+     * @return void
+     */
+    private function producteurDashboard()
+    {
+        $utilisateurDAO = new UtilisateurDAO($this->getPDO());
+        $artistesPopulaires = $utilisateurDAO->findTrending(8, 7);
+
+        $albumDAO = new AlbumDAO($this->getPDO());
+        $albumsPopulaires = $albumDAO->findMostListened(8);
+
+        $artistsRegisteredWeek = 0;
+        try {
+            $sql = "SELECT COUNT(*)
+                    FROM utilisateur u
+                    JOIN role r ON u.roleUtilisateur = r.idRole
+                    WHERE r.typeRole = 'artiste'
+                      AND u.dateInscriptionUtilisateur >= DATE_SUB(NOW(), INTERVAL 7 DAY)";
+            $stmt = $this->getPDO()->prepare($sql);
+            $stmt->execute();
+            $artistsRegisteredWeek = (int)$stmt->fetchColumn();
+        } catch (Exception $e) {
+            $artistsRegisteredWeek = 0;
+        }
+
+        $topBattleArtistPseudo = 'Aucun';
+        $topWins = -1;
+        $battleDAO = new BattleDAO($this->getPDO());
+        foreach ($artistesPopulaires as $artiste) {
+            $wins = $battleDAO->countBattlesWon($artiste->getEmailUtilisateur());
+            if ($wins > $topWins) {
+                $topWins = $wins;
+                $topBattleArtistPseudo = $artiste->getPseudoUtilisateur();
+            }
+        }
+
+        $template = $this->getTwig()->load('producteur_dashboard.html.twig');
+        echo $template->render([
+            'page' => [
+                'title' => 'Dashboard producteur',
+                'name' => 'accueil',
+                'description' => 'Recherchez de nouveaux talents et suivez les tendances de Paaxio.'
+            ],
+            'session' => $_SESSION,
+            'artistes' => $artistesPopulaires,
+            'albums' => $albumsPopulaires,
+            'stats' => [
+                'artistsRegisteredWeek' => $artistsRegisteredWeek,
+                'artistsFound' => count($artistesPopulaires),
+                'topBattleArtistPseudo' => $topBattleArtistPseudo,
+            ],
         ]);
     }
 

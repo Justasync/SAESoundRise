@@ -40,6 +40,11 @@ document.addEventListener("DOMContentLoaded", () => {
   
   /** @type {HTMLElement|null} Élément d'erreur pour l'étape 1 */
   const errorElement = modalElement.querySelector("[data-step-error]");
+
+  /** @type {HTMLElement|null} Élément de feedback du profil sélectionné */
+  const selectedTypeFeedbackElement = modalElement.querySelector(
+    "[data-selected-type-feedback]"
+  );
   
   /** @type {HTMLElement|null} Élément d'affichage des erreurs générales */
   const statusErrorElement = modalElement.querySelector("[data-signup-error]");
@@ -63,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
   /** @type {number} Étape actuelle du formulaire (1, 2 ou 3) */
   let currentStep = 1;
   
-  /** @type {string|null} Type d'utilisateur sélectionné ('artiste' ou 'auditeur') */
+  /** @type {string|null} Type d'utilisateur sélectionné ('artiste', 'auditeur' ou 'producteur') */
   let selectedType = null;
   
   /** @type {string|null} Dernier email soumis pour l'inscription */
@@ -77,6 +82,42 @@ document.addEventListener("DOMContentLoaded", () => {
     1: "Choisissez votre profil pour commencer.",
     2: "Renseignez les informations pour finaliser votre inscription.",
     3: "Vérifiez votre boîte mail pour activer votre compte.",
+  };
+
+  const stepTwoSubtitles = {
+    artiste: "Renseignez les informations de votre profil artiste.",
+    auditeur: "Renseignez les informations de votre profil auditeur.",
+    producteur: "Renseignez vos informations pour rechercher de nouveaux talents.",
+  };
+
+  const userTypeLabels = {
+    artiste: "Artiste",
+    auditeur: "Auditeur",
+    producteur: "Producteur",
+  };
+
+  const updateSelectedTypeUi = () => {
+    const radios = modalElement.querySelectorAll('input[name="signupUserType"]');
+    radios.forEach((radio) => {
+      const label = modalElement.querySelector(`label[for="${radio.id}"]`);
+      if (!label) {
+        return;
+      }
+      label.classList.toggle("is-selected", radio.checked);
+    });
+
+    if (!selectedTypeFeedbackElement) {
+      return;
+    }
+
+    if (!selectedType) {
+      selectedTypeFeedbackElement.classList.add("d-none");
+      selectedTypeFeedbackElement.textContent = "";
+      return;
+    }
+
+    selectedTypeFeedbackElement.classList.remove("d-none");
+    selectedTypeFeedbackElement.textContent = `Profil sélectionné : ${userTypeLabels[selectedType] || selectedType}`;
   };
 
   /**
@@ -295,7 +336,7 @@ document.addEventListener("DOMContentLoaded", () => {
       nextButton.disabled = false;
     } else if (currentStep === 2) {
       backButton.classList.remove("d-none");
-      nextButton.textContent = "Valider";
+      nextButton.textContent = "Enregistrer";
       nextButton.disabled = false;
     } else {
       backButton.classList.add("d-none");
@@ -562,6 +603,7 @@ document.addEventListener("DOMContentLoaded", () => {
         selectedType = event.target.value;
         errorElement?.classList.add("d-none");
         resetStatusMessages();
+        updateSelectedTypeUi();
       });
     });
 
@@ -587,6 +629,7 @@ document.addEventListener("DOMContentLoaded", () => {
         errorElement?.classList.remove("d-none");
         return;
       }
+      subtitles[2] = stepTwoSubtitles[selectedType] || "Renseignez les informations pour finaliser votre inscription.";
       showFormForSelectedType();
       showStep(2);
       return;
@@ -638,7 +681,10 @@ document.addEventListener("DOMContentLoaded", () => {
     lastSubmittedEmail = null;
     errorElement?.classList.add("d-none");
     resetStatusMessages();
+    updateSelectedTypeUi();
     showStep(1);
     consentChecked = false;
   });
+
+  updateSelectedTypeUi();
 });
