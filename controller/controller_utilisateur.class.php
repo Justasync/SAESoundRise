@@ -916,6 +916,8 @@ class ControllerUtilisateur extends Controller
         }
     }
 
+
+
     /**
      * @brief Affiche une page d'erreur pour les tokens invalides.
      * 
@@ -938,4 +940,253 @@ class ControllerUtilisateur extends Controller
             'error_message' => $message
         ]);
     }
+
+    /**
+     * @brief Affiche la page de gestion du profil de l'utilisateur connecté.
+     * 
+     * Cette méthode permet à l'utilisateur de visualiser ses informations actuelles
+     * dans un formulaire de modification. Elle prépare les données de la session
+     * et de la base de données, notamment en segmentant la date de naissance.
+     * 
+     * @return void
+     */
+    public function afficherGestionProfil(){
+        // Vérifier si l'utilisateur est connecté
+        if (!isset($_SESSION['user_email'])) {
+            $this->redirectTo('home', 'afficher');
+        }
+
+        $uDAO = new UtilisateurDAO($this->getPDO());
+        $user = $uDAO->find($_SESSION['user_email']);
+
+        // Préparation de la date pour l'input HTML5 (format YYYY-MM-DD)
+        $dateNaissance = "";
+        if ($user && $user->getDateDeNaissanceUtilisateur()) {
+            $dateNaissance = $user->getDateDeNaissanceUtilisateur()->format('Y-m-d');
+        }
+
+        $template = $this->getTwig()->load('utilisateur_gestion_profil.html.twig');
+        echo $template->render([
+            'page' => [
+                'title' => "Gestion du Profil",
+                'name' => "gestion_profil"
+            ],
+            'user' => $user,
+            'dateNaissance' => $dateNaissance,
+            'session' => $_SESSION
+        ]);
+    }
+
+    /**
+     * @brief Traite et enregistre les modifications du profil utilisateur.
+     * 
+     * Cette méthode récupère les données du formulaire POST, gère le téléversement
+     * de la nouvelle photo de profil, traite la date de naissance unique et met à jour
+     * l'utilisateur dans la base de données via le DAO.
+     * 
+     * @return void
+     */
+    public function enregistrerProfil()
+    {
+        // Sécurité : vérifier la session et la méthode POST
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_SESSION['user_email'])) {
+            $this->redirectTo('home', 'afficher');
+        }
+
+        $uDAO = new UtilisateurDAO($this->getPDO());
+        $emailActuel = $_SESSION['user_email']; //Pour récupérer l'ancien email
+        $user = $uDAO->find($emailActuel);
+
+        if (!$user) {
+            $this->redirectTo('home', 'afficher');
+        }
+
+        // Mise à jour des champs textuels
+        $user->setPseudoUtilisateur($_POST['pseudo'] ?? $user->getPseudoUtilisateur());
+        $user->setDescriptionUtilisateur($_POST['description'] ?? $user->getDescriptionUtilisateur());
+        $user->setNomUtilisateur($_POST['nom'] ?? $user->getNomUtilisateur());
+        $user->setEmailUtilisateur($_POST['email'] ?? $user->getEmailUtilisateur());
+        
+        // Gestion de la date de naissance
+        $birthdate = $_POST['birthdate'] ?? '';
+        if (!empty($birthdate)) {
+            try {
+                $dateObj = new DateTime($birthdate);
+                // Vérification de sécurité : année supérieure à 1920
+                if ($dateObj->format('Y') > 1920) {
+                    $user->setDateDeNaissanceUtilisateur($dateObj);
+                }
+            } catch (Exception $e) {
+                // En cas d'erreur de format, on ne change rien
+            }
+        }
+
+        // Gestion du genre
+        if (isset($_POST['genre_id'])) {
+            $genreDAO = new GenreDAO($this->getPDO());
+            $genre = $genreDAO->find((int)$_POST['genre_id']);
+            if ($genre) {
+                $user->setGenreUtilisateur($genre);
+            }
+        }
+
+        // Gestion du téléversement de la photo de profil
+        if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = 'assets/images/profile_pictures/';
+            
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
+            $extension = pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
+            $nomFichier = 'profile_' . uniqid() . '.' . $extension;
+            $cheminCible = $uploadDir . $nomFichier;
+
+            if (move_uploaded_file($_FILES['photo']['tmp_name'], $cheminCible)) {
+                $anciennePhoto = $user->geturlPhotoUtilisateur();
+                // Supprimer l'ancienne photo si elle existe y no es la default
+                if ($anciennePhoto && strpos($anciennePhoto, 'default.png') === false && file_exists($anciennePhoto)) {
+                    @unlink($anciennePhoto);
+                }
+                $user->seturlPhotoUtilisateur($cheminCible);
+            }
+        }
+
+        //Persistance des modifications
+        if ($uDAO->update($user, $emailActuel)) {
+            // Mettre à jour la session
+            $_SESSION['user_pseudo'] = $user->getPseudoUtilisateur();
+            
+            // Redirection avec message de succès
+            $_SESSION['user_email'] = $user->getEmailUtilisateur();
+
+            // Redirection avec message de succès
+            $this->redirectTo('utilisateur', 'afficherGestionProfil', ['success' => 1]);
+        }
+    }
+    
+    /**
+     * @brief Affiche la page de sécurité (modification du mot de passe).
+     * 
+     * @return void
+     */
+    public function afficherSecurite()
+    {
+        if (!isset($_SESSION['user_email'])) {
+            $this->redirectTo('home', 'afficher');
+        }
+
+        $template = $this->getTwig()->load('utilisateur_securite.html.twig');
+        echo $template->render([
+            'page' => ['title' => "Sécurité - Paaxio", 'name' => "securite"],
+            'session' => $_SESSION
+        ]);
+    }
+
+/**
+     * @brief Traite la modification du mot de passe avec vérifications de sécurité.
+     * 
+     * Cette méthode vérifie le mot de passe actuel, valide la force du nouveau,
+     * met à jour la base de données et déconnecte l'utilisateur pour forcer
+     * une nouvelle connexion sécurisée.
+     * 
+     * @return void
+     */
+    public function modifierMotDePasse()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_SESSION['user_email'])) {
+            $this->redirectTo('home', 'afficher');
+        }
+
+        $uDAO = new UtilisateurDAO($this->getPDO());
+        $user = $uDAO->find($_SESSION['user_email']);
+
+        // Clause de garde : vérifier si l'utilisateur existe toujours en base
+        if (!$user) {
+            $this->redirectTo('home', 'afficher');
+        }
+
+        $actuel = $_POST['ancien_mdp'] ?? '';
+        $nouveau = $_POST['nouveau_mdp'] ?? '';
+        $repeter = $_POST['repeter_mdp'] ?? '';
+
+        // Vérifier le mot de passe actuel
+        if (!password_verify($actuel, $user->getMotDePasseUtilisateur())) {
+            $this->redirectTo('utilisateur', 'afficherSecurite', ['error' => 'actuel']);
+        }
+
+        // Vérifier la correspondance des deux nouveaux mots de passe
+        if ($nouveau !== $repeter) {
+            $this->redirectTo('utilisateur', 'afficherSecurite', ['error' => 'match']);
+        }
+
+        // Vérifier la force du mot de passe (Regex)
+        $regex = '/^(?=.*[a-zA-Z])(?=.*[0-9!@#$%^&*(),.?":{}|<>]).{10,}$/';
+        if (!preg_match($regex, $nouveau)) {
+            $this->redirectTo('utilisateur', 'afficherSecurite', ['error' => 'force']);
+        }
+
+        // Hachage avec ARGON2ID et mise à jour
+        $user->setMotDePasseUtilisateur(password_hash($nouveau, PASSWORD_ARGON2ID));
+        
+        if ($uDAO->update($user)) {
+            // Déconnexion forcée après changement réussi pour obliger la reconnexion
+            session_destroy();
+            $this->redirectTo('home', 'afficher', ['success_psw' => 1]);
+        } else {
+            $this->redirectTo('utilisateur', 'afficherSecurite', ['error' => 'db']);
+        }
+    }
+
+    /**
+     * @brief Supprime définitivement le compte de l'utilisateur connecté.
+     * 
+     * Cette méthode supprime l'entrée de l'utilisateur dans la base de données,
+     * détruit sa session et redirige vers la page d'accueil.
+     * 
+     * @return void
+     */
+    public function supprimerCompte()
+    {
+        if (!isset($_SESSION['user_email'])) {
+            $this->redirectTo('home', 'afficher');
+        }
+
+        $uDAO = new UtilisateurDAO($this->getPDO());
+        
+        // Suppression en base de données
+        if ($uDAO->delete($_SESSION['user_email'])) {
+            // Destruction de la session
+            session_destroy();
+            $this->redirectTo('home', 'afficher', ['account_deleted' => 1]);
+        } else {
+            $this->redirectTo('utilisateur', 'afficherSecurite', ['error' => 'delete_fail']);
+        }
+    }
+    
+    /**
+     * @brief Affiche la page de gestion de l'abonnement.
+     * 
+     * Cette méthode permet à l'utilisateur de voir son abonnement actuel
+     * (Classique ou Premium) et les options de renouvellement ou de changement.
+     * 
+     * @return void
+     */
+    public function afficherAbonnement()
+    {
+        if (!isset($_SESSION['user_email'])) {
+            $this->redirectTo('home', 'afficher');
+        }
+
+        $uDAO = new UtilisateurDAO($this->getPDO());
+        $user = $uDAO->find($_SESSION['user_email']);
+
+        $template = $this->getTwig()->load('utilisateur_abonnement.html.twig');
+        echo $template->render([
+            'page' => ['title' => "Abonnement - Paaxio", 'name' => "abonnement"],
+            'user' => $user,
+            'session' => $_SESSION
+        ]);
+    }
+    
 }

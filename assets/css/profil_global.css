@@ -1,0 +1,71 @@
+/* assets/css/profil_global.css */
+
+/* Fond et conteneur principal */
+.bg-profil {
+    background-color: #FDF5F0 !important;
+    min-height: 100vh;
+    padding-bottom: 50px;
+}
+
+/* MENU DE NAVIGATION (ONGLETS) - Pour qu'ils ne bougent plus */
+
+.nav-profil-btns {
+    display: flex !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    max-width: 650px !important;        /* <--- ANCHO FIJO PARA EL MENÚ */
+    margin: 0 auto 50px auto !important; /* <--- CENTRA EL MENÚ */
+    padding-top: 3rem !important;
+}
+
+.nav-profil-btns .btn {
+    flex: 0 1 180px !important;         /* <--- CADA BOTÓN TENDRÁ MÁXIMO 180px */
+    border-radius: 25px !important;
+    background-color: #E68A6E !important;
+    color: white !important;
+    border: 1px solid #C46A54 !important;
+    padding: 10px 0 !important;
+    font-weight: bold !important;
+    text-align: center;
+    text-decoration: none;
+}
+
+.nav-profil-btns .btn-inactive {
+    opacity: 0.5 !important;
+    background-color: #F2C4B5 !important; /* Version plus claire pour l'inactif */
+}
+
+/* FORMULAIRE ET INPUTS */
+.form-label {
+    font-weight: 900;
+    color: #000;
+    margin-top: 25px;
+    font-size: 1.1rem;
+    display: block;
+}
+
+.custom-input {
+    background-color: #F2C4B5 !important;
+    border: 1.5px solid #888 !important;
+    border-radius: 15px !important;
+    padding: 12px 15px !important;
+    width: 100%;
+    color: #333 !important;
+}
+
+/* PHOTO DE PROFIL (Correction du chevauchement) */
+.profile-pic-round {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #E68A6E;
+    position: relative;
+    background-color: #FDF5F0;
+}
+
+.profile-pic-round img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}   

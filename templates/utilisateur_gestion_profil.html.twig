@@ -1,0 +1,113 @@
+{% extends 'base_template.html.twig' %}
+
+{% block title %}Gestion du Profil - Paaxio
+{% endblock %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="/assets/css/profil_global.css">
+	<link rel="stylesheet" href="/assets/css/utilisateur_gestion_profil.css">
+{% endblock %}
+
+{% block content %}
+	<div class="bg-profil">
+		<div class="container" style="max-width: 700px;">
+
+			<div class="nav-profil-btns d-flex justify-content-between pt-5 mb-5">
+				<a href="#" class="btn">Compte</a>
+				<a href="?controller=utilisateur&method=afficherSecurite" class="btn btn-inactive">Sécurité</a>
+				<a href="?controller=utilisateur&method=afficherAbonnement" class="btn btn-inactive">Abonnement</a>
+			</div>
+
+			<form
+				id="formulaireProfil" action="?controller=utilisateur&method=enregistrerProfil" method="POST" enctype="multipart/form-data">
+
+				<!-- Photo Profil -->
+				<label class="form-label d-block">Photo de profil</label>
+				<div class="profile-pic-round mb-3">
+					<img src="/{{ user.urlPhotoUtilisateur ?: 'assets/images/profile_pictures/default.png' }}" alt="Photo">
+				</div>
+				<input
+				type="file" name="photo" class="form-control form-control-sm mb-4" style="max-width: 300px;">
+
+				<!-- Description -->
+				<div class="mb-3">
+					<label for="description" class="form-label">Description</label>
+					<textarea name="description" id="description" class="form-control custom-input" rows="4">{{ user.descriptionUtilisateur }}</textarea>
+				</div>
+
+				<!-- Nom Complet -->
+				<div class="mb-3">
+					<label for="nom" class="form-label">Nom complet</label>
+					<input type="text" id="nom" name="nom" class="form-control custom-input" value="{{ user.nomUtilisateur }}" required>
+				</div>
+
+				<!-- Pseudo -->
+				<div class="mb-3">
+					<label for="pseudo" class="form-label">Nom d'utilisateur</label>
+					<input type="text" id="pseudo" name="pseudo" class="form-control custom-input" value="{{ user.pseudoUtilisateur }}" required minlength="3">
+				</div>
+
+				<!--Mail-->
+				<div class="mb-3">
+					<label for="email" class="form-label">Adresse e-mail</label>
+					<input type="email" id="email" name="email" class="form-control custom-input" value="{{ user.emailUtilisateur }}" required>
+				</div>
+
+				{% set role = user.roleUtilisateur.typeRole|lower %}
+				{% if role == 'artiste' or role == 'producteur' %}
+					<div class="mb-3">
+						<label for="genre" class="form-label">Genre musical</label>
+						<select name="genre_id" id="genre" class="form-select custom-input" required>
+							<option value="" disabled>Choisissez un genre</option>
+							{% for genre in genres %}
+								<option value="{{ genre.idGenre }}" {{ (user.genreUtilisateur and user.genreUtilisateur.idGenre == genre.idGenre) ? 'selected' : '' }}>
+									{{ genre.nomGenre }}
+								</option>
+							{% endfor %}
+						</select>
+					</div>
+				{% endif %}
+
+				<!-- Date de naissance -->
+				<div class="mb-3">
+					<label for="birthdate" class="form-label">Date de naissance</label>
+					<input type="date" 
+						id="birthdate" 
+						name="birthdate" 
+						class="form-control custom-input" 
+						value="{{ dateNaissance }}"
+						required>
+					</div>
+
+				<!-- Enregistrer -->
+				<div class="text-start mt-4">
+					<button type="button" id="boutonOuvrirModal" class="btn btn-save-profil">Enregistrer</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<!-- Modal de Confirmation -->
+	<div class="modal fade" id="modalConfirmation" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content custom-popup-content">
+				<div class="modal-body text-center p-5">
+					<h2 class="fw-bold mb-3" style="color: #333;">Enregistrer</h2>
+					<p class="mb-5" style="font-size: 1.1rem; color: #555;">
+						Vous êtes sûr de vouloir modifier
+						<br>
+						vos informations?
+					</p>
+					<div class="d-flex justify-content-around">
+						<button type="button" class="btn btn-popup-annuler" data-bs-dismiss="modal">Annuler</button>
+						<button type="button" class="btn btn-popup-enregistrer" id="boutonConfirmer">Enregistrer</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block script %}
+	<script src="assets/js/utilisateur_gestion_profil.js"></script>
+{% endblock %}

@@ -1,0 +1,126 @@
+{% extends 'base_template.html.twig' %}
+
+{% block title %}{{ page.title }}{% endblock %}
+
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="/assets/css/profil_global.css">
+    <link rel="stylesheet" href="/assets/css/utilisateur_securite.css">
+{% endblock %}
+
+{% block content %}
+<div class="bg-profil">
+    <div class="container" style="max-width: 700px;">
+        
+        <!-- Onglets -->
+        <div class="nav-profil-btns d-flex justify-content-between pt-5 mb-5">
+            <a href="?controller=utilisateur&method=afficherGestionProfil" class="btn btn-inactive">Compte</a>
+            <a href="#" class="btn">Sécurité</a>
+            <a href="?controller=utilisateur&method=afficherAbonnement" class="btn btn-inactive">Abonnement</a>
+        </div>
+
+        <h2 class="fw-bold mb-4">Modifier votre mot de passe</h2>
+
+        {% if GET.error == 'actuel' %}<div class="alert alert-danger">Le mot de passe actuel est incorrect.</div>{% endif %}
+        {% if GET.error == 'match' %}<div class="alert alert-danger">Les nouveaux mots de passe ne correspondent pas.</div>{% endif %}
+        {% if GET.error == 'force' %}<div class="alert alert-danger">Le mot de passe ne respecte pas les critères de sécurité.</div>{% endif %}
+        {% if GET.success %}<div class="alert alert-success">Mot de passe modifié avec succès !</div>{% endif %}
+
+        <form id="formSecurite" action="?controller=utilisateur&method=modifierMotDePasse" method="POST">
+            
+            <div class="mb-3">
+                <label class="form-label">Mot de passe actuel</label>
+                <div class="position-relative">
+                    <input type="password" id="ancien_mdp" name="ancien_mdp" class="form-control custom-input" placeholder="Mot de passe actuel" required>
+                    <i class="bi bi-eye-slash position-absolute top-50 end-0 translate-middle-y me-3 toggle-password" data-target="ancien_mdp" style="cursor: pointer;"></i>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Nouveau mot de passe</label>
+                <div class="position-relative">
+                    <input type="password" id="nouveau_mdp" name="nouveau_mdp" class="form-control custom-input" placeholder="Nouveau mot de passe" required>
+                    <i class="bi bi-eye-slash position-absolute top-50 end-0 translate-middle-y me-3 toggle-password" data-target="nouveau_mdp" style="cursor: pointer;"></i>
+                </div>
+            </div>
+
+            <div class="security-requirements mb-3">
+                <p class="mb-1">Votre mot de passe doit comporter au moins</p>
+                <ul class="small">
+                    <li>1 lettre</li>
+                    <li>1 chiffre ou caractère spécial (p. ex., # ? ! &)</li>
+                    <li>10 caractères</li>
+                </ul>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">Répéter le nouveau mot de passe</label>
+                <div class="position-relative">
+                    <input type="password" id="repeter_mdp" name="repeter_mdp" class="form-control custom-input" placeholder="Répéter le nouveau mot de passe" required>
+                    <i class="bi bi-eye-slash position-absolute top-50 end-0 translate-middle-y me-3 toggle-password" data-target="repeter_mdp" style="cursor: pointer;"></i>
+                </div>
+            </div>
+
+
+            <div class="d-flex flex-column align-items-start gap-3">
+                <button type="button" class="btn btn-supprimer-compte w-100" data-bs-toggle="modal" data-bs-target="#modalSuppression">
+                    Supprimer le compte
+                </button>
+                    <button type="button" id="boutonOuvrirModalMdp" class="btn btn-confirmer-mdp">
+                        Changer le mot de passe
+                    </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal de Suppression de Compte -->
+<div class="modal fade" id="modalSuppression" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content custom-popup-content">
+            <div class="modal-body text-center p-5">
+                <h2 class="fw-bold mb-3" style="color: #333; font-size: 2.5rem;">Attention !</h2>
+                <p class="mb-5" style="font-size: 1.2rem; color: #555;">
+                    Toutes les informations que vous <br>
+                    avez saisies seront perdues une fois <br>
+                    que vous reviendrez à la page <br>
+                    précédente.
+                </p>
+                
+                <div class="d-flex justify-content-around">
+                    <button type="button" class="btn btn-popup-annuler" data-bs-dismiss="modal">Annuler</button>
+                    <!-- Bouton qui déclenche la suppression réelle -->
+                    <button type="button" class="btn btn-popup-enregistrer" id="boutonConfirmerSuppression">Supprimer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Confirmation Changement Mot de Passe -->
+<div class="modal fade" id="modalChangementMdp" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content custom-popup-content">
+            <div class="modal-body text-center p-5">
+                <h2 class="fw-bold mb-3" style="color: #333;">Changer de mot de passe</h2>
+                <p class="mb-5" style="font-size: 1.2rem; color: #555;">
+                    Vous êtes sûr de vouloir <br>
+                    changer votre mot de passe ?
+                </p>
+                
+                <div class="d-flex justify-content-around">
+                    <button type="button" class="btn btn-popup-annuler" data-bs-dismiss="modal">Annuler</button>
+                    <!-- Bouton qui soumet réellement le formulaire -->
+                    <button type="button" class="btn btn-popup-enregistrer" id="boutonFinaliserMdp">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block script %}
+    <script src="assets/js/utilisateur_securite.js"></script>
+{% endblock %}
