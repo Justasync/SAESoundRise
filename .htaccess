@@ -1,3 +1,9 @@
+<If "%{HTTP_HOST} =~ /beta/">
+    AuthType Basic
+    AuthName "Veuillez vous identifier pour accéder au site de test"
+    AuthUserFile /home/u488841025/domains/beta.paaxio.com/public_html/config/.htpasswd
+    Require valid-user
+</If>
 
 <IfModule mod_php.c>
     php_value upload_max_filesize 25M
