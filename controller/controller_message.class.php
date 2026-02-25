@@ -1,0 +1,103 @@
+<?php
+
+/**
+ * @file controller_message.class.php
+ * @brief Fichier contenant le contrôleur de gestion des messages.
+ * 
+ * Ce fichier gère toutes les fonctionnalités liées aux messages
+ * dans l'application Paaxio : envoi, réception, affichage.
+ */
+
+/**
+ * @class ControllerMessage
+ * @brief Contrôleur dédié à la gestion des messages.
+ * 
+ * Cette classe gère les opérations sur les messages :
+ * - Envoi
+ * - Réception
+ * - Affichage
+ * 
+ * @extends Controller
+ */
+
+/**
+ * @file controller_message.class.php
+ * @brief Contrôleur pour la messagerie privée.
+ */
+
+class ControllerMessage extends Controller {
+
+    public function __construct(\Twig\Environment $twig, \Twig\Loader\FilesystemLoader $loader)
+    {
+        parent::__construct($loader, $twig);
+    }
+
+    /**
+     * Affiche la liste des conversations de l'utilisateur connecté.
+     */
+    public function lister()
+    {
+        $this->requireAuth();
+        $myEmail = $_SESSION['user_email']; // On suppose que l'email est stocké en session
+
+        $messageDAO = new MessageDAO($this->getPDO());
+        $conversations = $messageDAO->getConversations($myEmail);
+
+        $template = $this->getTwig()->load('message_liste.html.twig');
+        echo $template->render([
+            'page' => ['title' => 'Mes Messages', 'name' => 'messages'],
+            'contacts' => $conversations
+        ]);
+    }
+
+    /**
+     * Affiche une discussion précise et gère l'envoi d'un nouveau message.
+     */
+    public function conversation()
+    {
+        $this->requireAuth();
+        $myEmail = $_SESSION['user_email'];
+        
+        $contactEmail = $this->getGet()['contact'] ?? null;
+
+        if (!$contactEmail) {
+            $this->redirectTo('message', 'lister');
+        }
+
+        $messageDAO = new MessageDAO($this->getPDO());
+        $utilisateurDAO = new UtilisateurDAO($this->getPDO());
+
+        $contact = $utilisateurDAO->find($contactEmail);
+        if (!$contact) {
+            $this->redirectTo('message', 'lister');
+        }
+
+        if ($this->getPost() && isset($this->getPost()['contenu'])) {
+            $contenu = trim($this->getPost()['contenu']);
+            if (!empty($contenu)) {
+                $me = $utilisateurDAO->find($myEmail);
+                $nouveauMessage = new Message(
+                    null, 
+                    $contenu, 
+                    new DateTime(), 
+                    false, 
+                    $me, 
+                    $contact
+                );
+                $messageDAO->create($nouveauMessage);
+                
+                $this->redirectTo('message', 'conversation', ['contact' => $contactEmail]);
+            }
+        }
+
+        $messages = $messageDAO->getMessagesConversation($myEmail, $contactEmail);
+
+        $template = $this->getTwig()->load('message_conversation.html.twig');
+        echo $template->render([
+            'page' => ['title' => 'Discussion avec ' . $contact->getPseudoUtilisateur()],
+            'contact' => $contact,
+            'messages' => $messages,
+            'myEmail' => $myEmail
+        ]);
+    }
+}

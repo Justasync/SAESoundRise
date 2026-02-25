@@ -25,6 +25,24 @@ require_once __DIR__ . '/../enums/Role.enum.php';
 require_once __DIR__ . '/../modeles/bd.class.php';
 
 // ==========================================
+// RESTRICTION : beta et localhost (requêtes web)
+// ==========================================
+// Sur paaxio.com, refuser l'accès ; autoriser beta.paaxio.com et localhost.
+// En CLI, le script reste exécutable (ex. sur le serveur beta).
+if (php_sapi_name() !== 'cli') {
+    $host = $_SERVER['HTTP_HOST'] ?? '';
+    $isBeta = ($host === 'beta.paaxio.com');
+    $isLocalhost = ($host === 'localhost' || str_starts_with($host, 'localhost:'));
+    $isLocalIp = ($host === '127.0.0.1' || str_starts_with($host, '127.0.0.1:'));
+    if (!$isBeta && !$isLocalhost && !$isLocalIp) {
+        http_response_code(403);
+        header('Content-Type: text/plain; charset=utf-8');
+        echo "Accès refusé : ce script n'est disponible que sur beta.paaxio.com ou en localhost.";
+        exit;
+    }
+}
+
+// ==========================================
 // 1. CONFIGURATION
 // ==========================================
 
@@ -93,7 +111,7 @@ $songNouns = ['Sky', 'River', 'City', 'Street', 'Night', 'Day', 'Sun', 'Moon', '
 // ==========================================
 
 try {
-    $pdo = bd::getInstance()->getConnexion();
+    $pdo = bd::getInstance()->getConnexion(bd::ROLE_DB_ADMINISTRATEUR);
     echo "[INFO] Connexion à la base de données établie.\n";
 } catch (Exception $e) {
     die("[ERREUR] Échec de la connexion : " . $e->getMessage());

@@ -1,0 +1,88 @@
+{% extends "base_template.html.twig" %}
+
+{% block content %}
+
+<div class="chat-wrapper">
+    <div class="chat-container">
+        <div class="chat-header">
+            {# On affiche une image par défaut si l'utilisateur n'en a pas #}
+            <img src="{{ contact.urlPhotoUtilisateur ?? '/assets/images/default-avatar.png' }}" alt="{{ contact.pseudoUtilisateur }}">
+            <h3>{{ contact.pseudoUtilisateur }}</h3>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            {% for message in messages %}
+                {# On vérifie si l'email de l'expéditeur correspond à celui du contact #}
+                {% if message.emailExpediteur.emailUtilisateur == contact.emailUtilisateur %}
+                    <div class="message-bubble message-received">
+                        <div>{{ message.contenu }}</div>
+                        <div class="message-time">{{ message.dateEnvoi|date('H:i') }}</div>
+                    </div>
+                {% else %}
+                    <div class="message-bubble message-sent">
+                        <div>{{ message.contenu }}</div>
+                        <div class="message-time">{{ message.dateEnvoi|date('H:i') }}</div>
+                    </div>
+                {% endif %}
+            {% else %}
+                <p style="text-align: center; color: #888;">Commencez la discussion avec {{ contact.pseudoUtilisateur }} !</p>
+            {% endfor %}
+        </div>
+
+        <div class="chat-input-area">
+            <form action="" method="POST" class="chat-input-form">
+                <input type="text" name="contenu" class="chat-input" placeholder="Écrivez un message..." required autocomplete="off" autofocus>
+                <button type="submit" class="chat-send-btn">Envoyer</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const chatMessages = document.getElementById('chatMessages');
+        
+        // Fonction pour scroller tout en bas
+        function scrollToBottom() {
+            if (chatMessages) {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        }
+
+        // On scroll en bas au premier chargement de la page
+        scrollToBottom();
+
+        // --- SYSTÈME DE RAFRAÎCHISSEMENT AUTOMATIQUE (POLLING) ---
+        setInterval(() => {
+            // On demande la page actuelle silencieusement en arrière-plan
+            fetch(window.location.href)
+                .then(response => response.text())
+                .then(html => {
+                    // On simule un document HTML pour lire la réponse
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    
+                    // On isole uniquement la zone des messages de la nouvelle page
+                    const newMessagesBlock = doc.getElementById('chatMessages');
+                    
+                    // Si on a trouvé la zone ET que son contenu est différent de ce qu'on affiche actuellement
+                    if (newMessagesBlock && chatMessages.innerHTML !== newMessagesBlock.innerHTML) {
+                        
+                        // Petite astuce d'UX : on vérifie si l'utilisateur était déjà tout en bas de la conversation
+                        // (pour ne pas le forcer à scroller s'il était en train de relire de vieux messages plus haut)
+                        const isAtBottom = Math.abs((chatMessages.scrollHeight - chatMessages.scrollTop) - chatMessages.clientHeight) < 50;
+
+                        // On remplace les anciens messages par les nouveaux !
+                        chatMessages.innerHTML = newMessagesBlock.innerHTML;
+
+                        // Si l'utilisateur était en bas, on le fait descendre sur le nouveau message
+                        if (isAtBottom) {
+                            scrollToBottom();
+                        }
+                    }
+                })
+                .catch(error => console.error('Erreur de synchronisation des messages :', error));
+        }, 3000); // 3000 millisecondes = vérification toutes les 3 secondes
+    });
+</script>
+{% endblock %}

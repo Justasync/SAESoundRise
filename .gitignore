@@ -2,6 +2,7 @@
 .env
 .env.*
 /config/config.json
+/config/.htpasswd
 
 # Fichier pour prendre des notes sur le travail effectué
 COMMIT
@@ -51,3 +52,6 @@ yarn-error.log*
 # Autres fichiers sensibles
 *.key
 *.pem
+
+# Fichiers de sauvegarde
+/backups/
