@@ -21,10 +21,10 @@
 
         <h2 class="fw-bold mb-4">Modifier votre mot de passe</h2>
 
-        {% if GET.error == 'actuel' %}<div class="alert alert-danger">Le mot de passe actuel est incorrect.</div>{% endif %}
-        {% if GET.error == 'match' %}<div class="alert alert-danger">Les nouveaux mots de passe ne correspondent pas.</div>{% endif %}
-        {% if GET.error == 'force' %}<div class="alert alert-danger">Le mot de passe ne respecte pas les critères de sécurité.</div>{% endif %}
-        {% if GET.success %}<div class="alert alert-success">Mot de passe modifié avec succès !</div>{% endif %}
+        {% if error == 'actuel' %}<div class="alert alert-danger">Le mot de passe actuel est incorrect.</div>{% endif %}
+        {% if error == 'match' %}<div class="alert alert-danger">Les nouveaux mots de passe ne correspondent pas.</div>{% endif %}
+        {% if error == 'force' %}<div class="alert alert-danger">Le mot de passe ne respecte pas les critères de sécurité.</div>{% endif %}
+        {% if success %}<div class="alert alert-success">Mot de passe modifié avec succès !</div>{% endif %}
 
         <form id="formSecurite" action="?controller=utilisateur&method=modifierMotDePasse" method="POST">
             

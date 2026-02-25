@@ -1044,7 +1044,7 @@ class ControllerUtilisateur extends Controller
 
             if (move_uploaded_file($_FILES['photo']['tmp_name'], $cheminCible)) {
                 $anciennePhoto = $user->geturlPhotoUtilisateur();
-                // Supprimer l'ancienne photo si elle existe y no es la default
+                // Supprimer l'ancienne photo de profil si elle existe et n'est pas la photo par défaut
                 if ($anciennePhoto && strpos($anciennePhoto, 'default.png') === false && file_exists($anciennePhoto)) {
                     @unlink($anciennePhoto);
                 }
