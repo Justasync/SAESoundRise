@@ -1,55 +1,109 @@
 <?php
+
 /**
  * @file modeles/bd.class.php
- * @brief Classe Singleton pour la gestion de la connexion à la base de données
+ * @brief Classe Singleton pour la gestion des connexions à la base de données (multi-rôles)
+ *
+ * Trois connexions distinctes selon le rôle :
+ * - site_user : utilisateur public (connexion par défaut pour les visiteurs)
+ * - site_administrateur : SELECT, INSERT, UPDATE, DELETE (utilisé après login admin)
+ * - db_administrateur : ALL PRIVILEGES (scripts de maintenance, backup, populate)
  */
 
 class bd
 {
+    public const ROLE_SITE_USER = 'site_user';
+    public const ROLE_SITE_ADMINISTRATEUR = 'site_administrateur';
+    public const ROLE_DB_ADMINISTRATEUR = 'db_administrateur';
+
     /**
      * @var bd|null $instance Instance singleton de la classe bd.
      */
     private static ?bd $instance = null;
 
     /**
-     * @var PDO|null $pdo L'instance PDO pour la connexion à la base de données.
+     * @var array<string, PDO> Connexions PDO par rôle (lazy-initialisées).
      */
-    private ?PDO $pdo;
+    private array $connections = [];
+
+    /**
+     * @var array Configuration DB partagée (host, dbname, port).
+     */
+    private array $dbConfig;
 
     /**
      * Constructeur privé pour empêcher l'instanciation directe.
-     * Crée une connexion PDO à la base de données via la configuration stockée.
-     * @throws PDOException En cas d'échec de connexion à la base de données.
+     * Charge la configuration DB sans ouvrir de connexion.
      */
     private function __construct()
     {
-        try {
-            $this->pdo = new PDO('mysql:host=' . Constantes::getInstance()->getConfig()['db']['host'] . ';port=' . Constantes::getInstance()->getConfig()['db']['port'] . ';dbname=' . Constantes::getInstance()->getConfig()['db']['dbname'], Constantes::getInstance()->getConfig()['db']['username'], Constantes::getInstance()->getConfig()['db']['password']);
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
-            die('Connexion a la BD échouée: ' . $e->getMessage());
-        }
+        $config = Constantes::getInstance()->getConfig()['db'];
+        $this->dbConfig = [
+            'host' => $config['host'],
+            'dbname' => $config['dbname'],
+            'port' => (int) ($config['port'] ?? 3306),
+        ];
     }
 
     /**
      * Retourne l'instance unique de la classe bd (pattern Singleton).
-     * @return bd L'instance unique de la connexion à la base de données.
+     * @return bd L'instance unique.
      */
     public static function getInstance(): bd
     {
-        if (self::$instance == null) {
+        if (self::$instance === null) {
             self::$instance = new bd();
         }
         return self::$instance;
     }
 
     /**
-     * Retourne l'instance PDO de la connexion à la base de données.
+     * Construit le DSN MySQL à partir de la config partagée.
+     */
+    private function getDsn(): string
+    {
+        return sprintf(
+            'mysql:host=%s;port=%d;dbname=%s;charset=utf8mb4',
+            $this->dbConfig['host'],
+            $this->dbConfig['port'],
+            $this->dbConfig['dbname']
+        );
+    }
+
+    /**
+     * Crée et retourne une connexion PDO pour le rôle donné (lazy).
+     * @param string $role Un parmi : site_user, site_administrateur, db_administrateur
+     * @return PDO
+     * @throws PDOException En cas d'échec de connexion.
+     */
+    private function createConnection(string $role): PDO
+    {
+        $config = Constantes::getInstance()->getConfig()['db'];
+        if (!isset($config[$role]['username']) || !isset($config[$role]['password'])) {
+            throw new PDOException("Configuration DB manquante pour le rôle : {$role}");
+        }
+        $username = $config[$role]['username'];
+        $password = $config[$role]['password'];
+        $pdo = new PDO($this->getDsn(), $username, $password, [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        ]);
+        $this->connections[$role] = $pdo;
+        return $pdo;
+    }
+
+    /**
+     * Retourne la connexion PDO pour le rôle demandé.
+     * Par défaut : site_user (utilisateur public).
+     *
+     * @param string $role Un parmi : site_user, site_administrateur, db_administrateur
      * @return PDO L'instance PDO pour exécuter des requêtes SQL.
      */
-    public function getConnexion(): pdo
+    public function getConnexion(string $role = self::ROLE_SITE_USER): PDO
     {
-        return $this->pdo;
+        if (!isset($this->connections[$role])) {
+            $this->createConnection($role);
+        }
+        return $this->connections[$role];
     }
 
     /**

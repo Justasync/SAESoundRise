@@ -36,18 +36,19 @@ $config = json_decode(file_get_contents($configPath), true);
 
 /**
  * @var array $db
- * @brief Configuration de connexion à la base de données
+ * @brief Configuration de connexion à la base de données (db_administrateur pour backup)
  */
 $db = $config['db'];
+$dbAdmin = $db['db_administrateur'];
 
 /**
- * Connexion à la base de données avec PDO
+ * Connexion à la base de données avec PDO (compte db_administrateur, ALL PRIVILEGES)
  */
 try {
     $pdo = new PDO(
         "mysql:host={$db['host']};port={$db['port']};dbname={$db['dbname']};charset=utf8mb4",
-        $db['username'],
-        $db['password'],
+        $dbAdmin['username'],
+        $dbAdmin['password'],
         [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
     );
 } catch (PDOException $e) {

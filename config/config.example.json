@@ -1,18 +1,28 @@
 {
-   "db": {
-      "host": "HOST_DE_VOTRE_BD",
-      "dbname": "VOTRE_NOM_DE_BD",
-      "username": "VOTRE_USERNAME",
-      "password": "VOTRE_MOT_DE_PASSE",
-      "port": 3306
-   },
-   "mail": {
-      "host": "smtp.hostinger.com",
-      "port": 465,
-      "username": "VOTRE_EMAIL@paaxio.com",
-      "password": "VOTRE_MOT_DE_PASSE",
-      "from_email": "no-reply@paaxio.com",
-      "from_name": "Paaxio",
-      "encryption": "ssl"
-   }
+  "db": {
+    "host": "HOST_DE_VOTRE_BD",
+    "dbname": "VOTRE_NOM_DE_BD",
+    "port": 3306,
+    "db_administrateur": {
+      "username": "VOTRE_USERNAME_DB_ADMIN",
+      "password": "VOTRE_MOT_DE_PASSE_DB_ADMIN"
+    },
+    "site_administrateur": {
+      "username": "VOTRE_USERNAME_SITE_ADMIN",
+      "password": "VOTRE_MOT_DE_PASSE_SITE_ADMIN"
+    },
+    "site_user": {
+      "username": "VOTRE_USERNAME_SITE_USER",
+      "password": "VOTRE_MOT_DE_PASSE_SITE_USER"
+    }
+  },
+  "mail": {
+    "host": "smtp.hostinger.com",
+    "port": 465,
+    "username": "VOTRE_EMAIL@paaxio.com",
+    "password": "VOTRE_MOT_DE_PASSE",
+    "from_email": "no-reply@paaxio.com",
+    "from_name": "Paaxio",
+    "encryption": "ssl"
+  }
 }

@@ -2,6 +2,7 @@
 .env
 .env.*
 /config/config.json
+/config/.htpasswd
 
 # Fichier pour prendre des notes sur le travail effectué
 COMMIT

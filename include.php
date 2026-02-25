@@ -183,6 +183,11 @@ require_once 'controller/controller_search.class.php';
  */
 require_once 'controller/controller_fichier.class.php';
 
+/**
+ * @brief Contrôleur des messages
+ */
+require_once 'controller/controller_message.class.php';
+
 // ==========================================
 // MODÈLES (CLASSES MÉTIER ET DAO)
 // ==========================================
@@ -298,6 +303,16 @@ require_once 'modeles/passwordResetToken.class.php';
  * @brief DAO des tokens de réinitialisation de mot de passe
  */
 require_once 'modeles/passwordResetToken.dao.php';
+
+/**
+ * @brief Classe métier des messages
+ */
+require_once 'modeles/message.class.php';
+
+/**
+ * @brief DAO des messages
+ */
+require_once 'modeles/message.dao.php';
 
 // ==========================================
 // VARIABLES GLOBALES TWIG
