@@ -14,8 +14,8 @@
    ========================================= */
 
 :root {
-    --paaxio-brand: #000000; /* Couleur principale de Paaxio (noir/sombre) */
-    --paaxio-brand-hover: #333333;
+    --paaxio-brand: #E07A5F; 
+    --paaxio-brand-hover: #cd6b50;
     --chat-bg: #f9f9fa;
     --chat-border: #eaeaea;
     --msg-received-bg: #e4e6eb;
