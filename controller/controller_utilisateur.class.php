@@ -503,6 +503,9 @@ class ControllerUtilisateur extends Controller
         $managerLike = new ChansonDAO($this->getPdo());
         $chansonsLikees = $managerLike->findChansonsLikees($emailUtilisateur);
 
+        $managerPlaylist = new PlaylistDAO($this->getPdo());
+        $playlists = $managerPlaylist->findAllFromUser($emailUtilisateur);
+
         // Marquer toutes les chansons chargées comme étant likées
         foreach ($chansonsLikees as $chanson) {
             $chanson->setIsLiked(true);
@@ -534,7 +537,8 @@ class ControllerUtilisateur extends Controller
                 'description' => "Chansons likées par l'utilisateur"
             ],
             'album' => $albumVirtuel,
-            'chansons' => $chansonsLikees
+            'chansons' => $chansonsLikees,
+            'playlists' => $playlists
         ]);
     }
 

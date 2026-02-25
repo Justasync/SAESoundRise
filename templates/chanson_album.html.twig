@@ -5,6 +5,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 	<!-- Importation des icônes Bootstrap (assumé) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="/assets/css/playlist-modal.css">
     
 	<style>
 		body {
@@ -112,6 +113,7 @@
         .navbar-custom {
             background-color: #3A1E18; /* Brun profond pour l'en-tête (équivalent de var(--color-earth-deep) */
         }
+
 	</style>
 {% endblock %}
 
@@ -223,7 +225,7 @@
 											<i class="bi bi-play-fill track-play-icon" style="color: rgba(255,255,255,0.7); font-size: 1.2rem;"></i>
 										</button>
 										<!-- Bouton like -->
-                                        <button title="Aimer la musique" class="btn btn-sm btn-link p-1 like-btn" data-id="{{ chanson.getIdChanson() }}" onclick="toggleLikeInline(event, {{ chanson.getIdChanson() }})">
+                                        <button title="Ajouter à une playlist" class="btn btn-sm btn-link p-1 like-btn" data-id="{{ chanson.getIdChanson() }}">
                                             <i class="bi {% if chanson.getIsLiked() %}bi-heart-fill text-danger{% else %}bi-heart{% endif %}" style="font-size: 1rem;"></i>
                                         </button>
 									</td>
@@ -243,11 +245,40 @@
     <!-- L'élément audio réel (invisible) -->
     <audio id="audio-player"></audio>
 
+    <!-- Modal ajout à une playlist -->
+    <div class="modal fade" id="playlistModal" tabindex="-1" aria-labelledby="playlistModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content playlist-modal-content">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title playlist-modal-title" id="playlistModalLabel">Ajouter le titre à une playlist</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+                <div class="modal-body pt-2">
+                    <p class="mb-2" id="playlistModalTrackName">Titre sélectionné</p>
+                    <label for="playlist-select" class="form-label">Choisir une playlist</label>
+                        <select id="playlist-select" class="form-select playlist-modal-select">
+                            <option value="__LIKED__">Musiques likées</option>
+                            {% if playlists is defined and playlists is not empty %}
+                            {% for playlist in playlists %}
+                                <option value="{{ playlist.getIdPlaylist() }}">{{ playlist.getNomPlaylist() }}</option>
+                            {% endfor %}
+                            {% endif %}
+                        </select>
+                    <div id="playlist-liked-status" class="playlist-liked-status d-none"></div>
+                    <div id="playlist-modal-feedback" class="playlist-feedback mt-2"></div>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn playlist-modal-btn px-4" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn playlist-modal-btn px-4" id="playlist-modal-confirm">Ajouter</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block script %}
     {{ parent() }}
-    <script src="/assets/js/like-handler.js"></script>
     <script>
         const audioPlayer = document.getElementById('audio-player');
         const playPauseIcon = document.getElementById('play-pause-icon');
@@ -627,86 +658,6 @@
         // Initialisation du volume au chargement de la page
         handleVolumeChange();
 
-        // Log d'initialisation pour vérifier que le script est chargé
-        console.log('chanson_album script loaded');
-
-        // Délégation d'événements pour les boutons like (robuste et fonctionne pour éléments dynamiques)
-        document.addEventListener('click', function(e) {
-            const btn = e.target.closest('.like-btn');
-            if (!btn) return;
-
-            e.stopPropagation(); // évite de déclencher le clic sur la ligne
-            const chansonId = btn.dataset.id;
-            const row = btn.closest('tr'); // récupère la ligne de la table
-            const icon = btn.querySelector('i');
-
-            fetch('/?controller=chanson&method=toggleLike', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `idChanson=${encodeURIComponent(chansonId)}`
-            })
-            .then(async (res) => {
-                const text = await res.text();
-                try {
-                    const data = JSON.parse(text);
-                    return { ok: res.ok, status: res.status, data };
-                } catch (err) {
-                    console.error('Réponse non JSON du serveur pour toggleLike:', text);
-                    throw new Error('Réponse non JSON du serveur');
-                }
-            })
-            .then(({ ok, status, data }) => {
-                console.log('toggleLike response', status, data);
-                if (data.liked) {
-                    // coeur rempli + rouge
-                    icon.classList.remove('bi-heart');
-                    icon.classList.add('bi-heart-fill');
-                    icon.classList.add('text-danger');
-                } else {
-                    // coeur vide + supprime rouge
-                    icon.classList.remove('bi-heart-fill');
-                    icon.classList.add('bi-heart');
-                    icon.classList.remove('text-danger');
-
-                    // Supprime la ligne uniquement si on est sur la page des musiques likées
-                    if (window.location.search.includes('controller=utilisateur') && window.location.search.includes('method=afficherMesLikes')) {
-                        if (row) row.remove();
-
-                        // Supprime la chanson de la playlist JS
-                        const indexInPlaylist = playlist.findIndex(track => track.id == chansonId);
-                        if (indexInPlaylist !== -1) {
-                            playlist.splice(indexInPlaylist, 1);
-
-                            // Si la chanson supprimée est la piste en cours, jouer la suivante
-                            if (currentTrackIndex === indexInPlaylist) {
-                                if (playlist.length > 0) {
-                                    const nextIndex = Math.min(indexInPlaylist, playlist.length - 1);
-                                    loadTrack(nextIndex);
-                                } else {
-                                    // Plus de pistes → arrêt
-                                    audioPlayer.pause();
-                                    audioPlayer.currentTime = 0;
-                                    progressBar.style.width = '0%';
-                                    currentTimeEl.textContent = '0:00';
-                                    currentTrackTitleEl.textContent = `Piste en cours : Aucune`;
-                                    currentTrackIndex = -1;
-                                    isPlaying = false;
-                                    playPauseIcon.classList.replace('bi-pause-fill', 'bi-play-fill');
-                                }
-                            } else if (currentTrackIndex > indexInPlaylist) {
-                                // Ajuste l'index de la piste en cours si une piste avant elle a été supprimée
-                                currentTrackIndex--;
-                            }
-                        }
-                    }
-                }
-            })
-            .catch(err => {
-                    console.error('Erreur like:', err);
-                    // Affiche une erreur visuelle minimale pour l'utilisateur
-                    if (icon) icon.classList.add('text-muted');
-                });
-        });
-
     </script>
+    <script src="/assets/js/playlist-modal-handler.js"></script>
 {% endblock %}

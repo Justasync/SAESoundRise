@@ -63,6 +63,12 @@ class ControllerAlbum extends Controller
         $managerChanson = new ChansonDAO($this->getPdo());
         $chansons = $managerChanson->rechercherParAlbum($idAlbum);
 
+        $playlists = [];
+        if (!empty($_SESSION['user_email'])) {
+            $managerPlaylist = new PlaylistDao($this->getPdo());
+            $playlists = $managerPlaylist->findAllFromUser($_SESSION['user_email']);
+        }
+
         // Chargement du template
         $template = $this->getTwig()->load('chanson_album.html.twig');
         echo $template->render([
@@ -73,6 +79,7 @@ class ControllerAlbum extends Controller
             ],
             'album' => $album,
             'chansons' => $chansons,
+            'playlists' => $playlists,
         ]);
     }
 
@@ -318,6 +325,12 @@ class ControllerAlbum extends Controller
         $chansonDAO = new ChansonDAO($this->getPDO());
         $chansons = $chansonDAO->rechercherParAlbum((int)$idAlbum);
 
+        $playlists = [];
+        if (!empty($_SESSION['user_email'])) {
+            $playlistDAO = new PlaylistDao($this->getPDO());
+            $playlists = $playlistDAO->findAllFromUser($_SESSION['user_email']);
+        }
+
         // Déterminer le rôle de l'utilisateur à partir de la session
         $userRole = $_SESSION['user_role'] ?? null;
         $template = '';
@@ -336,6 +349,7 @@ class ControllerAlbum extends Controller
         echo $template->render([
             'album' => $album,
             'chansons' => $chansons,
+            'playlists' => $playlists,
             'chansonSelected' => $idChanson ? (int)$idChanson : null,
             'session' => $_SESSION,
         ]);

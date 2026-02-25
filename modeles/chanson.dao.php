@@ -337,6 +337,18 @@ class ChansonDAO
         ]);
     }
 
+    public function isChansonLikee(string $emailUtilisateur, int $idChanson): bool
+    {
+        $sql = "SELECT 1 FROM likeChanson WHERE emailUtilisateur = :emailUtilisateur AND idChanson = :idChanson LIMIT 1";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':emailUtilisateur' => $emailUtilisateur,
+            ':idChanson' => $idChanson
+        ]);
+
+        return (bool) $stmt->fetchColumn();
+    }
+
     /**
      * Met à jour un like (change la date)
      */

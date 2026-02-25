@@ -1,0 +1,39 @@
+.playlist-modal-content {
+    background-color: #f5e5dc;
+    border: 1px solid rgba(58, 30, 24, 0.35);
+    border-radius: 18px;
+    color: #3a1e18;
+}
+
+.playlist-modal-title {
+    font-weight: 800;
+    color: #3a1e18;
+}
+
+.playlist-modal-btn {
+    background-color: #de7f5f;
+    border: none;
+    color: #fff;
+    font-weight: 700;
+}
+
+.playlist-modal-btn:hover,
+.playlist-modal-btn:focus {
+    background-color: #d4704e;
+    color: #fff;
+}
+
+.playlist-modal-select {
+    border-color: rgba(58, 30, 24, 0.25);
+}
+
+.playlist-feedback {
+    font-size: 0.9rem;
+    min-height: 1.2rem;
+}
+
+.playlist-liked-status {
+    font-size: 0.85rem;
+    color: #198754;
+    min-height: 1.2rem;
+}

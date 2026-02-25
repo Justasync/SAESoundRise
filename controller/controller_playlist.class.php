@@ -63,6 +63,7 @@ class ControllerPlaylist extends Controller
 
         // Récupération des chansons de la playlist
         $chansons = $managerPlaylist->getChansonsByPlaylist($idPlaylist, $_SESSION['user_email'] ?? null);
+        $playlists = $managerPlaylist->findAllFromUser($_SESSION['user_email'] ?? null);
 
         // Conversion de la playlist en objet stdClass pour utiliser avec le template
         $playlistObj = (object) [
@@ -89,7 +90,8 @@ class ControllerPlaylist extends Controller
                 'description' => "Playlist dans Paaxio"
             ],
             'album' => $playlistObj,
-            'chansons' => $chansons
+            'chansons' => $chansons,
+            'playlists' => $playlists
         ]);
     }
 
@@ -142,5 +144,60 @@ class ControllerPlaylist extends Controller
             ],
             'testing' => $playlists,
         ));
+    }
+
+    public function ajouterChanson()
+    {
+        header('Content-Type: application/json');
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Méthode non autorisée.'
+            ]);
+            return;
+        }
+
+        $this->requireAuth();
+
+        $emailUtilisateur = $_SESSION['user_email'] ?? null;
+        if (!$emailUtilisateur) {
+            http_response_code(401);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Utilisateur non connecté.'
+            ]);
+            return;
+        }
+
+        $idPlaylist = isset($_POST['idPlaylist']) ? (int) $_POST['idPlaylist'] : 0;
+        $idChanson = isset($_POST['idChanson']) ? (int) $_POST['idChanson'] : 0;
+
+        if ($idPlaylist <= 0 || $idChanson <= 0) {
+            http_response_code(400);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Paramètres invalides.'
+            ]);
+            return;
+        }
+
+        try {
+            $managerPlaylist = new PlaylistDAO($this->getPdo());
+            $resultat = $managerPlaylist->ajouterChansonDansPlaylistUtilisateur($idPlaylist, $idChanson, $emailUtilisateur);
+
+            if (!$resultat['success']) {
+                http_response_code(400);
+            }
+
+            echo json_encode($resultat);
+        } catch (Throwable $e) {
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Erreur serveur lors de l\'ajout à la playlist.'
+            ]);
+        }
     }
 }

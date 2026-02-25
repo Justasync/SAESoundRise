@@ -139,6 +139,70 @@ class PlaylistDAO
         return $chansons;
     }
 
+    public function ajouterChansonDansPlaylistUtilisateur(int $idPlaylist, int $idChanson, string $emailUtilisateur): array
+    {
+        $sqlPlaylist = "SELECT idPlaylist FROM playlist WHERE idPlaylist = :idPlaylist AND emailProprietaire = :emailUtilisateur LIMIT 1";
+        $stmtPlaylist = $this->pdo->prepare($sqlPlaylist);
+        $stmtPlaylist->execute([
+            ':idPlaylist' => $idPlaylist,
+            ':emailUtilisateur' => $emailUtilisateur
+        ]);
+
+        if (!$stmtPlaylist->fetchColumn()) {
+            return [
+                'success' => false,
+                'alreadyExists' => false,
+                'message' => 'Playlist introuvable ou non autorisée.'
+            ];
+        }
+
+        $sqlChanson = "SELECT idChanson FROM chanson WHERE idChanson = :idChanson LIMIT 1";
+        $stmtChanson = $this->pdo->prepare($sqlChanson);
+        $stmtChanson->execute([':idChanson' => $idChanson]);
+
+        if (!$stmtChanson->fetchColumn()) {
+            return [
+                'success' => false,
+                'alreadyExists' => false,
+                'message' => 'Chanson introuvable.'
+            ];
+        }
+
+        $sqlExiste = "SELECT 1 FROM chansonPlaylist WHERE idPlaylist = :idPlaylist AND idChanson = :idChanson LIMIT 1";
+        $stmtExiste = $this->pdo->prepare($sqlExiste);
+        $stmtExiste->execute([
+            ':idPlaylist' => $idPlaylist,
+            ':idChanson' => $idChanson
+        ]);
+
+        if ($stmtExiste->fetchColumn()) {
+            return [
+                'success' => true,
+                'alreadyExists' => true,
+                'message' => 'Cette chanson est déjà dans la playlist.'
+            ];
+        }
+
+        $sqlPosition = "SELECT COALESCE(MAX(positionChanson), 0) + 1 FROM chansonPlaylist WHERE idPlaylist = :idPlaylist";
+        $stmtPosition = $this->pdo->prepare($sqlPosition);
+        $stmtPosition->execute([':idPlaylist' => $idPlaylist]);
+        $nouvellePosition = (int) $stmtPosition->fetchColumn();
+
+        $sqlInsert = "INSERT INTO chansonPlaylist (idPlaylist, idChanson, positionChanson) VALUES (:idPlaylist, :idChanson, :positionChanson)";
+        $stmtInsert = $this->pdo->prepare($sqlInsert);
+        $stmtInsert->execute([
+            ':idPlaylist' => $idPlaylist,
+            ':idChanson' => $idChanson,
+            ':positionChanson' => $nouvellePosition
+        ]);
+
+        return [
+            'success' => true,
+            'alreadyExists' => false,
+            'message' => 'Chanson ajoutée à la playlist.'
+        ];
+    }
+
     /**
      * Get the value of pdo
      */

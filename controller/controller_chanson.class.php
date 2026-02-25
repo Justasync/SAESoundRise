@@ -251,6 +251,67 @@ class ControllerChanson extends Controller
         exit;
     }
 
+    public function ajouterLike()
+    {
+        header('Content-Type: application/json');
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Méthode non autorisée.'
+            ]);
+            return;
+        }
+
+        $emailUtilisateur = $_SESSION['user_email'] ?? null;
+        if (!$emailUtilisateur) {
+            http_response_code(401);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Connectez-vous pour utiliser les musiques likées.'
+            ]);
+            return;
+        }
+
+        $idChanson = isset($_POST['idChanson']) ? (int) $_POST['idChanson'] : 0;
+        if ($idChanson <= 0) {
+            http_response_code(400);
+            echo json_encode([
+                'success' => false,
+                'message' => 'ID de chanson invalide.'
+            ]);
+            return;
+        }
+
+        $chansonDAO = new ChansonDAO($this->getPdo());
+
+        if ($chansonDAO->isChansonLikee($emailUtilisateur, $idChanson)) {
+            echo json_encode([
+                'success' => true,
+                'alreadyLiked' => true,
+                'message' => 'Cette chanson est déjà dans Musiques likées.'
+            ]);
+            return;
+        }
+
+        $ok = $chansonDAO->addChansonLikee($emailUtilisateur, $idChanson);
+        if (!$ok) {
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Impossible d\'ajouter la chanson aux musiques likées.'
+            ]);
+            return;
+        }
+
+        echo json_encode([
+            'success' => true,
+            'alreadyLiked' => false,
+            'message' => 'Chanson ajoutée à Musiques likées.'
+        ]);
+    }
+
     /**
      * @brief Incrémente le compteur d'écoutes d'une chanson.
      * 
