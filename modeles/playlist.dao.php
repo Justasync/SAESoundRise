@@ -203,6 +203,70 @@ class PlaylistDAO
         ];
     }
 
+    public function isChansonDansPlaylistUtilisateur(int $idPlaylist, int $idChanson, string $emailUtilisateur): bool
+    {
+        $sql = "SELECT 1
+                FROM chansonPlaylist cp
+                JOIN playlist p ON p.idPlaylist = cp.idPlaylist
+                WHERE cp.idPlaylist = :idPlaylist
+                  AND cp.idChanson = :idChanson
+                  AND p.emailProprietaire = :emailUtilisateur
+                LIMIT 1";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':idPlaylist' => $idPlaylist,
+            ':idChanson' => $idChanson,
+            ':emailUtilisateur' => $emailUtilisateur
+        ]);
+
+        return (bool) $stmt->fetchColumn();
+    }
+
+    public function retirerChansonDansPlaylistUtilisateur(int $idPlaylist, int $idChanson, string $emailUtilisateur): array
+    {
+        $sqlPlaylist = "SELECT idPlaylist FROM playlist WHERE idPlaylist = :idPlaylist AND emailProprietaire = :emailUtilisateur LIMIT 1";
+        $stmtPlaylist = $this->pdo->prepare($sqlPlaylist);
+        $stmtPlaylist->execute([
+            ':idPlaylist' => $idPlaylist,
+            ':emailUtilisateur' => $emailUtilisateur
+        ]);
+
+        if (!$stmtPlaylist->fetchColumn()) {
+            return [
+                'success' => false,
+                'alreadyRemoved' => false,
+                'message' => 'Playlist introuvable ou non autorisée.'
+            ];
+        }
+
+        if (!$this->isChansonDansPlaylistUtilisateur($idPlaylist, $idChanson, $emailUtilisateur)) {
+            return [
+                'success' => true,
+                'alreadyRemoved' => true,
+                'message' => 'Cette chanson n\'est plus dans la playlist.'
+            ];
+        }
+
+        $sqlDelete = "DELETE cp FROM chansonPlaylist cp
+                      JOIN playlist p ON p.idPlaylist = cp.idPlaylist
+                      WHERE cp.idPlaylist = :idPlaylist
+                        AND cp.idChanson = :idChanson
+                        AND p.emailProprietaire = :emailUtilisateur";
+        $stmtDelete = $this->pdo->prepare($sqlDelete);
+        $stmtDelete->execute([
+            ':idPlaylist' => $idPlaylist,
+            ':idChanson' => $idChanson,
+            ':emailUtilisateur' => $emailUtilisateur
+        ]);
+
+        return [
+            'success' => true,
+            'alreadyRemoved' => false,
+            'message' => 'Chanson retirée de la playlist.'
+        ];
+    }
+
     /**
      * Get the value of pdo
      */

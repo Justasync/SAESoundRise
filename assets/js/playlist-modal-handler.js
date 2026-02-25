@@ -12,8 +12,10 @@
 
     const playlistModal = new bootstrap.Modal(playlistModalElement);
     let currentSongIsLiked = false;
+    let currentSongInSelectedPlaylist = false;
     let currentSongIcon = null;
     const defaultConfirmLabel = playlistModalConfirm.textContent;
+    const urlParams = new URLSearchParams(window.location.search);
 
     const refreshLikedStatus = function () {
         if (!playlistLikedStatus || !playlistSelect) return;
@@ -25,13 +27,56 @@
             return;
         }
 
+        if (playlistSelect.value !== '__LIKED__' && currentSongInSelectedPlaylist) {
+            playlistLikedStatus.textContent = 'Cette chanson est déjà dans la playlist sélectionnée. Vous pouvez la retirer.';
+            playlistLikedStatus.classList.remove('d-none');
+            playlistModalConfirm.textContent = 'Retirer';
+            return;
+        }
+
         playlistLikedStatus.textContent = '';
         playlistLikedStatus.classList.add('d-none');
         playlistModalConfirm.textContent = defaultConfirmLabel;
     };
 
+    const refreshPlaylistSelectionState = function () {
+        if (!playlistSelect) return;
+
+        const idPlaylist = playlistSelect.value;
+        const idChanson = playlistModalConfirm.dataset.chansonId;
+
+        if (!idPlaylist || !idChanson) return;
+
+        if (idPlaylist === '__LIKED__') {
+            currentSongInSelectedPlaylist = false;
+            refreshLikedStatus();
+            return;
+        }
+
+        fetch('/?controller=playlist&method=etatChanson', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `idPlaylist=${encodeURIComponent(idPlaylist)}&idChanson=${encodeURIComponent(idChanson)}`
+        })
+            .then(async (res) => {
+                const data = await res.json();
+                if (!res.ok || !data.success) {
+                    throw new Error(data.message || 'Erreur de vérification playlist.');
+                }
+                return data;
+            })
+            .then((data) => {
+                currentSongInSelectedPlaylist = !!data.inPlaylist;
+                refreshLikedStatus();
+            })
+            .catch(() => {
+                currentSongInSelectedPlaylist = false;
+                refreshLikedStatus();
+            });
+    };
+
     if (playlistSelect) {
-        playlistSelect.addEventListener('change', refreshLikedStatus);
+        playlistSelect.addEventListener('change', refreshPlaylistSelectionState);
     }
 
     document.addEventListener('click', function (event) {
@@ -57,7 +102,8 @@
             playlistModalFeedback.textContent = '';
             playlistModalFeedback.className = 'playlist-feedback mt-3';
         }
-        refreshLikedStatus();
+        currentSongInSelectedPlaylist = false;
+        refreshPlaylistSelectionState();
         playlistModal.show();
     });
 
@@ -65,6 +111,7 @@
         const chansonId = this.dataset.chansonId;
         const idPlaylist = playlistSelect ? playlistSelect.value : null;
         const shouldRemoveLike = idPlaylist === '__LIKED__' && currentSongIsLiked;
+        const shouldRemoveFromPlaylist = idPlaylist !== '__LIKED__' && currentSongInSelectedPlaylist;
 
         if (!chansonId || !idPlaylist) {
             if (playlistModalFeedback) {
@@ -76,12 +123,14 @@
 
         this.disabled = true;
         if (playlistModalFeedback) {
-            playlistModalFeedback.textContent = shouldRemoveLike ? 'Retrait en cours...' : 'Ajout en cours...';
+            playlistModalFeedback.textContent = (shouldRemoveLike || shouldRemoveFromPlaylist) ? 'Retrait en cours...' : 'Ajout en cours...';
             playlistModalFeedback.className = 'playlist-feedback mt-3 text-muted';
         }
 
         const endpoint = shouldRemoveLike
             ? '/?controller=chanson&method=retirerLike'
+            : shouldRemoveFromPlaylist
+            ? '/?controller=playlist&method=retirerChanson'
             : idPlaylist === '__LIKED__'
             ? '/?controller=chanson&method=ajouterLike'
             : '/?controller=playlist&method=ajouterChanson';
@@ -127,6 +176,27 @@
                     if (shouldRemoveLike
                         && window.location.search.includes('controller=utilisateur')
                         && window.location.search.includes('method=afficherMesLikes')) {
+                        const activeBtn = document.querySelector(`.like-btn[data-id="${chansonId}"]`);
+                        const row = activeBtn ? activeBtn.closest('tr') : null;
+                        if (row) {
+                            row.remove();
+                        }
+                    }
+                }
+
+                if (idPlaylist !== '__LIKED__') {
+                    currentSongInSelectedPlaylist = !shouldRemoveFromPlaylist;
+                    refreshLikedStatus();
+
+                    const currentController = urlParams.get('controller');
+                    const currentMethod = urlParams.get('method');
+                    const currentPlaylistId = urlParams.get('idPlaylist');
+                    const isCurrentPlaylistPage = currentController === 'playlist'
+                        && currentMethod === 'afficher'
+                        && currentPlaylistId
+                        && String(currentPlaylistId) === String(idPlaylist);
+
+                    if (shouldRemoveFromPlaylist && isCurrentPlaylistPage) {
                         const activeBtn = document.querySelector(`.like-btn[data-id="${chansonId}"]`);
                         const row = activeBtn ? activeBtn.closest('tr') : null;
                         if (row) {

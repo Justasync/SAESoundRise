@@ -200,4 +200,112 @@ class ControllerPlaylist extends Controller
             ]);
         }
     }
+
+    public function etatChanson()
+    {
+        header('Content-Type: application/json');
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Méthode non autorisée.'
+            ]);
+            return;
+        }
+
+        $this->requireAuth();
+        $emailUtilisateur = $_SESSION['user_email'] ?? null;
+        if (!$emailUtilisateur) {
+            http_response_code(401);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Utilisateur non connecté.'
+            ]);
+            return;
+        }
+
+        $idPlaylist = isset($_POST['idPlaylist']) ? (int) $_POST['idPlaylist'] : 0;
+        $idChanson = isset($_POST['idChanson']) ? (int) $_POST['idChanson'] : 0;
+
+        if ($idPlaylist <= 0 || $idChanson <= 0) {
+            http_response_code(400);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Paramètres invalides.'
+            ]);
+            return;
+        }
+
+        try {
+            $managerPlaylist = new PlaylistDAO($this->getPdo());
+            $inPlaylist = $managerPlaylist->isChansonDansPlaylistUtilisateur($idPlaylist, $idChanson, $emailUtilisateur);
+
+            echo json_encode([
+                'success' => true,
+                'inPlaylist' => $inPlaylist
+            ]);
+        } catch (Throwable $e) {
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Erreur serveur lors de la vérification de la playlist.'
+            ]);
+        }
+    }
+
+    public function retirerChanson()
+    {
+        header('Content-Type: application/json');
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Méthode non autorisée.'
+            ]);
+            return;
+        }
+
+        $this->requireAuth();
+
+        $emailUtilisateur = $_SESSION['user_email'] ?? null;
+        if (!$emailUtilisateur) {
+            http_response_code(401);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Utilisateur non connecté.'
+            ]);
+            return;
+        }
+
+        $idPlaylist = isset($_POST['idPlaylist']) ? (int) $_POST['idPlaylist'] : 0;
+        $idChanson = isset($_POST['idChanson']) ? (int) $_POST['idChanson'] : 0;
+
+        if ($idPlaylist <= 0 || $idChanson <= 0) {
+            http_response_code(400);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Paramètres invalides.'
+            ]);
+            return;
+        }
+
+        try {
+            $managerPlaylist = new PlaylistDAO($this->getPdo());
+            $resultat = $managerPlaylist->retirerChansonDansPlaylistUtilisateur($idPlaylist, $idChanson, $emailUtilisateur);
+
+            if (!$resultat['success']) {
+                http_response_code(400);
+            }
+
+            echo json_encode($resultat);
+        } catch (Throwable $e) {
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Erreur serveur lors du retrait de la playlist.'
+            ]);
+        }
+    }
 }
