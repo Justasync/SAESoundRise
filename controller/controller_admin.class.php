@@ -57,6 +57,26 @@ class ControllerAdmin extends Controller
             if ($_GET['success'] == 2) $successMessage = "L'utilisateur a été modifié avec succès !";
         }
 
+        $template = $this->getTwig()->load('admin_dashboard.html.twig');
+        echo $template->render([
+            'page' => ['title' => "Admin Dashboard", 'name' => "admin"],
+            'session' => $_SESSION,
+            'utilisateurs' => $utilisateurs,
+            'success' => $successMessage
+        ]);
+    }
+
+    /**
+     * @brief Affiche la page d'administration des sauvegardes SQL.
+     *
+     * Nécessite le rôle Admin.
+     *
+     * @return void
+     */
+    public function sauvegardes()
+    {
+        $this->requireRole(RoleEnum::Admin);
+
         $restoreSuccess = null;
         $restoreError = null;
         if (isset($_GET['restore']) && $_GET['restore'] == 1) {
@@ -68,12 +88,10 @@ class ControllerAdmin extends Controller
 
         $availableBackups = $this->getAvailableBackups();
 
-        $template = $this->getTwig()->load('admin_dashboard.html.twig');
+        $template = $this->getTwig()->load('admin_sauvegardes.html.twig');
         echo $template->render([
-            'page' => ['title' => "Admin Dashboard", 'name' => "admin"],
+            'page' => ['title' => "Admin - Sauvegardes", 'name' => "admin_sauvegardes"],
             'session' => $_SESSION,
-            'utilisateurs' => $utilisateurs,
-            'success' => $successMessage,
             'restoreSuccess' => $restoreSuccess,
             'restoreError' => $restoreError,
             'availableBackups' => $availableBackups
@@ -141,7 +159,7 @@ class ControllerAdmin extends Controller
             $pdo->exec('SET FOREIGN_KEY_CHECKS = 1');
             $pdo->commit();
 
-            $this->redirectTo('admin', 'afficher', ['restore' => 1]);
+            $this->redirectTo('admin', 'sauvegardes', ['restore' => 1]);
         } catch (Throwable $e) {
             $pdo = $this->getPDO();
             if ($pdo instanceof PDO) {
@@ -154,7 +172,7 @@ class ControllerAdmin extends Controller
                 }
             }
 
-            $this->redirectTo('admin', 'afficher', ['restore_error' => 'Restauration échouée : ' . $e->getMessage()]);
+            $this->redirectTo('admin', 'sauvegardes', ['restore_error' => 'Restauration échouée : ' . $e->getMessage()]);
         }
     }
 
