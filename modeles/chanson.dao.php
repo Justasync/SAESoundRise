@@ -349,6 +349,16 @@ class ChansonDAO
         return (bool) $stmt->fetchColumn();
     }
 
+    public function removeChansonLikee(string $emailUtilisateur, int $idChanson): bool
+    {
+        $sql = "DELETE FROM likeChanson WHERE emailUtilisateur = :emailUtilisateur AND idChanson = :idChanson";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            ':emailUtilisateur' => $emailUtilisateur,
+            ':idChanson' => $idChanson
+        ]);
+    }
+
     /**
      * Met à jour un like (change la date)
      */

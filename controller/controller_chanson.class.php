@@ -312,6 +312,67 @@ class ControllerChanson extends Controller
         ]);
     }
 
+    public function retirerLike()
+    {
+        header('Content-Type: application/json');
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Méthode non autorisée.'
+            ]);
+            return;
+        }
+
+        $emailUtilisateur = $_SESSION['user_email'] ?? null;
+        if (!$emailUtilisateur) {
+            http_response_code(401);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Connectez-vous pour modifier vos musiques likées.'
+            ]);
+            return;
+        }
+
+        $idChanson = isset($_POST['idChanson']) ? (int) $_POST['idChanson'] : 0;
+        if ($idChanson <= 0) {
+            http_response_code(400);
+            echo json_encode([
+                'success' => false,
+                'message' => 'ID de chanson invalide.'
+            ]);
+            return;
+        }
+
+        $chansonDAO = new ChansonDAO($this->getPdo());
+
+        if (!$chansonDAO->isChansonLikee($emailUtilisateur, $idChanson)) {
+            echo json_encode([
+                'success' => true,
+                'alreadyRemoved' => true,
+                'message' => 'Cette chanson n\'est plus dans Musiques likées.'
+            ]);
+            return;
+        }
+
+        $ok = $chansonDAO->removeChansonLikee($emailUtilisateur, $idChanson);
+        if (!$ok) {
+            http_response_code(500);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Impossible de retirer la chanson des musiques likées.'
+            ]);
+            return;
+        }
+
+        echo json_encode([
+            'success' => true,
+            'alreadyRemoved' => false,
+            'message' => 'Chanson retirée de Musiques likées.'
+        ]);
+    }
+
     /**
      * @brief Incrémente le compteur d'écoutes d'une chanson.
      * 

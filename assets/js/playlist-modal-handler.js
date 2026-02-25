@@ -13,18 +13,21 @@
     const playlistModal = new bootstrap.Modal(playlistModalElement);
     let currentSongIsLiked = false;
     let currentSongIcon = null;
+    const defaultConfirmLabel = playlistModalConfirm.textContent;
 
     const refreshLikedStatus = function () {
         if (!playlistLikedStatus || !playlistSelect) return;
 
         if (playlistSelect.value === '__LIKED__' && currentSongIsLiked) {
-            playlistLikedStatus.textContent = 'Cette chanson est déjà dans Musiques likées.';
+            playlistLikedStatus.textContent = 'Cette chanson est déjà dans Musiques likées. Vous pouvez la retirer.';
             playlistLikedStatus.classList.remove('d-none');
+            playlistModalConfirm.textContent = 'Retirer';
             return;
         }
 
         playlistLikedStatus.textContent = '';
         playlistLikedStatus.classList.add('d-none');
+        playlistModalConfirm.textContent = defaultConfirmLabel;
     };
 
     if (playlistSelect) {
@@ -61,6 +64,7 @@
     playlistModalConfirm.addEventListener('click', function () {
         const chansonId = this.dataset.chansonId;
         const idPlaylist = playlistSelect ? playlistSelect.value : null;
+        const shouldRemoveLike = idPlaylist === '__LIKED__' && currentSongIsLiked;
 
         if (!chansonId || !idPlaylist) {
             if (playlistModalFeedback) {
@@ -72,11 +76,13 @@
 
         this.disabled = true;
         if (playlistModalFeedback) {
-            playlistModalFeedback.textContent = 'Ajout en cours...';
+            playlistModalFeedback.textContent = shouldRemoveLike ? 'Retrait en cours...' : 'Ajout en cours...';
             playlistModalFeedback.className = 'playlist-feedback mt-3 text-muted';
         }
 
-        const endpoint = idPlaylist === '__LIKED__'
+        const endpoint = shouldRemoveLike
+            ? '/?controller=chanson&method=retirerLike'
+            : idPlaylist === '__LIKED__'
             ? '/?controller=chanson&method=ajouterLike'
             : '/?controller=playlist&method=ajouterChanson';
 
@@ -104,13 +110,29 @@
             })
             .then((data) => {
                 if (idPlaylist === '__LIKED__') {
-                    currentSongIsLiked = true;
+                    currentSongIsLiked = !shouldRemoveLike;
                     if (currentSongIcon) {
-                        currentSongIcon.classList.remove('bi-heart');
-                        currentSongIcon.classList.add('bi-heart-fill');
-                        currentSongIcon.classList.add('text-danger');
+                        if (currentSongIsLiked) {
+                            currentSongIcon.classList.remove('bi-heart');
+                            currentSongIcon.classList.add('bi-heart-fill');
+                            currentSongIcon.classList.add('text-danger');
+                        } else {
+                            currentSongIcon.classList.remove('bi-heart-fill');
+                            currentSongIcon.classList.remove('text-danger');
+                            currentSongIcon.classList.add('bi-heart');
+                        }
                     }
                     refreshLikedStatus();
+
+                    if (shouldRemoveLike
+                        && window.location.search.includes('controller=utilisateur')
+                        && window.location.search.includes('method=afficherMesLikes')) {
+                        const activeBtn = document.querySelector(`.like-btn[data-id="${chansonId}"]`);
+                        const row = activeBtn ? activeBtn.closest('tr') : null;
+                        if (row) {
+                            row.remove();
+                        }
+                    }
                 }
 
                 if (playlistModalFeedback) {
