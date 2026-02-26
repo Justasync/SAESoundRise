@@ -8,13 +8,24 @@
         </div>
 
         <div class="contact-list">
-            {% for contact in contacts %}
-                <a href="?controller=message&method=conversation&contact={{ contact.pseudoUtilisateur }}" class="contact-item">
+            {# On boucle maintenant sur 'item' qui contient item.user et item.aNonLu #}
+            {% for item in contacts %}
+                <a href="?controller=message&method=conversation&contact={{ item.user.pseudoUtilisateur }}" class="contact-item">
                     
-                    <img src="{{ contact.urlPhotoUtilisateur ?? '/assets/images/default-avatar.png' }}" alt="{{ contact.pseudoUtilisateur }}" class="contact-avatar">
+                    <div style="position: relative;">
+                        <img src="{{ item.user.urlPhotoUtilisateur ?? '/assets/images/default-avatar.png' }}" alt="{{ item.user.pseudoUtilisateur }}" class="contact-avatar">
+                        
+                        {# 🚨 L'indicateur visuel si le message n'est pas lu #}
+                        {% if item.aNonLu %}
+                            <span class="unread-badge"></span>
+                        {% endif %}
+                    </div>
                     
                     <div class="contact-info">
-                        <span class="contact-name">{{ contact.pseudoUtilisateur }}</span>
+                        {# On peut même mettre le nom en gras si c'est non lu #}
+                        <span class="contact-name" {% if item.aNonLu %}style="font-weight: 900; color: var(--paaxio-brand);"{% endif %}>
+                            {{ item.user.pseudoUtilisateur }}
+                        </span>
                     </div>
                     
                     <div class="contact-action">
@@ -31,4 +42,34 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // On cible la zone qui contient la liste des contacts
+        const contactList = document.querySelector('.contact-list');
+        
+        if (contactList) {
+            // On vérifie toutes les 3 secondes
+            setInterval(() => {
+                // On demande la page actuelle en arrière-plan
+                fetch(window.location.href)
+                    .then(response => response.text())
+                    .then(html => {
+                        // On transforme le texte en HTML
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        
+                        // On récupère la NOUVELLE liste générée par le serveur
+                        const newContactList = doc.querySelector('.contact-list');
+                        
+                        // Si la nouvelle liste est différente de l'actuelle, on met à jour l'affichage
+                        if (newContactList && contactList.innerHTML !== newContactList.innerHTML) {
+                            contactList.innerHTML = newContactList.innerHTML;
+                        }
+                    })
+                    .catch(error => console.error('Erreur lors du rafraîchissement de la liste :', error));
+            }, 3000); // 3000 ms = 3 secondes
+        }
+    });
+</script>
 {% endblock %}

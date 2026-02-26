@@ -232,3 +232,26 @@
     opacity: 1;
     transform: translateX(5px);
 }
+
+/* =========================================
+   PASTILLE NON LU
+   ========================================= */
+
+.unread-badge {
+    position: absolute;
+    top: 0px;
+    right: 14px; /* On le décale un peu à cause du margin-right de l'avatar */
+    width: 14px;
+    height: 14px;
+    background-color: var(--paaxio-brand); /* Ton beau orange */
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    animation: popIn 0.3s ease-out forwards;
+}
+
+/* Petite animation d'apparition pour le style */
+@keyframes popIn {
+    0% { transform: scale(0); }
+    100% { transform: scale(1); }
+}
