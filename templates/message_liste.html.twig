@@ -1,0 +1,34 @@
+{% extends "base_template.html.twig" %}
+
+{% block content %}
+<div class="chat-wrapper">
+    <div class="chat-container">
+        <div class="chat-header">
+            <h3>Mes Conversations</h3>
+        </div>
+
+        <div class="contact-list">
+            {% for contact in contacts %}
+                <a href="?controller=message&method=conversation&contact={{ contact.pseudoUtilisateur }}" class="contact-item">
+                    
+                    <img src="{{ contact.urlPhotoUtilisateur ?? '/assets/images/default-avatar.png' }}" alt="{{ contact.pseudoUtilisateur }}" class="contact-avatar">
+                    
+                    <div class="contact-info">
+                        <span class="contact-name">{{ contact.pseudoUtilisateur }}</span>
+                    </div>
+                    
+                    <div class="contact-action">
+                        <span>Discuter ➔</span>
+                    </div>
+                    
+                </a>
+            {% else %}
+                <div class="chat-empty-state" style="padding: 40px;">
+                    <p>Vous n'avez pas encore de conversation.</p>
+                    <p>Allez sur le profil d'un artiste pour lui envoyer un premier message !</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

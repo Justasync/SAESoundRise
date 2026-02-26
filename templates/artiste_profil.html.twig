@@ -150,6 +150,9 @@
                             S'abonner
                         </button>
                     {% endif %}
+                    <button id="btn-message" class="btn btn-light rounded-pill ms-2" onclick="window.location.href='index.php?controller=message&method=conversation&contact={{ utilisateur.getPseudoUtilisateur() }}'">
+                        Ecrire
+                    </button>
                 </div>
             </div>
         </div>

@@ -56,21 +56,29 @@ class ControllerMessage extends Controller {
     public function conversation()
     {
         $this->requireAuth();
-        $myEmail = $_SESSION['user_email'];
+        $myEmail = $_SESSION['user_email']; // Email de l'utilisateur connecté
         
-        $contactEmail = $this->getGet()['contact'] ?? null;
+        $contactPseudo = $this->getGet()['contact'] ?? null;
 
-        if (!$contactEmail) {
+        if (!$contactPseudo) {
             $this->redirectTo('message', 'lister');
         }
 
-        $messageDAO = new MessageDAO($this->getPDO());
         $utilisateurDAO = new UtilisateurDAO($this->getPDO());
-
-        $contact = $utilisateurDAO->find($contactEmail);
+        $contact = $utilisateurDAO->findByPseudo($contactPseudo); // Recherche par pseudo
+        
         if (!$contact) {
             $this->redirectTo('message', 'lister');
         }
+
+        $contactEmail = $contact->getEmailUtilisateur();
+
+        if ($myEmail === $contactEmail) {
+            $this->redirectTo('message', 'lister');
+            return; 
+        }
+
+        $messageDAO = new MessageDAO($this->getPDO());
 
         if ($this->getPost() && isset($this->getPost()['contenu'])) {
             $contenu = trim($this->getPost()['contenu']);
@@ -86,7 +94,7 @@ class ControllerMessage extends Controller {
                 );
                 $messageDAO->create($nouveauMessage);
                 
-                $this->redirectTo('message', 'conversation', ['contact' => $contactEmail]);
+                $this->redirectTo('message', 'conversation', ['contact' => $contact->getPseudoUtilisateur()]);
             }
         }
 
