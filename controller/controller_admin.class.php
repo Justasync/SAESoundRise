@@ -144,8 +144,13 @@ class ControllerAdmin extends Controller
             }
 
             $pdo = $this->getPDO();
-            $pdo->beginTransaction();
             $pdo->exec('SET FOREIGN_KEY_CHECKS = 0');
+
+            $existingTables = $pdo->query('SHOW TABLES')->fetchAll(PDO::FETCH_COLUMN);
+            foreach ($existingTables as $tableName) {
+                $safeTableName = str_replace('`', '``', (string) $tableName);
+                $pdo->exec("DROP TABLE IF EXISTS `{$safeTableName}`");
+            }
 
             $statements = $this->splitSqlStatements($sqlContent);
             foreach ($statements as $statement) {
@@ -157,15 +162,11 @@ class ControllerAdmin extends Controller
             }
 
             $pdo->exec('SET FOREIGN_KEY_CHECKS = 1');
-            $pdo->commit();
 
             $this->redirectTo('admin', 'sauvegardes', ['restore' => 1]);
         } catch (Throwable $e) {
             $pdo = $this->getPDO();
             if ($pdo instanceof PDO) {
-                if ($pdo->inTransaction()) {
-                    $pdo->rollBack();
-                }
                 try {
                     $pdo->exec('SET FOREIGN_KEY_CHECKS = 1');
                 } catch (Throwable $ignored) {
@@ -515,7 +516,7 @@ class ControllerAdmin extends Controller
                     }
 
                     // Sauvegarde en base de données
-                    if ($utilisateurDAO->update($user)) {
+                    if ($utilisateurDAO->update($user, $emailTarget)) {
                         // Redirection vers le dashboard avec message de succès (success=2)
                         $this->redirectTo('admin', 'afficher', ['success' => 2]);
                         return;

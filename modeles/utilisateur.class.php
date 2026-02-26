@@ -503,10 +503,10 @@ class Utilisateur
 
     /**
      * Setter pour roleUtilisateur
-     * @param string|null $roleUtilisateur Le Role de l'utilisateur.
+     * @param Role|null $roleUtilisateur Le Role de l'utilisateur.
      * @return void
      */
-    public function setRoleUtilisateur($roleUtilisateur): void
+    public function setRoleUtilisateur(?Role $roleUtilisateur): void
     {
         $this->roleUtilisateur = $roleUtilisateur;
     }
