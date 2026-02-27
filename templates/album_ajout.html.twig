@@ -1017,8 +1017,12 @@ progressBar.setAttribute('aria-valuenow', percentComplete);
 xhr.addEventListener('load', function () {
 if (xhr.status >= 200 && xhr.status < 300) {
 showToast("Album enregistré avec succès !", true);
-// Reset form after a short delay
+// XHR follows redirects; redirect the page to the album (responseURL is the final URL after redirect)
+if (xhr.responseURL) {
+window.location.href = xhr.responseURL;
+} else {
 setTimeout(resetFullForm, 1000);
+}
 } else {
 showToast (`Erreur lors de l'enregistrement: ${
 xhr.statusText
