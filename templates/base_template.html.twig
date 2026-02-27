@@ -112,8 +112,14 @@
 							<div id="searchResults" class="list-group position-absolute w-100 shadow" style="display:none; z-index:9999; top:100%; left:0; background:white; max-height:300px; overflow-y:auto;"></div>
 						</div>
 					</div>
-					<!-- User dropdown -->
-					<div class="dropdown ms-auto {% if session.user_logged_in is defined and session.user_logged_in %}header-shift-up{% endif %}">
+					<!-- Right side: upload album (artists) + user dropdown -->
+					<div class="d-flex align-items-center gap-1 ms-auto {% if session.user_logged_in is defined and session.user_logged_in %}header-shift-up{% endif %}">
+						{% if session.user_logged_in is defined and session.user_logged_in and session.user_role is defined and session.user_role.value == 'artiste' %}
+							<a class="btn text-secondary d-flex align-items-center justify-content-center" href="/?controller=album&method=afficherFormulaireAjout" title="Publier un album" aria-label="Publier un album">
+								<i class="bi bi-cloud-upload fs-4"></i>
+							</a>
+						{% endif %}
+						<div class="dropdown">
 						<button class="btn text-secondary d-flex align-items-center justify-content-center" type="button" id="userDropdown" data-bs-toggle="dropdown">
 							<i class="bi bi-person-circle fs-4"></i>
 						</button>
@@ -148,6 +154,7 @@
 								</li>
 							{% endif %}
 						</ul>
+						</div>
 					</div>
 				</div>
 			</nav>
