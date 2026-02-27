@@ -3,116 +3,8 @@
 {% block header %}
 	{{ parent() }}
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-	<style>:root
-	{
-		--paaxio-turquoise: #2A9D8F;
-		--paaxio-background: #F4E1D2;
-		--paaxio-card-bg: #E07A5F;
-		--paaxio-border: #91c9c4;
-		--paaxio-rounded-3xl: 1.5rem;
-		--paaxio-text-xs: 0.75rem;
-		--paaxio-text-sm: 0.875rem;
-		--paaxio-fw-semibold: 600;
-		--paaxio-fw-medium: 500;
-	}
-
-	.main-content-container {
-		border: 1px solid var(--paaxio-border);
-		border-radius: 0.75rem;
-		padding-bottom: 3rem;
-	}
-
-	.paaxio-card {
-		background-color: var(--paaxio-card-bg);
-		border-radius: var(--paaxio-rounded-3xl);
-		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-		transition: transform 0.2s;
-	}
-
-	.paaxio-card:hover {
-		transform: translateY(-3px);
-		box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-	}
-
-	.artist-scroll-container {
-		overflow-x: auto;
-		white-space: nowrap;
-		padding: 1rem 0;
-		-webkit-overflow-scrolling: touch;
-	}
-
-	.artist-list-container {
-		background-color: var(--paaxio-card-bg);
-		border-radius: var(--paaxio-rounded-3xl);
-		display: flex;
-		justify-content: start;
-		padding: 0.5rem 0.75rem;
-		width: max-content;
-	}
-
-	.artist-item {
-		display: inline-block;
-		text-align: center;
-		margin-right: 1.5rem;
-		width: 110px;
-	}
-
-	.artist-item:last-child {
-		margin-right: 0;
-	}
-
-	.artist-avatar {
-		width: 110px;
-		height: 110px;
-		object-fit: cover;
-		border-radius: 50%;
-		border: 3px solid white;
-		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-	}
-
-	.artist-avatar {
-		transition: transform 0.3s ease;
-	}
-	.artist-item:hover .artist-avatar {
-		transform: scale(1.05);
-	}
-
-	.text-xs {
-		font-size: var(--paaxio-text-xs);
-	}
-	.text-sm {
-		font-size: var(--paaxio-text-sm);
-	}
-	.fw-medium {
-		font-weight: var(--paaxio-fw-medium);
-	}
-	.text-gray-700 {
-		color: #4b5563;
-	}
-	.text-gray-500 {
-		color: #6b7280;
-	}
-
-	.album-cover {
-		width: 100%;
-		padding-top: 100%;
-		position: relative;
-		border-radius: 1rem;
-		overflow: hidden;
-		background-color: #f0f0f0;
-		margin-bottom: 0.5rem;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-	}
-
-	.album-cover img {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-	}
-</style>{% endblock %}{% block content %}
+	<link rel="stylesheet" href="/assets/css/dashboard.css">
+{% endblock %}{% block content %}
 <main class="container-xl py-5">
 	<div class="main-content-container bg-white">
 		<div class="container-fluid pt-4 pb-2">
@@ -124,22 +16,18 @@
 			<!-- Section Artistes -->
 			<h3 class="text-center fw-semibold mb-4 text-secondary pt-3">Artistes</h3>
 
-			<div class="row mx-auto justify-content-center">
-				<div class="col-12">
-					<div class="artist-scroll-container">
-						<div class="artist-list-container">
-							{% if artistes is not empty %}
-								{% for artiste in artistes %}
-									<a href="/?controller=utilisateur&method=afficherProfilArtiste&pseudo={{ artiste.pseudoUtilisateur }}" class="artist-item text-decoration-none" title="{{ artiste.pseudoUtilisateur }}">
-										<img src="{{ artiste.urlPhotoUtilisateur ?: 'https://placehold.co/110x110/cccccc/ffffff?text=' ~ artiste.pseudoUtilisateur|first }}" alt="Avatar de {{ artiste.pseudoUtilisateur }}" class="artist-avatar">
-										<p class="mt-1 mb-0 text-sm text-center fw-medium text-white">{{ artiste.pseudoUtilisateur|length > 10 ? artiste.pseudoUtilisateur|slice(0, 10) ~ '...' : artiste.pseudoUtilisateur }}</p>
-									</a>
-								{% endfor %}
-							{% else %}
-								<p class="text-center text-gray-500 p-3">Aucun artiste en tendance.</p>
-							{% endif %}
-						</div>
-					</div>
+			<div class="artist-scroll-wrapper w-100 paaxio-horizontal-scroll rounded-4 shadow-lg">
+				<div class="artist-list-container paaxio-horizontal-scroll">
+					{% if artistes is not empty %}
+						{% for artiste in artistes %}
+							<a href="/?controller=utilisateur&method=afficherProfilArtiste&pseudo={{ artiste.pseudoUtilisateur }}" class="flex-shrink-0 d-flex flex-column align-items-center text-decoration-none" title="{{ artiste.pseudoUtilisateur }}">
+								<img src="{{ artiste.geturlPhotoUtilisateur() ?: 'https://placehold.co/112x112/e9b7a6/ffffff?text=' ~ artiste.getPseudoUtilisateur()|first|upper }}" alt="Photo de {{ artiste.getPseudoUtilisateur() }}" class="rounded-circle object-cover border border-4 border-white" style="width: 7rem; height: 7rem;" onerror="this.onerror=null; this.src='https://placehold.co/112x112/e9b7a6/ffffff?text={{ artiste.getPseudoUtilisateur()|first|upper }}';">
+								<p class="green-text mb-0">{{ artiste.pseudoUtilisateur|length > 7 ? artiste.pseudoUtilisateur|slice(0, 7) ~ '...' : artiste.pseudoUtilisateur }}</p>
+							</a>
+						{% endfor %}
+					{% else %}
+						<p class="text-center text-gray-500 p-3">Aucun artiste en tendance.</p>
+					{% endif %}
 				</div>
 			</div>
 
@@ -150,84 +38,6 @@
 			<div class="row mx-auto justify-content-center">
 				<div class="col-12">
 					{% if chansons is not empty %}
-						<style>
-							.chanson-scroll-container {
-								overflow-x: auto;
-								white-space: nowrap;
-								padding-bottom: 0.5rem;
-								margin-bottom: 1rem;
-								/* Hide scrollbar for Chrome, Safari and Opera */
-								scrollbar-width: none; /* Firefox */
-								-ms-overflow-style: none; /* IE and Edge */
-							}
-							.chanson-scroll-container::-webkit-scrollbar {
-								display: none; /* Chrome, Safari and Opera */
-							}
-							.chanson-card-list {
-								display: flex;
-								gap: 1.25rem;
-								padding: 0.5rem 0;
-								min-width: 200px;
-							}
-							.chanson-card {
-								flex: 0 0 220px;
-								background: #f8fafc;
-								border-radius: 1rem;
-								box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-								display: flex;
-								flex-direction: column;
-								align-items: flex-start;
-								padding: 1.25rem;
-								min-height: 110px;
-								transition: box-shadow 0.15s;
-								border: 1px solid #eee;
-							}
-							.chanson-card:hover {
-								box-shadow: 0 4px 16px rgba(0, 0, 0, 0.09);
-								border-color: var(--paaxio-card-bg, #E5A88B);
-							}
-							.chanson-title {
-								font-weight: 600;
-								font-size: 1.06rem;
-								margin-bottom: 0.5em;
-								color: var(--paaxio-card-bg, #E5A88B);
-								overflow: hidden;
-								text-overflow: ellipsis;
-								white-space: nowrap;
-								width: 100%;
-							}
-							.chanson-title a {
-								color: inherit;
-								text-decoration: none;
-							}
-							.chanson-artist {
-								font-size: 0.96rem;
-								color: #5a5a5a;
-								margin-bottom: 0.3em;
-								overflow: hidden;
-								text-overflow: ellipsis;
-								white-space: nowrap;
-								width: 100%;
-							}
-							.chanson-album-thumb {
-								width: 50px;
-								height: 50px;
-								border-radius: 8px;
-								overflow: hidden;
-								margin-bottom: 0.5em;
-								flex-shrink: 0;
-								background: #e0e0e0;
-								display: flex;
-								align-items: center;
-								justify-content: center;
-							}
-							.chanson-album-thumb img {
-								width: 100%;
-								height: 100%;
-								object-fit: cover;
-								display: block;
-							}
-						</style>
 						<div class="chanson-scroll-container">
 							<div class="chanson-card-list">
 								{% for chanson in chansons %}
@@ -268,14 +78,14 @@
 				{% if albums is not empty %}
 					{% for album in albums %}
 						<article class="col">
-							<a href="/?controller=album&method=afficherDetails&idAlbum={{ album.idAlbum }}" class="text-decoration-none">
+							<a href="/?controller=album&method=afficherDetails&idAlbum={{ album.idAlbum }}" class="text-decoration-none col-item-card">
 								<div class="paaxio-card p-3 h-100 d-flex flex-column">
 									<div class="album-cover">
 										<img src="{{ album.urlPochetteAlbum ?: 'https://placehold.co/300x300/cccccc/333?text=No+Image' }}" alt="Pochette de {{ album.nomAlbum }}">
 									</div>
 									<div class="text-center mt-auto">
-										<p class="mb-0 fw-medium text-sm text-white">{{ album.nomAlbum }}</p>
-										<p class="text-xs text-white">{{ album.pseudoArtiste }}</p>
+										<p class="mb-0 album-title">{{ album.nomAlbum }}</p>
+										<p class="album-artist">{{ album.pseudoArtiste }}</p>
 									</div>
 								</div>
 							</a>

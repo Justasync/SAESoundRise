@@ -2,82 +2,7 @@
 
 {% block header %}
 	{{ parent() }}
-	<style>
-		/* Configuration des couleurs personnalisées */
-		@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');:root {
-			--paaxio-beige: #fbf8f5; /* Couleur de fond pâle */
-			--paaxio-salmon: #e9b7a6; /* Couleur d'accentuation des cartes (Terre Cuite Légère) */
-			--paaxio-dark: #333333; /* Couleur de texte sombre */
-			--paaxio-terracotta: #d68f7b; /* Nouvelle couleur terre cuite pour le fond des artistes */
-		}
-		/* On applique le style au conteneur du tableau de bord */
-		.dashboard-container {
-			font-family: 'Inter', sans-serif;
-			background-color: var(--paaxio-beige);
-			color: var(--paaxio-dark);
-		}
-
-		/* Style pour la section de collaboration pour permettre le défilement horizontal */
-		.collaboration-scroll {
-			overflow-x: auto;
-			white-space: nowrap;
-			-webkit-overflow-scrolling: touch; /* Améliore le défilement sur iOS */
-		}
-		.collaboration-scroll::-webkit-scrollbar {
-			height: 6px;
-		}
-		.collaboration-scroll::-webkit-scrollbar-thumb {
-			background-color: rgba(0, 0, 0, 0.1);
-			border-radius: 3px;
-		}
-
-		/* Classes utilitaires pour les couleurs personnalisées */
-		.bg-terracotta {
-			background-color: var(--paaxio-terracotta);
-		}
-		.bg-paaxio-salmon {
-			background-color: var(--paaxio-salmon);
-		}
-		.hover-bg-terracotta:hover {
-			background-color: var(--paaxio-terracotta);
-		}
-
-		/* Add-album card: distinct from album cards (dashed, outline style) */
-		.add-album-card {
-			background-color: transparent;
-			border: 3px dashed var(--paaxio-salmon);
-			color: var(--paaxio-dark);
-			transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-		}
-		.add-album-card:hover {
-			background-color: rgba(233, 183, 166, 0.15);
-			border-color: var(--paaxio-terracotta);
-			color: var(--paaxio-terracotta);
-		}
-		.add-album-card .add-album-inner {
-			background-color: rgba(255, 255, 255, 0.8);
-			border: 2px dashed rgba(214, 143, 123, 0.5);
-			transition: background-color 0.2s ease, border-color 0.2s ease;
-		}
-		.add-album-card:hover .add-album-inner {
-			background-color: rgba(255, 255, 255, 0.95);
-			border-color: var(--paaxio-salmon);
-		}
-		.add-album-card .bi-plus-lg {
-			color: var(--paaxio-terracotta);
-		}
-		.add-album-card:hover .bi-plus-lg {
-			color: var(--paaxio-terracotta);
-		}
-
-		/* Effet de zoom sur la photo de l'artiste au survol */
-		.collaboration-scroll a img {
-			transition: transform 0.3s ease;
-		}
-		.collaboration-scroll a:hover img {
-			transform: scale(1.05);
-		}
-	</style>
+	<link rel="stylesheet" href="/assets/css/dashboard.css">
 {% endblock %}
 
 {% block content %}
@@ -89,7 +14,7 @@
 
 			{# Message de bienvenue #}
 			<section class="my-5 text-center">
-				<h1 class="display-5 fw-bold">Bienvenue,
+				<h1 class="text-center fw-bold mb-4 green-text">Bienvenue,
 					{{ session.user_pseudo }}
 					!</h1>
 				<p class="text-muted">Voici un aperçu de votre activité sur Paaxio.</p>
@@ -97,7 +22,7 @@
 
 			{# 1. Opportunités de Collaboration #}
 			<section class="mb-5">
-				<h2 class="h2 fw-semibold mb-4 text-center">Opportunités de Collaboration</h2>
+				<h2 class="text-center fw-semibold mb-4 text-secondary pt-3">Opportunités de Collaboration</h2>
 
 				{# Conteneur de la carte principale mis à jour avec la couleur terre cuite #}
 				<div
@@ -111,11 +36,11 @@
 									href="/?controller=utilisateur&method=afficherProfilArtiste&pseudo={{ artiste.getPseudoUtilisateur() }}" class="flex-shrink-0 d-flex flex-column align-items-center text-decoration-none" style="width: 8rem;" title="{{ artiste.getPseudoUtilisateur() }}">
 									{# Utilise la photo de profil de l'artiste, ou un placeholder si elle n'existe pas #}
 									<img src="{{ artiste.geturlPhotoUtilisateur() ?: 'https://placehold.co/112x112/e9b7a6/ffffff?text=' ~ artiste.getPseudoUtilisateur()|first|upper }}" alt="Photo de {{ artiste.getPseudoUtilisateur() }}" class="rounded-circle object-cover border border-4 border-white" style="width: 7rem; height: 7rem;" onerror="this.onerror=null; this.src='https://placehold.co/112x112/e9b7a6/ffffff?text={{ artiste.getPseudoUtilisateur()|first|upper }}';">
-									<span class="fw-medium text-white text-truncate w-100 text-center mt-1" style="font-size: 0.875rem;">{{ artiste.getPseudoUtilisateur()|length > 10 ? artiste.getPseudoUtilisateur()|slice(0, 10) ~ '...' : artiste.getPseudoUtilisateur() }}</span>
+									<span class="green-text mb-0">{{ artiste.getPseudoUtilisateur()|length > 7 ? artiste.getPseudoUtilisateur()|slice(0, 7) ~ '...' : artiste.getPseudoUtilisateur() }}</span>
 								</a>
 							{% endfor %}
 						{% else %}
-							<p class="text-white-50 mx-auto">Aucun artiste à suggérer pour le moment.</p>
+							<p class="text-center text-gray-500 p-3">Aucun artiste à suggérer pour le moment.</p>
 						{% endif %}
 					</div>
 				</div>
@@ -123,26 +48,26 @@
 
 			{# 2. Statistiques Générales #}
 			<section class="mb-5">
-				<h2 class="h2 fw-semibold mb-4 text-center">Statistiques Générales</h2>
+				<h2 class="text-center fw-semibold mb-4 text-secondary pt-3">Statistiques Générales</h2>
 
 				{# Grille de Statistiques #}
 				<div class="row g-4">
 					<div class="col-sm-4">
 						<div class="bg-paaxio-salmon p-4 rounded-4 shadow-lg text-center text-white">
-							<p class="fs-5 fw-medium mb-1">Reproductions Totales</p>
-							<p class="display-4 fw-bold">{{ stats.totalReproductions|default(0)|number_format(0, ',', ' ') }}</p>
+							<p class="fs-5 fw-medium mb-1 big-stat">Reproductions Totales</p>
+							<p class="display-4 fw-bold big-stat">{{ stats.totalReproductions|default(0)|number_format(0, ',', ' ') }}</p>
 						</div>
 					</div>
 					<div class="col-sm-4">
 						<div class="bg-paaxio-salmon p-4 rounded-4 shadow-lg text-center text-white">
-							<p class="fs-5 fw-medium mb-1">Total d'abonnés</p>
-							<p class="display-4 fw-bold">{{ stats.totalAbonnes|default(0)|number_format(0, ',', ' ') }}</p>
+							<p class="fs-5 fw-medium mb-1 big-stat">Total d'abonnés</p>
+							<p class="display-4 fw-bold big-stat">{{ stats.totalAbonnes|default(0)|number_format(0, ',', ' ') }}</p>
 						</div>
 					</div>
 					<div class="col-sm-4">
 						<div class="bg-paaxio-salmon p-4 rounded-4 shadow-lg text-center text-white">
-							<p class="fs-5 fw-medium mb-1">Battles Gagnées</p>
-							<p class="display-4 fw-bold">{{ stats.battlesGagnees|default(0) }}</p>
+							<p class="fs-5 fw-medium mb-1 big-stat">Battles Gagnées</p>
+							<p class="display-4 fw-bold big-stat">{{ stats.battlesGagnees|default(0) }}</p>
 						</div>
 					</div>
 				</div>
@@ -150,7 +75,7 @@
 
 			{# 3. Album/Singles les plus écoutés #}
 			<section class="mb-5">
-				<h2 class="h2 fw-semibold mb-4 text-center">Mes albums</h2>
+				<h2 class="text-center fw-semibold mb-4 text-secondary pt-3">Mes albums</h2>
 
 				{# Conteneur Flex pour les cartes (ici, juste la carte d'ajout) #}
 				<div
@@ -163,7 +88,7 @@
 								<path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
 							</svg>
 						</div>
-						<span class="small fw-semibold text-center">Ajouter un Album/Single</span>
+						<span class="small fw-semibold green-text text-center">Ajouter un Album/Single</span>
 					</a>
 
 					{# Boucle sur les albums de l'artiste #}
@@ -176,7 +101,7 @@
 
 							{# Titre de l'album #}
 							<div class="d-flex align-items-center justify-content-center p-1" style="height: 30%;">
-								<p class="small fw-medium text-white text-center text-truncate">{{ album.getTitreAlbum() }}</p>
+								<p class="mb-0 album-title">{{ album.getTitreAlbum() }}</p>
 							</div>
 						</a>
 					{% endfor %}

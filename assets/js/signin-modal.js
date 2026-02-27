@@ -46,6 +46,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
   
+/** @brief Gestionnaire de l'affichage/masquage du mot de passe */
+  document.querySelector(".toggle-password").addEventListener("click", function () {
+      const passwordInput = document.getElementById("signinPassword");
+
+      const type = passwordInput.type === "password" ? "text" : "password";
+      passwordInput.type = type;
+
+      this.classList.toggle("bi-eye");
+      this.classList.toggle("bi-eye-slash");
+  });
+
+
   /** @type {HTMLElement|null} Élément d'affichage des erreurs */
   const errorAlert = signinModal.querySelector("[data-signin-error]");
   
