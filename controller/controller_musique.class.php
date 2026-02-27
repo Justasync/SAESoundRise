@@ -2,7 +2,7 @@
 
 /**
  * @file controller_musique.class.php
- * @brief Fichier contenant le contrôleur de la page "Ma Bibliothèque".
+ * @brief Fichier contenant le contrôleur de la page "Bibliothèque".
  * 
  * Ce fichier gère l'affichage de la bibliothèque musicale personnelle
  * de l'utilisateur connecté.
@@ -13,7 +13,7 @@
  * @class ControllerMusique
  * @brief Contrôleur dédié à la gestion de la bibliothèque musicale de l'utilisateur.
  * 
- * Cette classe gère l'affichage de la page "Ma Bibliothèque" qui contient :
+ * Cette classe gère l'affichage de la page "Bibliothèque" qui contient :
  * - Les chansons de l'utilisateur
  * - Les playlists de l'utilisateur
  * 
@@ -33,7 +33,7 @@ class ControllerMusique extends Controller
     }
 
     /**
-     * @brief Affiche la page "Ma Bibliothèque" de l'utilisateur connecté.
+     * @brief Affiche la page "Bibliothèque" de l'utilisateur connecté.
      * 
      * Récupère et affiche :
      * - Les chansons publiées par l'utilisateur
@@ -62,9 +62,9 @@ class ControllerMusique extends Controller
         $template = $this->getTwig()->load('musique.html.twig');
         echo $template->render([
             'page' => [
-                'title' => "Ma Bibliothèque",
+                'title' => "Bibliothèque",
                 'name' => "maBiblio",
-                'description' => "Ma bibliothèque"
+                'description' => "Bibliothèque"
             ],
             'chansons' => $chansons,
             'playlists' => $playlists,
