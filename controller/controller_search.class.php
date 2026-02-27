@@ -68,17 +68,18 @@ class ControllerSearch extends Controller
                 }
 
                 // --- CHANSONS ---
-                $chansonDAO = new ChansonDAO($pdo); 
+                $chansonDAO = new ChansonDAO($pdo);
                 $listaChansons = $chansonDAO->rechercherParTitre($term);
                 if (is_array($listaChansons)) {
                     foreach ($listaChansons as $chanson) {
                         $albumObj = $chanson->getAlbumChanson();
                         $idAlbum = ($albumObj && method_exists($albumObj, 'getIdAlbum')) ? $albumObj->getIdAlbum() : null;
-                        
+
                         $results['chansons'][] = [
-                            'titre'   => $chanson->getTitrechanson(), 
+                            'id'      => $chanson->getIdChanson(),
+                            'titre'   => $chanson->getTitrechanson(),
                             'ecoutes' => $chanson->getNbecoutechanson(),
-                            'idAlbum' => $idAlbum 
+                            'idAlbum' => $idAlbum,
                         ];
                     }
                 }
