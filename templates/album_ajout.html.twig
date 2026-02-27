@@ -126,6 +126,32 @@
 		margin: 0 auto;
 		cursor: pointer;
 	}
+	/* Two-column layout: album art left, form right; mobile = stacked, album on top */
+	.album-form-layout {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1.5rem;
+		width: 100%;
+		align-items: flex-start;
+	}
+	.album-form-layout .album-art-column {
+		flex: 0 0 auto;
+		width: 100%;
+	}
+	.album-form-layout .album-form-column {
+		flex: 1 1 0;
+		min-width: 0;
+	}
+	@media(min-width: 992px) {
+		.album-form-layout .album-art-column {
+			width: 220px;
+			flex: 0 0 220px;
+		}
+		.album-form-layout .album-form-column {
+			flex: 1 1 0;
+			min-width: 280px;
+		}
+	}
 
 	.album-art-box:hover {
 		transform: scale(1.05);
@@ -349,77 +375,83 @@
 
 <!-- Main Content -->
 <main
-	class="flex-grow-1 position-relative z-1 d-flex flex-column align-items-center pt-5 px-4 w-100 mx-auto" style="max-width: 900px;">
+	class="flex-grow-1 position-relative z-1 d-flex flex-column align-items-center pt-5 px-4 w-100 mx-auto" style="max-width: 960px;">
 	<!-- Headline -->
-	<h1 class="fs-4 fs-md-3 fw-bold text-center mb-4">
+	<h1 class="fs-4 fs-md-3 fw-bold text-center mb-4 w-100">
 		Vous souhaitez télécharger un album ou un single ?
 	</h1>
 
-	<form
-		id="albumForm" action="/?controller=album&method=ajouterAlbum" method="post" enctype="multipart/form-data" class="w-100">
-		<!-- Album Art Upload -->
-		<div class="mb-4 text-center">
-			<p class="text-center">Veuillez télécharger ci-dessous la pochette</p>
-			<label for="pochette_album" class="cursor-pointer">
-				<div class="album-art-box d-flex align-items-center justify-content-center shadow-sm">
-					<i class="fas fa-plus"></i>
-					<img id="pochettePreview" src="" alt="Aperçu de la pochette" class="d-none">
-				</div>
-			</label>
-			<input type="file" id="pochette_album" name="pochette_album" class="d-none" accept="image/png, image/jpeg, image/webp" required>
-		</div>
-
-		<!-- Album Title Display -->
-		<h2 id="albumTitleDisplay" class="fs-5 fw-bold text-center mb-3">Nom de l'album/single</h2>
-
-		<!-- Album Input -->
-		<div class="w-100 mx-auto mb-4" style="max-width: 400px;">
-			<input type="text" id="albumInput" name="titre_album" placeholder="Nom de l'album/Single" class="form-control paaxio-input" required>
-		</div>
-
-		<!-- Album Release Date -->
-		<div class="w-100 mx-auto mb-5" style="max-width: 400px;">
-			<p class="text-center">Date de sortie de l'album</p>
-			<input type="date" id="dateSortieAlbum" name="date_sortie" class="form-control paaxio-input" required>
-		</div>
-
-		<!-- Tracklist Table -->
-		<p class="text-center">Liste des titres</p>
-		<div class="w-100 mx-auto tracklist-container mb-5" style="max-width: 800px;">
-			<table id="tracklist" class="w-100" style="border-collapse: separate; border-spacing: 0 1rem;">
-				<thead>
-					<tr class="tracklist-header">
-						<th>#</th>
-						<th>Titre</th>
-						<th>Genre</th>
-						<th class="text-end">Durée</th>
-						<th></th>
-					</tr>
-				</thead>
-
-				<tbody
-					id="trackList" class="tracklist-body"><!-- Rows will be injected by JavaScript (renderTrackList) -->
-				</tbody>
-			</table>
-		</div>
-
-		<!-- Upload Progress Bar -->
-		<div id="uploadProgressContainer" class="w-100 mx-auto mb-5 d-none" style="max-width: 800px;">
-			<p class="text-center mb-2 fw-bold">Téléchargement en cours...</p>
-			<div class="progress">
-				<div id="uploadProgressBar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+	<form id="albumForm" action="/?controller=album&method=ajouterAlbum" method="post" enctype="multipart/form-data" class="w-100">
+		<div
+			class="album-form-layout">
+			<!-- Left column: Album Art (top on mobile) -->
+			<div class="album-art-column order-first text-center text-lg-start">
+				<p class="mb-2">Veuillez télécharger ci-dessous la pochette</p>
+				<label for="pochette_album" class="cursor-pointer d-inline-block">
+					<div class="album-art-box d-flex align-items-center justify-content-center shadow-sm">
+						<i class="fas fa-plus"></i>
+						<img id="pochettePreview" src="" alt="Aperçu de la pochette" class="d-none">
+					</div>
+				</label>
+				<input type="file" id="pochette_album" name="pochette_album" class="d-none" accept="image/png, image/jpeg, image/webp" required>
 			</div>
-		</div>
 
-		<!-- Action Buttons -->
-		<div id="actionButtons" class="w-100 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 mb-5 mx-auto" style="max-width: 800px;">
-			<button type="button" class="btn-paaxio-action w-100 w-md-auto" data-bs-toggle="modal" data-bs-target="#addTrackModal">
-				Ajouter titre(s)
-			</button>
+			<!-- Right column: Form fields -->
+			<div
+				class="album-form-column">
+				<!-- Album Title Display -->
+				<h2 id="albumTitleDisplay" class="fs-5 fw-bold text-center text-md-start mb-3">Nom de l'album/single</h2>
 
-			<button type="button" onclick="confirmSave()" class="btn-paaxio-action w-100 w-md-auto">
-				Enregistrer
-			</button>
+				<!-- Album Input -->
+				<div class="w-100 mb-4">
+					<input type="text" id="albumInput" name="titre_album" placeholder="Nom de l'album/Single" class="form-control paaxio-input" required>
+				</div>
+
+				<!-- Album Release Date -->
+				<div class="w-100 mb-4">
+					<p class="text-center text-md-start mb-2">Date de sortie de l'album</p>
+					<input type="date" id="dateSortieAlbum" name="date_sortie" class="form-control paaxio-input" required>
+				</div>
+
+				<!-- Tracklist Table -->
+				<p class="text-center text-md-start mb-2">Liste des titres</p>
+				<div class="w-100 tracklist-container mb-4">
+					<table id="tracklist" class="w-100" style="border-collapse: separate; border-spacing: 0 1rem;">
+						<thead>
+							<tr class="tracklist-header">
+								<th>#</th>
+								<th>Titre</th>
+								<th>Genre</th>
+								<th class="text-end">Durée</th>
+								<th></th>
+							</tr>
+						</thead>
+
+						<tbody
+							id="trackList" class="tracklist-body"><!-- Rows will be injected by JavaScript (renderTrackList) -->
+						</tbody>
+					</table>
+				</div>
+
+				<!-- Upload Progress Bar -->
+				<div id="uploadProgressContainer" class="w-100 mb-4 d-none">
+					<p class="text-center mb-2 fw-bold">Téléchargement en cours...</p>
+					<div class="progress">
+						<div id="uploadProgressBar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+					</div>
+				</div>
+
+				<!-- Action Buttons -->
+				<div id="actionButtons" class="w-100 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 mb-4">
+					<button type="button" class="btn-paaxio-action w-100 w-md-auto" data-bs-toggle="modal" data-bs-target="#addTrackModal">
+						Ajouter titre(s)
+					</button>
+
+					<button type="button" onclick="confirmSave()" class="btn-paaxio-action w-100 w-md-auto">
+						Enregistrer
+					</button>
+				</div>
+			</div>
 		</div>
 	</form>
 </main>
