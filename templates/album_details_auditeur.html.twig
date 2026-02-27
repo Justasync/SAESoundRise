@@ -231,8 +231,11 @@
 										<button title="Lire la musique" class="btn btn-sm btn-link p-1 play-track-btn" data-index="{{ loop.index0 }}" onclick="loadTrack({{ loop.index0 }})">
 											<i class="bi bi-play-fill track-play-icon" style="color: rgba(255,255,255,0.7); font-size: 1.2rem;"></i>
 										</button>
-										<button title="Ajouter à une playlist" class="btn btn-sm btn-link p-1 like-btn" data-id="{{ chanson.getIdChanson() }}">
-											<i class="bi {% if chanson.getIsLiked() %}bi-heart-fill text-danger{% else %}bi-heart{% endif %}" style="color: rgba(255,255,255,0.7); font-size: 1rem;"></i>
+										<button title="Ajouter à une playlist" class="btn btn-sm btn-link p-1 add-to-playlist-btn" data-id="{{ chanson.getIdChanson() }}">
+											<i class="bi bi-plus-circle" style="color: rgba(255,255,255,0.8); font-size: 1rem;"></i>
+										</button>
+										<button title="Aimer la musique" class="btn btn-sm btn-link p-1 like-btn" data-id="{{ chanson.getIdChanson() }}" onclick="toggleLikeInline(event, {{ chanson.getIdChanson() }})">
+											<i class="bi {% if chanson.getIsLiked() %}bi-heart-fill text-danger{% else %}bi-heart{% endif %}" style="font-size: 1rem;"></i>
 										</button>
 									</td>
 								</tr>
@@ -252,7 +255,7 @@
 	<audio id="audio-player"></audio>
 
 	<!-- Modal ajout à une playlist -->
-	<div class="modal fade" id="playlistModal" tabindex="-1" aria-labelledby="playlistModalLabel" aria-hidden="true">
+	<div class="modal fade" id="playlistModal" tabindex="-1" aria-labelledby="playlistModalLabel" aria-hidden="true" data-allow-liked-target="false" data-allow-remove="false">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content playlist-modal-content">
 				<div class="modal-header border-0 pb-0">
@@ -263,7 +266,6 @@
 					<p class="mb-2" id="playlistModalTrackName">Titre sélectionné</p>
 						<label for="playlist-select" class="form-label">Choisir une playlist</label>
 						<select id="playlist-select" class="form-select playlist-modal-select">
-							<option value="__LIKED__">Musiques likées</option>
 							{% if playlists is defined and playlists is not empty %}
 							{% for playlist in playlists %}
 								<option value="{{ playlist.getIdPlaylist() }}">{{ playlist.getNomPlaylist() }}</option>
@@ -285,6 +287,7 @@
 
 {% block script %}
 	{{ parent() }}
+	<script src="/assets/js/like-handler.js"></script>
 	<script>
 		const audioPlayer = document.getElementById('audio-player');
 const playPauseIcon = document.getElementById('play-pause-icon');

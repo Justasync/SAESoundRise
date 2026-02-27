@@ -16,21 +16,32 @@
     let currentSongIcon = null;
     const defaultConfirmLabel = playlistModalConfirm.textContent;
     const urlParams = new URLSearchParams(window.location.search);
+    const allowLikedTarget = playlistModalElement.dataset.allowLikedTarget !== 'false';
+    const allowRemove = playlistModalElement.dataset.allowRemove !== 'false';
+
+    if (!allowLikedTarget && playlistSelect) {
+        const likedOption = playlistSelect.querySelector('option[value="__LIKED__"]');
+        if (likedOption) {
+            likedOption.remove();
+        }
+    }
 
     const refreshLikedStatus = function () {
         if (!playlistLikedStatus || !playlistSelect) return;
 
-        if (playlistSelect.value === '__LIKED__' && currentSongIsLiked) {
+        if (allowLikedTarget && playlistSelect.value === '__LIKED__' && currentSongIsLiked) {
             playlistLikedStatus.textContent = 'Cette chanson est déjà dans Musiques likées. Vous pouvez la retirer.';
             playlistLikedStatus.classList.remove('d-none');
-            playlistModalConfirm.textContent = 'Retirer';
+            playlistModalConfirm.textContent = allowRemove ? 'Retirer' : defaultConfirmLabel;
             return;
         }
 
         if (playlistSelect.value !== '__LIKED__' && currentSongInSelectedPlaylist) {
-            playlistLikedStatus.textContent = 'Cette chanson est déjà dans la playlist sélectionnée. Vous pouvez la retirer.';
+            playlistLikedStatus.textContent = allowRemove
+                ? 'Cette chanson est déjà dans la playlist sélectionnée. Vous pouvez la retirer.'
+                : 'Cette chanson est déjà dans la playlist sélectionnée.';
             playlistLikedStatus.classList.remove('d-none');
-            playlistModalConfirm.textContent = 'Retirer';
+            playlistModalConfirm.textContent = allowRemove ? 'Retirer' : defaultConfirmLabel;
             return;
         }
 
@@ -47,7 +58,7 @@
 
         if (!idPlaylist || !idChanson) return;
 
-        if (idPlaylist === '__LIKED__') {
+        if (allowLikedTarget && idPlaylist === '__LIKED__') {
             currentSongInSelectedPlaylist = false;
             refreshLikedStatus();
             return;
@@ -80,7 +91,7 @@
     }
 
     document.addEventListener('click', function (event) {
-        const btn = event.target.closest('.like-btn');
+        const btn = event.target.closest('.add-to-playlist-btn, .like-btn[data-playlist-trigger="true"]');
         if (!btn) return;
 
         event.preventDefault();
@@ -90,9 +101,11 @@
         const titre = row ? (row.querySelector('.track-title')?.textContent || '').trim() : '';
         const chansonId = btn.dataset.id;
         const icon = btn.querySelector('i');
+        const rowLikeIcon = row ? row.querySelector('.like-btn i') : null;
+        const likedIcon = rowLikeIcon || icon;
 
-        currentSongIcon = icon;
-        currentSongIsLiked = !!(icon && icon.classList.contains('bi-heart-fill'));
+        currentSongIcon = likedIcon;
+        currentSongIsLiked = !!(likedIcon && likedIcon.classList.contains('bi-heart-fill'));
 
         playlistModalConfirm.dataset.chansonId = chansonId;
         if (playlistModalTrackName) {
@@ -110,13 +123,29 @@
     playlistModalConfirm.addEventListener('click', function () {
         const chansonId = this.dataset.chansonId;
         const idPlaylist = playlistSelect ? playlistSelect.value : null;
-        const shouldRemoveLike = idPlaylist === '__LIKED__' && currentSongIsLiked;
-        const shouldRemoveFromPlaylist = idPlaylist !== '__LIKED__' && currentSongInSelectedPlaylist;
+        const shouldRemoveLike = allowRemove && idPlaylist === '__LIKED__' && currentSongIsLiked;
+        const shouldRemoveFromPlaylist = allowRemove && idPlaylist !== '__LIKED__' && currentSongInSelectedPlaylist;
 
         if (!chansonId || !idPlaylist) {
             if (playlistModalFeedback) {
                 playlistModalFeedback.textContent = 'Choisissez une playlist.';
                 playlistModalFeedback.className = 'playlist-feedback mt-3 text-danger';
+            }
+            return;
+        }
+
+        if (!allowLikedTarget && idPlaylist === '__LIKED__') {
+            if (playlistModalFeedback) {
+                playlistModalFeedback.textContent = 'Cette option n\'est pas disponible ici.';
+                playlistModalFeedback.className = 'playlist-feedback mt-3 text-danger';
+            }
+            return;
+        }
+
+        if (!allowRemove && currentSongInSelectedPlaylist) {
+            if (playlistModalFeedback) {
+                playlistModalFeedback.textContent = 'Cette chanson est déjà dans la playlist sélectionnée.';
+                playlistModalFeedback.className = 'playlist-feedback mt-3 text-warning';
             }
             return;
         }
@@ -131,11 +160,11 @@
             ? '/?controller=chanson&method=retirerLike'
             : shouldRemoveFromPlaylist
             ? '/?controller=playlist&method=retirerChanson'
-            : idPlaylist === '__LIKED__'
+            : allowLikedTarget && idPlaylist === '__LIKED__'
             ? '/?controller=chanson&method=ajouterLike'
             : '/?controller=playlist&method=ajouterChanson';
 
-        const body = idPlaylist === '__LIKED__'
+        const body = allowLikedTarget && idPlaylist === '__LIKED__'
             ? `idChanson=${encodeURIComponent(chansonId)}`
             : `idPlaylist=${encodeURIComponent(idPlaylist)}&idChanson=${encodeURIComponent(chansonId)}`;
 
@@ -158,7 +187,7 @@
                 return data;
             })
             .then((data) => {
-                if (idPlaylist === '__LIKED__') {
+                if (allowLikedTarget && idPlaylist === '__LIKED__') {
                     currentSongIsLiked = !shouldRemoveLike;
                     if (currentSongIcon) {
                         if (currentSongIsLiked) {
