@@ -112,20 +112,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    if (selectedType !== "artiste") {
-      nextButton.disabled = false;
-      return;
-    }
-
-    const activeForm = getActiveForm();
-    const consentCheckbox = activeForm?.querySelector('input[name="consentement"]');
-
-    if (!consentCheckbox) {
-      nextButton.disabled = false;
-      return;
-    }
-
-    consentChecked = consentCheckbox.checked;
     nextButton.disabled = !consentChecked;
   };
 
