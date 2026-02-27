@@ -113,47 +113,78 @@ class ControllerBattle extends Controller
      */
     public function inviter(): void
     {
-        header('Content-Type: application/json');
+    header('Content-Type: application/json');
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user_email'])) {
+        
+        $emailInvitado = $_POST['emailInvitado'];
+        $pseudoInvitado = $_POST['pseudoInvitado'];
+        $emailCreateur = $_SESSION['user_email'];
 
-        // Vérification de la méthode POST et de la session
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user_email'])) {
-            
-            $emailInvitado = $_POST['emailInvitado'] ?? null;
-            $pseudoInvitado = $_POST['pseudoInvitado'] ?? null;
-            $emailCreateur = $_SESSION['user_email'];
+        $battleDao = new BattleDao($this->getPdo());
+        $messageDao = new MessageDao($this->getPdo());
+        $uDao = new UtilisateurDao($this->getPdo());
 
-            if (!$emailInvitado || !$pseudoInvitado) {
-                echo json_encode(['status' => 'error', 'message' => 'Données manquantes']);
+        // 1. Créer la Battle en base de données
+        $battle = new Battle();
+        $battle->setTitreBattle("Battle : " . $_SESSION['user_pseudo'] . " VS " . $pseudoInvitado);
+        $battle->setStatutBattle(StatutBattle::En_attente);
+        $battle->setEmailCreateurBattle($emailCreateur);
+        $battle->setEmailParticipantBattle($emailInvitado);
+        $battle->setDateDebutBattle(new DateTime());
+        $battle->setDateFinBattle((new DateTime())->modify('+1 day'));
+
+        if ($battleDao->insert($battle)) {
+            // Récupérer l'ID de la battle qui vient d'être créée
+            $idBattle = $this->getPdo()->lastInsertId();
+
+            // 2. Envoyer le message d'invitation automatique
+            $expediteur = $uDao->find($emailCreateur);
+            $destinataire = $uDao->find($emailInvitado);
+
+            $msg = new Message();
+            // On utilise un marqueur spécial [BATTLE_INVITE:ID] pour que Twig le reconnaisse
+            $msg->setContenu("[BATTLE_INVITE:" . $idBattle . "] Salut ! Je t'invite à un battle musical. Es-tu prêt ?");
+            $msg->setDateEnvoi(new DateTime());
+            $msg->setEstLu(false);
+            $msg->setEmailExpediteur($expediteur);
+            $msg->setEmailDestinataire($destinataire);
+
+            if ($messageDao->create($msg)) {
+                echo json_encode(['status' => 'success']);
                 exit;
             }
-
-            // 1. Création de l'objet Battle
-            $battle = new Battle();
-            $battle->setTitreBattle("Battle : " . $_SESSION['user_pseudo'] . " VS " . $pseudoInvitado);
-            $battle->setStatutBattle(StatutBattle::En_attente);
-            $battle->setEmailCreateurBattle($emailCreateur);
-            $battle->setEmailParticipantBattle($emailInvitado);
-            
-            // Définition des dates (début maintenant, fin dans 24h)
-            $dateDebut = new DateTime();
-            $dateFin = (clone $dateDebut)->modify('+1 day');
-            
-            $battle->setDateDebutBattle($dateDebut);
-            $battle->setDateFinBattle($dateFin);
-
-            // 2. Enregistrement en base de données via le DAO
-            $battleDao = new BattleDao($this->getPdo());
-            
-            if ($battleDao->insert($battle)) {
-                // Ici, on pourrait ajouter l'envoi d'un email de notification plus tard
-                echo json_encode(['status' => 'success']);
-            } else {
-                echo json_encode(['status' => 'error', 'message' => 'Erreur lors de l\'enregistrement']);
-            }
-            exit;
         }
-
-        echo json_encode(['status' => 'error', 'message' => 'Requête invalide']);
-        exit;
     }
+    echo json_encode(['status' => 'error']);
+    exit;
+    }
+
+    /**
+     * Annule une battle suite à un refus de l'invité
+     */
+    public function refuser(): void
+{
+    // 1. On récupère l'ID de la battle depuis l'URL
+    $idBattle = isset($_GET['idBattle']) ? (int)$_GET['idBattle'] : null;
+
+    if ($idBattle) {
+        $pdo = $this->getPdo();
+        $battleDao = new BattleDao($pdo);
+        
+        // 2. On change le statut de la battle en 'annulee' dans la base de données
+        $battleDao->modifierStatut($idBattle, 'annulee');
+
+        // 3. On modifie le texte du message dans le chat pour supprimer le code [BATTLE_INVITE:...]
+        // Cela permet de faire disparaître les boutons "Accepter/Refuser" visuellement
+        $sql = "UPDATE message SET contenuMessage = 'L\'invitation au battle a été refusée.' 
+                WHERE contenuMessage LIKE :search";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([':search' => "%[BATTLE_INVITE:$idBattle]%"]);
+    }
+
+    // 4. On redirige l'utilisateur vers la conversation
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
+    exit;
+}
+
 }

@@ -4,32 +4,58 @@
 <div class="chat-wrapper">
     <div class="chat-container">
         <div class="chat-header">
-            {# On affiche une image par défaut si l'utilisateur n'en a pas #}
             <img src="{{ contact.urlPhotoUtilisateur ?? '/assets/images/default-avatar.png' }}" alt="{{ contact.pseudoUtilisateur }}">
             <h3>{{ contact.pseudoUtilisateur }}</h3>
         </div>
 
         <div class="chat-messages" id="chatMessages">
             {% for message in messages %}
-                {# On vérifie si l'email de l'expéditeur correspond à celui du contact #}
-                {% if message.emailExpediteur.emailUtilisateur == contact.emailUtilisateur %}
-                    <div class="message-bubble message-received">
-                        <div>{{ message.contenu }}</div>
-                        <div class="message-time">{{ message.dateEnvoi|date('H:i') }}</div>
-                    </div>
-                {% else %}
-                    <div class="message-bubble message-sent">
-                        <div>{{ message.contenu }}</div>
-                        
-                        <div class="message-time">
-                            {{ message.dateEnvoi|date('H:i') }}
+                {% set estMonMessage = (message.emailExpediteur.emailUtilisateur != contact.emailUtilisateur) %}
+                
+                <div class="message-bubble {{ estMonMessage ? 'message-sent' : 'message-received' }}">
+                    
+                    {# --- LOGIQUE D'INVITATION BATTLE --- #}
+                    {% if '[BATTLE_INVITE:' in message.contenu %}
+                        {# Extraction de l'ID de la battle et du texte #}
+                        {% set parts = message.contenu|split(':') %}
+                        {% set idBattle = parts[1]|split(']')|first %}
+                        {% set texteMessage = message.contenu|split(']')|last %}
+
+                        <div class="battle-invite-box p-3 rounded-3 bg-white text-dark mb-2 shadow-sm border border-warning">
+                            <p class="fw-bold mb-2 text-uppercase" style="color: #E58E82; font-size: 0.85rem;">
+                                <i class="bi bi-trophy-fill"></i> Invitation Battle
+                            </p>
+                            <p class="small mb-3">{{ texteMessage }}</p>
                             
-                            {% if message.estLu %}
-                                <span style="margin-left: 6px; font-weight: bold; color: #ffebdf; font-size: 0.7rem;">✓ Vu</span>
+                            {% if not estMonMessage %}
+                                {# L'invité voit les options Accepter / Refuser #}
+                                <div class="d-flex gap-2">
+                                    <a href="index.php?controller=battle&method=lister" class="btn btn-sm text-white flex-grow-1 fw-bold" style="background-color: #E58E82;">
+                                        Accepter
+                                    </a>
+                                    <a href="index.php?controller=battle&method=refuser&idBattle={{ idBattle }}" class="btn btn-sm btn-outline-secondary flex-grow-1 fw-bold" onclick="return confirm('Voulez-vous vraiment refuser cette battle ?')">
+                                        Refuser
+                                    </a>
+                                </div>
+                            {% else %}
+                                {# L'expéditeur voit juste le statut #}
+                                <div class="text-center p-1 rounded bg-light border small text-muted">
+                                    Invitation envoyée
+                                </div>
                             {% endif %}
                         </div>
-                        </div>
-                {% endif %}
+                    {% else %}
+                        {# --- MESSAGE NORMAL --- #}
+                        <div>{{ message.contenu }}</div>
+                    {% endif %}
+
+                    <div class="message-time">
+                        {{ message.dateEnvoi|date('H:i') }}
+                        {% if estMonMessage and message.estLu %}
+                            <span style="margin-left: 6px; font-weight: bold; color: #ffebdf; font-size: 0.7rem;">✓ Vu</span>
+                        {% endif %}
+                    </div>
+                </div>
             {% else %}
                 <p style="text-align: center; color: #888;">Commencez la discussion avec {{ contact.pseudoUtilisateur }} !</p>
             {% endfor %}
@@ -48,47 +74,31 @@
     document.addEventListener("DOMContentLoaded", function() {
         const chatMessages = document.getElementById('chatMessages');
         
-        // Fonction pour scroller tout en bas
         function scrollToBottom() {
             if (chatMessages) {
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             }
         }
 
-        // On scroll en bas au premier chargement de la page
         scrollToBottom();
 
-        // --- SYSTÈME DE RAFRAÎCHISSEMENT AUTOMATIQUE (POLLING) ---
+        // Rafraîchissement automatique toutes les 3 secondes
         setInterval(() => {
-            // On demande la page actuelle silencieusement en arrière-plan
             fetch(window.location.href)
                 .then(response => response.text())
                 .then(html => {
-                    // On simule un document HTML pour lire la réponse
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(html, 'text/html');
-                    
-                    // On isole uniquement la zone des messages de la nouvelle page
                     const newMessagesBlock = doc.getElementById('chatMessages');
                     
-                    // Si on a trouvé la zone ET que son contenu est différent de ce qu'on affiche actuellement
                     if (newMessagesBlock && chatMessages.innerHTML !== newMessagesBlock.innerHTML) {
-                        
-                        // Petite astuce d'UX : on vérifie si l'utilisateur était déjà tout en bas de la conversation
-                        // (pour ne pas le forcer à scroller s'il était en train de relire de vieux messages plus haut)
                         const isAtBottom = Math.abs((chatMessages.scrollHeight - chatMessages.scrollTop) - chatMessages.clientHeight) < 50;
-
-                        // On remplace les anciens messages par les nouveaux !
                         chatMessages.innerHTML = newMessagesBlock.innerHTML;
-
-                        // Si l'utilisateur était en bas, on le fait descendre sur le nouveau message
-                        if (isAtBottom) {
-                            scrollToBottom();
-                        }
+                        if (isAtBottom) scrollToBottom();
                     }
                 })
-                .catch(error => console.error('Erreur de synchronisation des messages :', error));
-        }, 3000); // 3000 millisecondes = vérification toutes les 3 secondes
+                .catch(error => console.error('Erreur de synchronisation :', error));
+        }, 3000);
     });
 </script>
 {% endblock %}
