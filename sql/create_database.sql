@@ -228,15 +228,23 @@ CREATE TABLE battle (
   statutBattle ENUM('en_attente','en_cours','terminee','annulee') NOT NULL,
   emailCreateurBattle VARCHAR(191) NOT NULL,
   emailParticipantBattle VARCHAR(191),
+  idChansonCreateur INT DEFAULT NULL,
+  idChansonParticipant INT DEFAULT NULL,
   CONSTRAINT fkBattleCreateur
     FOREIGN KEY (emailCreateurBattle) REFERENCES utilisateur(emailUtilisateur)
     ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT fkBattleParticipant
     FOREIGN KEY (emailParticipantBattle) REFERENCES utilisateur(emailUtilisateur)
+    ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT fkBattleChansonCreateur 
+    FOREIGN KEY (idChansonCreateur) REFERENCES chanson(idChanson)
+    ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT fkBattleChansonParticipant 
+    FOREIGN KEY (idChansonParticipant) REFERENCES chanson(idChanson)
     ON DELETE SET NULL ON UPDATE CASCADE
 );
 
--- ===================== VOTE (U ↔ Battle ↔ U) =====================
+-- ===================== VOTE (Battle) =====================
 CREATE TABLE vote (
   emailVotant VARCHAR(191) NOT NULL,
   idBattle INT NOT NULL,
