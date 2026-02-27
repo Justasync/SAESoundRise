@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
   /** @type {number} Étape actuelle du formulaire (1, 2 ou 3) */
   let currentStep = 1;
   
-  /** @type {string|null} Type d'utilisateur sélectionné ('artiste' ou 'auditeur') */
+  /** @type {string|null} Type d'utilisateur sélectionné ('artiste', 'auditeur' ou 'producteur') */
   let selectedType = null;
   
   /** @type {string|null} Dernier email soumis pour l'inscription */
@@ -112,6 +112,20 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    if (selectedType !== "artiste") {
+      nextButton.disabled = false;
+      return;
+    }
+
+    const activeForm = getActiveForm();
+    const consentCheckbox = activeForm?.querySelector('input[name="consentement"]');
+
+    if (!consentCheckbox) {
+      nextButton.disabled = false;
+      return;
+    }
+
+    consentChecked = consentCheckbox.checked;
     nextButton.disabled = !consentChecked;
   };
 
@@ -368,7 +382,7 @@ document.addEventListener("DOMContentLoaded", () => {
    * @brief Affiche le formulaire correspondant au type d'utilisateur sélectionné
    * 
    * @details Masque tous les formulaires sauf celui correspondant au type choisi
-   * (artiste ou auditeur).
+   * (artiste, auditeur ou producteur).
    * 
    * @returns {void}
    */
@@ -377,6 +391,8 @@ document.addEventListener("DOMContentLoaded", () => {
     forms.forEach((form) => {
       form.classList.toggle("d-none", form.dataset.userType !== selectedType);
     });
+
+    updateConsentButtonState();
   };
 
   /**
@@ -567,7 +583,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /** @brief Gestion du consentement à la diffusion et à la republication */
   modalElement.addEventListener("change", (event) => {
-    if (event.target.name === "consent") {
+    if (event.target.name === "consentement") {
       consentChecked = event.target.checked;
       updateConsentButtonState();
     }
