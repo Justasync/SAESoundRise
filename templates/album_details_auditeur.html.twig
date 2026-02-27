@@ -266,13 +266,13 @@
 				<div class="modal-body pt-2">
 					<p class="mb-2" id="playlistModalTrackName">Titre sélectionné</p>
 						<label for="playlist-select" class="form-label">Choisir une playlist</label>
-						<select id="playlist-select" class="form-select playlist-modal-select">
+						<div id="playlist-list" class="d-flex flex-column gap-2 mb-3">
 							{% if playlists is defined and playlists is not empty %}
-							{% for playlist in playlists %}
-								<option value="{{ playlist.getIdPlaylist() }}">{{ playlist.getNomPlaylist() }}</option>
-							{% endfor %}
+								{% for playlist in playlists %}
+									<button type="button" class="btn btn-outline-primary playlist-select-btn" data-id="{{ playlist.getIdPlaylist() }}">{{ playlist.getNomPlaylist() }}</button>
+								{% endfor %}
 							{% endif %}
-						</select>
+						</div>
 					<div id="playlist-liked-status" class="playlist-liked-status d-none"></div>
 					<div id="playlist-modal-feedback" class="playlist-feedback mt-2"></div>
 				</div>
