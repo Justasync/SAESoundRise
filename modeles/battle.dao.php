@@ -80,6 +80,8 @@ class BattleDAO {
 
         $battle->setEmailCreateurBattle($data['emailCreateurBattle'] ?? null);
         $battle->setEmailParticipantBattle($data['emailParticipantBattle'] ?? null);
+        $battle->setIdChansonCreateur($data['idChansonCreateur'] ?? null);
+        $battle->setIdChansonParticipant($data['idChansonParticipant'] ?? null);
 
         return $battle;
     }
@@ -150,4 +152,84 @@ class BattleDAO {
         ]);
         return (int)$stmt->fetchColumn();
     }
+
+
+
+    public function update(Battle $battle): bool {
+        $sql = "UPDATE battle SET 
+                statutBattle = :statut, 
+                emailParticipantBattle = :participant,
+                idChansonCreateur = :chansonCreateur,
+                idChansonParticipant = :chansonPart
+                WHERE idBattle = :id";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            ':statut' => $battle->getStatutBattle()->value,
+            ':participant' => $battle->getEmailParticipantBattle(),
+            ':chansonCreateur' => $battle->getIdChansonCreateur(),
+            ':chansonPart' => $battle->getIdChansonParticipant(),
+            ':id' => $battle->getIdBattle()
+        ]);
+    }
+
+    public function addVote(string $emailVotant, int $idBattle, string $emailVotee): bool {
+        $sql = "INSERT INTO vote (emailVotant, idBattle, emailVotee) VALUES (:votant, :idB, :votee)";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([':votant' => $emailVotant, ':idB' => $idBattle, ':votee' => $emailVotee]);
+    }
+
+
+
+        public function insert(Battle $battle): bool {
+        $sql = "INSERT INTO battle (titreBattle, dateDebutBattle, dateFinBattle, statutBattle, emailCreateurBattle, emailParticipantBattle) 
+                VALUES (:titre, :debut, :fin, :statut, :createur, :participant)";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            ':titre' => $battle->getTitreBattle(),
+            ':debut' => $battle->getDateDebutBattle()?->format('Y-m-d H:i:s'),
+            ':fin' => $battle->getDateFinBattle()?->format('Y-m-d H:i:s'),
+            ':statut' => $battle->getStatutBattle()->value,
+            ':createur' => $battle->getEmailCreateurBattle(),
+            ':participant' => $battle->getEmailParticipantBattle()
+        ]);
+    }
+
+    public function updateSongs(int $idBattle, ?int $idChansonCreateur, ?int $idChansonParticipant): bool {
+        $sql = "UPDATE battle SET idChansonCreateur = :c, idChansonParticipant = :p WHERE idBattle = :id";
+        return $this->pdo->prepare($sql)->execute([':c' => $idChansonCreateur, ':p' => $idChansonParticipant, ':id' => $idBattle]);
+    }
+
+    public function getVotesCount(int $idBattle, string $emailArtiste): int {
+        $sql = "SELECT COUNT(*) FROM vote WHERE idBattle = :idB AND emailVotee = :email";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':idB' => $idBattle, ':email' => $emailArtiste]);
+        return (int)$stmt->fetchColumn();
+    }
+
+    public function hasUserVoted(int $idBattle, string $emailVotant): bool {
+        $sql = "SELECT COUNT(*) FROM vote WHERE idBattle = :idB AND emailVotant = :emailV";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':idB' => $idBattle, ':email' => $emailVotant]);
+        return $stmt->fetchColumn() > 0;
+    }
+
+        /**
+     * Met à jour la chanson d'un participant (créateur ou invité)
+     */
+    public function modifierChanson(int $idBattle, int $idChanson, bool $estCreateur): bool {
+        $colonne = $estCreateur ? 'idChansonCreateur' : 'idChansonParticipant';
+        $sql = "UPDATE battle SET $colonne = :idC WHERE idBattle = :idB";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([':idC' => $idChanson, ':idB' => $idBattle]);
+    }
+
+    /**
+     * Met à jour le statut de la battle
+     */
+    public function modifierStatut(int $idBattle, string $nouveauStatut): bool {
+        $sql = "UPDATE battle SET statutBattle = :statut WHERE idBattle = :id";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([':statut' => $nouveauStatut, ':id' => $idBattle]);
+    }
+
 }

@@ -65,7 +65,7 @@ class ControllerHome extends Controller
                 $this->auditeurDashboard();
                 break;
             case RoleEnum::Producteur:
-                $this->homeBienvenue();
+                $this->producteurDashboard();
                 break;
             case RoleEnum::Invite:
                 $this->openDashboard();
@@ -273,6 +273,81 @@ class ControllerHome extends Controller
             'artistes' => $artistesSuggere,
             'albums' => $albumsPopulaires,
         ]);
+    }
+
+    /**
+     * @brief Affiche le tableau de bord du producteur connecté.
+     *
+     * @details Le dashboard met l'accent sur la découverte de talents :
+     * - Artistes recommandés
+     * - Statistiques clés
+     * - Albums/singles les plus écoutés
+     *
+     * @return void
+     */
+    private function producteurDashboard()
+    {
+        $utilisateurDAO = new UtilisateurDAO($this->getPDO());
+        $albumDAO = new AlbumDAO($this->getPDO());
+
+        $emailUtilisateur = $_SESSION['user_email'] ?? '';
+        $artistesSuggere = $utilisateurDAO->findAllArtistes($emailUtilisateur);
+        $albumsPopulaires = $albumDAO->findMostListened(4);
+
+        $artistesInscritsSemaine = 0;
+        $artistePlusBatailles = null;
+
+        try {
+            $pdo = $this->getPDO();
+
+            $sqlArtistesSemaine = "SELECT COUNT(*)
+                                  FROM utilisateur u
+                                  INNER JOIN role r ON u.roleUtilisateur = r.idRole
+                                  WHERE r.typeRole = 'artiste'
+                                    AND u.dateInscriptionUtilisateur >= DATE_SUB(NOW(), INTERVAL 7 DAY)";
+            $stmtArtistesSemaine = $pdo->prepare($sqlArtistesSemaine);
+            $stmtArtistesSemaine->execute();
+            $artistesInscritsSemaine = (int)$stmtArtistesSemaine->fetchColumn();
+
+            $sqlTopBattles = "SELECT u.pseudoUtilisateur
+                              FROM vote v
+                              INNER JOIN utilisateur u ON u.emailUtilisateur = v.emailVotee
+                              GROUP BY v.emailVotee, u.pseudoUtilisateur
+                              ORDER BY COUNT(*) DESC
+                              LIMIT 1";
+            $stmtTopBattles = $pdo->prepare($sqlTopBattles);
+            $stmtTopBattles->execute();
+            $artistePlusBatailles = $stmtTopBattles->fetchColumn() ?: null;
+        } catch (Exception $e) {
+            $artistesInscritsSemaine = 0;
+            $artistePlusBatailles = null;
+        }
+
+        $template = $this->getTwig()->load('producteur_dashboard.html.twig');
+        echo $template->render([
+            'page' => [
+                'title' => 'Accueil producteur',
+                'name' => 'accueil',
+                'description' => 'Tableau de bord producteur pour découvrir de nouveaux talents'
+            ],
+            'session' => $_SESSION,
+            'artistes' => $artistesSuggere,
+            'albums' => $albumsPopulaires,
+            'stats' => [
+                'artistesInscritsSemaine' => $artistesInscritsSemaine,
+                'artistesTrouves' => count($artistesSuggere),
+                'artistePlusBatailles' => $artistePlusBatailles ?? (isset($artistesSuggere[0]) ? $artistesSuggere[0]->getPseudoUtilisateur() : 'Aucun'),
+            ],
+        ]);
+    }
+
+    /**
+     * @brief Méthode d'aperçu du dashboard producteur (utile hors session producteur).
+     * @return void
+     */
+    public function apercuProducteur()
+    {
+        $this->producteurDashboard();
     }
 
     /**
