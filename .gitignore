@@ -54,4 +54,6 @@ yarn-error.log*
 *.pem
 
 # Fichiers de sauvegarde
-/backups/
+scripts/backups/
+scripts/backup_db.sh
+scripts/recovery_db.sh
