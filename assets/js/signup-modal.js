@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
   /** @type {number} Étape actuelle du formulaire (1, 2 ou 3) */
   let currentStep = 1;
   
-  /** @type {string|null} Type d'utilisateur sélectionné ('artiste', 'auditeur' ou 'producteur') */
+  /** @type {string|null} Type d'utilisateur sélectionné ('artiste' ou 'auditeur') */
   let selectedType = null;
   
   /** @type {string|null} Dernier email soumis pour l'inscription */
@@ -100,6 +100,9 @@ document.addEventListener("DOMContentLoaded", () => {
   /** @brief Longueur maximale de l'URL du site web (VARCHAR(255) dans la BDD) */
   const WEBSITE_MAX_LENGTH = 255;
 
+  /**@brief Gestion du consentement à la diffusion et à la republication */
+  let consentChecked = false;
+
   /**
    * @brief Met à jour l'état du bouton "Valider" selon le consentement
    */
@@ -109,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // ...existing code...
+    nextButton.disabled = !consentChecked;
   };
 
   /**
@@ -334,7 +337,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (step !== 2) {
-      // ...existing code...
+      consentChecked = false;
       updateConsentButtonState();
       resetStatusMessages();
     }
@@ -365,7 +368,7 @@ document.addEventListener("DOMContentLoaded", () => {
    * @brief Affiche le formulaire correspondant au type d'utilisateur sélectionné
    * 
    * @details Masque tous les formulaires sauf celui correspondant au type choisi
-   * (artiste, auditeur ou producteur).
+   * (artiste ou auditeur).
    * 
    * @returns {void}
    */
@@ -374,8 +377,6 @@ document.addEventListener("DOMContentLoaded", () => {
     forms.forEach((form) => {
       form.classList.toggle("d-none", form.dataset.userType !== selectedType);
     });
-
-    updateConsentButtonState();
   };
 
   /**
@@ -566,8 +567,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /** @brief Gestion du consentement à la diffusion et à la republication */
   modalElement.addEventListener("change", (event) => {
-    if (event.target.name === "consentement") {
-      // ...existing code...
+    if (event.target.name === "consent") {
+      consentChecked = event.target.checked;
       updateConsentButtonState();
     }
   });
@@ -638,6 +639,6 @@ document.addEventListener("DOMContentLoaded", () => {
     errorElement?.classList.add("d-none");
     resetStatusMessages();
     showStep(1);
-    // ...existing code...
+    consentChecked = false;
   });
 });
