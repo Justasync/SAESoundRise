@@ -4,6 +4,7 @@
     Si `album_existant` est fourni, le formulaire est configuré pour ajouter
     des chansons à cet album. Sinon, il fait partie de la création d'un nouvel album.
 #}
+<script type="application/json" id="paaxio-genres-json">[{% for g in genres %}{"id":{{ g.getIdGenre() }},"nom":"{{ g.getNomGenre()|e('js') }}"}{% if not loop.last %},{% endif %}{% endfor %}]</script>
 <form action="/?controller=album&method=ajouterAlbum" method="post" enctype="multipart/form-data" id="album-form">
 
     {# Champ caché pour l'ID de l'album existant, si applicable #}
@@ -39,12 +40,22 @@
 document.addEventListener('DOMContentLoaded', function () {
     const input = document.getElementById('chansons-input');
     const form = document.getElementById('album-form');
-    const container = document.getElementById('tracks-details-container'); 
+    const container = document.getElementById('tracks-details-container');
+    const genresEl = document.getElementById('paaxio-genres-json');
+    const PAAXIO_GENRES = genresEl ? JSON.parse(genresEl.textContent) : [];
 
     // Renommer l'input file pour correspondre au premier champ attendu par le backend
     if (input) {
         input.name = 'tracks[0][file]';
     }
+
+    function escapeGenreForOption(g) {
+        var nom = g.nom || '';
+        var attrVal = nom.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+        var textVal = nom.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return '<option value="' + attrVal + '">' + textVal + '</option>';
+    }
+    const genreOptionsHtml = PAAXIO_GENRES.length ? '<option value="">Choisir un genre</option>' + PAAXIO_GENRES.map(escapeGenreForOption).join('') : '';
 
     input.addEventListener('change', function(e) {
         container.innerHTML = ''; // Vider le conteneur
@@ -82,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
                      <div class="row gx-2">
                          <div class="col-md-6">
                              <label for="track-genre-${index}" class="form-label small">Genre</label>
-                             <input type="text" class="form-control form-control-sm" id="track-genre-${index}" name="tracks[${index}][genre]" placeholder="Ex: Pop, Rock...">
+                             <select class="form-control form-control-sm" id="track-genre-${index}" name="tracks[${index}][genre]" required>${genreOptionsHtml}</select>
                          </div>
                          <div class="col-md-6">
                              <label for="track-duration-${index}" class="form-label small">Durée (secondes)</label>

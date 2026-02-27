@@ -23,8 +23,15 @@
                 {% else %}
                     <div class="message-bubble message-sent">
                         <div>{{ message.contenu }}</div>
-                        <div class="message-time">{{ message.dateEnvoi|date('H:i') }}</div>
-                    </div>
+                        
+                        <div class="message-time">
+                            {{ message.dateEnvoi|date('H:i') }}
+                            
+                            {% if message.estLu %}
+                                <span style="margin-left: 6px; font-weight: bold; color: #ffebdf; font-size: 0.7rem;">✓ Vu</span>
+                            {% endif %}
+                        </div>
+                        </div>
                 {% endif %}
             {% else %}
                 <p style="text-align: center; color: #888;">Commencez la discussion avec {{ contact.pseudoUtilisateur }} !</p>

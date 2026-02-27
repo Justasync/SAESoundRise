@@ -3,20 +3,11 @@
 /**
  * @file controller_battle.class.php
  * @brief Fichier contenant le contrôleur de gestion des battles.
- * 
- * Ce fichier gère toutes les fonctionnalités liées aux battles musicales
- * dans l'application Paaxio.
- * 
  */
 
 /**
  * @class ControllerBattle
- * @brief Contrôleur dédié à la gestion des battles.
- * 
- * Cette classe gère les opérations sur les battles :
- * - Affichage d'une battle spécifique
- * - Liste de toutes les battles
- * - Affichage sous forme de tableau
+ * @brief Contrôleur dédié à la gestion des battles musicales.
  * 
  * @extends Controller
  */
@@ -36,77 +27,133 @@ class ControllerBattle extends Controller
     /**
      * @brief Affiche les détails d'une battle spécifique.
      * 
-     * Récupère une battle par son ID passé en paramètre GET.
-     * 
      * @return void
      */
     public function afficher()
     {
-        $idBattle = isset($_GET['idBattle']) ? $_GET['idBattle'] : null;
+        $idBattle = isset($_GET['idBattle']) ? (int)$_GET['idBattle'] : null;
 
-        // Récupération de la battle
         $managerBattle = new BattleDao($this->getPdo());
         $battle = $managerBattle->find($idBattle);
 
-        $template = $this->getTwig()->load('test.html.twig');
-        echo $template->render(array(
+        echo $this->getTwig()->render('test.html.twig', [
             'page' => [
-                'title' => "Battle",
-                'name' => "battle",
-                'description' => "Battle dans Paaxio"
+                'title' => "Détails Battle",
+                'name' => "battle"
             ],
             'testing' => $battle,
-        ));
+        ]);
     }
 
     /**
-     * @brief Liste toutes les battles de la plateforme.
-     * 
-     * Récupère toutes les battles et les affiche dans un template de test.
+     * @brief Liste toutes les battles et gère l'affichage de la page principale.
      * 
      * @return void
      */
-    public function lister()
+    public function lister(): void
     {
-        // Récupération des battles
-        $managerBattle = new BattleDao($this->getPdo());
-        $battles = $managerBattle->findAll();
+        if (!isset($_SESSION['user_logged_in'])) {
+            header('Location: index.php?controller=home&method=afficher');
+            exit;
+        }
 
-        // Choix du template
-        $template = $this->getTwig()->load('test.html.twig');
+        $battleDao = new BattleDao($this->getPdo());
+        $utilisateurDao = new UtilisateurDao($this->getPdo());
+        $chansonDao = new ChansonDao($this->getPdo()); // Nouveau
 
-        // Affichage de la page
-        echo $template->render(array(
-            'page' => [
-                'title' => "Battles",
-                'name' => "battles",
-                'description' => "Battles dans Paaxio"
-            ],
-            'testing' => $battles,
-        ));
+        $battles = $battleDao->findAll();
+        $emailActuel = $_SESSION['user_email'];
+        $artistes = $utilisateurDao->findAllArtistes($emailActuel);
+        
+        // On récupère les chansons de l'utilisateur pour qu'il puisse choisir
+        $mesChansons = $chansonDao->findAllFromUser($emailActuel);
+
+        echo $this->getTwig()->render('battle_liste.html.twig', [
+            'page' => ['title' => "Battles", 'name' => "battle"],
+            'battles' => $battles,
+            'artistesDisponibles' => $artistes,
+            'mesChansons' => $mesChansons, // Envoyé au template
+            'session' => $_SESSION
+        ]);
+    }
+
+    public function choisirChanson(): void
+    {
+        header('Content-Type: application/json');
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user_email'])) {
+            $idBattle = (int)$_POST['idBattle'];
+            $idChanson = (int)$_POST['idChanson'];
+            $emailActuel = $_SESSION['user_email'];
+
+            $battleDao = new BattleDao($this->getPdo());
+            $battle = $battleDao->find($idBattle);
+
+            // On détermine si l'utilisateur est le créateur ou l'invité
+            $estCreateur = ($battle->getEmailCreateurBattle() === $emailActuel);
+            
+            if ($battleDao->modifierChanson($idBattle, $idChanson, $estCreateur)) {
+                // Vérification : si les deux chansons sont là, on lance la battle
+                $battleAjour = $battleDao->find($idBattle);
+                if ($battleAjour->getIdChansonCreateur() && $battleAjour->getIdChansonParticipant()) {
+                    $battleDao->modifierStatut($idBattle, 'en_cours');
+                }
+                echo json_encode(['status' => 'success']);
+                exit;
+            }
+        }
+        echo json_encode(['status' => 'error']);
+        exit;
     }
 
     /**
-     * @brief Liste toutes les battles sous forme de tableau.
-     * 
-     * Récupère toutes les battles et les affiche dans un format tableau.
+     * @brief Gère la création d'une nouvelle battle (Invitation).
+     * Appelé via AJAX depuis le modal de sélection d'artiste.
      * 
      * @return void
      */
-    public function listerTableau()
+    public function inviter(): void
     {
-        $managerBattle = new BattleDao($this->getPdo());
-        $battles = $managerBattle->findAll();
+        header('Content-Type: application/json');
 
-        // Génération de la vue
-        $template = $this->getTwig()->load('test.html.twig');
-        echo $template->render(array(
-            'page' => [
-                'title' => "Battles tableau",
-                'name' => "battlet",
-                'description' => "Battles tableau dans Paaxio"
-            ],
-            'testing' => $battles,
-        ));
+        // Vérification de la méthode POST et de la session
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user_email'])) {
+            
+            $emailInvitado = $_POST['emailInvitado'] ?? null;
+            $pseudoInvitado = $_POST['pseudoInvitado'] ?? null;
+            $emailCreateur = $_SESSION['user_email'];
+
+            if (!$emailInvitado || !$pseudoInvitado) {
+                echo json_encode(['status' => 'error', 'message' => 'Données manquantes']);
+                exit;
+            }
+
+            // 1. Création de l'objet Battle
+            $battle = new Battle();
+            $battle->setTitreBattle("Battle : " . $_SESSION['user_pseudo'] . " VS " . $pseudoInvitado);
+            $battle->setStatutBattle(StatutBattle::En_attente);
+            $battle->setEmailCreateurBattle($emailCreateur);
+            $battle->setEmailParticipantBattle($emailInvitado);
+            
+            // Définition des dates (début maintenant, fin dans 24h)
+            $dateDebut = new DateTime();
+            $dateFin = (clone $dateDebut)->modify('+1 day');
+            
+            $battle->setDateDebutBattle($dateDebut);
+            $battle->setDateFinBattle($dateFin);
+
+            // 2. Enregistrement en base de données via le DAO
+            $battleDao = new BattleDao($this->getPdo());
+            
+            if ($battleDao->insert($battle)) {
+                // Ici, on pourrait ajouter l'envoi d'un email de notification plus tard
+                echo json_encode(['status' => 'success']);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Erreur lors de l\'enregistrement']);
+            }
+            exit;
+        }
+
+        echo json_encode(['status' => 'error', 'message' => 'Requête invalide']);
+        exit;
     }
 }

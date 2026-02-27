@@ -15,9 +15,11 @@
 		<link rel="stylesheet" href="/assets/css/body.css">
 		<link rel="stylesheet" href="/assets/css/header.css">
 		<link rel="stylesheet" href="/assets/css/footer.css">
+		<link rel="stylesheet" href="/assets/css/chat.css">
 		<link rel="stylesheet" href="/assets/css/utilisateur_gestion_profil.css">
 		<link rel="stylesheet" href="/assets/css/utilisateur_securite.css">
-		<link rel="stylesheet" href="/assets/css/utilisateur_abonnement.css">
+		<link
+		rel="stylesheet" href="/assets/css/utilisateur_abonnement.css">
 
 		<!-- Meta OG -->
 		<meta property="og:title" content="{{ page.title is defined ? page.title : 'Paaxio' }}"/>
@@ -60,45 +62,43 @@
 	<body>
 		<header>
 			<nav class="navbar navbar-expand-lg">
-				<div class="container-fluid">
+				<div
+					class="container-fluid">
 					<!-- Logo -->
 					<a class="navbar-brand {% if session.user_logged_in is defined and session.user_logged_in %}header-shift-up{% endif %}" href="/?controller=home&method=afficher">
-						<img src="assets/images/logos/paaxio_logo_nom_droit_noir.svg"
-							alt="Paaxio" width="150">
+						<img src="assets/images/logos/paaxio_logo_nom_droit_noir.svg" alt="Paaxio" width="150">
 					</a>
 					<!-- Toggle mobile -->
-					<button class="navbar-toggler" type="button"
-							data-bs-toggle="collapse"
-							data-bs-target="#navbarSupportedContent"
-							aria-controls="navbarSupportedContent"
-							aria-expanded="false"
-							aria-label="Toggle navigation">
+					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 
 						<span class="navbar-toggler-icon"></span>
 					</button>
 					<!-- Navbar content -->
-					<div class="collapse navbar-collapse flex-column" id="navbarSupportedContent">
+					<div
+						class="collapse navbar-collapse flex-column" id="navbarSupportedContent">
 						<!-- Navigation -->
 						<ul class="navbar-nav mx-auto mb-2 mb-lg-0">
 							{% if session.user_logged_in is defined and session.user_logged_in and session.user_role is defined and session.user_role.value == 'admin' %}
 								<li class="nav-item">
-									<a class="nav-link fs-4 {% if page.name is defined and page.name == 'admin' %}active{% endif %}"
-									href="/?controller=admin&method=afficher">
-									Admin
+									<a class="nav-link fs-4 {% if page.name is defined and page.name == 'admin' %}active{% endif %}" href="/?controller=admin&method=afficher">
+										Admin
 									</a>
 								</li>
 							{% else %}
 								{% if session.user_logged_in is defined and session.user_logged_in %}
 									<li class="nav-item nav-item-offset">
-										<a class="nav-link fs-4 {% if page.name is defined and page.name == 'maMusique' %}active{% endif %}"
-										href="/?controller=musique&method=afficher">
-										Ma Musique
+										<a class="nav-link fs-4 {% if page.name is defined and page.name == 'maMusique' %}active{% endif %}" href="/?controller=musique&method=afficher">
+											Ma Musique
 										</a>
 									</li>
 									<li class="nav-item nav-item-offset">
-										<a class="nav-link fs-4 {% if page.name is defined and page.name == 'battle' %}active{% endif %}"
-										href="#">
-										Battle
+										<a class="nav-link fs-4 {% if page.name is defined and page.name == 'battle' %}active{% endif %}" href="?controller=battle&method=lister">
+											Battle
+										</a>
+									</li>
+									<li class="nav-item nav-item-offset">
+										<a class="nav-link fs-4 {% if page.name is defined and page.name == 'messages' %}active{% endif %}" aria-current="page" href="?controller=message&method=lister">
+											Messages
 										</a>
 									</li>
 								{% endif %}
@@ -107,46 +107,38 @@
 						<!-- Search (centré) -->
 						<div class="search-bar mx-auto w-50 position-relative mb-3">
 							<form action="index.php" method="get" role="search">
-								<input id="searchInput"
-									name="term"
-									class="form-control"
-									type="search"
-									placeholder="Rechercher"
-									autocomplete="off">
+								<input id="searchInput" name="term" class="form-control" type="search" placeholder="Rechercher" autocomplete="off">
 							</form>
-							<div id="searchResults"
-								class="list-group position-absolute w-100 shadow"
-								style="display:none; z-index:9999; top:100%; left:0; background:white; max-height:300px; overflow-y:auto;">
-							</div>
+							<div id="searchResults" class="list-group position-absolute w-100 shadow" style="display:none; z-index:9999; top:100%; left:0; background:white; max-height:300px; overflow-y:auto;"></div>
 						</div>
 					</div>
-					<!-- User dropdown -->
-					<div class="dropdown ms-auto {% if session.user_logged_in is defined and session.user_logged_in %}header-shift-up{% endif %}">
-						<button class="btn text-secondary d-flex align-items-center justify-content-center"
-								type="button"
-								id="userDropdown"
-								data-bs-toggle="dropdown">
+					<!-- Right side: upload album (artists) + user dropdown -->
+					<div class="d-flex align-items-center gap-1 ms-auto {% if session.user_logged_in is defined and session.user_logged_in %}header-shift-up{% endif %}">
+						{% if session.user_logged_in is defined and session.user_logged_in and session.user_role is defined and session.user_role.value == 'artiste' %}
+							<a class="btn text-secondary d-flex align-items-center justify-content-center" href="/?controller=album&method=afficherFormulaireAjout" title="Publier un album" aria-label="Publier un album">
+								<i class="bi bi-cloud-upload fs-4"></i>
+							</a>
+						{% endif %}
+						<div class="dropdown">
+						<button class="btn text-secondary d-flex align-items-center justify-content-center" type="button" id="userDropdown" data-bs-toggle="dropdown">
 							<i class="bi bi-person-circle fs-4"></i>
 						</button>
 						<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown" style="min-width:180px;">
 							{% if session.user_logged_in is defined and session.user_logged_in %}
 								<li>
-									<a class="dropdown-item"
-									href="/?controller=utilisateur&method=afficherProfilArtiste&pseudo={{session.user_pseudo}}">
-									<i class="bi bi-person-circle me-2"></i>Mon Profil
+									<a class="dropdown-item" href="/?controller=utilisateur&method=afficherProfilArtiste&pseudo={{session.user_pseudo}}">
+										<i class="bi bi-person-circle me-2"></i>Mon Profil
 									</a>
 								</li>
 								<li>
-									<a class="dropdown-item"
-									href="/?controller=utilisateur&method=afficherGestionProfil">
-									<i class="bi bi-gear me-2"></i>Paramètres
+									<a class="dropdown-item" href="/?controller=utilisateur&method=afficherGestionProfil">
+										<i class="bi bi-gear me-2"></i>Paramètres
 									</a>
 								</li>
 								<li><hr class="dropdown-divider"></li>
 								<li>
-									<a class="dropdown-item text-danger"
-									href="/?controller=utilisateur&method=logout">
-									<i class="bi bi-box-arrow-right me-2"></i>Déconnexion
+									<a class="dropdown-item text-danger" href="/?controller=utilisateur&method=logout">
+										<i class="bi bi-box-arrow-right me-2"></i>Déconnexion
 									</a>
 								</li>
 							{% else %}
@@ -162,11 +154,12 @@
 								</li>
 							{% endif %}
 						</ul>
+						</div>
 					</div>
 				</div>
 			</nav>
 		</header>
-			<main class="paaxio-content-wrapper"> {% block content %}{% endblock %}
+		<main class="paaxio-content-wrapper"> {% block content %}{% endblock %}
 			</main>
 
 			<!-- Sign-up Modal -->
@@ -294,7 +287,8 @@
 											<div class="form-check">
 												<input class="form-check-input" type="checkbox" id="artisteConsentement" name="consentement" required>
 												<label class="form-check-label" for="artisteConsentement">
-													J'ai lu et j'accepte le <a href="/?controller=home&method=afficherConsentement" class="info-link" target="_blank" rel="noopener">consentement à la diffusion et à la republication</a>.
+													J'ai lu et j'accepte le
+													<a href="/?controller=home&method=afficherConsentement" class="info-link" target="_blank" rel="noopener">consentement à la diffusion et à la republication</a>.
 												</label>
 											</div>
 										</div>
@@ -514,27 +508,27 @@
 
 			<script>
 				document.addEventListener('DOMContentLoaded', function () { // Afficher la modale de connexion lorsque "Se connecter" est cliqué
-					var triggerLoginModal = document.getElementById('trigger-login-modal');
-					if (triggerLoginModal) {
-							triggerLoginModal.addEventListener('click', function (e) {
-								e.preventDefault();
-								var signinModal = new bootstrap.Modal(document.getElementById('signinModal'));
-								signinModal.show();
-							});
-					}
-					// Afficher la modale d'inscription lorsque "S'inscrire" est cliqué
-					var triggerSignupModal = document.getElementById('trigger-signup-modal');
-					if (triggerSignupModal) {
-							triggerSignupModal.addEventListener('click', function (e) {
-							e.preventDefault();
-							var signupModal = new bootstrap.Modal(document.getElementById('signupModal'));
-							signupModal.show();
-						});
-					}
-				});
+var triggerLoginModal = document.getElementById('trigger-login-modal');
+if (triggerLoginModal) {
+triggerLoginModal.addEventListener('click', function (e) {
+e.preventDefault();
+var signinModal = new bootstrap.Modal(document.getElementById('signinModal'));
+signinModal.show();
+});
+}
+// Afficher la modale d'inscription lorsque "S'inscrire" est cliqué
+var triggerSignupModal = document.getElementById('trigger-signup-modal');
+if (triggerSignupModal) {
+triggerSignupModal.addEventListener('click', function (e) {
+e.preventDefault();
+var signupModal = new bootstrap.Modal(document.getElementById('signupModal'));
+signupModal.show();
+});
+}
+});
 			</script>
 			<script src="assets/js/signup-modal.js?v=1.0b3"></script>
 			<script src="assets/js/signin-modal.js?v=1.0b4"></script>
 			<script src="assets/js/search.js"></script>
-	</body>
-</html>
+		</body>
+	</html>

@@ -50,6 +50,8 @@ class Battle {
      * @var string|null $emailParticipantBattle L'email du participant à la battle.
      */
     private string|null $emailParticipantBattle;
+    private int|null $idChansonCreateur;
+    private int|null $idChansonParticipant;
 
     /**
      * Constructeur de la classe Battle.
@@ -63,7 +65,8 @@ class Battle {
      */
     public function __construct(?int $idBattle = null, ?string $titreBattle = null, ?DateTime $dateDebutBattle = null, 
                                 ?DateTime $dateFinBattle = null, ?StatutBattle $statutBattle = null, 
-                                ?string $emailCreateurBattle = null, ?string $emailParticipantBattle = null)
+                                ?string $emailCreateurBattle = null, ?string $emailParticipantBattle = null,
+                                ?int $idChansonCreateur = null, ?int $idChansonParticipant = null)
     {
         $this->idBattle = $idBattle;
         $this->titreBattle = $titreBattle;
@@ -72,6 +75,8 @@ class Battle {
         $this->statutBattle = $statutBattle;
         $this->emailCreateurBattle = $emailCreateurBattle;
         $this->emailParticipantBattle = $emailParticipantBattle;
+        $this->idChansonCreateur = $idChansonCreateur;
+        $this->idChansonParticipant = $idChansonParticipant;
     }
 
     /**
@@ -199,5 +204,12 @@ class Battle {
     {
         $this->emailParticipantBattle = $emailParticipantBattle;
     }
+    
+    public function getIdChansonCreateur(): ?int { return $this->idChansonCreateur; }
+    public function setIdChansonCreateur(?int $id): void { $this->idChansonCreateur = $id; }
+
+    public function getIdChansonParticipant(): ?int { return $this->idChansonParticipant; }
+    public function setIdChansonParticipant(?int $id): void { $this->idChansonParticipant = $id; }
+
 }
 ?>

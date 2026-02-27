@@ -168,7 +168,12 @@
 						</div>
 						<div class="mb-3">
 							<label for="edit-song-genre" class="form-label">Genre</label>
-							<input type="text" class="form-control" id="edit-song-genre" name="genre_chanson">
+							<select class="form-control" id="edit-song-genre" name="genre_chanson">
+								<option value="">Choisir un genre</option>
+								{% for genre in genres %}
+								<option value="{{ genre.getNomGenre() }}">{{ genre.getNomGenre() }}</option>
+								{% endfor %}
+							</select>
 						</div>
 					</div>
 					<div class="modal-footer">
@@ -197,11 +202,11 @@ const songGenre = button.getAttribute('data-song-genre');
 const modalTitle = modifierModal.querySelector('.modal-title');
 const modalForm = modifierModal.querySelector('form');
 const titleInput = modifierModal.querySelector('#edit-song-title');
-const genreInput = modifierModal.querySelector('#edit-song-genre');
+const genreSelect = modifierModal.querySelector('#edit-song-genre');
 
 modalTitle.textContent = 'Modifier : ' + songTitle;
 titleInput.value = songTitle;
-genreInput.value = songGenre;
+genreSelect.value = songGenre || '';
 
 // Mettre à jour l'action du formulaire pour inclure l'ID de la chanson
 modalForm.action = `/?controller=album&method=modifierChanson&idChanson=${songId}`;
