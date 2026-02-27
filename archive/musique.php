@@ -6,8 +6,8 @@ $pdo = bd::getInstance()->getConnexion();
 $template = $twig->load('musique.html.twig');
 echo $template->render([
     'page' => [
-        'title' => "Ma Musique",
-        'name' => "maMusique",
-        'description' => "Ma musique personnelle"
+        'title' => "Ma Bibliothèque",
+        'name' => "maBiblio",
+        'description' => "Ma bibliothèque"
     ],
 ]);
