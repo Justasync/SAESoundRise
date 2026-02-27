@@ -100,9 +100,6 @@ document.addEventListener("DOMContentLoaded", () => {
   /** @brief Longueur maximale de l'URL du site web (VARCHAR(255) dans la BDD) */
   const WEBSITE_MAX_LENGTH = 255;
 
-  /**@brief Gestion du consentement à la diffusion et à la republication */
-  let consentChecked = false;
-
   /**
    * @brief Met à jour l'état du bouton "Valider" selon le consentement
    */
@@ -112,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    nextButton.disabled = !consentChecked;
+    // ...existing code...
   };
 
   /**
@@ -337,7 +334,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (step !== 2) {
-      consentChecked = false;
+      // ...existing code...
       updateConsentButtonState();
       resetStatusMessages();
     }
@@ -570,7 +567,7 @@ document.addEventListener("DOMContentLoaded", () => {
   /** @brief Gestion du consentement à la diffusion et à la republication */
   modalElement.addEventListener("change", (event) => {
     if (event.target.name === "consentement") {
-      consentChecked = event.target.checked;
+      // ...existing code...
       updateConsentButtonState();
     }
   });
@@ -641,6 +638,6 @@ document.addEventListener("DOMContentLoaded", () => {
     errorElement?.classList.add("d-none");
     resetStatusMessages();
     showStep(1);
-    consentChecked = false;
+    // ...existing code...
   });
 });
