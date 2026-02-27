@@ -224,12 +224,15 @@ class BattleDAO {
     }
 
     /**
-     * Met à jour le statut de la battle
+     * Met à jour le statut d'une battle
      */
     public function modifierStatut(int $idBattle, string $nouveauStatut): bool {
         $sql = "UPDATE battle SET statutBattle = :statut WHERE idBattle = :id";
         $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute([':statut' => $nouveauStatut, ':id' => $idBattle]);
+        return $stmt->execute([
+            ':statut' => $nouveauStatut, 
+            ':id' => $idBattle
+        ]);
     }
 
 }
