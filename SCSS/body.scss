@@ -244,3 +244,17 @@ ol li {
 .green-text:hover {
   color: color.scale($paaxio-salmon);
 }
+
+//ajout de l'oeil pour le mot de passe
+.toggle-password {
+    position: absolute;
+    top: 65px;
+    right: 15px;
+    cursor: pointer;
+    color: #999;
+    transition: color 0.2s ease;
+}
+
+.toggle-password:hover {
+    color: var(--paaxio-terracotta);
+}
