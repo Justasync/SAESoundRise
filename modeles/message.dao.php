@@ -83,6 +83,28 @@ class MessageDAO
     }
 
     /**
+     * Retourne le nombre total de messages non lus pour un utilisateur donné.
+     *
+     * @param string $myEmail Email de l'utilisateur connecté
+     * @return int Nombre de messages non lus
+     */
+    public function getUnreadCountForUser(string $myEmail): int
+    {
+        $sql = "
+            SELECT COUNT(*) AS nbNonLus
+            FROM message
+            WHERE emailDestinataire = :myEmail
+              AND estLuMessage = 0
+        ";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':myEmail' => $myEmail]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $row !== false ? (int) $row['nbNonLus'] : 0;
+    }
+
+    /**
      * Marque un message comme lu.
      *
      * @param int $idMessage

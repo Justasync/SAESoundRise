@@ -80,6 +80,16 @@ class Controller
             $this->post = $_POST;
         }
         $this->post = $_POST;
+
+        // Expose global Twig variable pour le nombre de messages non lus
+        if (!empty($_SESSION['user_logged_in']) && !empty($_SESSION['user_email'])) {
+            try {
+                $messageDAO = new MessageDAO($this->pdo);
+                $unreadCount = $messageDAO->getUnreadCountForUser($_SESSION['user_email']);
+                $this->twig->addGlobal('unreadMessagesCount', $unreadCount);
+            } catch (\Throwable $e) {
+            }
+        }
     }
 
     /**

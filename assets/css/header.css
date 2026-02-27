@@ -44,4 +44,17 @@
   transform: translateY(-2px);
 }
 
+/* Pastille de notification pour les messages non lus dans le header */
+.nav-unread-dot {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  width: 10px;
+  height: 10px;
+  background-color: #f48d61;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 /*# sourceMappingURL=header.css.map */
