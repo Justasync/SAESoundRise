@@ -1,0 +1,47 @@
+/* header.scss */
+.navbar {
+  background-color: #f7f9fa;
+}
+
+/* Style de base des liens */
+.nav-link {
+  display: inline-block;
+  color: #337f77;
+  font-weight: 500;
+  transition: transform 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.nav-item-offset {
+  transform: translateX(-55px);
+  transition: transform 0.3s ease;
+}
+
+/* Hover */
+.nav-link:hover {
+  color: #f48d61;
+  box-shadow: inset 0 -2px 0 0 #f48d61;
+  transform: translateY(-2px);
+}
+
+/* Lien actif */
+.nav-link.active {
+  font-weight: 600;
+  color: #f48d61 !important;
+  box-shadow: inset 0 -2px 0 0 #f48d61;
+}
+
+.header-shift-up {
+  transform: translateY(-25px);
+}
+
+.search-bar {
+  transform: translateX(-30px);
+  background-color: transparent;
+  padding: 5px 10px;
+  transition: all 0.2s ease-in-out;
+}
+.search-bar:focus-within {
+  transform: translateY(-2px);
+}
+
+/*# sourceMappingURL=header.css.map */

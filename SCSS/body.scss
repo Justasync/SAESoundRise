@@ -1,0 +1,117 @@
+/* body.scss */
+@use "sass:color";
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+
+
+$main-font: "Manrope", sans-serif;
+$primary-color: #E58E82;
+$secondary-color: #F4A261;
+$border-color: #000000;
+$background-color: #faf0e8;
+$text-color: #212529;
+$button-bg: #E07A5F;
+$button-hover-bg: #C26A4F;
+$alert-bg: #d75863;
+$green-color: #337f77;
+
+body {
+  margin: 0;
+  font-family: $main-font;
+  background-color: $background-color; // fond léger neutre
+  color: $text-color; // couleur texte Bootstrap par défaut
+  line-height: 1.5;
+}
+
+/* ===== BOUTONS ===== */
+
+.btn {
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Primary */
+.btn-primary {
+  background-color: $background-color;
+  border: 1px solid $border-color;
+  color: $green-color;
+
+  &:hover {
+    background-color: $button-hover-bg;
+    border-color: $border-color;
+    transform: translateY(-2px);
+  }
+}
+
+/* Secondary */ 
+.btn-secondary {
+  background-color: $primary-color;
+  border: 1px solid $border-color;
+  color: $secondary-color;
+
+  &:hover {
+    background-color: color.scale($primary-color, $lightness: -8%);
+    transform: translateY(-2px);
+  }
+}
+
+/* Outline */
+.btn-outline-primary {
+  background-color: transparent !important;
+  border: 1px solid $button-bg !important;
+  color: $button-bg !important;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background-color: $button-bg !important;
+    color: white !important;
+    border-color: $button-bg !important;
+    transform: translateY(-2px);
+  }
+}
+
+/* Quand radio sélectionné */
+.btn-check:checked + .btn-outline-primary {
+  background-color: $button-bg !important;
+  color: white !important;
+  border-color: $button-bg !important;
+}
+
+/* link */
+.btn-link {
+  background-color: transparent;
+  border: none;
+  color: $alert-bg;
+
+  &:hover {
+    color: color.scale($alert-bg, $lightness: -10%);
+    text-decoration: underline;
+    transform: translateY(-2px);
+  }
+}
+
+.info-link {
+  color: $primary-color;
+  text-decoration: none;
+
+  &:hover {
+    color: color.scale($primary-color, $lightness: -10%);
+    text-decoration: underline;
+    transform: translateY(-2px);
+  }
+}
+
+
+ol li {
+  color: $green-color !important;
+}
+
+.completed {
+  border-color: $green-color !important;
+  color: $green-color !important;
+}
+
+.active {
+  border-color: $primary-color !important;
+  color: $primary-color !important;
+}

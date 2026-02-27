@@ -294,8 +294,8 @@ class ControllerAlbum extends Controller
             // Rediriger vers la page de détails de l'album mis à jour
             $this->redirectTo('album', 'afficherDetails', ['idAlbum' => $idAlbumExistant, 'success' => 1]);
         } else {
-            // Rediriger vers le tableau de bord après la création d'un nouvel album
-            $this->redirectTo('home', 'afficher', ['success' => 1]);
+            // Rediriger vers la page de l'album créé
+            $this->redirectTo('album', 'afficherDetails', ['idAlbum' => $idAlbum, 'success' => 1]);
         }
     }
 

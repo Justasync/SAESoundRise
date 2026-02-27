@@ -1,0 +1,99 @@
+@charset "UTF-8";
+/* body.scss */
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap");
+body {
+  margin: 0;
+  font-family: "Manrope", sans-serif;
+  background-color: #faf0e8;
+  color: #212529;
+  line-height: 1.5;
+}
+
+/* ===== BOUTONS ===== */
+.btn {
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Primary */
+.btn-primary {
+  background-color: #faf0e8;
+  border: 1px solid #000000;
+  color: #337f77;
+}
+.btn-primary:hover {
+  background-color: #C26A4F;
+  border-color: #000000;
+  transform: translateY(-2px);
+}
+
+/* Secondary */
+.btn-secondary {
+  background-color: #E58E82;
+  border: 1px solid #000000;
+  color: #F4A261;
+}
+.btn-secondary:hover {
+  background-color: rgb(224.0548344371, 120.5075496689, 106.2251655629);
+  transform: translateY(-2px);
+}
+
+/* Outline */
+.btn-outline-primary {
+  background-color: transparent !important;
+  border: 1px solid #E07A5F !important;
+  color: #E07A5F !important;
+  transition: all 0.2s ease-in-out;
+}
+.btn-outline-primary:hover {
+  background-color: #E07A5F !important;
+  color: white !important;
+  border-color: #E07A5F !important;
+  transform: translateY(-2px);
+}
+
+/* Quand radio sélectionné */
+.btn-check:checked + .btn-outline-primary {
+  background-color: #E07A5F !important;
+  color: white !important;
+  border-color: #E07A5F !important;
+}
+
+/* link */
+.btn-link {
+  background-color: transparent;
+  border: none;
+  color: #d75863;
+}
+.btn-link:hover {
+  color: rgb(209.1449275362, 63.5550724638, 76.1652173913);
+  text-decoration: underline;
+  transform: translateY(-2px);
+}
+
+.info-link {
+  color: #E58E82;
+  text-decoration: none;
+}
+.info-link:hover {
+  color: rgb(222.8185430464, 115.1344370861, 100.2814569536);
+  text-decoration: underline;
+  transform: translateY(-2px);
+}
+
+ol li {
+  color: #337f77 !important;
+}
+
+.completed {
+  border-color: #337f77 !important;
+  color: #337f77 !important;
+}
+
+.active {
+  border-color: #E58E82 !important;
+  color: #E58E82 !important;
+}
+
+/*# sourceMappingURL=body.css.map */
