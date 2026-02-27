@@ -172,6 +172,40 @@ class ControllerAlbum extends Controller
     }
 
     /**
+     * @brief Affiche la page "Ma Musique" pour l'artiste connecté.
+     *
+     * Liste l'ensemble des albums/singles téléversés par l'artiste courant.
+     * Accès réservé au rôle Artiste.
+     *
+     * @return void
+     */
+    public function afficherMaMusique()
+    {
+        // Restreindre l'accès aux artistes connectés
+        $this->requireRole(RoleEnum::Artiste);
+
+        $emailArtiste = $_SESSION['user_email'] ?? null;
+
+        if (!$emailArtiste) {
+            $this->redirectTo('home', 'afficher');
+        }
+
+        $managerAlbum = new AlbumDAO($this->getPdo());
+        $albumsArtiste = $managerAlbum->findAllByArtistEmail($emailArtiste);
+
+        $template = $this->getTwig()->load('ma_musique.html.twig');
+        echo $template->render([
+            'page' => [
+                'title' => "Ma Musique",
+                'name' => "maMusique",
+                'description' => "Tous mes albums et singles publiés sur Paaxio."
+            ],
+            'session' => $_SESSION,
+            'albums' => $albumsArtiste,
+        ]);
+    }
+
+    /**
      * @brief Traite l'ajout d'un nouvel album ou l'ajout de chansons à un album existant.
      * 
      * Cette méthode gère :
