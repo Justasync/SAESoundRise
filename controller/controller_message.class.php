@@ -100,6 +100,16 @@ class ControllerMessage extends Controller {
 
         $messages = $messageDAO->getMessagesConversation($myEmail, $contactEmail);
 
+        foreach ($messages as $msg) {
+            // Si le message m'est destiné ET qu'il n'est pas encore lu
+            if ($msg->getEmailDestinataire()->getEmailUtilisateur() === $myEmail && !$msg->getEstLu()) {
+                // On met à jour en base de données
+                $messageDAO->markAsRead($msg->getIdMessage());
+                // On met à jour l'objet pour la vue courante
+                $msg->setEstLu(true);
+            }
+        }
+
         $template = $this->getTwig()->load('message_conversation.html.twig');
         echo $template->render([
             'page' => ['title' => 'Discussion avec ' . $contact->getPseudoUtilisateur()],

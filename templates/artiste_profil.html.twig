@@ -145,14 +145,15 @@
                                 data-email="{{ utilisateur.getEmailUtilisateur() }}">
                             {{ estAbonneAArtiste ? 'Abonné(e)' : 'S\'abonner' }}
                         </button>
+                        <button id="btn-message" class="btn btn-light rounded-pill ms-2" onclick="window.location.href='index.php?controller=message&method=conversation&contact={{ utilisateur.getPseudoUtilisateur() }}'">
+                            Ecrire
+                        </button>
                     {% elseif not session.user_email %}
                         <button id="btn-abonnement" class="btn btn-subscribe rounded-pill">
                             S'abonner
                         </button>
                     {% endif %}
-                    <button id="btn-message" class="btn btn-light rounded-pill ms-2" onclick="window.location.href='index.php?controller=message&method=conversation&contact={{ utilisateur.getPseudoUtilisateur() }}'">
-                        Ecrire
-                    </button>
+                    
                 </div>
             </div>
         </div>
