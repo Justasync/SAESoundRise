@@ -120,7 +120,9 @@
 							<a class="btn text-secondary d-flex align-items-center justify-content-center position-relative {% if page.name is defined and page.name == 'messages' %}text-primary{% endif %}" href="?controller=message&method=lister" title="Messages" aria-label="Messages">
 								<i class="bi bi-chat-dots fs-4"></i>
 								{% if unreadMessagesCount is defined and unreadMessagesCount > 0 %}
-									<span class="nav-unread-dot" aria-hidden="true"></span>
+									<span class="nav-unread-badge" aria-hidden="true">
+										{{ unreadMessagesCount > 9 ? '9+' : unreadMessagesCount }}
+									</span>
 								{% endif %}
 							</a>
 						{% endif %}
