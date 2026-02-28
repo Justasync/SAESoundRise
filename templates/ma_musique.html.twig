@@ -1,0 +1,74 @@
+{% extends "base_template.html.twig" %}
+
+{% block header %}
+	{{ parent() }}
+	<style>
+		:root {
+			--paaxio-beige: #fbf8f5;
+			--paaxio-salmon: #e9b7a6;
+			--paaxio-dark: #333333;
+			--paaxio-terracotta: #d68f7b;
+		}
+
+		.ma-musique-container {
+			font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+			background-color: var(--paaxio-beige);
+			color: var(--paaxio-dark);
+			min-height: 100%;
+		}
+
+		.bg-paaxio-salmon {
+			background-color: var(--paaxio-salmon);
+		}
+
+		.hover-bg-terracotta:hover {
+			background-color: var(--paaxio-terracotta);
+		}
+	</style>
+{% endblock %}
+
+{% block content %}
+	<div class="ma-musique-container py-4">
+		<main class="container-lg">
+			<section class="my-5 text-center">
+				<h1 class="display-5 fw-bold">Ma Musique</h1>
+				<p class="text-muted mb-1">Retrouvez ici l'ensemble de vos albums et singles publiés sur Paaxio.</p>
+				<a href="/?controller=album&method=afficherFormulaireAjout" class="btn btn-outline-secondary mt-3">
+					<i class="bi bi-plus-lg me-1"></i>Ajouter un Album/Single
+				</a>
+			</section>
+
+			<section class="mb-5">
+				<h2 class="h3 fw-semibold mb-4">Mes albums et singles</h2>
+
+				{% if albums is not empty %}
+					<div class="d-flex gap-4 flex-wrap">
+						{% for album in albums %}
+							<a
+								href="/?controller=album&method=afficherDetails&idAlbum={{ album.getIdAlbum() }}"
+								class="flex-shrink-0 bg-paaxio-salmon p-2 rounded-4 shadow-lg text-decoration-none hover-bg-terracotta"
+								style="width: 12rem; height: 12rem;">
+								<img
+									src="{{ album.getUrlPochetteAlbum() ?: 'https://placehold.co/200x200/e9b7a6/ffffff?text=' ~ album.getTitreAlbum()|first|upper }}"
+									alt="Pochette de {{ album.getTitreAlbum() }}"
+									class="rounded-3 object-cover m-1 shadow-sm"
+									style="height: 70%; width: calc(100% - 0.5rem); object-fit: cover;"
+									onerror="this.onerror=null; this.src='https://placehold.co/200x200/e9b7a6/ffffff?text={{ album.getTitreAlbum()|first|upper }}';">
+
+								<div class="d-flex align-items-center justify-content-center p-1" style="height: 30%;">
+									<p class="small fw-medium text-white text-center text-truncate mb-0">
+										{{ album.getTitreAlbum() }}
+									</p>
+								</div>
+							</a>
+						{% endfor %}
+					</div>
+				{% else %}
+					<p class="text-muted">Vous n'avez pas encore publié d'album ou de single.
+						<a href="/?controller=album&method=afficherFormulaireAjout">Commencez dès maintenant</a>.</p>
+				{% endif %}
+			</section>
+		</main>
+	</div>
+{% endblock %}
+

@@ -1,0 +1,122 @@
+/* Configuration des couleurs personnalisées */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+:root {
+    --paaxio-beige: #fbf8f5;
+    --paaxio-salmon: #e9b7a6;
+    --paaxio-dark: #333333;
+    --paaxio-terracotta: #d68f7b;
+    --paaxio-border: #91c9c4;
+}
+
+/* Conteneur principal dashboard */
+.dashboard-container {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--paaxio-beige);
+    color: var(--paaxio-dark);
+}
+
+/* Main content */
+.main-content-container {
+    border: 1px solid var(--paaxio-border);
+    border-radius: 0.75rem;
+    padding-bottom: 3rem;
+}
+
+/* Scroll horizontal collaboration */
+.collaboration-scroll {
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+}
+
+.collaboration-scroll::-webkit-scrollbar {
+    height: 6px;
+}
+
+.collaboration-scroll::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+}
+
+/* Card add-album */
+.add-album-card {
+    background-color: transparent;
+    border: 3px dashed var(--paaxio-salmon);
+    color: var(--paaxio-dark);
+    transition: all 0.2s ease;
+}
+
+.add-album-card:hover {
+    background-color: rgba(233, 183, 166, 0.15);
+    border-color: var(--paaxio-terracotta);
+    color: var(--paaxio-terracotta);
+}
+
+.add-album-card .add-album-inner {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 2px dashed rgba(214, 143, 123, 0.5);
+    transition: all 0.2s ease;
+}
+
+.add-album-card:hover .add-album-inner {
+    background-color: rgba(255, 255, 255, 0.95);
+    border-color: var(--paaxio-salmon);
+}
+
+.add-album-card .bi-plus-lg {
+    color: var(--paaxio-terracotta);
+}
+
+/* Album cover */
+.album-cover {
+    width: 100%;
+    padding-top: 100%;
+    position: relative;
+    border-radius: 1rem;
+    overflow: hidden;
+    background-color: #f0f0f0;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.album-cover img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.paaxio-card:hover .album-cover img {
+    transform: scale(1.05);
+}
+
+/* Artist avatar */
+.artist-avatar {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.artist-item:hover .artist-avatar {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+/* Texte overflow propre */
+.artist-item p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.artist-item:last-child {
+    margin-right: 0;
+}

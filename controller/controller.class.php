@@ -59,7 +59,16 @@ class Controller
     public function __construct(\Twig\Loader\FilesystemLoader $loader, \Twig\Environment $twig)
     {
         $db = bd::getInstance();
-        $this->pdo = $db->getConnexion();
+        // Utiliser site_administrateur si l'utilisateur connecté est admin, sinon site_user (public)
+        $role = bd::ROLE_SITE_USER;
+        if (!empty($_SESSION['user_logged_in']) && isset($_SESSION['user_role'])) {
+            $sessionRole = $_SESSION['user_role'];
+            $userRoleValue = $sessionRole instanceof RoleEnum ? $sessionRole->value : $sessionRole;
+            if ($userRoleValue === RoleEnum::Admin->value) {
+                $role = bd::ROLE_SITE_ADMINISTRATEUR;
+            }
+        }
+        $this->pdo = $db->getConnexion($role);
         $this->loader = $loader;
         $this->twig = $twig;
 
@@ -71,6 +80,16 @@ class Controller
             $this->post = $_POST;
         }
         $this->post = $_POST;
+
+        // Expose global Twig variable pour le nombre de messages non lus
+        if (!empty($_SESSION['user_logged_in']) && !empty($_SESSION['user_email'])) {
+            try {
+                $messageDAO = new MessageDAO($this->pdo);
+                $unreadCount = $messageDAO->getUnreadCountForUser($_SESSION['user_email']);
+                $this->twig->addGlobal('unreadMessagesCount', $unreadCount);
+            } catch (\Throwable $e) {
+            }
+        }
     }
 
     /**

@@ -67,7 +67,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         addHeader('Chansons');
                         data.chansons.forEach(c => {
                             const item = document.createElement('a');
-                            if (c.idAlbum) {
+                            if (c.idAlbum && c.id) {
+                                // Redirige vers la page de l'album en mettant en avant la chanson via son id
+                                item.href = `index.php?controller=album&method=afficherDetails&idAlbum=${c.idAlbum}&idChanson=${c.id}`;
+                            } else if (c.idAlbum) {
                                 item.href = `index.php?controller=album&method=afficherDetails&idAlbum=${c.idAlbum}`;
                             } else {
                                 item.href = "#";

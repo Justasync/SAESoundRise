@@ -51,11 +51,15 @@ class MessageDAO
     public function getConversations(string $myEmail): array
     {
         $sql = "
-            SELECT DISTINCT u.*
+            SELECT u.*, 
+                MAX(m.dateMessage) as derniereActivite,
+                SUM(CASE WHEN m.emailDestinataire = :myEmail AND m.emailExpediteur = u.emailUtilisateur AND m.estLuMessage = 0 THEN 1 ELSE 0 END) as nbNonLus
             FROM utilisateur u
             JOIN message m ON (u.emailUtilisateur = m.emailExpediteur OR u.emailUtilisateur = m.emailDestinataire)
             WHERE (m.emailExpediteur = :myEmail OR m.emailDestinataire = :myEmail)
             AND u.emailUtilisateur != :myEmail
+            GROUP BY u.emailUtilisateur
+            ORDER BY derniereActivite DESC
         ";
         
         $stmt = $this->pdo->prepare($sql);
@@ -70,9 +74,34 @@ class MessageDAO
             $user->setNomUtilisateur($row['nomUtilisateur']);
             $user->setPseudoUtilisateur($row['pseudoUtilisateur']);
             $user->setUrlPhotoUtilisateur($row['urlPhotoUtilisateur']);
-            $contacts[] = $user;
+            $contacts[] = [
+                'user' => $user,
+                'aNonLu' => ($row['nbNonLus'] > 0)
+            ];
         }
         return $contacts;
+    }
+
+    /**
+     * Retourne le nombre total de messages non lus pour un utilisateur donné.
+     *
+     * @param string $myEmail Email de l'utilisateur connecté
+     * @return int Nombre de messages non lus
+     */
+    public function getUnreadCountForUser(string $myEmail): int
+    {
+        $sql = "
+            SELECT COUNT(*) AS nbNonLus
+            FROM message
+            WHERE emailDestinataire = :myEmail
+              AND estLuMessage = 0
+        ";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':myEmail' => $myEmail]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $row !== false ? (int) $row['nbNonLus'] : 0;
     }
 
     /**

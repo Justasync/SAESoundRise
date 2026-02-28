@@ -1,0 +1,14 @@
+/* footer.scss */
+
+$primary-color-footer: #f7f9fa;
+$main-font: "Manrope", sans-serif;
+$border-color: #000000;
+$white-color: #FFFFFF;
+
+.footer {
+    background-color: $primary-color-footer;
+    color: $white-color;
+    padding: 20px 0;
+    text-align: center;
+    margin-top: 20px;
+}
