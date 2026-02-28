@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.css">
 		<link rel="stylesheet" href="/assets/css/styles.css">
-		<script src="/assets/js/bootstrap.bundle.js"></script>
+        
 		<script src="tarteaucitron/tarteaucitron.min.js"></script>
 		<link rel="icon" type="image/x-icon" href="/assets/images/logos/paaxio_logo_noir.ico">
 		<script src="tarteaucitron_init.js"></script>
@@ -22,291 +22,240 @@
 		rel="stylesheet" href="/assets/css/utilisateur_abonnement.css">
 
 		<!-- Meta OG -->
-		<meta property="og:title" content="{{ page.title is defined ? page.title : 'Paaxio' }}"/>
-		<meta property="og:description" content="{{ page.description is defined ? page.description : '' }}"/>
-		<meta property="og:image" content="/assets/images/banners/banner.png">
-		<meta property="og:image:width" content="1200"/>
-		<meta property="og:image:height" content="630"/>
-		<meta property="og:type" content="website"/>
-		<meta property="og:url" content="https://paaxio.com/"/>
-		<meta property="og:site_name" content="Paaxio"/>
-		<meta property="og:locale" content="fr_FR"/>
 
-		<title>
-			{{ page.title is defined ? page.title : 'Paaxio' }}
-		</title>
-		{% if page.description is defined %}
-			<meta name="description" content="{{ page.description }} ">
-		{% endif %}
-		{% block header %}{% endblock %}
-		<style>
-			/* Force le footer à rester en bas si contenu insuffisant */
-			html,
-			body {
-				height: 100%;
-				min-height: 100%;
-			}
-			body {
-				display: flex;
-				min-height: 100vh;
-				flex-direction: column;
-			}
-			main.paaxio-content-wrapper {
-				flex: 1 0 auto;
-			}
-			footer {
-				flex-shrink: 0;
-			}
-		</style>
-	</head>
-	<body>
-		<header>
-			<nav class="navbar navbar-expand-lg">
-				<div
-					class="container-fluid">
-					<!-- Logo -->
-					<a class="navbar-brand {% if session.user_logged_in is defined and session.user_logged_in %}header-shift-up{% endif %}" href="/?controller=home&method=afficher">
-						<img src="assets/images/logos/paaxio_logo_nom_droit_noir.svg" alt="Paaxio" width="150">
-					</a>
-					<!-- Toggle mobile -->
-					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-
-						<span class="navbar-toggler-icon"></span>
-					</button>
-					<!-- Navbar content -->
-					<div
-						class="collapse navbar-collapse flex-column" id="navbarSupportedContent">
-						<!-- Navigation -->
-						<ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-							{% if session.user_logged_in is defined and session.user_logged_in and session.user_role is defined and session.user_role.value == 'admin' %}
-								<li class="nav-item">
-									<a class="nav-link fs-4 {% if page.name is defined and page.name == 'admin' %}active{% endif %}" href="/?controller=admin&method=afficher">
-										Admin
-									</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link fs-4 {% if page.name is defined and page.name == 'admin_sauvegardes' %}active{% endif %}" aria-current="page" href="/?controller=admin&method=sauvegardes">Sauvegardes</a>
-								</li>
-							{% else %}
-								{% if session.user_logged_in is defined and session.user_logged_in %}
-									{% if session.user_role is defined and session.user_role.value == 'artiste' %}
+		<!DOCTYPE html>
+		<html lang="fr">
+		<head>
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.css">
+			<link rel="stylesheet" href="/assets/css/styles.css">
+			<script src="/assets/js/bootstrap.bundle.js"></script>
+			<script src="tarteaucitron/tarteaucitron.min.js"></script>
+			<link rel="icon" type="image/x-icon" href="/assets/images/logos/paaxio_logo_noir.ico">
+			<script src="tarteaucitron_init.js"></script>
+			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+			<link rel="stylesheet" href="/assets/css/signup-modal.css">
+			<link rel="stylesheet" href="/assets/css/body.css">
+			<link rel="stylesheet" href="/assets/css/header.css">
+			<link rel="stylesheet" href="/assets/css/footer.css">
+			<link rel="stylesheet" href="/assets/css/chat.css">
+			<link rel="stylesheet" href="/assets/css/utilisateur_gestion_profil.css">
+			<link rel="stylesheet" href="/assets/css/utilisateur_securite.css">
+			<link rel="stylesheet" href="/assets/css/utilisateur_abonnement.css">
+			<!-- Meta OG -->
+			<meta property="og:title" content="{{ page.title is defined ? page.title : 'Paaxio' }}"/>
+			<meta property="og:description" content="{{ page.description is defined ? page.description : '' }}"/>
+			<meta property="og:image" content="/assets/images/banners/banner.png">
+			<meta property="og:image:width" content="1200"/>
+			<meta property="og:image:height" content="630"/>
+			<meta property="og:type" content="website"/>
+			<meta property="og:url" content="https://paaxio.com/"/>
+			<meta property="og:site_name" content="Paaxio"/>
+			<meta property="og:locale" content="fr_FR"/>
+			<title>{{ page.title is defined ? page.title : 'Paaxio' }}</title>
+			{% if page.description is defined %}
+				<meta name="description" content="{{ page.description }} ">
+			{% endif %}
+			{% block header %}{% endblock %}
+			<style>
+				html, body { height: 100%; min-height: 100%; }
+				body { display: flex; min-height: 100vh; flex-direction: column; }
+				main.paaxio-content-wrapper { flex: 1 0 auto; }
+				footer { flex-shrink: 0; }
+			</style>
+		</head>
+		<body>
+			<header>
+				<nav class="navbar navbar-expand-lg" aria-label="Menu principal Paaxio">
+					<div class="container-fluid">
+						<a class="navbar-brand {% if session.user_logged_in is defined and session.user_logged_in %}header-shift-up{% endif %}" href="/?controller=home&method=afficher" aria-label="Accueil Paaxio">
+							<img src="assets/images/logos/paaxio_logo_nom_droit_noir.svg" alt="Logo Paaxio" width="150">
+						</a>
+						<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Afficher le menu">
+							<span class="navbar-toggler-icon"></span>
+						</button>
+						<div class="collapse navbar-collapse flex-column" id="navbarSupportedContent">
+							<ul class="navbar-nav mx-auto mb-2 mb-lg-0" aria-label="Navigation principale">
+								{% if session.user_logged_in is defined and session.user_logged_in and session.user_role is defined and session.user_role.value == 'admin' %}
+									<li class="nav-item">
+										<a class="nav-link fs-4 {% if page.name is defined and page.name == 'admin' %}active{% endif %}" href="/?controller=admin&method=afficher" aria-label="Administration" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Espace administrateur">
+											<i class="bi bi-shield-lock" aria-hidden="true"></i> Admin
+										</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link fs-4 {% if page.name is defined and page.name == 'admin_sauvegardes' %}active{% endif %}" aria-current="page" href="/?controller=admin&method=sauvegardes" aria-label="Sauvegardes" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Gestion des sauvegardes">
+											<i class="bi bi-hdd-network" aria-hidden="true"></i> Sauvegardes
+										</a>
+									</li>
+								{% else %}
+									{% if session.user_logged_in is defined and session.user_logged_in %}
+										{% if session.user_role is defined and session.user_role.value == 'artiste' %}
+											<li class="nav-item nav-item-offset">
+												<a class="nav-link fs-4 {% if page.name is defined and page.name == 'maMusique' %}active{% endif %}" href="/?controller=album&method=afficherMaMusique" aria-label="Ma Musique" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Voir ma musique">
+													<i class="bi bi-music-note-list" aria-hidden="true"></i> Ma Musique
+												</a>
+											</li>
+										{% endif %}
 										<li class="nav-item nav-item-offset">
-											<a class="nav-link fs-4 {% if page.name is defined and page.name == 'maMusique' %}active{% endif %}" href="/?controller=album&method=afficherMaMusique">
-												Ma Musique
+											<a class="nav-link fs-4 {% if page.name is defined and page.name == 'maBiblio' %}active{% endif %}" href="/?controller=musique&method=afficher" aria-label="Bibliothèque" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Accéder à la bibliothèque">
+												<i class="bi bi-collection" aria-hidden="true"></i> Bibliothèque
+											</a>
+										</li>
+										<li class="nav-item nav-item-offset">
+											<a class="nav-link fs-4 {% if page.name is defined and page.name == 'battle' %}active{% endif %}" href="?controller=battle&method=lister" aria-label="Battle musical" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Participer à un battle">
+												<i class="bi bi-lightning" aria-hidden="true"></i> Battle
 											</a>
 										</li>
 									{% endif %}
-									<li class="nav-item nav-item-offset">
-										<a class="nav-link fs-4 {% if page.name is defined and page.name == 'maBiblio' %}active{% endif %}" href="/?controller=musique&method=afficher">
-											Bibliothèque
-										</a>
-									</li>
-									<li class="nav-item nav-item-offset">
-										<a class="nav-link fs-4 {% if page.name is defined and page.name == 'battle' %}active{% endif %}" href="?controller=battle&method=lister">
-											Battle
-										</a>
-									</li>
 								{% endif %}
-							{% endif %}
-						</ul>
-						<!-- Search (centré) -->
-						<div class="search-bar mx-auto w-50 position-relative mb-3">
-							<form action="index.php" method="get" role="search">
-								<input id="searchInput" name="term" class="form-control" type="search" placeholder="Rechercher" autocomplete="off">
-							</form>
-							<div id="searchResults" class="list-group position-absolute w-100 shadow" style="display:none; z-index:9999; top:100%; left:0; background:white; max-height:300px; overflow-y:auto;"></div>
+							</ul>
+							<div class="search-bar mx-auto w-50 position-relative mb-3">
+								<form action="index.php" method="get" role="search" aria-label="Recherche globale" class="needs-validation" novalidate>
+									<input id="searchInput" name="term" class="form-control" type="search" placeholder="Rechercher" autocomplete="off" aria-label="Champ de recherche">
+								</form>
+								<div id="searchResults" class="list-group position-absolute w-100 shadow" style="display:none; z-index:9999; top:100%; left:0; background:white; max-height:300px; overflow-y:auto;"></div>
+							</div>
 						</div>
-					</div>
-					<!-- Right side: messages, upload album (artists) + user dropdown -->
-					<div class="d-flex align-items-center gap-1 ms-auto {% if session.user_logged_in is defined and session.user_logged_in %}header-shift-up{% endif %}">
-						{% if session.user_logged_in is defined and session.user_logged_in %}
-							<a class="btn text-secondary d-flex align-items-center justify-content-center position-relative {% if page.name is defined and page.name == 'messages' %}text-primary{% endif %}" href="?controller=message&method=lister" title="Messages" aria-label="Messages">
-								<i class="bi bi-chat-dots fs-4"></i>
-								{% if unreadMessagesCount is defined and unreadMessagesCount > 0 %}
-									<span class="nav-unread-badge" aria-hidden="true">
-										{{ unreadMessagesCount > 9 ? '9+' : unreadMessagesCount }}
-									</span>
-								{% endif %}
-							</a>
-						{% endif %}
-						{% if session.user_logged_in is defined and session.user_logged_in and session.user_role is defined and session.user_role.value == 'artiste' %}
-							<a class="btn text-secondary d-flex align-items-center justify-content-center" href="/?controller=album&method=afficherFormulaireAjout" title="Publier un album" aria-label="Publier un album">
-								<i class="bi bi-cloud-upload fs-4"></i>
-							</a>
-						{% endif %}
-						<div class="dropdown">
-						<button class="btn text-secondary d-flex align-items-center justify-content-center" type="button" id="userDropdown" data-bs-toggle="dropdown">
-							<i class="bi bi-person-circle fs-4"></i>
-						</button>
-						<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown" style="min-width:180px;">
+						<div class="d-flex align-items-center gap-1 ms-auto {% if session.user_logged_in is defined and session.user_logged_in %}header-shift-up{% endif %}">
+							<button id="darkModeToggle" class="btn btn-outline-primary me-2" aria-label="Activer ou désactiver le mode sombre" title="Mode sombre" data-bs-toggle="tooltip" data-bs-placement="bottom">
+								<i class="bi bi-moon-stars"></i>
+							</button>
 							{% if session.user_logged_in is defined and session.user_logged_in %}
-								<li>
-									<a class="dropdown-item" href="/?controller=utilisateur&method=afficherProfilArtiste&pseudo={{session.user_pseudo}}">
-										<i class="bi bi-person-circle me-2"></i>Mon Profil
-									</a>
-								</li>
-								<li>
-									<a class="dropdown-item" href="/?controller=utilisateur&method=afficherGestionProfil">
-										<i class="bi bi-gear me-2"></i>Paramètres
-									</a>
-								</li>
-								<li><hr class="dropdown-divider"></li>
-								<li>
-									<a class="dropdown-item text-danger" href="/?controller=utilisateur&method=logout">
-										<i class="bi bi-box-arrow-right me-2"></i>Déconnexion
-									</a>
-								</li>
-							{% else %}
-								<li>
-									<a class="dropdown-item" href="#" id="trigger-login-modal">
-										<i class="bi bi-box-arrow-in-right me-2"></i>Se connecter
-									</a>
-								</li>
-								<li>
-									<a class="dropdown-item" href="#" id="trigger-signup-modal">
-										<i class="bi bi-person-plus me-2"></i>S'inscrire
-									</a>
-								</li>
+								<a class="btn text-secondary d-flex align-items-center justify-content-center position-relative {% if page.name is defined and page.name == 'messages' %}text-primary{% endif %}" href="?controller=message&method=lister" title="Messages" aria-label="Accéder à la messagerie" data-bs-toggle="tooltip" data-bs-placement="bottom">
+									<i class="bi bi-chat-dots fs-4" aria-hidden="true"></i>
+									{% if unreadMessagesCount is defined and unreadMessagesCount > 0 %}
+										<span class="nav-unread-badge" aria-hidden="true">
+											{{ unreadMessagesCount > 9 ? '9+' : unreadMessagesCount }}
+										</span>
+									{% endif %}
+								</a>
 							{% endif %}
-						</ul>
+							{% if session.user_logged_in is defined and session.user_logged_in and session.user_role is defined and session.user_role.value == 'artiste' %}
+								<a class="btn text-secondary d-flex align-items-center justify-content-center" href="/?controller=album&method=afficherFormulaireAjout" title="Publier un album" aria-label="Publier un album ou single" data-bs-toggle="tooltip" data-bs-placement="bottom">
+									<i class="bi bi-cloud-upload fs-4" aria-hidden="true"></i>
+								</a>
+							{% endif %}
+							<div class="dropdown">
+								<button class="btn text-secondary d-flex align-items-center justify-content-center dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Menu utilisateur">
+									<i class="bi bi-person-circle fs-4" aria-hidden="true"></i>
+								</button>
+								<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown" style="min-width:180px;" aria-label="Menu utilisateur déroulant">
+									{% if session.user_logged_in is defined and session.user_logged_in %}
+										<li>
+											<a class="dropdown-item" href="/?controller=utilisateur&method=afficherProfilArtiste&pseudo={{session.user_pseudo}}" aria-label="Voir mon profil">
+												<i class="bi bi-person-circle me-2" aria-hidden="true"></i>Mon Profil
+											</a>
+										</li>
+										<li>
+											<a class="dropdown-item" href="/?controller=utilisateur&method=afficherGestionProfil" aria-label="Paramètres du compte">
+												<i class="bi bi-gear me-2" aria-hidden="true"></i>Paramètres
+											</a>
+										</li>
+										<li><hr class="dropdown-divider"></li>
+										<li>
+											<a class="dropdown-item text-danger" href="/?controller=utilisateur&method=logout" aria-label="Déconnexion">
+												<i class="bi bi-box-arrow-right me-2" aria-hidden="true"></i>Déconnexion
+											</a>
+										</li>
+									{% else %}
+										<li>
+											<a class="dropdown-item" href="#" id="trigger-login-modal" aria-label="Se connecter">
+												<i class="bi bi-box-arrow-in-right me-2" aria-hidden="true"></i>Se connecter
+											</a>
+										</li>
+										<li>
+											<a class="dropdown-item" href="#" id="trigger-signup-modal" aria-label="S'inscrire">
+												<i class="bi bi-person-plus me-2" aria-hidden="true"></i>S'inscrire
+											</a>
+										</li>
+									{% endif %}
+								</ul>
+							</div>
 						</div>
 					</div>
-				</div>
-			</nav>
-		</header>
-		<main class="paaxio-content-wrapper"> {% block content %}{% endblock %}
-			</main>
-
+				</nav>
+			</header>
+			<main class="paaxio-content-wrapper"> {% block content %}{% endblock %}</main>
 			<!-- Sign-up Modal -->
-			<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
-				<div class="modal-dialog modal-lg modal-dialog-centered">
-					<div class="modal-content">
-						<div class="modal-header">
-							<div>
-								<h1 class="modal-title fs-3 mb-0" id="signupModalLabel">Créer un compte</h1>
-								<p class="text-secondary mb-0" data-step-subtitle>Choisissez votre profil pour commencer.</p>
-							</div>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body">
-							<div class="alert alert-danger d-none" role="alert" data-signup-error aria-live="assertive"></div>
-							<div class="alert alert-success d-none" role="alert" data-signup-success aria-live="polite"></div>
-							<ol class="signup-progress-indicator mb-4">
-								<li class="active" data-step-indicator="1">Profil</li>
-								<li data-step-indicator="2">Informations</li>
-								<li data-step-indicator="3">Confirmation</li>
-							</ol>
+			<!-- Sign-in Modal -->
+			<footer class="footer py-3 my-4" aria-label="Pied de page Paaxio">
+				<ul class="nav justify-content-center border-bottom pb-3 mb-3" aria-label="Liens de pied de page">
+					<li class="nav-item">
+						<a href="/?controller=newsletter&method=afficher" class="nav-link px-2 text-body-secondary" aria-label="Accéder à la newsletter" data-bs-toggle="tooltip" data-bs-placement="top" title="Recevoir les actualités Paaxio">Newsletter</a>
+					</li>
+					<li class="nav-item">
+						<a href="/?controller=home&method=afficherLegales" class="nav-link px-2 text-body-secondary" aria-label="Mentions légales" data-bs-toggle="tooltip" data-bs-placement="top" title="Informations légales">Mentions légales</a>
+					</li>
+				</ul>
+				<div class="d-flex justify-content-center">
+					<a href="/?controller=home&method=afficher" class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none" aria-label="Paaxio">
+						<img src="assets/images/logos/paaxio_logo_noir.svg" alt="Paaxio" height="50">
+					</a>
+				</div>
+				<p class="text-center text-body-secondary">&copy; 2025 Paaxio</p>
+			</footer>
+            
+			<script>
+				document.addEventListener('DOMContentLoaded', function () {
+					// Modales connexion/inscription
+					var triggerLoginModal = document.getElementById('trigger-login-modal');
+					if (triggerLoginModal) {
+						triggerLoginModal.addEventListener('click', function (e) {
+							e.preventDefault();
+							var signinModal = new bootstrap.Modal(document.getElementById('signinModal'));
+							signinModal.show();
+						});
+					}
+					var triggerSignupModal = document.getElementById('trigger-signup-modal');
+					if (triggerSignupModal) {
+						triggerSignupModal.addEventListener('click', function (e) {
+							e.preventDefault();
+							var signupModal = new bootstrap.Modal(document.getElementById('signupModal'));
+							signupModal.show();
+						});
+					}
+					// Tooltips Bootstrap
+					var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+					tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+						new bootstrap.Tooltip(tooltipTriggerEl);
+					});
 
-							<div class="signup-step" data-step="1">
-								<h2 class="fs-4 mb-3">Quel type d'utilisateur êtes-vous ?</h2>
-								<div class="row g-3">
-									<div class="col-md-4">
-										<input type="radio" class="btn-check" name="signupUserType" id="signupTypeArtiste" value="artiste" autocomplete="off">
-										<label class="btn btn-outline-primary w-100 h-100 text-start p-3" for="signupTypeArtiste">
-											<span class="d-block fw-semibold">🎤 Artiste</span>
-											<span class="small">Montrez votre musique au monde entier, connectez-vous avec vos fans et producteurs.</span>
-										</label>
-									</div>
-									<div class="col-md-4">
-										<input type="radio" class="btn-check" name="signupUserType" id="signupTypeAuditeur" value="auditeur" autocomplete="off">
-										<label class="btn btn-outline-primary w-100 h-100 text-start p-3" for="signupTypeAuditeur">
-											<span class="d-block fw-semibold">🎧 Auditeur</span>
-											<span class="small">Découvrez de nouvelles musiques, créez des playlists et suivez vos nouveaux artistes préférés.</span>
-										</label>
-									</div>
-									<div class="col-md-4">
-										<input type="radio" class="btn-check" name="signupUserType" id="signupTypeProducteur" value="producteur" autocomplete="off">
-										<label class="btn btn-outline-primary w-100 h-100 text-start p-3" for="signupTypeProducteur">
-											<span class="d-block fw-semibold">🎚️ Producteur</span>
-											<span class="small">Trouvez des talents, proposez vos services et collaborez à de nouveaux projets.</span>
-										</label>
-									</div>
-								</div>
-								<p class="text-danger small mt-3 d-none" data-step-error>Choisissez un type de profil pour continuer.</p>
-							</div>
+					// Switch mode sombre
+					var darkModeToggle = document.getElementById('darkModeToggle');
+					var body = document.body;
+					if (localStorage.getItem('paaxioDarkMode') === 'true') {
+						body.classList.add('dark-mode');
+					}
+					if (darkModeToggle) {
+						darkModeToggle.addEventListener('click', function () {
+							body.classList.toggle('dark-mode');
+							localStorage.setItem('paaxioDarkMode', body.classList.contains('dark-mode'));
+						});
+					}
+				});
+			</script>
+			<script src="/assets/js/bootstrap.bundle.js"></script>
+			<script src="assets/js/signup-modal.js?v=1.0b4"></script>
+			<script src="assets/js/signin-modal.js?v=1.0b4"></script>
+			<script src="assets/js/search.js"></script>
+			<script src="assets/js/form-validation.js"></script>
+			<script>
+				document.addEventListener('DOMContentLoaded', function () {
+					var userDropdownBtn = document.getElementById('userDropdown');
+					if (userDropdownBtn) {
+						userDropdownBtn.addEventListener('click', function (e) {
+							e.preventDefault();
+							e.stopPropagation();
+							var dropdown = bootstrap.Dropdown.getOrCreateInstance(userDropdownBtn);
+							dropdown.toggle();
+						});
+					}
+				});
+			</script>
+		</body>
+		</html>
 
-							<div class="signup-step d-none" data-step="2">
-								<form class="signup-form d-none" data-user-type="artiste">
-									<h2 class="fs-4 mb-3">Informations artiste</h2>
-									<div
-										class="row g-3">
-										<!-- Nom -->
-										<div class="col-md-12">
-											<label for="artisteNom" class="form-label">Nom complet</label>
-											<input type="text" class="form-control" id="artisteNom" name="nom" placeholder="Ex: Jean Dupont" required minlength="1" maxlength="255" autocomplete="given-name" title="Entrez votre nom complet (1 à 255 caractères).">
-										</div>
-
-										<!-- Pseudonyme d'artiste -->
-										<div class="col-md-12">
-											<label for="artistePseudonyme" class="form-label">Pseudonyme</label>
-											<input type="text" class="form-control" id="artistePseudonyme" name="pseudo" placeholder="Ex: DJ_Music42" required minlength="3" maxlength="50" autocomplete="nickname" pattern="^[a-zA-Z0-9_]+$" title="Entrez un pseudonyme de 3 à 50 caractères (lettres, chiffres et underscores uniquement, sans espaces).">
-										</div>
-
-										<!-- Description -->
-										<div class="col-md-12">
-											<label for="artisteDescription" class="form-label">Description</label>
-											<textarea class="form-control" id="artisteDescription" name="description" rows="2" required placeholder="Ex: Passionné de musique depuis toujours..." minlength="10" maxlength="1000" title="Décrivez-vous en quelques mots (10 à 1000 caractères)."></textarea>
-										</div>
-
-										<!-- Informations supplémentaires -->
-										<div class="col-md-12">
-											<label class="form-label">Informations supplémentaires</label>
-										</div>
-										<div class="col-md-12">
-											<label for="artisteWebsite" class="form-label">Site web
-												<span class="text-secondary">(Facultatif)</span>
-											</label>
-											<input type="url" class="form-control" id="artisteWebsite" name="website" placeholder="https://votresite.com" autocomplete="url" title="Entrez une URL valide commençant par http:// ou https://." maxlength="255">
-										</div>
-
-										<!-- Genres -->
-										<div class="col-md-12">
-											<label for="artisteGenre" class="form-label">Genre musical</label>
-											<select class="form-select" id="artisteGenre" name="genre_id" required title="Sélectionnez votre genre musical principal.">
-												<option value="" selected disabled>Choisissez un genre</option>
-												{% if genres is defined %}
-													{% for genre in genres %}
-														<option value="{{ genre.idGenre }}">{{ genre.nomGenre }}</option>
-													{% endfor %}
-												{% endif %}
-											</select>
-										</div>
-
-										<!-- Courrier électronique -->
-										<div class="col-md-6">
-											<label for="artisteEmail" class="form-label">Courrier électronique</label>
-											<input type="email" class="form-control" id="artisteEmail" name="email" required autocomplete="email" placeholder="Ex: votre@email.com" title="Entrez une adresse e-mail valide." maxlength="191">
-										</div>
-
-										<!-- Date de naissance -->
-										<div class="col-md-6">
-											<label class="form-label">Date de naissance</label>
-											<input type="date" class="form-control" id="artisteBirthDay" name="birthdate" required autocomplete="bday" title="Vous devez avoir au moins 13 ans pour créer un compte.">
-										</div>
-
-										<!-- Mot de passe -->
-										<div class="col-md-6">
-											<label for="artistePassword" class="form-label">Mot de passe</label>
-											<input type="password" class="form-control" id="artistePassword" name="password" required minlength="8" maxlength="128" autocomplete="new-password" pattern="^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=\[\]{}|;:',.<>?/~`]).{8,}$" placeholder="••••••••" title="Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un symbole (!@#$%^&*...).">
-											<div class="form-text">8 caractères minimum, 1 majuscule, 1 chiffre, 1 symbole.</div>
-										</div>
-
-										<!-- Réinsérez votre mot de passe -->
-										<div class="col-md-6">
-											<label for="artistePasswordRepeat" class="form-label">Réinsérez votre mot de passe</label>
-											<input type="password" class="form-control" id="artistePasswordRepeat" name="password_repeat" required minlength="8" maxlength="128" autocomplete="new-password" placeholder="••••••••" title="Répétez le même mot de passe.">
-										</div>
-
-										<!-- Case de consentement -->
-										<div class="col-md-12">
-											<div class="form-check">
-												<input class="form-check-input" type="checkbox" id="artisteConsentement" name="consentement" required>
-												<label class="form-check-label" for="artisteConsentement">
-													J'ai lu et j'accepte le
-													<a href="/?controller=home&method=afficherConsentement" class="info-link" target="_blank" rel="noopener">consentement à la diffusion et à la republication</a>.
-												</label>
-											</div>
-										</div>
 									</div>
 								</form>
 
@@ -342,30 +291,6 @@
 											<input type="url" class="form-control" id="auditeurWebsite" name="website" placeholder="https://votresite.com" autocomplete="url" title="Entrez une URL valide commençant par http:// ou https://." maxlength="255">
 										</div>
 
-										<!-- Courrier électronique -->
-										<div class="col-md-6">
-											<label for="auditeurEmail" class="form-label">Courrier électronique</label>
-											<input type="email" class="form-control" id="auditeurEmail" name="email" required autocomplete="email" placeholder="Ex: votre@email.com" title="Entrez une adresse e-mail valide." maxlength="191">
-										</div>
-
-										<!-- Date de naissance -->
-										<div class="col-md-6">
-											<label class="form-label">Date de naissance</label>
-											<input type="date" class="form-control" id="auditeurBirthDay" name="birthdate" required autocomplete="bday" title="Vous devez avoir au moins 13 ans pour créer un compte.">
-										</div>
-
-										<!-- Mot de passe -->
-										<div class="col-md-6">
-											<label for="auditeurPassword" class="form-label">Mot de passe</label>
-											<input type="password" class="form-control" id="auditeurPassword" name="password" required minlength="8" maxlength="128" autocomplete="new-password" pattern="^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=\[\]{}|;:',.<>?/~`]).{8,}$" placeholder="••••••••" title="Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un symbole (!@#$%^&*...).">
-											<div class="form-text">8 caractères minimum, 1 majuscule, 1 chiffre, 1 symbole.</div>
-										</div>
-
-										<!-- Réinsérez votre mot de passe -->
-										<div class="col-md-6">
-											<label for="auditeurPasswordRepeat" class="form-label">Réinsérez votre mot de passe</label>
-											<input type="password" class="form-control" id="auditeurPasswordRepeat" name="password_repeat" required minlength="8" maxlength="128" autocomplete="new-password" placeholder="••••••••" title="Répétez le même mot de passe.">
-										</div>
 									</div>
 								</form>
 
@@ -415,30 +340,6 @@
 											</select>
 										</div>
 
-										<!-- Courrier électronique -->
-										<div class="col-md-6">
-											<label for="producteurEmail" class="form-label">Courrier électronique</label>
-											<input type="email" class="form-control" id="producteurEmail" name="email" required autocomplete="email" placeholder="Ex: votre@email.com" title="Entrez une adresse e-mail valide." maxlength="191">
-										</div>
-
-										<!-- Date de naissance -->
-										<div class="col-md-6">
-											<label class="form-label">Date de naissance</label>
-											<input type="date" class="form-control" id="producteurBirthDay" name="birthdate" required autocomplete="bday" title="Vous devez avoir au moins 13 ans pour créer un compte.">
-										</div>
-
-										<!-- Mot de passe -->
-										<div class="col-md-6">
-											<label for="producteurPassword" class="form-label">Mot de passe</label>
-											<input type="password" class="form-control" id="producteurPassword" name="password" required minlength="8" maxlength="128" autocomplete="new-password" pattern="^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=\[\]{}|;:',.<>?/~`]).{8,}$" placeholder="••••••••" title="Le mot de passe doit contenir au moins 8 caractères, une majuscule, un chiffre et un symbole (!@#$%^&*...).">
-											<div class="form-text">8 caractères minimum, 1 majuscule, 1 chiffre, 1 symbole.</div>
-										</div>
-
-										<!-- Réinsérez votre mot de passe -->
-										<div class="col-md-6">
-											<label for="producteurPasswordRepeat" class="form-label">Réinsérez votre mot de passe</label>
-											<input type="password" class="form-control" id="producteurPasswordRepeat" name="password_repeat" required minlength="8" maxlength="128" autocomplete="new-password" placeholder="••••••••" title="Répétez le même mot de passe.">
-										</div>
 									</div>
 								</form>
 							</div>
@@ -457,11 +358,7 @@
 							</div>
 						</div>
 						<div class="modal-footer justify-content-between">
-							<button type="button" class="btn btn-outline-secondary" data-action="back">Retour</button>
-							<div class="d-flex gap-2">
-								<button type="button" class="btn btn-outline-secondary d-none" data-action="secondary"></button>
-								<button type="button" class="btn btn-primary" data-action="next">Continuer</button>
-							</div>
+
 						</div>
 					</div>
 				</div>
@@ -504,22 +401,7 @@
 				</div>
 			</div>
 
-			<footer class="footer py-3 my-4">
-				<ul class="nav justify-content-center border-bottom pb-3 mb-3">
-					<li class="nav-item">
-						<a href="/?controller=newsletter&method=afficher" class="nav-link px-2 text-body-secondary">Newsletter</a>
-					</li>
-					<li class="nav-item">
-						<a href="/?controller=home&method=afficherLegales" class="nav-link px-2 text-body-secondary">Mentions légales</a>
-					</li>
-				</ul>
-				<div class="d-flex justify-content-center">
-					<a href="/?controller=home&method=afficher" class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none" aria-label="Paaxio">
-						<img src="assets/images/logos/paaxio_logo_noir.svg" alt="Paaxio" height="50">
-					</a>
-				</div>
-				<p class="text-center text-body-secondary">&copy; 2025 Paaxio</p>
-			</footer>
+
 			{% block script %}{% endblock %}
 
 			<script>
