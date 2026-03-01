@@ -213,7 +213,13 @@ ol li {
   font-weight: 600;
 }
 
-.green-text:hover {
+.green-text-user {
+  color: #337f77;
+  font-weight: 900;
+  font-size: medium;
+}
+
+.green-text-user:hover {
   color: #e9b7a6;
 }
 
