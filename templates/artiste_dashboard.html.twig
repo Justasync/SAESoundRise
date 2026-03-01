@@ -36,7 +36,7 @@
 									href="/?controller=utilisateur&method=afficherProfilArtiste&pseudo={{ artiste.getPseudoUtilisateur() }}" class="flex-shrink-0 d-flex flex-column align-items-center text-decoration-none" style="width: 8rem;" title="{{ artiste.getPseudoUtilisateur() }}">
 									{# Utilise la photo de profil de l'artiste, ou un placeholder si elle n'existe pas #}
 									<img src="{{ artiste.geturlPhotoUtilisateur() ?: 'https://placehold.co/112x112/e9b7a6/ffffff?text=' ~ artiste.getPseudoUtilisateur()|first|upper }}" alt="Photo de {{ artiste.getPseudoUtilisateur() }}" class="rounded-circle object-cover border border-4 border-white" style="width: 7rem; height: 7rem;" onerror="this.onerror=null; this.src='https://placehold.co/112x112/e9b7a6/ffffff?text={{ artiste.getPseudoUtilisateur()|first|upper }}';">
-									<span class="green-text mb-0">{{ artiste.getPseudoUtilisateur()|length > 7 ? artiste.getPseudoUtilisateur()|slice(0, 7) ~ '...' : artiste.getPseudoUtilisateur() }}</span>
+									<span class="green-text-user mb-0">{{ artiste.getPseudoUtilisateur()|length > 7 ? artiste.getPseudoUtilisateur()|slice(0, 7) ~ '...' : artiste.getPseudoUtilisateur() }}</span>
 								</a>
 							{% endfor %}
 						{% else %}
@@ -88,7 +88,7 @@
 								<path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
 							</svg>
 						</div>
-						<span class="small fw-semibold green-text text-center">Ajouter un Album/Single</span>
+						<span class="small fw-semibold green-text-user text-center">Ajouter un Album/Single</span>
 					</a>
 
 					{# Boucle sur les albums de l'artiste #}

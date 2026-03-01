@@ -2,231 +2,136 @@
 
 {% block header %}
     {{ parent() }}
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --paaxio-teal: #337f77;
-            --paaxio-background: #fdfaf8;
-            --paaxio-card-bg: #E5A88B;
-            --paaxio-border: #91c9c4;
-            --paaxio-rounded-3xl: 1.5rem;
-            --paaxio-text-xs: 0.75rem;
-            --paaxio-text-sm: 0.875rem;
-            --paaxio-fw-semibold: 600;
-            --paaxio-fw-medium: 500;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--paaxio-background) !important;
-        }
-
-        .main-content-container {
-            border: 1px solid var(--paaxio-border);
-            border-radius: 0.75rem;
-            padding-bottom: 3rem;
-        }
-
-        .paaxio-card {
-            background-color: var(--paaxio-card-bg);
-            border-radius: var(--paaxio-rounded-3xl);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            transition: transform 0.2s;
-        }
-
-        .paaxio-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .artist-scroll-container {
-            overflow-x: auto;
-            white-space: nowrap;
-            padding: 1rem 0;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .artist-list-container {
-            background-color: var(--paaxio-card-bg);
-            border-radius: var(--paaxio-rounded-3xl);
-            display: flex;
-            justify-content: start;
-            padding: 0.5rem 0.75rem;
-            width: max-content;
-        }
-
-        .artist-item {
-            display: inline-block;
-            text-align: center;
-            margin-right: 1.5rem;
-            width: 120px;
-        }
-
-        .artist-item:last-child {
-            margin-right: 0;
-        }
-
-        .artist-item p {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .artist-avatar {
-            width: 120px;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 3px solid white;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-            transition: transform 0.2s;
-        }
-
-        .artist-item:hover .artist-avatar {
-            transform: scale(1.05);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 1rem;
-        }
-
-        .stats-card {
-            background-color: var(--paaxio-card-bg);
-            border-radius: var(--paaxio-rounded-3xl);
-            color: #fff;
-            min-height: 120px;
-            padding: 1rem;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .stats-card-title {
-            font-size: var(--paaxio-text-sm);
-            font-weight: var(--paaxio-fw-semibold);
-            line-height: 1.25;
-            margin-bottom: 0.35rem;
-        }
-
-        .stats-card-value {
-            font-size: 1.9rem;
-            font-weight: 700;
-            line-height: 1;
-        }
-
-        .text-xs { font-size: var(--paaxio-text-xs); }
-        .text-sm { font-size: var(--paaxio-text-sm); }
-        .fw-medium { font-weight: var(--paaxio-fw-medium); }
-        .text-gray-700 { color: #4b5563; }
-        .text-gray-500 { color: #6b7280; }
-
-        .album-cover {
-            width: 100%;
-            padding-top: 100%;
-            position: relative;
-            border-radius: 1rem;
-            overflow: hidden;
-            background-color: #f0f0f0;
-            margin-bottom: 0.5rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        .album-cover img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-
-        .paaxio-card:hover .album-cover img {
-            transform: scale(1.05);
-        }
-
-        @media (max-width: 991.98px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="/assets/css/dashboard.css">
 {% endblock %}
 
 {% block content %}
-    <main class="container-xl py-5">
-        <div class="main-content-container bg-white">
-            <div class="container-fluid pt-4 pb-2">
+<div class="dashboard-container py-4">
 
-                <h1 class="text-center fw-bold mb-4" style="color: var(--paaxio-teal);">
-                    Espace Producteur
-                </h1>
+    <main class="container-lg">
 
-                <h3 class="text-center fw-semibold mb-4 text-secondary pt-3">Artistes les plus écoutés</h3>
-                <div class="row mx-auto justify-content-center">
-                    <div class="col-12">
-                        <div class="artist-scroll-container">
-                            <div class="artist-list-container">
-                                {% if artistes is not empty %}
-                                    {% for artiste in artistes|slice(0, 8) %}
-                                        <a href="/?controller=utilisateur&method=afficherProfilArtiste&pseudo={{ artiste.pseudoUtilisateur }}" class="artist-item text-decoration-none" title="{{ artiste.pseudoUtilisateur }}">
-                                            <img src="{{ artiste.urlPhotoUtilisateur ?: 'https://placehold.co/120x120/cccccc/ffffff?text=' ~ artiste.pseudoUtilisateur|first }}" alt="Avatar de {{ artiste.pseudoUtilisateur }}" class="artist-avatar">
-                                            <p class="mt-1 mb-0 text-sm text-center fw-medium text-white">{{ artiste.pseudoUtilisateur|length > 10 ? artiste.pseudoUtilisateur|slice(0, 10) ~ '...' : artiste.pseudoUtilisateur }}</p>
-                                        </a>
-                                    {% endfor %}
-                                {% else %}
-                                    <p class="text-center text-white p-3 mb-0">Aucun artiste à découvrir pour le moment.</p>
-                                {% endif %}
-                            </div>
-                        </div>
+        {# Titre #}
+        <section class="my-5 text-center">
+            <h1 class="fw-bold mb-3 green-text">
+                Espace Producteur
+            </h1>
+            <p class="text-muted">Vue d'ensemble de l’activité sur Paaxio.</p>
+        </section>
+
+        {# Artistes populaires #}
+        <section class="mb-5">
+            <h2 class="text-center fw-semibold mb-4 text-secondary pt-3">
+                Artistes les plus écoutés
+            </h2>
+
+            <div class="bg-terracotta p-4 rounded-4 shadow-lg">
+                <div class="collaboration-scroll d-flex gap-4 pb-2">
+
+                    {% if artistes is not empty %}
+                        {% for artiste in artistes|slice(0,8) %}
+                            <a href="/?controller=utilisateur&method=afficherProfilArtiste&pseudo={{ artiste.pseudoUtilisateur }}"
+                               class="flex-shrink-0 d-flex flex-column align-items-center text-decoration-none"
+                               style="width: 8rem;">
+
+                                <img src="{{ artiste.urlPhotoUtilisateur ?: 'https://placehold.co/112x112/e9b7a6/ffffff?text=' ~ artiste.pseudoUtilisateur|first|upper }}"
+                                     alt="Avatar de {{ artiste.pseudoUtilisateur }}"
+                                     class="rounded-circle border border-4 border-white"
+                                     style="width: 7rem; height: 7rem; object-fit: cover;">
+
+                                <span class="green-text-user text-center mt-2">
+                                    {{ artiste.pseudoUtilisateur|length > 8 ? artiste.pseudoUtilisateur|slice(0,8) ~ '...' : artiste.pseudoUtilisateur }}
+                                </span>
+                            </a>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-center text-white p-3 mb-0">
+                            Aucun artiste à découvrir pour le moment.
+                        </p>
+                    {% endif %}
+
+                </div>
+            </div>
+        </section>
+
+        {# Statistiques #}
+        <section class="mb-5">
+            <h2 class="text-center fw-semibold mb-4 text-secondary pt-3">
+                Statistiques Générales
+            </h2>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="bg-paaxio-salmon p-4 rounded-4 shadow-lg text-center text-white">
+                        <p class="fs-5 fw-medium mb-1">Artistes inscrits cette semaine</p>
+                        <p class="display-5 fw-bold mb-0">
+                            {{ stats.artistesInscritsSemaine }}
+                        </p>
                     </div>
                 </div>
 
-                <h3 class="text-center fw-semibold mt-4 mb-4 text-secondary">Statistiques Générales</h3>
-                <section class="stats-grid mb-4 px-2">
-                    <article class="stats-card">
-                        <p class="stats-card-title">Nombre d'artistes inscrits cette semaine</p>
-                        <p class="stats-card-value mb-0">{{ stats.artistesInscritsSemaine }}</p>
-                    </article>
-                    <article class="stats-card">
-                        <p class="stats-card-title">Artistes trouvés</p>
-                        <p class="stats-card-value mb-0">{{ stats.artistesTrouves }}</p>
-                    </article>
-                    <article class="stats-card">
-                        <p class="stats-card-title">Artiste avec le plus grand nombre de battles gagnées</p>
-                        <p class="h5 fw-bold mb-0">{{ stats.artistePlusBatailles }}</p>
-                    </article>
-                </section>
+                <div class="col-md-4">
+                    <div class="bg-paaxio-salmon p-4 rounded-4 shadow-lg text-center text-white">
+                        <p class="fs-5 fw-medium mb-1">Artistes trouvés</p>
+                        <p class="display-5 fw-bold mb-0">
+                            {{ stats.artistesTrouves }}
+                        </p>
+                    </div>
+                </div>
 
-                <h3 class="text-center fw-semibold mt-5 mb-4 text-secondary">Album/Singles les plus écoutés</h3>
-                <div class="row row-cols-2 row-cols-md-4 g-4 px-2">
-                    {% if albums is not empty %}
-                        {% for album in albums|slice(0, 4) %}
-                            <article class="col">
-                                <a href="/?controller=album&method=afficherDetails&idAlbum={{ album.idAlbum }}" class="text-decoration-none">
-                                    <div class="paaxio-card p-3 h-100 d-flex flex-column">
-                                        <div class="album-cover">
-                                            <img src="{{ album.urlPochetteAlbum ?: 'https://placehold.co/300x300/cccccc/333?text=No+Image' }}" alt="Pochette de {{ album.nomAlbum }}">
-                                        </div>
-                                        <div class="text-center mt-auto">
-                                            <p class="mb-0 fw-medium text-sm text-white">{{ album.nomAlbum }}</p>
-                                            <p class="text-xs text-white-50">{{ album.pseudoArtiste }}</p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </article>
-                        {% endfor %}
-                    {% else %}
-                        <p class="text-center text-gray-500 col-12">Aucun album populaire pour le moment.</p>
-                    {% endif %}
+                <div class="col-md-4">
+                    <div class="bg-paaxio-salmon p-4 rounded-4 shadow-lg text-center text-white">
+                        <p class="fs-5 fw-medium mb-1">Top Battles</p>
+                        <p class="fw-bold mb-0">
+                            {{ stats.artistePlusBatailles }}
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
+
+        {# Albums populaires #}
+        <section class="mb-5">
+            <h2 class="text-center fw-semibold mb-4 text-secondary pt-3">
+                Albums les plus écoutés
+            </h2>
+
+            <div class="d-flex gap-4 flex-wrap">
+
+                {% if albums is not empty %}
+                    {% for album in albums|slice(0,4) %}
+                        <a href="/?controller=album&method=afficherDetails&idAlbum={{ album.getIdAlbum() }}"
+                        class="flex-shrink-0 bg-paaxio-salmon p-2 rounded-4 shadow-lg text-decoration-none hover-bg-terracotta"
+                        style="width: 12rem; height: 12rem;">
+
+                            {# Image de l'album #}
+                            <img
+                                src="{{ album.getUrlPochetteAlbum() ?: 'https://placehold.co/200x200/e9b7a6/ffffff?text=' ~ album.getTitreAlbum()|first|upper }}"
+                                alt="Pochette de {{ album.getTitreAlbum() }}"
+                                class="rounded-3 object-cover m-1 shadow-sm"
+                                style="height: 70%; width: calc(100% - 0.5rem); object-fit: cover;"
+                                onerror="this.onerror=null; this.src='https://placehold.co/200x200/e9b7a6/ffffff?text={{ album.getTitreAlbum()|first|upper }}';"
+                            >
+
+                            {# Titre de l'album #}
+                            <div class="d-flex align-items-center justify-content-center p-1" style="height: 30%;">
+                                <p class="mb-0 album-title text-center">
+                                    {{ album.getTitreAlbum() }}
+                                </p>
+                            </div>
+
+                        </a>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-center col-12">
+                        Aucun album populaire pour le moment.
+                    </p>
+                {% endif %}
+
+            </div>
+        </section>
+
     </main>
+</div>
 {% endblock %}
 
 {% block script %}
