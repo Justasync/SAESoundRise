@@ -160,10 +160,36 @@ class ControllerBattle extends Controller
     }
 
     /**
+    * Accepte une invitation de battle depuis le chat
+    */
+    public function accepter(): void
+    {
+    $idBattle = isset($_GET['idBattle']) ? (int)$_GET['idBattle'] : null;
+
+    if ($idBattle) {
+        $pdo = $this->getPdo();
+        $battleDao = new BattleDao($pdo);
+        
+        // 1. On s'assure que le statut est prêt
+        $battleDao->modifierStatut($idBattle, 'en_attente');
+
+        // 2. On nettoie le message pour faire disparaître les boutons
+        $sql = "UPDATE message SET contenuMessage = 'L\'invitation au battle a été acceptée !' 
+                WHERE contenuMessage LIKE :search";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([':search' => "%[BATTLE_INVITE:$idBattle]%"]);
+    }
+
+    // 3. Redirection vers le Dashboard privé
+    header('Location: index.php?controller=battle&method=gestionDashboard');
+    exit;
+    }
+
+    /**
      * Annule une battle suite à un refus de l'invité
      */
     public function refuser(): void
-{
+    {
     // 1. On récupère l'ID de la battle depuis l'URL
     $idBattle = isset($_GET['idBattle']) ? (int)$_GET['idBattle'] : null;
 
@@ -185,6 +211,38 @@ class ControllerBattle extends Controller
     // 4. On redirige l'utilisateur vers la conversation
     header('Location: ' . $_SERVER['HTTP_REFERER']);
     exit;
-}
+    }
+    /**
+     * @brief Affiche le tableau de bord de gestion des battles pour l'artiste connecté.
+     * @return void
+     */
+    public function gestionDashboard(): void
+    {
+        // Sécurité : Vérifier si l'utilisateur est connecté
+        if (!isset($_SESSION['user_logged_in']) || $_SESSION['user_logged_in'] !== true) {
+            header('Location: index.php?controller=home&method=afficher');
+            exit;
+        }
+
+        $emailActuel = $_SESSION['user_email'];
+        $battleDao = new BattleDao($this->getPdo());
+        $chansonDao = new ChansonDao($this->getPdo());
+
+        // Récupération des données spécifiques à l'artiste
+        $mesBattles = $battleDao->findAllByUser($emailActuel);
+        $stats = $battleDao->getStatsArtiste($emailActuel);
+        $mesChansons = $chansonDao->findAllFromUser($emailActuel);
+
+        echo $this->getTwig()->render('battle_dashboard.html.twig', [
+            'page' => [
+                'title' => "Gestion de mes Battles",
+                'name' => "battle_gestion"
+            ],
+            'battles' => $mesBattles,
+            'stats' => $stats,
+            'mesChansons' => $mesChansons,
+            'session' => $_SESSION
+        ]);
+    }
 
 }

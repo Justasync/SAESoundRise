@@ -1,0 +1,182 @@
+{% extends 'base_template.html.twig' %}
+
+{% block title %}Gestion de mes Battles - Paaxio{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    <link rel="stylesheet" href="assets/css/dataTables.bootstrap5.min.css">
+    <style>
+        /* Configuration des couleurs de la pagination (Style Paaxio) */
+        #battlesTable_wrapper {
+            --bs-pagination-color: #666;
+            --bs-pagination-hover-color: #D99181;
+            --bs-pagination-hover-bg: #f8f9fa;
+            --bs-pagination-focus-color: #D99181;
+            --bs-pagination-active-color: #fff;
+            --bs-pagination-active-bg: #D99181; 
+            --bs-pagination-active-border-color: #D99181;
+        }
+
+        #battlesTable_wrapper .page-link {
+            border-radius: 50% !important;
+            margin: 0 3px;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Style des en-têtes */
+        #battlesTable thead th {
+            background-color: #fff;
+            color: #6c757d;
+            font-weight: 700;
+            text-transform: uppercase;
+            border-bottom: 1px solid #dee2e6;
+            padding: 15px;
+        }
+
+        /* Champs de recherche arrondis */
+        .dataTables_filter input {
+            border-radius: 20px !important;
+            border: 1px solid #ced4da;
+            padding: 5px 15px;
+        }
+
+        .stat-card { transition: transform 0.2s; }
+        .stat-card:hover { transform: translateY(-5px); }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-6">
+            <h3 class="fw-bold text-dark mb-0">
+                <i class="bi bi-trophy me-2" style="color: #D99181;"></i>Mon Tableau de Bord Battle
+            </h3>
+        </div>
+        <div class="col-md-6 text-end">
+            <button class="btn btn-dark px-4" style="border-radius: 20px;" onclick="ouvrirModalSelection()">
+                <i class="bi bi-plus-lg me-1"></i> Nouvelle Battle
+            </button>
+        </div>
+    </div>
+
+    {# --- SECTION STATISTIQUES --- #}
+    <div class="row mb-5 justify-content-center">
+        <div class="col-md-3">
+            <div class="card stat-card text-center shadow-sm border-0 rounded-4 p-3" style="background-color: #d4edda;">
+                <h3 class="text-success fw-bold mb-0">{{ stats.victoires }}</h3>
+                <p class="text-muted small mb-0">Victoires</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card text-center shadow-sm border-0 rounded-4 p-3" style="background-color: #f8d7da;">
+                <h3 class="text-danger fw-bold mb-0">{{ stats.defaites }}</h3>
+                <p class="text-muted small mb-0">Défaites</p>
+            </div>
+        </div>
+    </div>
+
+    {# --- TABLEAU DATATABLE --- #}
+    <div class="card rounded-4 bg-white border-0 shadow-sm">
+        <div class="card-body p-4">
+            <div class="table-responsive">
+                <table id="battlesTable" class="table table-hover mb-0" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Combat</th>
+                            <th>Adversaire</th>
+                            <th>Statut</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for battle in battles %}
+                            {% set estCreateur = (battle.getEmailCreateurBattle() == session.user_email) %}
+                            {% set adversaire = estCreateur ? battle.getParticipant() : battle.getCreateur() %}
+                            
+                            <tr>
+                                <td>
+                                    {# On enlève "Battle :" pour ne garder que le duel #}
+                                    <span class="fw-bold text-dark">{{ battle.getTitreBattle()|replace({'Battle : ': ''}) }}</span>
+                                </td>
+                                <td>
+                                    {% if adversaire %}
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{ adversaire.geturlPhotoUtilisateur() ?? 'assets/images/default-avatar.png' }}" 
+                                                 class="rounded-circle me-2" width="30" height="30" style="object-fit: cover;">
+                                            <span>{{ adversaire.getPseudoUtilisateur() }}</span>
+                                        </div>
+                                    {% else %}
+                                        <span class="text-muted small italic">En attente...</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% set status = battle.getStatutBattle().value %}
+                                    <span class="badge rounded-pill px-3 py-2 
+                                        {% if status == 'en_cours' %}bg-success
+                                        {% elseif status == 'en_attente' %}bg-warning text-dark
+                                        {% elseif status == 'terminee' %}bg-secondary
+                                        {% else %}bg-danger{% endif %}">
+                                        {{ status|upper }}
+                                    </span>
+                                </td>
+                                <td class="text-end">
+                                    {% if status == 'en_attente' %}
+                                        {% if (estCreateur and not battle.getIdChansonCreateur()) or (not estCreateur and not battle.getIdChansonParticipant()) %}
+                                            <button class="btn btn-sm text-white px-3" style="background-color: #D99181; border-radius: 15px;" onclick="ouvrirModalChanson('{{ battle.getIdBattle() }}')">
+                                                <i class="bi bi-music-note-beamed me-1"></i> Choisir ma chanson
+                                            </button>
+                                        {% else %}
+                                            <span class="badge bg-light text-muted border">Prêt</span>
+                                        {% endif %}
+                                    {% elseif status == 'en_cours' %}
+                                        <a href="index.php?controller=battle&method=lister" class="btn btn-sm btn-outline-success px-3" style="border-radius: 15px;">
+                                            <i class="bi bi-eye me-1"></i> Voir l'arène
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'modales_battle.html.twig' %}
+{% endblock %}
+
+{% block script %}
+    {{ parent() }}
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/jquery.dataTables.min.js"></script>
+    <script src="assets/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#battlesTable').DataTable({
+                language: {
+                    search: "",
+                    searchPlaceholder: "Rechercher une battle...",
+                    lengthMenu: "Afficher _MENU_",
+                    info: "Affichage de _START_ à _END_ sur _TOTAL_ combats",
+                    paginate: {
+                        previous: '<i class="bi bi-chevron-left"></i>',
+                        next: '<i class="bi bi-chevron-right"></i>'
+                    },
+                    emptyTable: "Aucun combat trouvé",
+                    zeroRecords: "Aucun résultat correspondant"
+                },
+                pageLength: 10,
+                dom: "<'row mb-3'<'col-md-6'l><'col-md-6 text-end'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row mt-3'<'col-md-5'i><'col-md-7'p>>",
+                order: [[2, 'asc']], // Tri par statut par défaut
+                columnDefs: [{ orderable: false, targets: -1 }] // Désactiver tri sur Actions
+            });
+        });
+    </script>
+{% endblock %}
