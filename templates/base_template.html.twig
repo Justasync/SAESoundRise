@@ -18,11 +18,11 @@
 		<link rel="stylesheet" href="/assets/css/chat.css">
 		<link rel="stylesheet" href="/assets/css/utilisateur_gestion_profil.css">
 		<link rel="stylesheet" href="/assets/css/utilisateur_securite.css">
-		<link
-		rel="stylesheet" href="/assets/css/utilisateur_abonnement.css">
+		<link rel="stylesheet" href="/assets/css/utilisateur_abonnement.css">
 
 		<!-- Meta OG -->
 
+<<<<<<< HEAD
 		<!DOCTYPE html>
 		<html lang="fr">
 		<head>
@@ -108,6 +108,79 @@
 											</a>
 										</li>
 									{% endif %}
+=======
+		<title>
+			{{ page.title is defined ? page.title : 'Paaxio' }}
+		</title>
+		{% if page.description is defined %}
+			<meta name="description" content="{{ page.description }} ">
+		{% endif %}
+		{% block header %}{% endblock %}
+		<style>
+			/* Force le footer à rester en bas si contenu insuffisant */
+			html,
+			body {
+				height: 100%;
+				min-height: 100%;
+			}
+			body {
+				display: flex;
+				min-height: 100vh;
+				flex-direction: column;
+			}
+			main.paaxio-content-wrapper {
+				flex: 1 0 auto;
+			}
+			footer {
+				flex-shrink: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<nav class="navbar navbar-expand-lg">
+				<div
+					class="container-fluid">
+					<!-- Logo -->
+					<a class="navbar-brand {% if session.user_logged_in is defined and session.user_logged_in %}header-shift-up{% endif %}" href="/?controller=home&method=afficher">
+						<img src="assets/images/logos/paaxio_logo_nom_droit_noir.svg" alt="Paaxio" width="150">
+					</a>
+					<!-- Toggle mobile -->
+					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<!-- Navbar content -->
+					<div
+						class="collapse navbar-collapse flex-column" id="navbarSupportedContent">
+						<!-- Navigation -->
+						<ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+							{% if session.user_logged_in is defined and session.user_logged_in and session.user_role is defined and session.user_role.value == 'admin' %}
+								<li class="nav-item">
+									<a class="nav-link fs-4 mx-2 {% if page.name is defined and page.name == 'admin' %}active{% endif %}" href="/?controller=admin&method=afficher">
+										Admin
+									</a>
+								</li>
+							{% else %}
+								{% if session.user_logged_in is defined and session.user_logged_in %}
+									{% if session.user_role is defined and session.user_role.value == 'artiste' %}
+										<li class="nav-item nav-item-offset">
+											<a class="nav-link fs-4 mx-2 {% if page.name is defined and page.name == 'maMusique' %}active{% endif %}" href="/?controller=album&method=afficherMaMusique">
+												Publications
+											</a>
+										</li>
+									{% endif %}
+									<li class="nav-item nav-item-offset">
+										<a class="nav-link fs-4 mx-2 {% if page.name is defined and page.name == 'maBiblio' %}active{% endif %}" href="/?controller=musique&method=afficher">
+											Bibliothèque
+										</a>
+									</li>
+									<li class="nav-item nav-item-offset">
+										<a class="nav-link fs-4 mx-2 {% if page.name is defined and page.name == 'battle' %}active{% endif %}" href="?controller=battle&method=lister">
+											Battle
+										</a>
+									</li>
+>>>>>>> 4c4ed5c7caf31a9fce3b4fdf2f539e381a3f2413
 								{% endif %}
 							</ul>
 							<div class="search-bar mx-auto w-50 position-relative mb-3">
@@ -117,6 +190,7 @@
 								<div id="searchResults" class="list-group position-absolute w-100 shadow" style="display:none; z-index:9999; top:100%; left:0; background:white; max-height:300px; overflow-y:auto;"></div>
 							</div>
 						</div>
+<<<<<<< HEAD
 						<div class="d-flex align-items-center gap-1 ms-auto {% if session.user_logged_in is defined and session.user_logged_in %}header-shift-up{% endif %}">
 							<button id="darkModeToggle" class="btn btn-outline-primary me-2" aria-label="Activer ou désactiver le mode sombre" title="Mode sombre" data-bs-toggle="tooltip" data-bs-placement="bottom">
 								<i class="bi bi-moon-stars"></i>
@@ -130,6 +204,59 @@
 										</span>
 									{% endif %}
 								</a>
+=======
+					</div>
+					<!-- Right side: messages, upload album (artists) + user dropdown -->
+					<div class="d-flex align-items-center gap-1 ms-auto {% if session.user_logged_in is defined and session.user_logged_in %}header-shift-up{% endif %}">
+						{% if session.user_logged_in is defined and session.user_logged_in %}
+							<a class="btn text-secondary d-flex align-items-center justify-content-center position-relative {% if page.name is defined and page.name == 'messages' %}text-primary{% endif %}" href="?controller=message&method=lister" title="Messages" aria-label="Messages">
+								<i class="bi bi-chat-dots fs-4"></i>
+								{% if unreadMessagesCount is defined and unreadMessagesCount > 0 %}
+									<span class="nav-unread-badge" aria-hidden="true">
+										{{ unreadMessagesCount > 9 ? '9+' : unreadMessagesCount }}
+									</span>
+								{% endif %}
+							</a>
+						{% endif %}
+						<div class="dropdown">
+						<button class="btn text-secondary d-flex align-items-center justify-content-center" type="button" id="userDropdown" data-bs-toggle="dropdown">
+							<i class="bi bi-person-circle fs-4"></i>
+						</button>
+						<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown" style="min-width:180px;">
+							{% if session.user_logged_in is defined and session.user_logged_in %}
+								<li>
+									<a class="dropdown-item" href="/?controller=utilisateur&method=afficherProfilArtiste&pseudo={{session.user_pseudo}}">
+										<i class="bi bi-person-circle me-2"></i>Mon Profil
+									</a>
+								</li>
+								<li>
+									<a class="dropdown-item" href="/?controller=utilisateur&method=afficherGestionProfil">
+										<i class="bi bi-gear me-2"></i>Paramètres
+									</a>
+								</li>
+								<li> 
+									<a class="dropdown-item d-flex align-items-center" href="?controller=battle&method=gestionDashboard">
+										<i class="bi bi-trophy me-2"></i>Mes Battles
+									</a>
+								<li>
+								<hr class="dropdown-divider"></li>
+								<li>
+									<a class="dropdown-item text-danger" href="/?controller=utilisateur&method=logout">
+										<i class="bi bi-box-arrow-right me-2"></i>Déconnexion
+									</a>
+								</li>
+							{% else %}
+								<li>
+									<a class="dropdown-item" href="#" id="trigger-login-modal">
+										<i class="bi bi-box-arrow-in-right me-2"></i>Se connecter
+									</a>
+								</li>
+								<li>
+									<a class="dropdown-item" href="#" id="trigger-signup-modal">
+										<i class="bi bi-person-plus me-2"></i>S'inscrire
+									</a>
+								</li>
+>>>>>>> 4c4ed5c7caf31a9fce3b4fdf2f539e381a3f2413
 							{% endif %}
 							{% if session.user_logged_in is defined and session.user_logged_in and session.user_role is defined and session.user_role.value == 'artiste' %}
 								<a class="btn text-secondary d-flex align-items-center justify-content-center" href="/?controller=album&method=afficherFormulaireAjout" title="Publier un album" aria-label="Publier un album ou single" data-bs-toggle="tooltip" data-bs-placement="bottom">
