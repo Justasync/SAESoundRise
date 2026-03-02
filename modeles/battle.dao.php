@@ -303,4 +303,60 @@ class BattleDAO {
             ':id' => $idBattle
         ]);
     }
+    /**
+     * @brief Récupère toutes les battles liées à un utilisateur (créateur ou participant).
+     * @param string $email L'email de l'utilisateur.
+     * @return array Une liste d'objets Battle.
+     */
+    public function findAllByUser(string $email): array
+    {
+        $sql = "SELECT * FROM battle 
+                WHERE emailCreateurBattle = :email 
+                OR emailParticipantBattle = :email 
+                ORDER BY dateDebutBattle DESC";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':email' => $email]);
+        return $this->hydrateMany($stmt->fetchAll(PDO::FETCH_ASSOC));
+    }
+
+    /**
+     * @brief Calcule les statistiques de victoires et défaites d'un artiste.
+     * @param string $email L'email de l'artiste.
+     * @return array Un tableau contenant le nombre de 'victoires' et de 'defaites'.
+     */
+    public function getStatsArtiste(string $email): array
+    {
+        $sql = "SELECT 
+                SUM(CASE 
+                    WHEN (emailCreateurBattle = :email1 AND votes_createur > votes_participant) OR 
+                         (emailParticipantBattle = :email2 AND votes_participant > votes_createur) 
+                    THEN 1 ELSE 0 END) as victoires,
+                SUM(CASE 
+                    WHEN (emailCreateurBattle = :email3 AND votes_createur < votes_participant) OR 
+                         (emailParticipantBattle = :email4 AND votes_participant < votes_createur) 
+                    THEN 1 ELSE 0 END) as defaites
+                FROM (
+                    SELECT 
+                        b.idBattle, b.emailCreateurBattle, b.emailParticipantBattle,
+                        (SELECT COUNT(*) FROM vote v WHERE v.idBattle = b.idBattle AND v.emailVotee = b.emailCreateurBattle) as votes_createur,
+                        (SELECT COUNT(*) FROM vote v WHERE v.idBattle = b.idBattle AND v.emailVotee = b.emailParticipantBattle) as votes_participant
+                    FROM battle b
+                    WHERE (b.emailCreateurBattle = :email5 OR b.emailParticipantBattle = :email6)
+                    AND b.statutBattle = 'terminee'
+                ) as stats";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':email1' => $email, ':email2' => $email, 
+            ':email3' => $email, ':email4' => $email,
+            ':email5' => $email, ':email6' => $email
+        ]);
+        
+        $res = $stmt->fetch(PDO::FETCH_ASSOC);
+        return [
+            'victoires' => (int)($res['victoires'] ?? 0),
+            'defaites' => (int)($res['defaites'] ?? 0)
+        ];
+    }
+
 }

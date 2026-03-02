@@ -33,10 +33,10 @@
                             {% if not estMonMessage %}
                                 {# L'invité voit les options Accepter / Refuser #}
                                 <div class="d-flex gap-2">
-                                    <a href="index.php?controller=battle&method=lister" class="btn btn-sm text-white flex-grow-1 fw-bold" style="background-color: #E58E82;">
+                                    <a href="?controller=battle&method=accepter&idBattle={{ idBattle }}" class="btn btn-sm text-white flex-grow-1 fw-bold" style="background-color: #E58E82;">
                                         Accepter
                                     </a>
-                                    <a href="index.php?controller=battle&method=refuser&idBattle={{ idBattle }}" class="btn btn-sm btn-outline-secondary flex-grow-1 fw-bold" onclick="return confirm('Voulez-vous vraiment refuser cette battle ?')">
+                                    <a href="?controller=battle&method=refuser&idBattle={{ idBattle }}" class="btn btn-sm btn-outline-secondary flex-grow-1 fw-bold" onclick="return confirm('Voulez-vous vraiment refuser cette battle ?')">
                                         Refuser
                                     </a>
                                 </div>
