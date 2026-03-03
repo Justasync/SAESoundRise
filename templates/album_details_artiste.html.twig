@@ -9,10 +9,20 @@
 			background-color: #f0f0f0;
 		}
 		.content-bg {
-			background: linear-gradient(135deg, #a36666 0%, #d4a373 100%);
+			background: linear-gradient(135deg, #A5604E 0%, #E5A88E 100%);
+		}
+		/* --- Styles de la Playlist --- */
+		.track-row {
+			cursor: pointer;
+			transition: background-color 0.2s;
+			--bs-table-bg: transparent;
+			color: rgba(255, 255, 255, 0.9);
 		}
 		.track-row:nth-child(even) {
 			background-color: rgba(0, 0, 0, 0.05);
+		}
+		.table-hover > tbody > tr:hover > * {
+			--bs-table-hover-bg: rgba(0, 0, 0, 0.15);
 		}
 		.table {
 			--bs-table-bg: transparent;
@@ -20,10 +30,61 @@
 			--bs-table-color: var(--bs-white);
 			--bs-table-hover-color: var(--bs-white);
 		}
-		.table-hover > tbody > tr:hover > * {
-			--bs-table-hover-bg: rgba(0, 0, 0, 0.15);
+		/* --- Style de la piste active --- */
+		.track-row.active-track {
+			background-color: rgba(255, 255, 255, 0.2);
+			font-weight: 600;
+		}
+		/* --- Styles de la Barre de Progression --- */
+		.progress-bar-container {
+			height: 6px;
+			background-color: rgba(255, 255, 255, 0.3);
+			cursor: pointer;
+		}
+		.progress-bar {
+			height: 100%;
+			background-color: white;
+			transition: width 0.1s linear;
+		}
+		/* --- Styles du Contrôle de Volume --- */
+		#volume-slider {
+			-webkit-appearance: none;
+			appearance: none;
+			width: 80px;
+			height: 5px;
+			background: rgba(255, 255, 255, 0.3);
+			border-radius: 5px;
+			outline: none;
+			transition: opacity 0.2s;
+			cursor: pointer;
+		}
+		#volume-slider::-webkit-slider-thumb {
+			-webkit-appearance: none;
+			appearance: none;
+			width: 14px;
+			height: 14px;
+			background: white;
+			border-radius: 50%;
+			cursor: pointer;
+		}
+		/* --- Styles pour la rotation de la pochette --- */
+		@keyframes spin {
+			from {
+				transform: rotate(0deg);
+			}
+			to {
+				transform: rotate(360deg);
+			}
+		}
+		#album-cover {
+			animation: spin 12s linear infinite;
+			animation-play-state: paused;
+		}
+		#album-cover.rotating {
+			animation-play-state: running;
 		}
 	</style>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 {% endblock %}
 
 {% block content %}
@@ -39,7 +100,7 @@
 
 			<div class="d-flex flex-column flex-md-row align-items-start gap-4">
 				<div class="flex-shrink-0">
-					<img src="{{ album.getUrlPochetteAlbum() ?: 'https://placehold.co/160x160/7b4343/ffffff?text=' ~ (album.getTitreAlbum()|replace({' ': '+'})|slice(0, 20)) }}" alt="Couverture de l'album {{ album.getTitreAlbum() }}" class="rounded-circle shadow-lg" style="width: 160px; height: 160px; object-fit: cover;">
+					<img id="album-cover" src="{{ album.getUrlPochetteAlbum() ?: 'https://placehold.co/160x160/7b4343/ffffff?text=' ~ (album.getTitreAlbum()|replace({' ': '+'})|slice(0, 20)) }}" alt="Couverture de l'album {{ album.getTitreAlbum() }}" class="rounded-circle shadow-lg" style="width: 160px; height: 160px; object-fit: cover;">
 				</div>
 
 				<div class="flex-grow-1">
@@ -60,6 +121,28 @@
 						s
 					</p>
 
+					<div class="mt-4 pt-4 border-top border-light border-opacity-50">
+						<p class="fs-6 fw-bold mb-2" id="current-track-title">Piste en cours : Aucune</p>
+						<div id="progress-bar-container" class="progress-bar-container rounded-pill">
+							<div id="progress-bar" class="progress-bar rounded-pill w-0"></div>
+						</div>
+						<div class="d-flex justify-content-between text-xs mt-1" style="opacity: 0.8;">
+							<span id="current-time">0:00</span>
+							<span id="duration">0:00</span>
+						</div>
+						<div class="mt-3 d-flex gap-3 align-items-center">
+							<button id="play-pause-btn" type="button" onclick="playSelected()" class="btn btn-light text-dark rounded-circle shadow-sm" style="width: 48px; height: 48px;">
+								<i id="play-pause-icon" class="bi bi-play-fill" style="font-size: 1.5rem; line-height: 1;"></i>
+							</button>
+							<div class="d-flex align-items-center ms-auto gap-2">
+								<button id="volume-btn" type="button" class="btn btn-link p-0">
+									<i id="volume-icon" class="bi bi-volume-up-fill" style="font-size: 1.8rem; color: rgba(255, 255, 255, 0.9);"></i>
+								</button>
+								<input type="range" id="volume-slider" min="0" max="100" value="75" class="align-self-center">
+							</div>
+						</div>
+					</div>
+
 					<button type="button" class="btn btn-light text-dark fw-semibold py-2 px-4 rounded-pill shadow-lg mt-3" data-bs-toggle="modal" data-bs-target="#ajoutChansonModal">
 						Ajouter Titre
 					</button>
@@ -67,7 +150,7 @@
 			</div>
 
 			<div class="mt-5 overflow-x-auto">
-				<table class="table table-hover align-middle">
+				<table id="track-table" class="table table-hover align-middle">
 					<thead style="background-color: rgba(0,0,0,0.2);">
 						<tr class="text-sm text-uppercase fw-semibold" style="color: rgba(255,255,255,0.9); letter-spacing: 0.05em;">
 							<th scope="col" class="py-3 px-4" style="width: 5%;">#</th>
@@ -80,12 +163,15 @@
 					<tbody>
 						{% if chansons is not empty %}
 							{% for chanson in chansons %}
-								<tr class="track-row" style="color: rgba(255,255,255,0.9);">
-									<td class="py-3 px-4 fw-bold">{{ loop.index|number_format(2, '.', ',') }}</td>
-									<td class="py-3 px-4">{{ chanson.getTitreChanson() }}</td>
-									<td class="py-3 px-4 d-none d-sm-table-cell">{{ chanson.getNbEcouteChanson() ?? 0 }}</td>
-									<td class="py-3 px-4">{{ (chanson.getDureeChanson() / 60)|round(0, 'floor') }}:{{ (chanson.getDureeChanson() % 60)|number_format(0, '', '02') }}</td>
+								<tr class="track-row" data-index="{{ loop.index0 }}" data-song-id="{{ chanson.getIdChanson() }}" style="color: rgba(255,255,255,0.9);">
+									<td class="py-3 px-4 fw-bold track-index">{{ loop.index }}</td>
+									<td class="py-3 px-4 track-title">{{ chanson.getTitreChanson() }}</td>
+									<td class="py-3 px-4 d-none d-sm-table-cell track-listens">{{ chanson.getNbEcouteChanson() ?? 0 }}</td>
+									<td class="py-3 px-4 track-duration">{{ (chanson.getDureeChanson() / 60)|round(0, 'floor') }}:{{ (chanson.getDureeChanson() % 60)|number_format(0, '', '02') }}</td>
 									<td class="py-3 px-4 text-center">
+										<button type="button" class="btn btn-sm btn-link p-1 play-track-btn" title="Lire la musique" data-index="{{ loop.index0 }}" onclick="loadTrack({{ loop.index0 }})">
+											<i class="bi bi-play-fill track-play-icon" style="color: rgba(255,255,255,0.7); font-size: 1.2rem;"></i>
+										</button>
 										<button type="button" class="btn btn-sm btn-link p-1" title="Modifier" data-bs-toggle="modal" data-bs-target="#modifierChansonModal" data-song-id="{{ chanson.getIdChanson() }}" data-song-title="{{ chanson.getTitreChanson() }}" data-song-genre="{{ chanson.getGenreChanson() ? chanson.getGenreChanson().getNomGenre() : '' }}">
 											<svg class="bi" width="16" height="16" fill="currentColor" style="color: rgba(255,255,255,0.7);">
 												<path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
@@ -110,6 +196,8 @@
 			</div>
 		</div>
 	</main>
+
+	<audio id="audio-player"></audio>
 
 	<!-- Fenêtre Modale pour l'ajout de chanson -->
 	<div class="modal fade" id="ajoutChansonModal" tabindex="-1" aria-labelledby="ajoutChansonModalLabel" aria-hidden="true">
@@ -186,49 +274,358 @@
 	</div>
 {% endblock %}
 {% block script %}
+	{{ parent() }}
 	<script>
-		document.addEventListener('DOMContentLoaded', function () {
-const modifierModal = document.getElementById('modifierChansonModal');
-if (modifierModal) {
-modifierModal.addEventListener('show.bs.modal', function (event) { // Bouton qui a déclenché la modale
-const button = event.relatedTarget;
+const audioPlayer = document.getElementById('audio-player');
+const playPauseIcon = document.getElementById('play-pause-icon');
+const progressBar = document.getElementById('progress-bar');
+const progressBarContainer = document.getElementById('progress-bar-container');
+const currentTimeEl = document.getElementById('current-time');
+const durationEl = document.getElementById('duration');
+const currentTrackTitleEl = document.getElementById('current-track-title');
+const trackRows = document.querySelectorAll('.track-row');
+const albumCover = document.getElementById('album-cover');
+const volumeSlider = document.getElementById('volume-slider');
+const volumeIcon = document.getElementById('volume-icon');
 
-// Extraire les informations des attributs data-*
-const songId = button.getAttribute('data-song-id');
-const songTitle = button.getAttribute('data-song-title');
-const songGenre = button.getAttribute('data-song-genre');
+let currentTrackIndex = -1;
+let isScrubbing = false;
+let wasPlayingBeforeScrub = false;
+let isPlaying = false;
 
-// Mettre à jour le contenu de la modale
-const modalTitle = modifierModal.querySelector('.modal-title');
-const modalForm = modifierModal.querySelector('form');
-const titleInput = modifierModal.querySelector('#edit-song-title');
-const genreSelect = modifierModal.querySelector('#edit-song-genre');
-
-modalTitle.textContent = 'Modifier : ' + songTitle;
-titleInput.value = songTitle;
-genreSelect.value = songGenre || '';
-
-// Mettre à jour l'action du formulaire pour inclure l'ID de la chanson
-modalForm.action = `/?controller=album&method=modifierChanson&idChanson=${songId}`;
+const playlist = [];
+{% for chanson in chansons %}
+playlist.push({
+	id: {{ chanson.getIdChanson() }},
+	title: "{{ chanson.getTitreChanson()|e('js') }}",
+	src: "{{ chanson.geturlAudioChanson()|default('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3')|e('js') }}",
+	durationFormatted: "{{ (chanson.getDureeChanson() / 60)|round(0, 'floor') }}:{{ (chanson.getDureeChanson() % 60)|number_format(0, '', '02') }}"
 });
+{% endfor %}
+
+const playedBeyond75 = new Set();
+const selectedSongId = {{ chansonSelected ?? 'null' }};
+
+function formatTime(seconds) {
+	const minutes = Math.floor(seconds / 60);
+	const remainingSeconds = Math.floor(seconds % 60);
+	return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
 }
-// Gestion de la modale de suppression
-const supprimerModal = document.getElementById('supprimerChansonModal');
-if (supprimerModal) {
-	supprimerModal.addEventListener('show.bs.modal', function (event) {
-		const button = event.relatedTarget;
-		const songId = button.getAttribute('data-song-id');
-		const songTitle = button.getAttribute('data-song-title');
-		const form = supprimerModal.querySelector('form');
-		const songToDelete = document.getElementById('song-to-delete');
-		if (songToDelete) {
-			songToDelete.textContent = songTitle;
+
+function updateProgress() {
+	if (audioPlayer.duration && !isScrubbing) {
+		const progressPercent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+		progressBar.style.width = `${progressPercent}%`;
+		currentTimeEl.textContent = formatTime(audioPlayer.currentTime);
+	}
+}
+
+function handleScrubbing(event) {
+	if (!audioPlayer.src) return;
+	const rect = progressBarContainer.getBoundingClientRect();
+	const offsetX = event.clientX - rect.left;
+	const width = progressBarContainer.offsetWidth;
+	const newTimeFraction = Math.max(0, Math.min(1, offsetX / width));
+
+	if (audioPlayer.duration) {
+		const newTime = newTimeFraction * audioPlayer.duration;
+		audioPlayer.currentTime = newTime;
+		progressBar.style.width = `${newTimeFraction * 100}%`;
+		currentTimeEl.textContent = formatTime(newTime);
+	}
+}
+
+window.playPause = function () {
+	if (currentTrackIndex === -1 && playlist.length > 0) {
+		loadTrack(0);
+		return;
+	}
+	if (isPlaying) {
+		audioPlayer.pause();
+		playPauseIcon.classList.replace('bi-pause-fill', 'bi-play-fill');
+	} else {
+		audioPlayer.play().catch(e => console.error("Erreur de lecture : ", e));
+		playPauseIcon.classList.replace('bi-play-fill', 'bi-pause-fill');
+	}
+	isPlaying = !isPlaying;
+	updateTrackRowVisuals();
+};
+
+progressBarContainer.addEventListener('mousedown', (e) => {
+	if (!audioPlayer.src) return;
+	isScrubbing = true;
+	wasPlayingBeforeScrub = isPlaying;
+	if (wasPlayingBeforeScrub) {
+		audioPlayer.pause();
+	}
+	handleScrubbing(e);
+});
+
+document.addEventListener('mousemove', (e) => {
+	if (isScrubbing) {
+		e.preventDefault();
+		handleScrubbing(e);
+	}
+});
+
+document.addEventListener('mouseup', () => {
+	if (isScrubbing) {
+		if (wasPlayingBeforeScrub) {
+			audioPlayer.play().catch(e => console.error("Erreur de lecture post-scrubbing : ", e));
 		}
-		if (form) {
-			form.action = `/?controller=album&method=supprimerChanson&idChanson=${songId}`;
+		isScrubbing = false;
+	}
+});
+
+window.playSelected = function () {
+	const selectedRow = document.querySelector('.track-row.selected-track') || document.querySelector('.track-row.active-track');
+	let index = -1;
+	if (selectedRow) {
+		index = parseInt(selectedRow.dataset.index, 10);
+	}
+	if (isNaN(index) || index < 0) {
+		if (currentTrackIndex === -1 && playlist.length > 0) {
+			loadTrack(0);
+		} else {
+			playPause();
+		}
+		return;
+	}
+	if (index === currentTrackIndex) {
+		playPause();
+	} else {
+		loadTrack(index);
+	}
+};
+
+window.loadTrack = function (index) {
+	if (index < 0 || index >= playlist.length) {
+		console.error("Index de piste invalide.");
+		return;
+	}
+	const track = playlist[index];
+	playedBeyond75.delete(track.id);
+
+	if (index === currentTrackIndex && !isPlaying) {
+		audioPlayer.play().catch(e => console.error("Erreur de lecture : ", e));
+		isPlaying = true;
+		playPauseIcon.classList.replace('bi-play-fill', 'bi-pause-fill');
+		updateTrackRowVisuals();
+		return;
+	}
+
+	currentTrackIndex = index;
+	audioPlayer.src = track.src;
+	currentTrackTitleEl.textContent = `Piste en cours : ${index + 1}. ${track.title}`;
+	durationEl.textContent = track.durationFormatted;
+
+	audioPlayer.play().catch(e => {
+		console.error("Lecture automatique bloquée. Veuillez interagir.", e);
+		isPlaying = false;
+		playPauseIcon.classList.replace('bi-pause-fill', 'bi-play-fill');
+	});
+	isPlaying = true;
+	playPauseIcon.classList.replace('bi-play-fill', 'bi-pause-fill');
+	updateTrackRowVisuals();
+};
+
+function updateTrackRowVisuals() {
+	trackRows.forEach((row, index) => {
+		const playIcon = row.querySelector('.track-play-icon');
+		if (index === currentTrackIndex) {
+			row.classList.add('active-track');
+		} else {
+			row.classList.remove('active-track');
+		}
+		if (playIcon) {
+			if (index === currentTrackIndex && isPlaying) {
+				playIcon.classList.replace('bi-play-fill', 'bi-pause-fill');
+			} else {
+				playIcon.classList.replace('bi-pause-fill', 'bi-play-fill');
+			}
 		}
 	});
 }
+
+audioPlayer.addEventListener('play', () => {
+	if (albumCover) albumCover.classList.add('rotating');
+});
+
+audioPlayer.addEventListener('pause', () => {
+	if (albumCover) albumCover.classList.remove('rotating');
+});
+
+audioPlayer.addEventListener('loadedmetadata', () => {
+	if (audioPlayer.duration && !isNaN(audioPlayer.duration)) {
+		durationEl.textContent = formatTime(audioPlayer.duration);
+	}
+});
+
+audioPlayer.addEventListener('timeupdate', () => {
+	if (currentTrackIndex >= 0 && audioPlayer.duration) {
+		const track = playlist[currentTrackIndex];
+		const threshold75 = audioPlayer.duration * 0.75;
+		if (audioPlayer.currentTime >= threshold75 && !playedBeyond75.has(track.id)) {
+			playedBeyond75.add(track.id);
+			fetch('/?controller=chanson&method=incrementEcoute', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+				body: 'idChanson=' + encodeURIComponent(track.id)
+			})
+			.then(res => res.json())
+			.then(data => {
+				if (data && data.nbEcoute !== undefined) {
+					const row = document.querySelector('.track-row[data-index="' + currentTrackIndex + '"]');
+					if (row) {
+						const listensCell = row.querySelector('.track-listens');
+						if (listensCell) listensCell.textContent = data.nbEcoute;
+					}
+				}
+			})
+			.catch(err => console.error('Erreur incrément écoute:', err));
+		}
+	}
+	updateProgress();
+});
+
+audioPlayer.addEventListener('ended', () => {
+	if (currentTrackIndex < playlist.length - 1) {
+		loadTrack(currentTrackIndex + 1);
+	} else {
+		isPlaying = false;
+		playPauseIcon.classList.replace('bi-pause-fill', 'bi-play-fill');
+		audioPlayer.currentTime = 0;
+		progressBar.style.width = '0%';
+		currentTimeEl.textContent = '0:00';
+		currentTrackTitleEl.textContent = 'Piste en cours : Aucune';
+		updateTrackRowVisuals();
+	}
+});
+
+audioPlayer.addEventListener('error', (e) => {
+	console.error("Erreur de l'élément audio:", audioPlayer.error, e);
+	currentTrackTitleEl.textContent = "Erreur de chargement de la piste.";
+	isPlaying = false;
+	playPauseIcon.classList.replace('bi-pause-fill', 'bi-play-fill');
+	updateTrackRowVisuals();
+});
+
+window.onload = function () {
+	trackRows.forEach((row) => {
+		const index = parseInt(row.dataset.index);
+		row.addEventListener('click', (e) => {
+			if (!e.target.closest('button')) {
+				loadTrack(index);
+			}
+		});
+	});
+
+	if (selectedSongId !== null && playlist.length > 0) {
+		const selectedIndex = playlist.findIndex(track => track.id === selectedSongId);
+		if (selectedIndex !== -1) {
+			const selectedRow = document.querySelector('tr[data-song-id="' + selectedSongId + '"]');
+			if (selectedRow) {
+				setTimeout(() => {
+					selectedRow.scrollIntoView({behavior: 'smooth', block: 'center'});
+				}, 100);
+			}
+			currentTrackIndex = selectedIndex;
+			const track = playlist[selectedIndex];
+			audioPlayer.src = track.src;
+			currentTrackTitleEl.textContent = `Piste en cours : ${currentTrackIndex + 1}. ${track.title}`;
+			durationEl.textContent = track.durationFormatted;
+			updateTrackRowVisuals();
+		} else if (playlist.length > 0) {
+			currentTrackIndex = 0;
+			const track = playlist[0];
+			audioPlayer.src = track.src;
+			currentTrackTitleEl.textContent = `Piste en cours : ${currentTrackIndex + 1}. ${track.title}`;
+			durationEl.textContent = track.durationFormatted;
+			updateTrackRowVisuals();
+		}
+	} else if (playlist.length > 0) {
+		currentTrackIndex = 0;
+		const track = playlist[0];
+		audioPlayer.src = track.src;
+		currentTrackTitleEl.textContent = `Piste en cours : ${currentTrackIndex + 1}. ${track.title}`;
+		durationEl.textContent = track.durationFormatted;
+		updateTrackRowVisuals();
+	}
+};
+
+function handleVolumeChange() {
+	const volume = volumeSlider.value / 100;
+	audioPlayer.volume = volume;
+	audioPlayer.muted = (volume === 0);
+
+	if (audioPlayer.muted || volume === 0) {
+		volumeIcon.classList.replace('bi-volume-up-fill', 'bi-volume-mute-fill');
+		volumeIcon.classList.replace('bi-volume-down-fill', 'bi-volume-mute-fill');
+	} else if (volume > 0.5) {
+		volumeIcon.classList.replace('bi-volume-mute-fill', 'bi-volume-up-fill');
+		volumeIcon.classList.replace('bi-volume-down-fill', 'bi-volume-up-fill');
+	} else {
+		volumeIcon.classList.replace('bi-volume-mute-fill', 'bi-volume-down-fill');
+		volumeIcon.classList.replace('bi-volume-up-fill', 'bi-volume-down-fill');
+	}
+}
+
+if (volumeSlider) {
+	volumeSlider.addEventListener('input', handleVolumeChange);
+}
+
+const volumeBtn = document.getElementById('volume-btn');
+if (volumeBtn) {
+	volumeBtn.addEventListener('click', () => {
+		audioPlayer.muted = !audioPlayer.muted;
+		if (audioPlayer.muted) {
+			volumeSlider.value = 0;
+		} else {
+			volumeSlider.value = audioPlayer.volume > 0 ? audioPlayer.volume * 100 : 75;
+		}
+		handleVolumeChange();
+	});
+}
+
+handleVolumeChange();
+
+document.addEventListener('DOMContentLoaded', function () {
+	const modifierModal = document.getElementById('modifierChansonModal');
+	if (modifierModal) {
+		modifierModal.addEventListener('show.bs.modal', function (event) {
+			const button = event.relatedTarget;
+			const songId = button.getAttribute('data-song-id');
+			const songTitle = button.getAttribute('data-song-title');
+			const songGenre = button.getAttribute('data-song-genre');
+
+			const modalTitle = modifierModal.querySelector('.modal-title');
+			const modalForm = modifierModal.querySelector('form');
+			const titleInput = modifierModal.querySelector('#edit-song-title');
+			const genreSelect = modifierModal.querySelector('#edit-song-genre');
+
+			modalTitle.textContent = 'Modifier : ' + songTitle;
+			titleInput.value = songTitle;
+			genreSelect.value = songGenre || '';
+			modalForm.action = '/?controller=album&method=modifierChanson&idChanson=' + songId;
+		});
+	}
+
+	const supprimerModal = document.getElementById('supprimerChansonModal');
+	if (supprimerModal) {
+		supprimerModal.addEventListener('show.bs.modal', function (event) {
+			const button = event.relatedTarget;
+			const songId = button.getAttribute('data-song-id');
+			const songTitle = button.getAttribute('data-song-title');
+			const form = supprimerModal.querySelector('form');
+			const songToDelete = document.getElementById('song-to-delete');
+			if (songToDelete) {
+				songToDelete.textContent = songTitle;
+			}
+			if (form) {
+				form.action = '/?controller=album&method=supprimerChanson&idChanson=' + songId;
+			}
+		});
+	}
 });
 	</script>
 {% endblock %}
