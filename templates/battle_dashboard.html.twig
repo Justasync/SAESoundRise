@@ -78,61 +78,95 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for battle in battles %}
-                        {% set estCreateur = (battle.getEmailCreateurBattle() == session.user_email) %}
-                        {% set adversaire = estCreateur ? battle.getParticipant() : battle.getCreateur() %}
-                        {% set status = battle.getStatutBattle().value %}
-                        
-                        <tr>
-                            <td><span class="fw-bold text-dark">{{ battle.getTitreBattle()|replace({'Battle : ': ''}) }}</span></td>
-                            <td>
-                                {% if adversaire %}
-                                    <div class="d-flex align-items-center">
-                                        <img src="{{ adversaire.geturlPhotoUtilisateur() ?? 'assets/images/default-avatar.png' }}" class="rounded-circle me-2" width="35" height="35" style="object-fit: cover; border: 1px solid #eee;">
-                                        <span class="small fw-semibold">{{ adversaire.getPseudoUtilisateur() }}</span>
-                                    </div>
-                                {% else %}<span class="text-muted small italic">En attente...</span>{% endif %}
-                            </td>
+                {% for battle in battles %}
+                    {# 1. DÉFINITION DES VARIABLES CLÉS #}
+                    {% set estCreateur = (battle.getEmailCreateurBattle() == session.user_email) %}
+                    {% set adversaire = estCreateur ? battle.getParticipant() : battle.getCreateur() %}
+                    {% set status = battle.getStatutBattle().value %}
+                    
+                    {# DÉFINITION DE TA CHANSON (C'est ce qui manquait) #}
+                    {% set maChanson = estCreateur ? battle.getChansonCreateurObj() : battle.getChansonParticipantObj() %}
+                    
+                    <tr>
+                        {# COLONNE 1 : LE COMBAT ET TA MUSIQUE #}
+                        <td>
+                            <span class="fw-bold text-dark">{{ battle.getTitreBattle()|replace({'Battle : ': ''}) }}</span>
                             
-                            <td>
-                                <div class="small fw-bold text-secondary">{{ battle.getDateDebutBattle()|date('d/m H:i') }}</div>
-                                {% if status == 'en_cours' %}
-                                    <div class="badge bg-light text-danger border mt-1" style="font-size: 0.65rem;">
-                                        <i class="bi bi-clock-history me-1"></i>Fin : {{ battle.getDateFinBattle()|date('d/m H:i') }}
-                                    </div>
-                                {% endif %}
-                            </td>
+                            {# Affichage de ta chanson sélectionnée #}
+                            {% if maChanson %}
+                                <div class="mt-1">
+                                    <span class="badge bg-light text-secondary border-0 p-0" style="font-size: 0.75rem;">
+                                        <i class="bi bi-music-note-beamed me-1" style="color: #D99181;"></i>
+                                        Ma chanson : <strong class="text-dark">{{ maChanson.getTitreChanson() }}</strong>
+                                    </span>
+                                </div>
+                            {% else %}
+                                <div class="small text-danger mt-1" style="font-size: 0.7rem;">
+                                    <i class="bi bi-exclamation-triangle me-1"></i> Aucune chanson choisie
+                                </div>
+                            {% endif %}
+                        </td>
 
-                            <td>
-                                <span class="badge rounded-pill px-3 py-2 {% if status == 'en_cours' %}bg-success{% elseif status == 'en_attente' %}bg-warning text-dark{% elseif status == 'terminee' %}bg-secondary{% else %}bg-danger{% endif %}">
-                                    {{ status|upper }}
-                                </span>
-                            </td>
-                            <td class="text-end">
-                                {# BOUTON SUPPRIMER : Uniquement si la battle est en attente et qu'on en est le créateur #}
-                                {% if status == 'en_attente' and estCreateur %}
-                                    <form action="?controller=battle&method=supprimer" method="POST" class="d-inline" onsubmit="return confirm('Voulez-vous vraiment annuler cette battle ?');">
-                                        <input type="hidden" name="idBattle" value="{{ battle.getIdBattle() }}">
-                                        <button type="submit" class="btn btn-sm btn-outline-danger border-0 me-2" title="Supprimer la battle">
-                                            <i class="bi bi-trash3-fill"></i>
-                                        </button>
-                                    </form>
-                                {% endif %}
+                        {# COLONNE 2 : L'ADVERSAIRE #}
+                        <td>
+                            {% if adversaire %}
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ adversaire.geturlPhotoUtilisateur() ?? 'assets/images/default-avatar.png' }}" 
+                                        class="rounded-circle me-2" width="35" height="35" style="object-fit: cover; border: 1px solid #eee;">
+                                    <span class="small fw-semibold">{{ adversaire.getPseudoUtilisateur() }}</span>
+                                </div>
+                            {% else %}
+                                <span class="text-muted small italic">En attente...</span>
+                            {% endif %}
+                        </td>
+                        
+                        {# COLONNE 3 : LA DATE #}
+                        <td>
+                            <div class="small fw-bold text-secondary">{{ battle.getDateDebutBattle()|date('d/m H:i') }}</div>
+                            {% if status == 'en_cours' %}
+                                <div class="badge bg-light text-danger border mt-1" style="font-size: 0.65rem;">
+                                    <i class="bi bi-clock-history me-1"></i>Fin : {{ battle.getDateFinBattle()|date('d/m H:i') }}
+                                </div>
+                            {% endif %}
+                        </td>
 
-                                {% if status == 'en_attente' %}
-                                    {% set aDejaChoisi = (estCreateur and battle.getIdChansonCreateur()) or (not estCreateur and battle.getIdChansonParticipant()) %}
-                                    <button class="btn btn-sm text-white px-3 shadow-sm" style="background-color: #E58E82; border-radius: 15px;" onclick="ouvrirModalChanson('{{ battle.getIdBattle() }}')">
-                                        <i class="bi bi-music-note-beamed me-1"></i> {{ aDejaChoisi ? 'Changer chanson' : 'Choisir chanson' }}
+                        {# COLONNE 4 : LE STATUT #}
+                        <td>
+                            <span class="badge rounded-pill px-3 py-2 
+                                {% if status == 'en_cours' %}bg-success
+                                {% elseif status == 'en_attente' %}bg-warning text-dark
+                                {% elseif status == 'terminee' %}bg-secondary
+                                {% else %}bg-danger{% endif %}">
+                                {{ status|upper }}
+                            </span>
+                        </td>
+
+                        {# COLONNE 5 : LES ACTIONS #}
+                        <td class="text-end">
+                            {# BOUTON SUPPRIMER : Uniquement si la battle est en attente et qu'on en est le créateur #}
+                            {% if status == 'en_attente' and estCreateur %}
+                                <form action="index.php?controller=battle&method=supprimer" method="POST" class="d-inline" onsubmit="return confirm('Voulez-vous vraiment annuler cette battle ?');">
+                                    <input type="hidden" name="idBattle" value="{{ battle.getIdBattle() }}">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger border-0 me-2" title="Supprimer la battle">
+                                        <i class="bi bi-trash3-fill"></i>
                                     </button>
-                                {% elseif status == 'en_cours' %}
-                                    <a href="?controller=battle&method=lister" class="btn btn-sm btn-outline-success px-3" style="border-radius: 15px;">
-                                        <i class="bi bi-eye me-1"></i> Voir l'arène
-                                    </a>
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
+                                </form>
+                            {% endif %}
+
+                            {% if status == 'en_attente' %}
+                                <button class="btn btn-sm text-white px-3 shadow-sm" style="background-color: #E58E82; border-radius: 15px;" onclick="ouvrirModalChanson('{{ battle.getIdBattle() }}')">
+                                    <i class="bi bi-music-note-beamed me-1"></i> 
+                                    {{ maChanson ? 'Changer chanson' : 'Choisir chanson' }}
+                                </button>
+                            {% elseif status == 'en_cours' %}
+                                <a href="index.php?controller=battle&method=lister" class="btn btn-sm btn-outline-success px-3" style="border-radius: 15px;">
+                                    <i class="bi bi-eye me-1"></i> Voir l'arène
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
             </table>
         </div>
     </div>
