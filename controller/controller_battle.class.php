@@ -37,6 +37,8 @@ if (!class_exists('ControllerBattle')) {
          */
         public function lister(): void
         {
+            $this->requireRole(RoleEnum::Artiste);
+
             $battleDao = new BattleDao($this->getPdo());
             $toutesLesBattles = $battleDao->findAll();
             $battlesEnCours = [];
@@ -48,7 +50,7 @@ if (!class_exists('ControllerBattle')) {
                         $battleDao->modifierStatut($battle->getIdBattle(), 'terminee');
                         continue;
                     }
-                    
+
                     $idB = (int)$battle->getIdBattle();
                     if (isset($_SESSION['user_email']) && !empty($_SESSION['user_email'])) {
                         $battle->setDejaVote($battleDao->hasUserVoted($idB, $_SESSION['user_email']));
@@ -56,7 +58,7 @@ if (!class_exists('ControllerBattle')) {
 
                     $battle->setVotesCreateur($battleDao->getVotesCount($idB, $battle->getEmailCreateurBattle()));
                     $battle->setVotesParticipant($battleDao->getVotesCount($idB, $battle->getEmailParticipantBattle()));
-                    
+
                     $battlesEnCours[] = $battle;
                 }
             }
@@ -77,11 +79,11 @@ if (!class_exists('ControllerBattle')) {
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user_email'])) {
                 $idBattle = (int)$_POST['idBattle'];
                 $idChanson = (int)$_POST['idChanson'];
-                
+
                 $battleDao = new BattleDao($this->getPdo());
                 $battle = $battleDao->find($idBattle);
                 $estCreateur = ($battle->getEmailCreateurBattle() === $_SESSION['user_email']);
-                
+
                 if ($battleDao->modifierChanson($idBattle, $idChanson, $estCreateur)) {
                     $battleAjour = $battleDao->find($idBattle);
                     if ($battleAjour->getIdChansonCreateur() && $battleAjour->getIdChansonParticipant()) {
@@ -143,7 +145,7 @@ if (!class_exists('ControllerBattle')) {
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute([':search' => "%[BATTLE_INVITE:$idBattle]%"]);
             }
-            header('Location: index.php?controller=battle&method=gestionDashboard');
+            $this->redirectTo("battle", "gestionDashboard");
             exit;
         }
 
@@ -157,16 +159,14 @@ if (!class_exists('ControllerBattle')) {
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute([':search' => "%[BATTLE_INVITE:$idBattle]%"]);
             }
-            header('Location: ' . $_SERVER['HTTP_REFERER']);
-            exit;
+            $this->redirectTo("battle", "gestionDashboard");
         }
 
         public function voter(): void
         {
-            if (!isset($_SESSION['user_logged_in'])) {
-                header('Location: ?controller=home&method=afficher&error=login_required');
-                exit;
-            }
+
+            $this->requireAuth("battle", "lister");
+
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $idBattle = (int)$_POST['idBattle'];
                 $emailVotee = $_POST['emailVotee'];
@@ -175,8 +175,7 @@ if (!class_exists('ControllerBattle')) {
                     $battleDao->addVote($_SESSION['user_email'], $idBattle, $emailVotee);
                 }
             }
-            header('Location: ' . $_SERVER['HTTP_REFERER']);
-            exit;
+            $this->redirectTo("battle", "lister");
         }
 
         public function supprimer(): void
@@ -188,16 +187,15 @@ if (!class_exists('ControllerBattle')) {
                     $battleDao->deleteBattle($battle->getIdBattle());
                 }
             }
-            header('Location: index.php?controller=battle&method=gestionDashboard');
+            $this->redirectTo("battle", "gestionDashboard");
             exit;
         }
 
         public function gestionDashboard(): void
         {
-            if (!isset($_SESSION['user_logged_in']) || $_SESSION['user_role']->value !== 'artiste') {
-                header('Location: ?controller=home&method=afficher');
-                exit;
-            }
+
+            $this->requireRole(RoleEnum::Artiste);
+
             $emailActuel = $_SESSION['user_email'];
             $battleDao = new BattleDao($this->getPdo());
             $chansonDao = new ChansonDao($this->getPdo());

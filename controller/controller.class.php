@@ -276,9 +276,6 @@ class Controller
             : $sessionRole;
 
         // Récupérer la valeur du rôle requis (argument)
-        $requiredRoleValue = ($requiredRole instanceof RoleEnum)
-            ? $requiredRole->value
-            : $requiredRole;
         $userRole = $_SESSION['user_role'] ?? null;
         $userRoleValue = $userRole instanceof RoleEnum ? $userRole->value : $userRole;
         $roleValue = $requiredRole instanceof RoleEnum ? $requiredRole->value : $requiredRole;
