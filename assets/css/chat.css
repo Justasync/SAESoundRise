@@ -22,6 +22,8 @@
     --msg-received-text: #050505;
     --msg-sent-bg: var(--paaxio-brand);
     --msg-sent-text: #ffffff;
+    --msg-sent-bg: #ffc6ac; 
+    --msg-sent-text: #000000;
 }
 
 .chat-wrapper {
@@ -243,7 +245,7 @@
     right: 14px; /* On le décale un peu à cause du margin-right de l'avatar */
     width: 14px;
     height: 14px;
-    background-color: var(--paaxio-brand); /* Ton beau orange */
+    background-color: #FF3B30; /* Ton beau orange */
     border: 2px solid #ffffff;
     border-radius: 50%;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
