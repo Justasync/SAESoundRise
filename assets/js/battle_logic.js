@@ -1,44 +1,60 @@
+/**
+ * @file battle_logic.js
+ * @brief Gestion des modales et des invitations de battle en JavaScript.
+ */
+
 let artisteSelectionne = { email: '', pseudo: '' };
 
-function abrirModalSelection() {
-    document.getElementById('modalSelection').style.display = 'flex';
+/**
+ * Affiche la modale de sélection d'un artiste.
+ */
+function ouvrirModalSelection() {
+    const modal = document.getElementById('modalSelection');
+    if (modal) modal.style.display = 'flex';
 }
 
 /**
- * Se ejecuta al hacer clic en una fila de la lista de artistas
+ * S'exécute lors du clic sur une ligne de la liste des artistes.
+ * @param {HTMLElement} ligne La ligne du tableau cliquée.
+ * @param {string} email L'email de l'artiste sélectionné.
+ * @param {string} pseudo Le pseudonyme de l'artiste sélectionné.
  */
 function selectionnerArtiste(ligne, email, pseudo) {
-    // Guardamos los datos en el objeto global
+    // On enregistre les données dans l'objet global
     artisteSelectionne = { email: email, pseudo: pseudo };
     
-    // Gestión visual de la selección
+    // Gestion visuelle de la sélection (décocher les autres radios)
     document.querySelectorAll('input[name="artisteRadio"]').forEach(radio => radio.checked = false);
     const radio = ligne.querySelector('input');
     if (radio) radio.checked = true;
 }
 
 /**
- * Se ejecuta al darle a "Sélectionner" en la lista de artistas
+ * S'exécute lors du clic sur le bouton "Sélectionner" de la liste.
+ * Prépare la modale de confirmation.
  */
-function abrirModalConfirmation() {
+function ouvrirModalConfirmation() {
     if (!artisteSelectionne.email) {
         alert("Veuillez sélectionner un artiste dans la liste.");
         return;
     }
     
-    // Insertamos el nombre en el <span> de la modal de confirmación
-    const spanNombre = document.getElementById('nomArtisteConfirm');
-    if (spanNombre) {
-        spanNombre.innerText = artisteSelectionne.pseudo;
+    // On insère le nom dans le <span> de la modale de confirmation
+    const spanNom = document.getElementById('nomArtisteConfirm');
+    if (spanNom) {
+        spanNom.innerText = artisteSelectionne.pseudo;
     }
     
-    // Cerramos la selección y abrimos la confirmación
-    document.getElementById('modalSelection').style.display = 'none';
-    document.getElementById('modalConfirmation').style.display = 'flex';
+    // On ferme la sélection et on ouvre la confirmation
+    const modalSel = document.getElementById('modalSelection');
+    const modalConf = document.getElementById('modalConfirmation');
+    
+    if (modalSel) modalSel.style.display = 'none';
+    if (modalConf) modalConf.style.display = 'flex';
 }
 
 /**
- * ESTE ES EL BOTÓN "CONFIRMER" QUE NO TE FUNCIONABA
+ * Envoie l'invitation de battle au serveur via une requête AJAX.
  */
 function envoyerInvitation() {
     if (!artisteSelectionne.email) return;
@@ -47,15 +63,14 @@ function envoyerInvitation() {
     donnees.append('emailInvitado', artisteSelectionne.email);
     donnees.append('pseudoInvitado', artisteSelectionne.pseudo);
 
-    // CAMBIO AQUÍ: Añadimos 'index.php' antes del signo '?' 
-    // Esto asegura que la petición vaya al controlador frontal.
-    fetch('index.php?controller=battle&method=inviter', {
+    // Appel au contrôleur frontal index.php
+    fetch('?controller=battle&method=inviter', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: donnees
     })
     .then(reponse => {
-        // Verificamos si la respuesta es correcta antes de parsear el JSON
+        // On vérifie si la réponse du serveur est correcte (Code 200)
         if (!reponse.ok) {
             throw new Error("Le serveur a renvoyé une erreur " + reponse.status);
         }
@@ -63,26 +78,64 @@ function envoyerInvitation() {
     })
     .then(data => {
         if (data.status === 'success') {
-            document.getElementById('modalConfirmation').style.display = 'none';
-            // Redirigir al dashboard para ver la nueva battle
-            window.location.href = 'index.php?controller=battle&method=gestionDashboard';
+            // On ferme la modale de confirmation
+            const modalConf = document.getElementById('modalConfirmation');
+            if (modalConf) modalConf.style.display = 'none';
+            
+            // Redirection vers le tableau de bord pour voir la nouvelle battle
+            window.location.href = 'i?controller=battle&method=gestionDashboard';
         } else {
-            alert("Erreur: " + (data.message || "Impossible d'envoyer l'invitation"));
+            alert("Erreur : " + (data.message || "Impossible d'envoyer l'invitation."));
         }
     })
     .catch(error => {
-        console.error("Erreur complète:", error);
-        alert("Erreur de connexion : Vérifie que ton serveur PHP est bien lancé.");
+        console.error("Erreur complète :", error);
+        alert("Erreur de connexion : Vérifiez que votre serveur PHP est bien lancé.");
     });
 }
 
-function cerrarModales() {
+/**
+ * Ferme toutes les modales de type "battle-modal".
+ */
+function fermerModales() {
     document.querySelectorAll('.battle-modal').forEach(modal => {
         modal.style.display = 'none';
     });
 }
 
-// Alias para tus funciones en el HTML
-function fermerModales() { cerrarModales(); }
-function ouvrirModalSelection() { abrirModalSelection(); }
-function ouvrirModalConfirmation() { abrirModalConfirmation(); }
+/**
+ * Alias pour assurer la compatibilité avec les appels dans le HTML.
+ */
+function ouvrirModalChanson(idBattle) {
+    const inputId = document.getElementById('idBattlePourChanson');
+    const modalChan = document.getElementById('modalChanson');
+    
+    if (inputId) inputId.value = idBattle;
+    if (modalChan) modalChan.style.display = 'flex';
+}
+
+/**
+ * Valide le choix de la chanson pour une battle.
+ * @param {number} idChanson L'identifiant de la chanson choisie.
+ */
+function validerChanson(idChanson) {
+    const idBattle = document.getElementById('idBattlePourChanson').value;
+    const params = new URLSearchParams();
+    params.append('idBattle', idBattle);
+    params.append('idChanson', idChanson);
+
+    fetch('?controller=battle&method=choisirChanson', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: params
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.status === 'success') {
+            window.location.reload();
+        } else {
+            alert("Erreur lors de la sélection de la chanson.");
+        }
+    })
+    .catch(err => console.error("Erreur :", err));
+}
