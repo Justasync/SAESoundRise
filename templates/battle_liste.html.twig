@@ -4,49 +4,89 @@
 <div class="container mt-5">
     <div class="text-center mb-5">
         <h2 class="fw-bold text-secondary">Arène des Battles</h2>
-        {# Le bouton de création reste visible pour les artistes #}
-        {% if session.user_role == 'artiste' %}
-            <button class="btn btn-lg text-white shadow-sm" style="background-color: #E58E82; border-radius: 15px;" onclick="ouvrirModalSelection()">
-                <i class="bi bi-plus-circle me-2"></i>Créer une battle
-            </button>
-        {% endif %}
+        <p class="text-muted">Écoutez les morceaux et votez pour votre artiste préféré !</p>
+        {# Le bouton "Créer" a été retiré d'ici pour l'ergonomie (il reste sur le Dashboard) #}
     </div>
 
     <div class="row justify-content-center" id="liste-battles">
         {% if battles is empty %}
             <div class="col-md-8 text-center p-5 rounded-4" style="background-color: #f8f9fa; border: 2px dashed #dee2e6;">
-                <p class="text-muted fs-5">Il n'y a aucun combat en cours pour le moment.</p>
+                <p class="text-muted fs-5">Aucun combat n'est actif pour le moment. Revenez plus tard !</p>
             </div>
         {% else %}
             {% for battle in battles %}
-                <div class="col-md-8 mb-4">
-                    <div class="p-4 rounded-4 shadow-sm" style="background-color: #F8D7D2; border: 1px solid #E58E82;">
-                        {# NETTOYAGE DU TITRE : On enlève "Battle :" #}
+                <div class="col-md-8 mb-5">
+                    <div class="p-4 rounded-4 shadow border-0" style="background-color: #F8D7D2;">
+                        
+                        {# Titre de la battle #}
                         <h4 class="text-center text-white mb-4 fw-bold">{{ battle.getTitreBattle()|replace({'Battle : ': ''}) }}</h4>
                         
-                        <div class="d-flex justify-content-around align-items-center">
-                            <div class="text-center">
-                                <div class="rounded-4 bg-white p-2 shadow-sm">
-                                    <img src="{{ battle.getCreateur().geturlPhotoUtilisateur() ?? 'assets/images/default-avatar.png' }}" class="rounded-4" style="width:150px; height:150px; object-fit:cover;">
+                        <div class="d-flex justify-content-around align-items-center mb-4">
+                            
+                            <div class="text-center" style="width: 200px;">
+                                <div class="position-relative img-hover-play mb-3" onclick="jouerMusique('{{ battle.getChansonCreateurObj().geturlAudioChanson() }}', this)">
+                                    <img src="{{ battle.getCreateur().geturlPhotoUtilisateur() ?? 'assets/images/default-avatar.png' }}" 
+                                         class="rounded-4 shadow-sm w-100" style="height:200px; object-fit:cover; cursor:pointer;">
+                                    <div class="play-overlay"><i class="bi bi-play-fill fs-1 text-white"></i></div>
                                 </div>
-                                <p class="mt-2 fw-bold text-secondary">{{ battle.getCreateur().getPseudoUtilisateur() }}</p>
+                                <p class="fw-bold text-secondary mb-2">{{ battle.getCreateur().getPseudoUtilisateur() }}</p>
+                                
+                                {# LOGIQUE DE VOTE / POINTS (Artiste 1) #}
+                                {% if battle.getDejaVote() %}
+                                    <div class="animate__animated animate__fadeIn">
+                                        <span class="fs-1 fw-bold" style="color: #E58E82;">{{ battle.votesCreateur }}</span>
+                                        <small class="d-block text-muted text-uppercase fw-bold" style="font-size: 0.7rem;">Votes</small>
+                                    </div>
+                                {% else %}
+                                    <form action="?controller=battle&method=voter" method="POST">
+                                        <input type="hidden" name="idBattle" value="{{ battle.getIdBattle() }}">
+                                        <input type="hidden" name="emailVotee" value="{{ battle.getEmailCreateurBattle() }}">
+                                        <button type="submit" class="btn btn-sm text-white w-100 rounded-pill shadow-sm" style="background-color: #E58E82;">Voter</button>
+                                    </form>
+                                {% endif %}
                             </div>
 
-                            <div class="vs-badge"><span class="badge rounded-pill bg-white text-danger fs-3 px-4 shadow-sm">VS</span></div>
+                            <div class="vs-badge">
+                                <span class="badge rounded-pill bg-white text-danger fs-3 px-4 shadow-sm">VS</span>
+                            </div>
 
-                            <div class="text-center">
-                                <div class="rounded-4 bg-white p-2 shadow-sm">
-                                    <img src="{{ battle.getParticipant().geturlPhotoUtilisateur() ?? 'assets/images/default-avatar.png' }}" class="rounded-4" style="width:150px; height:150px; object-fit:cover;">
+                            <div class="text-center" style="width: 200px;">
+                                <div class="position-relative img-hover-play mb-3" onclick="jouerMusique('{{ battle.getChansonParticipantObj().geturlAudioChanson() }}', this)">
+                                    <img src="{{ battle.getParticipant().geturlPhotoUtilisateur() ?? 'assets/images/default-avatar.png' }}" 
+                                         class="rounded-4 shadow-sm w-100" style="height:200px; object-fit:cover; cursor:pointer;">
+                                    <div class="play-overlay"><i class="bi bi-play-fill fs-1 text-white"></i></div>
                                 </div>
-                                <p class="mt-2 fw-bold text-secondary">{{ battle.getParticipant().getPseudoUtilisateur() }}</p>
+                                <p class="fw-bold text-secondary mb-2">{{ battle.getParticipant().getPseudoUtilisateur() }}</p>
+                                
+                                {# LOGIQUE DE VOTE / POINTS (Artiste 2) #}
+                                {% if battle.getDejaVote() %}
+                                    <div class="animate__animated animate__fadeIn">
+                                        <span class="fs-1 fw-bold" style="color: #E58E82;">{{ battle.votesParticipant }}</span>
+                                        <small class="d-block text-muted text-uppercase fw-bold" style="font-size: 0.7rem;">Votes</small>
+                                    </div>
+                                {% else %}
+                                    <form action="?controller=battle&method=voter" method="POST">
+                                        <input type="hidden" name="idBattle" value="{{ battle.getIdBattle() }}">
+                                        <input type="hidden" name="emailVotee" value="{{ battle.getEmailParticipantBattle() }}">
+                                        <button type="submit" class="btn btn-sm text-white w-100 rounded-pill shadow-sm" style="background-color: #E58E82;">Voter</button>
+                                    </form>
+                                {% endif %}
                             </div>
                         </div>
 
-                        <div class="text-center mt-4">
-                            <span class="badge bg-success px-4 py-2 fs-6 shadow-sm">
-                                <i class="bi bi-fire me-2"></i>COMBAT EN COURS
-                            </span>
-                            {# Les boutons de vote seront ajoutés ici #}
+                        {# MESSAGE UNIQUE DE CONFIRMATION #}
+                        {% if battle.getDejaVote() %}
+                            <div class="text-center mt-3">
+                                <span class="badge bg-white text-success border px-4 py-2 shadow-sm rounded-pill">
+                                    <i class="bi bi-check-circle-fill me-2"></i>Vous avez déjà voté pour ce combat
+                                </span>
+                            </div>
+                        {% endif %}
+                        
+                        <div class="text-center mt-3">
+                            <small class="text-white-50">
+                                <i class="bi bi-clock me-1"></i> Fin du combat : {{ battle.getDateFinBattle()|date('d/m H:i') }}
+                            </small>
                         </div>
                     </div>
                 </div>
@@ -55,5 +95,37 @@
     </div>
 </div>
 
-{% include 'modales_battle.html.twig' %}
+<style>
+    .img-hover-play { overflow: hidden; border-radius: 15px; transition: transform 0.3s; position: relative; }
+    .img-hover-play:hover { transform: scale(1.02); }
+    .play-overlay { 
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+        background: rgba(0,0,0,0.3); display: flex; align-items: center; 
+        justify-content: center; opacity: 0; transition: 0.3s; 
+    }
+    .img-hover-play:hover .play-overlay { opacity: 1; }
+    .playing .play-overlay { opacity: 1; background: rgba(229, 142, 130, 0.4); }
+</style>
+
+<script>
+let lecteurActuel = null;
+let conteneurActuel = null;
+
+function jouerMusique(url, element) {
+    if (lecteurActuel && !lecteurActuel.paused && conteneurActuel === element) {
+        lecteurActuel.pause();
+        element.classList.remove('playing');
+        return;
+    }
+    if (lecteurActuel) {
+        lecteurActuel.pause();
+        if (conteneurActuel) conteneurActuel.classList.remove('playing');
+    }
+    lecteurActuel = new Audio('assets/audio/' + url);
+    conteneurActuel = element;
+    element.classList.add('playing');
+    lecteurActuel.play();
+    lecteurActuel.onended = () => element.classList.remove('playing');
+}
+</script>
 {% endblock %}
