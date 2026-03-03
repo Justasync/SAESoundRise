@@ -141,11 +141,13 @@
 										<i class="bi bi-gear me-2"></i>Paramètres
 									</a>
 								</li>
-								<li> 
-									<a class="dropdown-item d-flex align-items-center" href="?controller=battle&method=gestionDashboard">
-										<i class="bi bi-trophy me-2"></i>Mes Battles
-									</a>
-								<li>
+								{% if session.user_role is defined and session.user_role.value == 'artiste' %}
+									<li> 
+										<a class="dropdown-item d-flex align-items-center" href="?controller=battle&method=gestionDashboard">
+											<i class="bi bi-trophy me-2"></i>Mes Battles
+										</a>
+									<li>
+								{% endif %}
 								<hr class="dropdown-divider"></li>
 								<li>
 									<a class="dropdown-item text-danger" href="/?controller=utilisateur&method=logout">
