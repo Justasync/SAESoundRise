@@ -24,6 +24,34 @@
 		.table-hover > tbody > tr:hover > * {
 			--bs-table-hover-bg: rgba(0, 0, 0, 0.15);
 		}
+		/* --- Colonne index avec bouton play au survol --- */
+		.track-index {
+			position: relative;
+			width: 2.5rem;
+		}
+		.track-index-number,
+		.track-index-play {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 24px;
+			height: 24px;
+		}
+		.track-index-play {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			opacity: 0;
+			transition: opacity 0.15s ease;
+			cursor: pointer;
+		}
+		.track-row:hover .track-index-number {
+			opacity: 0;
+		}
+		.track-row:hover .track-index-play {
+			opacity: 1;
+		}
 		.table {
 			--bs-table-bg: transparent;
 			--bs-table-border-color: rgba(0, 0, 0, 0.1);
@@ -164,14 +192,16 @@
 						{% if chansons is not empty %}
 							{% for chanson in chansons %}
 								<tr class="track-row" data-index="{{ loop.index0 }}" data-song-id="{{ chanson.getIdChanson() }}" style="color: rgba(255,255,255,0.9);">
-									<td class="py-3 px-4 fw-bold track-index">{{ loop.index }}</td>
+									<td class="py-3 px-4 fw-bold track-index">
+										<span class="track-index-number">{{ loop.index }}</span>
+										<span class="track-index-play" data-index="{{ loop.index0 }}" onclick="event.stopPropagation(); loadTrack({{ loop.index0 }})">
+											<i class="bi bi-play-fill track-play-icon" style="color: rgba(255,255,255,0.9); font-size: 1rem;"></i>
+										</span>
+									</td>
 									<td class="py-3 px-4 track-title">{{ chanson.getTitreChanson() }}</td>
 									<td class="py-3 px-4 d-none d-sm-table-cell track-listens">{{ chanson.getNbEcouteChanson() ?? 0 }}</td>
 									<td class="py-3 px-4 track-duration">{{ (chanson.getDureeChanson() / 60)|round(0, 'floor') }}:{{ (chanson.getDureeChanson() % 60)|number_format(0, '', '02') }}</td>
 									<td class="py-3 px-4 text-center">
-										<button type="button" class="btn btn-sm btn-link p-1 play-track-btn" title="Lire la musique" data-index="{{ loop.index0 }}" onclick="loadTrack({{ loop.index0 }})">
-											<i class="bi bi-play-fill track-play-icon" style="color: rgba(255,255,255,0.7); font-size: 1.2rem;"></i>
-										</button>
 										<button type="button" class="btn btn-sm btn-link p-1" title="Modifier" data-bs-toggle="modal" data-bs-target="#modifierChansonModal" data-song-id="{{ chanson.getIdChanson() }}" data-song-title="{{ chanson.getTitreChanson() }}" data-song-genre="{{ chanson.getGenreChanson() ? chanson.getGenreChanson().getNomGenre() : '' }}">
 											<svg class="bi" width="16" height="16" fill="currentColor" style="color: rgba(255,255,255,0.7);">
 												<path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
