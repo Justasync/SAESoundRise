@@ -283,11 +283,16 @@ class BattleDAO {
      * @return bool Vrai si la mise à jour a réussi, faux sinon.
      */
     public function modifierChanson(int $idBattle, int $idChanson, bool $estCreateur): bool {
-        $colonne = $estCreateur ? 'idChansonCreateur' : 'idChansonParticipant';
-        $sql = "UPDATE battle SET $colonne = :idC WHERE idBattle = :idB";
-        $stmt = $this->pdo->prepare($sql);
-        return $stmt->execute([':idC' => $idChanson, ':idB' => $idBattle]);
-    }
+
+    $nomColonne = $estCreateur ? "idChansonCreateur" : "idChansonParticipant";
+    $sql = "UPDATE `battle` SET `$nomColonne` = :idC WHERE `idBattle` = :idB";
+    
+    $stmt = $this->pdo->prepare($sql);
+    return $stmt->execute([
+        ':idC' => $idChanson, 
+        ':idB' => $idBattle
+    ]);
+}
 
     /**
      * @brief Met à jour le statut d'une battle.

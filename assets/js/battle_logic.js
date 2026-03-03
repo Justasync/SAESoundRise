@@ -129,13 +129,21 @@ function validerChanson(idChanson) {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: params
     })
-    .then(res => res.json())
+    .then(res => {
+        if (!res.ok) {
+            return res.text().then(text => { throw new Error(text) });
+        }
+        return res.json();
+    })
     .then(data => {
         if(data.status === 'success') {
             window.location.reload();
         } else {
-            alert("Erreur lors de la sélection de la chanson.");
+            alert("Erreur: " + data.message);
         }
     })
-    .catch(err => console.error("Erreur :", err));
+    .catch(err => {
+        console.error("Détails de l'erreur PHP:", err.message);
+        alert("Une erreur est survenue. Vérifiez la console pour plus de détails.");
+    });
 }
