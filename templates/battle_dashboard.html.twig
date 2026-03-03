@@ -8,17 +8,17 @@
         /* --- CONFIGURATION ERGONOMIQUE & CHARTE GRAPHIQUE --- */
         #battlesTable_wrapper {
             --bs-pagination-color: #666;
-            --bs-pagination-hover-color: #D99181;
-            --bs-pagination-active-bg: #D99181; 
-            --bs-pagination-active-border-color: #D99181;
+            --bs-pagination-hover-color: #E58E82;
+            --bs-pagination-active-bg: #E58E82; 
+            --bs-pagination-active-border-color: #E58E82;
         }
         #battlesTable_wrapper .page-link { border-radius: 50% !important; margin: 0 3px; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; }
         .dataTables_filter input { border-radius: 20px !important; padding: 8px 20px; border: 1px solid #dee2e6; width: 250px; transition: all 0.3s; }
-        .dataTables_filter input:focus { border-color: #D99181; box-shadow: 0 0 0 0.25rem rgba(217, 145, 129, 0.25); outline: none; }
+        .dataTables_filter input:focus { border-color: #E58E82; box-shadow: 0 0 0 0.25rem rgba(229, 142, 130, 0.25); outline: none; }
         
-        /* Bouton Nouvelle Battle (Loi de Fitts : cible large et contrastée) */
+        /* Bouton Nouvelle Battle - Mis à jour avec la couleur Corail Paaxio */
         .btn-nouvelle-battle {
-            background-color: #212529;
+            background-color: #E58E82;
             color: white;
             border-radius: 25px;
             padding: 10px 25px;
@@ -27,9 +27,10 @@
             border: none;
         }
         .btn-nouvelle-battle:hover {
-            background-color: #D99181;
+            background-color: #d17a6f;
             transform: scale(1.05);
-            box-shadow: 0 4px 15px rgba(217, 145, 129, 0.4);
+            box-shadow: 0 4px 15px rgba(229, 142, 130, 0.4);
+            color: white;
         }
 
         .stat-card { transition: transform 0.2s; border-radius: 20px !important; }
@@ -41,7 +42,7 @@
 <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-5">
         <h3 class="fw-bold text-dark mb-0">
-            <i class="bi bi-trophy-fill me-2" style="color: #D99181;"></i>Mes Battles
+            <i class="bi bi-trophy-fill me-2" style="color: #E58E82;"></i>Mes Battles
         </h3>
         <button class="btn btn-nouvelle-battle shadow-sm" onclick="ouvrirModalSelection()">
             <i class="bi bi-plus-lg me-2"></i>Nouvelle Battle
@@ -52,13 +53,13 @@
     <div class="row mb-5 justify-content-center">
         <div class="col-md-3">
             <div class="card stat-card text-center shadow-sm border-0 p-3" style="background-color: #d4edda;">
-                <h3 class="text-success fw-bold mb-0">{{ stats.victoires }}</h3>
+                <h3 class="text-success fw-bold mb-0">{{ stats.victoires ?? 0 }}</h3>
                 <p class="text-muted small mb-0">Victoires</p>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card stat-card text-center shadow-sm border-0 p-3" style="background-color: #f8d7da;">
-                <h3 class="text-danger fw-bold mb-0">{{ stats.defaites }}</h3>
+                <h3 class="text-danger fw-bold mb-0">{{ stats.defaites ?? 0 }}</h3>
                 <p class="text-muted small mb-0">Défaites</p>
             </div>
         </div>
@@ -71,7 +72,7 @@
                     <tr>
                         <th>Combat</th>
                         <th>Adversaire</th>
-                        <th>Lancée le</th> {# NOUVELLE COLONNE #}
+                        <th>Lancée le</th>
                         <th>Statut</th>
                         <th class="text-end">Actions</th>
                     </tr>
@@ -93,7 +94,6 @@
                                 {% else %}<span class="text-muted small italic">En attente...</span>{% endif %}
                             </td>
                             
-                            {# COLONNE DATE ET TEMPS RESTANT #}
                             <td>
                                 <div class="small fw-bold text-secondary">{{ battle.getDateDebutBattle()|date('d/m H:i') }}</div>
                                 {% if status == 'en_cours' %}
@@ -109,13 +109,23 @@
                                 </span>
                             </td>
                             <td class="text-end">
+                                {# BOUTON SUPPRIMER : Uniquement si la battle est en attente et qu'on en est le créateur #}
+                                {% if status == 'en_attente' and estCreateur %}
+                                    <form action="?controller=battle&method=supprimer" method="POST" class="d-inline" onsubmit="return confirm('Voulez-vous vraiment annuler cette battle ?');">
+                                        <input type="hidden" name="idBattle" value="{{ battle.getIdBattle() }}">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger border-0 me-2" title="Supprimer la battle">
+                                            <i class="bi bi-trash3-fill"></i>
+                                        </button>
+                                    </form>
+                                {% endif %}
+
                                 {% if status == 'en_attente' %}
                                     {% set aDejaChoisi = (estCreateur and battle.getIdChansonCreateur()) or (not estCreateur and battle.getIdChansonParticipant()) %}
-                                    <button class="btn btn-sm text-white px-3 shadow-sm" style="background-color: #D99181; border-radius: 15px;" onclick="ouvrirModalChanson('{{ battle.getIdBattle() }}')">
+                                    <button class="btn btn-sm text-white px-3 shadow-sm" style="background-color: #E58E82; border-radius: 15px;" onclick="ouvrirModalChanson('{{ battle.getIdBattle() }}')">
                                         <i class="bi bi-music-note-beamed me-1"></i> {{ aDejaChoisi ? 'Changer chanson' : 'Choisir chanson' }}
                                     </button>
                                 {% elseif status == 'en_cours' %}
-                                    <a href="index.php?controller=battle&method=lister" class="btn btn-sm btn-outline-success px-3" style="border-radius: 15px;">
+                                    <a href="?controller=battle&method=lister" class="btn btn-sm btn-outline-success px-3" style="border-radius: 15px;">
                                         <i class="bi bi-eye me-1"></i> Voir l'arène
                                     </a>
                                 {% endif %}
@@ -149,7 +159,7 @@
                 },
                 pageLength: 10,
                 dom: "<'row mb-4'<'col-md-6'l><'col-md-6 text-end'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row mt-4'<'col-md-5'i><'col-md-7'p>>",
-                order: [[3, 'asc']], // Tri par statut
+                order: [[3, 'asc']], 
                 columnDefs: [{ orderable: false, targets: -1 }]
             });
         });

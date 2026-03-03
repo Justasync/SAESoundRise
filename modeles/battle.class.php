@@ -93,6 +93,23 @@ class Battle {
     private ?Chanson $chansonParticipantObj = null;
 
     /**
+     * @var bool $dejaVote Indique si l'utilisateur connecté a déjà voté pour cette battle (Propriété nécessaire pour PHP 8.2+).
+     */
+    private bool $dejaVote = false;
+
+    /**
+     * @var int|null $votesCreateur Nombre total de votes reçus par le créateur de la battle.
+     * Cette propriété est calculée dynamiquement lors de l'affichage.
+     */
+    public ?int $votesCreateur = null;
+
+    /**
+     * @var int|null $votesParticipant Nombre total de votes reçus par le participant invité.
+     * Cette propriété est calculée dynamiquement lors de l'affichage.
+     */
+    public ?int $votesParticipant = null;
+
+    /**
      * @brief Constructeur de la classe Battle.
      * @param int|null $idBattle L'identifiant unique de la battle.
      * @param string|null $titreBattle Le titre de la battle.
@@ -330,5 +347,53 @@ class Battle {
      * @return void
      */
     public function setChansonParticipantObj(?Chanson $c): void { $this->chansonParticipantObj = $c; }
+
+    /**
+     * @brief Getter pour dejaVote
+     * @return bool
+     */
+    public function getDejaVote(): bool { return $this->dejaVote; }
+
+    /**
+     * @brief Setter pour dejaVote
+     * @param bool $dejaVote
+     * @return void
+     */
+    public function setDejaVote(bool $dejaVote): void { $this->dejaVote = $dejaVote; }
+
+    /**
+     * @brief Obtient le nombre de votes du créateur.
+     * @return int|null
+     */
+    public function getVotesCreateur(): ?int {
+        return $this->votesCreateur;
+    }
+
+    /**
+     * @brief Définit le nombre de votes du créateur.
+     * @param int|null $votes
+     * @return void
+     */
+    public function setVotesCreateur(?int $votes): void {
+        $this->votesCreateur = $votes;
+    }
+
+    /**
+     * @brief Obtient le nombre de votes du participant.
+     * @return int|null
+     */
+    public function getVotesParticipant(): ?int {
+        return $this->votesParticipant;
+    }
+
+    /**
+     * @brief Définit le nombre de votes du participant.
+     * @param int|null $votes
+     * @return void
+     */
+    public function setVotesParticipant(?int $votes): void {
+        $this->votesParticipant = $votes;
+    }
+    
 }
 ?>

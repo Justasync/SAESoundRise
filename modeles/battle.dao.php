@@ -269,7 +269,7 @@ class BattleDAO {
      * @return bool Vrai si l'utilisateur a déjà voté, faux sinon.
      */
     public function hasUserVoted(int $idBattle, string $emailVotant): bool {
-        $sql = "SELECT COUNT(*) FROM vote WHERE idBattle = :idB AND emailVotant = :emailV";
+        $sql = "SELECT COUNT(*) FROM vote WHERE idBattle = :idB AND emailVotant = :email";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([':idB' => $idBattle, ':email' => $emailVotant]);
         return $stmt->fetchColumn() > 0;
@@ -304,18 +304,22 @@ class BattleDAO {
         ]);
     }
     /**
-     * @brief Récupère toutes les battles liées à un utilisateur (créateur ou participant).
+     * @brief Récupère toutes les battles liées à un utilisateur.
      * @param string $email L'email de l'utilisateur.
      * @return array Une liste d'objets Battle.
      */
     public function findAllByUser(string $email): array
     {
+        // On utilise :email1 et :email2 pour éviter l'erreur de paramètre dupliqué
         $sql = "SELECT * FROM battle 
-                WHERE emailCreateurBattle = :email 
-                OR emailParticipantBattle = :email 
+                WHERE emailCreateurBattle = :email1 
+                OR emailParticipantBattle = :email2 
                 ORDER BY dateDebutBattle DESC";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':email' => $email]);
+        $stmt->execute([
+            ':email1' => $email,
+            ':email2' => $email
+        ]);
         return $this->hydrateMany($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
@@ -357,6 +361,16 @@ class BattleDAO {
             'victoires' => (int)($res['victoires'] ?? 0),
             'defaites' => (int)($res['defaites'] ?? 0)
         ];
+    }
+    /**
+     * @brief Supprime une battle si elle est encore en attente.
+     * @param int $idBattle
+     * @return bool
+     */
+    public function deleteBattle(int $idBattle): bool {
+        $sql = "DELETE FROM battle WHERE idBattle = :id AND statutBattle = 'en_attente'";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([':id' => $idBattle]);
     }
 
 }
