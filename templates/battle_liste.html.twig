@@ -1,5 +1,10 @@
 {% extends 'base_template.html.twig' %}
 
+{% block header %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+{% endblock %}
+
 {% block content %}
 <div class="container mt-5">
     <div class="text-center mb-5">
@@ -24,7 +29,7 @@
                         <div class="d-flex justify-content-around align-items-center mb-4">
                             
                             <div class="text-center" style="width: 200px;">
-                                <div class="position-relative img-hover-play mb-3" onclick="jouerMusique('{{ battle.getChansonCreateurObj().geturlAudioChanson() }}', this)">
+                                <div class="position-relative img-hover-play mb-3" onclick="playBattleTrack('{{ battle.getChansonCreateurObj().geturlAudioChanson()|e('js') }}', '{{ battle.getCreateur().getPseudoUtilisateur()|e('js') }}')">
                                     <img src="{{ battle.getCreateur().geturlPhotoUtilisateur() ?? 'assets/images/default-avatar.png' }}" 
                                          class="rounded-4 shadow-sm w-100" style="height:200px; object-fit:cover; cursor:pointer;">
                                     <div class="play-overlay"><i class="bi bi-play-fill fs-1 text-white"></i></div>
@@ -51,7 +56,7 @@
                             </div>
 
                             <div class="text-center" style="width: 200px;">
-                                <div class="position-relative img-hover-play mb-3" onclick="jouerMusique('{{ battle.getChansonParticipantObj().geturlAudioChanson() }}', this)">
+                                <div class="position-relative img-hover-play mb-3" onclick="playBattleTrack('{{ battle.getChansonParticipantObj().geturlAudioChanson()|e('js') }}', '{{ battle.getParticipant().getPseudoUtilisateur()|e('js') }}')">
                                     <img src="{{ battle.getParticipant().geturlPhotoUtilisateur() ?? 'assets/images/default-avatar.png' }}" 
                                          class="rounded-4 shadow-sm w-100" style="height:200px; object-fit:cover; cursor:pointer;">
                                     <div class="play-overlay"><i class="bi bi-play-fill fs-1 text-white"></i></div>
@@ -95,6 +100,33 @@
     </div>
 </div>
 
+<!-- Lecteur audio global pour les battles -->
+<div class="container mb-5">
+    <div class="mx-auto mt-3 p-3 p-md-4 rounded-4 shadow-sm" style="max-width: 520px; background: #3A1E18; color: white;">
+        <p class="mb-2 fw-semibold" id="battle-current-track">Aucun morceau en cours</p>
+        <div id="battle-progress-container" class="battle-progress-container rounded-pill mb-1">
+            <div id="battle-progress-bar" class="battle-progress-bar rounded-pill w-0"></div>
+        </div>
+        <div class="d-flex justify-content-between small mb-2" style="opacity: 0.8;">
+            <span id="battle-current-time">0:00</span>
+            <span id="battle-duration">0:00</span>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            <button id="battle-play-pause" type="button" class="btn btn-light text-dark rounded-circle shadow-sm" style="width: 44px; height: 44px;">
+                <i id="battle-play-icon" class="bi bi-play-fill" style="font-size: 1.5rem; line-height: 1;"></i>
+            </button>
+            <div class="ms-auto d-flex align-items-center gap-2">
+                <button id="battle-volume-btn" type="button" class="btn btn-link p-0">
+                    <i id="battle-volume-icon" class="bi bi-volume-up-fill" style="font-size: 1.4rem; color: rgba(255,255,255,0.9);"></i>
+                </button>
+                <input type="range" id="battle-volume-slider" min="0" max="100" value="75" class="align-self-center" style="width: 90px;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<audio id="battle-audio"></audio>
+
 <style>
     .img-hover-play { overflow: hidden; border-radius: 15px; transition: transform 0.3s; position: relative; }
     .img-hover-play:hover { transform: scale(1.02); }
@@ -105,27 +137,158 @@
     }
     .img-hover-play:hover .play-overlay { opacity: 1; }
     .playing .play-overlay { opacity: 1; background: rgba(229, 142, 130, 0.4); }
+    .battle-progress-container {
+        height: 6px;
+        background-color: rgba(255, 255, 255, 0.25);
+        cursor: pointer;
+    }
+    .battle-progress-bar {
+        height: 100%;
+        background-color: #fff;
+        transition: width 0.1s linear;
+    }
 </style>
 
 <script>
-let lecteurActuel = null;
-let conteneurActuel = null;
+const battleAudio = document.getElementById('battle-audio');
+const battlePlayPauseBtn = document.getElementById('battle-play-pause');
+const battlePlayIcon = document.getElementById('battle-play-icon');
+const battleProgressContainer = document.getElementById('battle-progress-container');
+const battleProgressBar = document.getElementById('battle-progress-bar');
+const battleCurrentTimeEl = document.getElementById('battle-current-time');
+const battleDurationEl = document.getElementById('battle-duration');
+const battleCurrentTrackEl = document.getElementById('battle-current-track');
+const battleVolumeSlider = document.getElementById('battle-volume-slider');
+const battleVolumeIcon = document.getElementById('battle-volume-icon');
 
-function jouerMusique(url, element) {
-    if (lecteurActuel && !lecteurActuel.paused && conteneurActuel === element) {
-        lecteurActuel.pause();
-        element.classList.remove('playing');
+let battleIsPlaying = false;
+let battleIsScrubbing = false;
+
+function formatTimeBattle(seconds) {
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60);
+    return `${m}:${s < 10 ? '0' : ''}${s}`;
+}
+
+function updateBattleProgress() {
+    if (battleAudio.duration && !battleIsScrubbing) {
+        const pct = (battleAudio.currentTime / battleAudio.duration) * 100;
+        battleProgressBar.style.width = `${pct}%`;
+        battleCurrentTimeEl.textContent = formatTimeBattle(battleAudio.currentTime);
+    }
+}
+
+function handleBattleScrub(event) {
+    if (!battleAudio.src) return;
+    const rect = battleProgressContainer.getBoundingClientRect();
+    const offsetX = event.clientX - rect.left;
+    const width = battleProgressContainer.offsetWidth;
+    const frac = Math.max(0, Math.min(1, offsetX / width));
+    if (battleAudio.duration) {
+        const newTime = frac * battleAudio.duration;
+        battleAudio.currentTime = newTime;
+        battleProgressBar.style.width = `${frac * 100}%`;
+        battleCurrentTimeEl.textContent = formatTimeBattle(newTime);
+    }
+}
+
+function playBattleTrack(url, label) {
+    const src = url;
+    if (battleAudio.src.endsWith(src) && battleIsPlaying) {
+        battleAudio.pause();
         return;
     }
-    if (lecteurActuel) {
-        lecteurActuel.pause();
-        if (conteneurActuel) conteneurActuel.classList.remove('playing');
-    }
-    lecteurActuel = new Audio('assets/audio/' + url);
-    conteneurActuel = element;
-    element.classList.add('playing');
-    lecteurActuel.play();
-    lecteurActuel.onended = () => element.classList.remove('playing');
+    battleAudio.src = src;
+    battleCurrentTrackEl.textContent = 'En lecture : ' + label;
+    battleAudio.play().then(() => {
+        battleIsPlaying = true;
+        battlePlayIcon.classList.replace('bi-play-fill', 'bi-pause-fill');
+    }).catch(e => console.error('Erreur lecture battle:', e));
 }
+
+battlePlayPauseBtn.addEventListener('click', () => {
+    if (!battleAudio.src) return;
+    if (battleIsPlaying) {
+        battleAudio.pause();
+    } else {
+        battleAudio.play().catch(e => console.error('Erreur lecture battle:', e));
+    }
+});
+
+battleProgressContainer.addEventListener('mousedown', (e) => {
+    if (!battleAudio.src) return;
+    battleIsScrubbing = true;
+    battleAudio.pause();
+    handleBattleScrub(e);
+});
+
+document.addEventListener('mousemove', (e) => {
+    if (battleIsScrubbing) {
+        e.preventDefault();
+        handleBattleScrub(e);
+    }
+});
+
+document.addEventListener('mouseup', () => {
+    if (battleIsScrubbing) {
+        battleIsScrubbing = false;
+        battleAudio.play().catch(e => console.error('Erreur lecture battle après scrub:', e));
+    }
+});
+
+battleAudio.addEventListener('timeupdate', updateBattleProgress);
+
+battleAudio.addEventListener('loadedmetadata', () => {
+    if (battleAudio.duration && !isNaN(battleAudio.duration)) {
+        battleDurationEl.textContent = formatTimeBattle(battleAudio.duration);
+    }
+});
+
+battleAudio.addEventListener('play', () => {
+    battleIsPlaying = true;
+    battlePlayIcon.classList.replace('bi-play-fill', 'bi-pause-fill');
+});
+
+battleAudio.addEventListener('pause', () => {
+    battleIsPlaying = false;
+    battlePlayIcon.classList.replace('bi-pause-fill', 'bi-play-fill');
+});
+
+battleAudio.addEventListener('ended', () => {
+    battleIsPlaying = false;
+    battlePlayIcon.classList.replace('bi-pause-fill', 'bi-play-fill');
+    battleProgressBar.style.width = '0%';
+    battleCurrentTimeEl.textContent = '0:00';
+});
+
+function handleBattleVolume() {
+    const v = battleVolumeSlider.value / 100;
+    battleAudio.volume = v;
+    battleAudio.muted = (v === 0);
+    if (battleAudio.muted || v === 0) {
+        battleVolumeIcon.classList.replace('bi-volume-up-fill', 'bi-volume-mute-fill');
+        battleVolumeIcon.classList.replace('bi-volume-down-fill', 'bi-volume-mute-fill');
+    } else if (v > 0.5) {
+        battleVolumeIcon.classList.replace('bi-volume-mute-fill', 'bi-volume-up-fill');
+        battleVolumeIcon.classList.replace('bi-volume-down-fill', 'bi-volume-up-fill');
+    } else {
+        battleVolumeIcon.classList.replace('bi-volume-mute-fill', 'bi-volume-down-fill');
+        battleVolumeIcon.classList.replace('bi-volume-up-fill', 'bi-volume-down-fill');
+    }
+}
+
+battleVolumeSlider.addEventListener('input', handleBattleVolume);
+
+document.getElementById('battle-volume-btn').addEventListener('click', () => {
+    battleAudio.muted = !battleAudio.muted;
+    if (battleAudio.muted) {
+        battleVolumeSlider.value = 0;
+    } else {
+        battleVolumeSlider.value = battleAudio.volume > 0 ? battleAudio.volume * 100 : 75;
+    }
+    handleBattleVolume();
+});
+
+handleBattleVolume();
 </script>
 {% endblock %}
