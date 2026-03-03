@@ -5,7 +5,6 @@
  * @brief Contrôleur de gestion des battles musicales.
  */
 
-// On vérifie si la classe n'existe pas déjà pour éviter l'erreur fatale
 if (!class_exists('ControllerBattle')) {
 
     class ControllerBattle extends Controller
@@ -105,14 +104,14 @@ if (!class_exists('ControllerBattle')) {
         {
             header('Content-Type: application/json');
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user_email'])) {
-                $emailInvitado = $_POST['emailInvitado'];
-                $pseudoInvitado = $_POST['pseudoInvitado'];
+                $emailInvite = $_POST['emailInvite'];
+                $pseudoInvite = $_POST['pseudoInvite'];
 
                 $battle = new Battle();
-                $battle->setTitreBattle($_SESSION['user_pseudo'] . " VS " . $pseudoInvitado);
+                $battle->setTitreBattle($_SESSION['user_pseudo'] . " VS " . $pseudoInvite);
                 $battle->setStatutBattle(StatutBattle::En_attente);
                 $battle->setEmailCreateurBattle($_SESSION['user_email']);
-                $battle->setEmailParticipantBattle($emailInvitado);
+                $battle->setEmailParticipantBattle($emailInvite);
                 $battle->setDateDebutBattle(new DateTime());
                 $battle->setDateFinBattle((new DateTime())->modify('+1 day'));
 
@@ -124,7 +123,7 @@ if (!class_exists('ControllerBattle')) {
                     $msg = new Message();
                     $msg->setContenu("[BATTLE_INVITE:" . $idBattle . "] Salut ! Je t'invite à un battle musical. Es-tu prêt ?");
                     $msg->setEmailExpediteur($uDao->find($_SESSION['user_email']));
-                    $msg->setEmailDestinataire($uDao->find($emailInvitado));
+                    $msg->setEmailDestinataire($uDao->find($emailInvite));
                     $messageDao->create($msg);
                     echo json_encode(['status' => 'success']);
                     exit;
@@ -165,7 +164,7 @@ if (!class_exists('ControllerBattle')) {
         public function voter(): void
         {
             if (!isset($_SESSION['user_logged_in'])) {
-                header('Location: index.php?controller=home&method=afficher&error=login_required');
+                header('Location: ?controller=home&method=afficher&error=login_required');
                 exit;
             }
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -196,7 +195,7 @@ if (!class_exists('ControllerBattle')) {
         public function gestionDashboard(): void
         {
             if (!isset($_SESSION['user_logged_in']) || $_SESSION['user_role']->value !== 'artiste') {
-                header('Location: index.php?controller=home&method=afficher');
+                header('Location: ?controller=home&method=afficher');
                 exit;
             }
             $emailActuel = $_SESSION['user_email'];

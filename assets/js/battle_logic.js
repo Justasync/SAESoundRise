@@ -60,8 +60,8 @@ function envoyerInvitation() {
     if (!artisteSelectionne.email) return;
 
     const donnees = new URLSearchParams();
-    donnees.append('emailInvitado', artisteSelectionne.email);
-    donnees.append('pseudoInvitado', artisteSelectionne.pseudo);
+    donnees.append('emailInvite', artisteSelectionne.email);
+    donnees.append('pseudoInvite', artisteSelectionne.pseudo);
 
     // Appel au contrôleur frontal index.php
     fetch('?controller=battle&method=inviter', {

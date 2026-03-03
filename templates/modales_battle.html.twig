@@ -25,8 +25,8 @@
 {# MODAL 2 : Confirmation #}
 <div id="modalConfirmation" class="battle-modal" style="display:none;">
     <div class="battle-modal-content text-center">
-        <input type="hidden" id="confirmEmailInvitado">
-        <input type="hidden" id="confirmPseudoInvitado">
+        <input type="hidden" id="confirmEmailInvite">
+        <input type="hidden" id="confirmPseudoInvite">
 
         <h3 class="fw-bold">Confirmer l'invitation</h3>
         <p class="mt-3">Voulez-vous inviter '<span id="nomArtisteConfirm" class="fw-bold" style="color: #E58E82;"></span>' ?</p>
@@ -91,8 +91,8 @@ function ouvrirModalConfirmation() {
 }
 function envoyerInvitation() {
     const p = new URLSearchParams();
-    p.append('emailInvitado', artisteSel.email);
-    p.append('pseudoInvitado', artisteSel.pseudo);
+    p.append('emailInvite', artisteSel.email);
+    p.append('pseudoInvite', artisteSel.pseudo);
     fetch('?controller=battle&method=inviter', { method: 'POST', body: p })
     .then(r => r.json()).then(() => {
         document.getElementById('modalConfirmation').style.display = 'none';
