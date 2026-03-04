@@ -2,118 +2,10 @@
 
 {% block header %}
 	{{ parent() }}
-	<link
-	href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-	<!-- Importation des icônes Bootstrap (assumé) -->
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="/assets/css/dashboard.css">
+	<link rel="stylesheet" href="/assets/css/album_details.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-	<style>
-		body {
-			font-family: 'Inter', sans-serif;
-			background-color: #f0f0f0;
-		}
-		.content-bg {
-			/* Couleurs de la palette Terre Cuite adaptées au gradient Twig */
-			background: linear-gradient(135deg, #A5604E 0%, #E5A88E 100%);
-		}
-
-		/* --- Styles de la Playlist --- */
-		.track-row {
-			cursor: pointer;
-			transition: background-color 0.2s;
-			--bs-table-bg: transparent; /* Permet au gradient de background de s'appliquer */
-			color: rgba(255, 255, 255, 0.9);
-		}
-		.track-row:nth-child(even) {
-			background-color: rgba(0, 0, 0, 0.05);
-		}
-		.table-hover > tbody > tr:hover > * {
-			--bs-table-hover-bg: rgba(0, 0, 0, 0.15);
-		}
-
-		/* --- Style de la piste active --- */
-		.track-row.active-track {
-			background-color: rgba(255, 255, 255, 0.2);
-			font-weight: 600;
-		}
-
-		/* --- Style de la piste sélectionnée (via URL) --- */
-		.track-row.selected-track {
-			background-color: rgba(255, 255, 255, 0.3);
-			border-left: 4px solid white;
-			font-weight: 700;
-			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-		}
-		.track-row.selected-track.active-track {
-			background-color: rgba(255, 255, 255, 0.35);
-			border-left: 4px solid white;
-		}
-
-		/* --- Styles de la Barre de Progression --- */
-		.progress-bar-container {
-			height: 6px;
-			background-color: rgba(255, 255, 255, 0.3);
-			cursor: pointer;
-		}
-		.progress-bar {
-			height: 100%;
-			background-color: white;
-			transition: width 0.1s linear;
-		}
-
-		/* --- Styles du Contrôle de Volume --- */
-		#volume-slider {
-			-webkit-appearance: none;
-			appearance: none;
-			width: 80px;
-			height: 5px;
-			background: rgba(255, 255, 255, 0.3);
-			border-radius: 5px;
-			outline: none;
-			transition: opacity 0.2s;
-			cursor: pointer;
-		}
-		#volume-slider::-webkit-slider-thumb {
-			-webkit-appearance: none;
-			appearance: none;
-			width: 14px;
-			height: 14px;
-			background: white;
-			border-radius: 50%;
-			cursor: pointer;
-		}
-
-		/* --- Styles pour la rotation de la pochette --- */
-		@keyframes spin {
-			from {
-				transform: rotate(0deg);
-			}
-			to {
-				transform: rotate(360deg);
-			}
-		}
-		#album-cover {
-			animation: spin 12s linear infinite;
-			animation-play-state: paused;
-		}
-		#album-cover.rotating {
-			animation-play-state: running;
-		}
-
-		/* --- Styles de la navigation --- */
-		.nav-link-custom {
-			color: rgba(255, 255, 255, 0.7);
-			transition: color 0.2s;
-		}
-		.nav-link-custom:hover,
-		.nav-link-custom.active {
-			color: white;
-			font-weight: 600;
-		}
-		.navbar-custom {
-			background-color: #3A1E18; /* Brun profond pour l'en-tête (équivalent de var(--color-earth-deep) */
-		}
-	</style>
 {% endblock %}
 
 {% block content %}
@@ -124,22 +16,22 @@
 	{% set totalMinutes = (totalDuration / 60)|round(0, 'floor') %}
 	{% set totalSeconds = totalDuration % 60 %}
 
-	<!-- L'en-tête de navigation a été retiré, laissant la page commencer par le conteneur principal (main) -->
-
-	<main class="container my-4 my-lg-5">
-		<div class="content-bg rounded-3 shadow-lg p-3 p-lg-5 text-white">
+	<main class="container-xl py-5 paaxio-dashboard paaxio-album-details">
+		<div class="main-content-container bg-white">
+			<div class="container-fluid pt-4 pb-2">
+				<section class="paaxio-album-details__hero p-3 p-lg-5">
 
 			<div class="d-flex flex-column flex-md-row align-items-start gap-4">
 				<div class="flex-shrink-0">
-					<img id="album-cover" src="{{ album.getUrlPochetteAlbum() ?: 'https://placehold.co/160x160/7b4343/ffffff?text=' ~ (album.getTitreAlbum()|replace({' ': '+'})|slice(0, 20)) }}" alt="Couverture de l'album {{ album.getTitreAlbum() }}" class="rounded-circle shadow-lg" style="width: 160px; height: 160px; object-fit: cover;">
+					<img id="album-cover" src="{{ album.getUrlPochetteAlbum() ?: 'https://placehold.co/160x160/7b4343/ffffff?text=' ~ (album.getTitreAlbum()|replace({' ': '+'})|slice(0, 20)) }}" alt="Couverture de l'album {{ album.getTitreAlbum() }}" class="paaxio-album-details__cover">
 				</div>
 
 				<div class="flex-grow-1">
-					<span class="text-sm fw-light text-uppercase" style="letter-spacing: 0.1em; opacity: 0.8;">Album</span>
-					<h2 class="display-4 fw-bolder mt-1 mb-2" id="album-title">{{ album.getTitreAlbum() }}</h2>
-					<p class="fs-5 fw-light" id="album-meta" style="opacity: 0.9;">
+					<span class="text-sm fw-light text-uppercase paaxio-album-details__kicker">Album</span>
+					<h2 class="display-4 fw-bolder mt-1 mb-2 paaxio-album-details__title" id="album-title">{{ album.getTitreAlbum() }}</h2>
+					<p class="fs-5 fw-light paaxio-album-details__meta" id="album-meta">
 						{% if album.getPseudoArtiste() %}
-							<a href="/?controller=utilisateur&method=afficherProfilArtiste&pseudo={{ album.getPseudoArtiste()|e('url') }}" class="text-white text-decoration-none" style="opacity: 0.9; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.9'">{{ album.getPseudoArtiste() }}</a>
+							<a href="/?controller=utilisateur&method=afficherProfilArtiste&pseudo={{ album.getPseudoArtiste()|e('url') }}">{{ album.getPseudoArtiste() }}</a>
 						{% else %}
 							{{ album.getArtisteAlbum() }}
 						{% endif %}
@@ -204,10 +96,12 @@
 				</div>
 			</div>
 
-			<div class="mt-5 overflow-x-auto">
-				<table id="track-table" class="table table-hover align-middle">
-					<thead style="background-color: rgba(0,0,0,0.2);">
-						<tr class="text-sm text-uppercase fw-semibold" style="color: rgba(255,255,255,0.9); letter-spacing: 0.05em;">
+			</section>
+
+			<div class="mt-4 paaxio-album-details__tableWrap">
+				<table id="track-table" class="table table-hover align-middle paaxio-album-details__table">
+					<thead class="paaxio-album-details__thead">
+						<tr class="text-sm text-uppercase fw-semibold">
 							<th scope="col" class="py-3 px-4" style="width: 5%;">#</th>
 							<th scope="col" class="py-3 px-4" style="width: 55%;">Titre</th>
 							<th scope="col" class="py-3 px-4 d-none d-sm-table-cell" style="width: 20%;">Nombre d'écoutes</th>
@@ -218,7 +112,7 @@
 					<tbody>
 						{% if chansons is not empty %}
 							{% for chanson in chansons %}
-								<tr class="track-row{% if chansonSelected and chanson.getIdChanson() == chansonSelected %} selected-track{% endif %}" data-index="{{ loop.index0 }}" data-song-id="{{ chanson.getIdChanson() }}" style="color: rgba(255,255,255,0.9);">
+								<tr class="track-row paaxio-album-details__row{% if chansonSelected and chanson.getIdChanson() == chansonSelected %} selected-track{% endif %}" data-index="{{ loop.index0 }}" data-song-id="{{ chanson.getIdChanson() }}">
 									<td class="py-3 px-4 fw-bold track-index">{{ loop.index }}</td>
 									<td class="py-3 px-4 track-title">{{ chanson.getTitreChanson() }}</td>
 									<td class="py-3 px-4 d-none d-sm-table-cell track-listens">{{ chanson.getNbEcouteChanson() ?? 0 }}</td>
@@ -227,21 +121,22 @@
 										class="py-3 px-4 text-center">
 										<!-- Bouton pour la lecture de la piste spécifique -->
 										<button title="Lire la musique" class="btn btn-sm btn-link p-1 play-track-btn" data-index="{{ loop.index0 }}" onclick="loadTrack({{ loop.index0 }})">
-											<i class="bi bi-play-fill track-play-icon" style="color: rgba(255,255,255,0.7); font-size: 1.2rem;"></i>
+											<i class="bi bi-play-fill track-play-icon paaxio-album-details__iconBtn" style="font-size: 1.2rem;"></i>
 										</button>
 										<button title="Aimer la musique" class="btn btn-sm btn-link p-1 like-btn" data-id="{{ chanson.getIdChanson() }}">
-											<i class="bi {% if chanson.getIsLiked() %}bi-heart-fill text-danger{% else %}bi-heart{% endif %}" style="color: rgba(255,255,255,0.7); font-size: 1rem;"></i>
+											<i class="bi {% if chanson.getIsLiked() %}bi-heart-fill text-danger{% else %}bi-heart paaxio-album-details__iconBtn{% endif %}" style="font-size: 1rem;"></i>
 										</button>
 									</td>
 								</tr>
 							{% endfor %}
 						{% else %}
 							<tr>
-								<td colspan="5" class="text-center py-4" style="opacity: 0.8;">Cet album ne contient aucune chanson pour le moment.</td>
+								<td colspan="5" class="text-center py-4 text-muted">Cet album ne contient aucune chanson pour le moment.</td>
 							</tr>
 						{% endif %}
 					</tbody>
 				</table>
+			</div>
 			</div>
 		</div>
 	</main>
