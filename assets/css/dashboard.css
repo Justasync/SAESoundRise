@@ -38,6 +38,10 @@
     background-color: var(--paaxio-salmon);
 }
 
+.text-paaxio-turquoise {
+    color: var(--paaxio-turquoise) !important;
+}
+
 .hover-bg-terracotta:hover {
     background-color: var(--paaxio-terracotta);
 }
