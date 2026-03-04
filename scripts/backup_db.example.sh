@@ -47,6 +47,8 @@ log_error() {
 DB_USER="${DB_USER:-root}"
 # Mot de passe DB (optionnel).
 DB_PASSWORD="${DB_PASSWORD:-}"
+# Chemin explicite de mysqldump (optionnel). Exemple: /c/wamp64/bin/mariadb/mariadb11.5.2/bin/mysqldump.exe
+MYSQLDUMP="${MYSQLDUMP:-mysqldump}"
 # Nom de la base à sauvegarder.
 DB_NAME="${DB_NAME:-paaxio_db}"
 # Dossier local de sauvegarde.
@@ -69,10 +71,10 @@ if [ -n "$DB_PASSWORD" ]; then
     MYSQL_PWD_OPT="-p$DB_PASSWORD"
 fi
 
-# Vérifier disponibilité de mysqldump.
-if ! command -v mysqldump &> /dev/null
+# Vérifier disponibilité de mysqldump (chemin explicite ou PATH).
+if [ ! -x "$MYSQLDUMP" ] && ! command -v "$MYSQLDUMP" &> /dev/null
 then
-    log_error "mysqldump n'est pas installé ou n'est pas dans le PATH."
+    log_error "mysqldump n'est pas accessible via MYSQLDUMP=$MYSQLDUMP"
     exit 1
 fi
 
@@ -98,7 +100,7 @@ fi
 BACKUP_FILE="$BACKUP_DIR/${DB_NAME}_$DATE.sql.gz"
 
 # Dump SQL + compression gzip en sortie.
-mysqldump -u "$DB_USER" $MYSQL_PWD_OPT \
+"$MYSQLDUMP" -u "$DB_USER" $MYSQL_PWD_OPT \
 --routines \
 --triggers \
 --events \
