@@ -56,7 +56,7 @@
 							&idAlbum={{ album is not null and (album.idAlbum is defined and album.idAlbum) 
 								? album.idAlbum 
 								: '' }}"
-						class="flex-shrink-0 bg-paaxio-salmon p-2 rounded-4 shadow-lg text-decoration-none hover-bg-terracotta open-dashboard__song-card">
+						class="flex-shrink-0 bg-paaxio-salmon rounded-4 shadow-lg text-decoration-none hover-bg-terracotta open-dashboard__song-card">
 
 							{# Mini pochette #}
 							<img
@@ -64,20 +64,19 @@
 									? album.urlPochetteAlbum 
 									: 'https://placehold.co/200x200/e9b7a6/ffffff?text=No+Img' }}"
 								alt="Pochette"
-								class="rounded-3 m-1 shadow-sm open-dashboard__song-cover"
+								class="rounded-3 shadow-sm open-dashboard__song-cover"
 							>
 
 							{# Titre + artiste #}
-							<div class="d-flex flex-column align-items-center justify-content-center p-1 text-center"
-								style="height: 35%;">
+							<div class="open-dashboard__song-meta">
 
-								<p class="mb-0 album-title small">
+								<p class="mb-0 open-dashboard__song-title">
 									{{ chanson.chanson.titreChanson|length > 18 
 										? chanson.chanson.titreChanson|slice(0,18) ~ '...' 
 										: chanson.chanson.titreChanson }}
 								</p>
 
-								<span class="album-artist small">
+								<span class="open-dashboard__song-artist">
 									{{ chanson.artistePseudo ?: 'Artiste inconnu' }}
 								</span>
 

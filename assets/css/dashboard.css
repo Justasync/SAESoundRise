@@ -60,9 +60,13 @@
 
 .open-dashboard__song-card {
     width: 100%;
-    min-height: 13rem;
+    min-height: 8.5rem;
     border: 1px solid #F7DED7;
-    background-color: var(--paaxio-cream);
+    background-color: var(--paaxio-salmon); /* même fond doux que les albums */
+    padding: 0.75rem 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
     transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
 }
 
@@ -73,9 +77,33 @@
 }
 
 .open-dashboard__song-cover {
-    height: 65%;
-    width: calc(100% - 0.5rem);
+    width: 2.8rem;
+    height: 2.8rem;
     object-fit: cover;
+    margin-bottom: 0.25rem;
+}
+
+.open-dashboard__song-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.1rem;
+}
+
+.open-dashboard__song-title {
+    font-size: 0.98rem;
+    font-weight: 600;
+    color: var(--paaxio-indigo); /* même couleur que .album-title */
+}
+
+.open-dashboard__song-artist {
+    font-size: 0.9rem;
+    color: #298780; /* même teinte que .album-artist */
+}
+
+.open-dashboard__song-card:hover .open-dashboard__song-title,
+.open-dashboard__song-card:hover .open-dashboard__song-artist {
+    color: var(--paaxio-white);
 }
 
 /* Top artistes: plus grand, style "carousel" (Spotify-like) */
@@ -226,6 +254,19 @@
 
 .paaxio-card:hover .album-cover img {
     transform: scale(1.05);
+}
+
+/* Albums : hover en Terre cuite (aligné avec les chansons) */
+.open-dashboard .col-item-card:hover .paaxio-card {
+    background-color: var(--paaxio-terracotta);
+}
+
+.open-dashboard .col-item-card:hover .album-title {
+    color: var(--paaxio-white);
+}
+
+.open-dashboard .col-item-card:hover .album-artist {
+    color: var(--paaxio-cream);
 }
 
 /* Texte overflow propre */
