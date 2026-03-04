@@ -2,15 +2,14 @@
 
 {% block header %}
 	{{ parent() }}
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="/assets/css/dashboard.css">
 {% endblock %}
 
 {% block content %}
-	<div
-		class="dashboard-container py-4">
-		{# Contenu Principal #}
-		<main
-			class="container-lg">
+	<main class="container-xl py-5 paaxio-dashboard">
+		<div class="main-content-container bg-white">
+			<div class="container-fluid pt-4 pb-2">
 
 			{# Message de bienvenue #}
 			<section class="my-5 text-center">
@@ -24,19 +23,20 @@
 			<section class="mb-5">
 				<h2 class="text-center fw-semibold mb-4 text-secondary pt-3">Opportunités de Collaboration</h2>
 
-				{# Conteneur de la carte principale mis à jour avec la couleur terre cuite #}
-				<div
-					class="bg-terracotta p-4 rounded-4 shadow-lg">
-
-					{# Conteneur défilable (Horizontal Scroll) #}
-					<div class="collaboration-scroll d-flex gap-4 pb-2">
+				<div class="artist-scroll-wrapper w-100 paaxio-horizontal-scroll rounded-4 shadow-lg">
+					<div class="artist-list-container paaxio-horizontal-scroll">
 						{% if artistes is not empty %}
 							{% for artiste in artistes %}
-								<a
-									href="/?controller=utilisateur&method=afficherProfilArtiste&pseudo={{ artiste.getPseudoUtilisateur() }}" class="flex-shrink-0 d-flex flex-column align-items-center text-decoration-none" style="width: 8rem;" title="{{ artiste.getPseudoUtilisateur() }}">
-									{# Utilise la photo de profil de l'artiste, ou un placeholder si elle n'existe pas #}
-									<img src="{{ artiste.geturlPhotoUtilisateur() ?: 'https://placehold.co/112x112/e9b7a6/ffffff?text=' ~ artiste.getPseudoUtilisateur()|first|upper }}" alt="Photo de {{ artiste.getPseudoUtilisateur() }}" class="rounded-circle object-cover border border-4 border-white" style="width: 7rem; height: 7rem;" onerror="this.onerror=null; this.src='https://placehold.co/112x112/e9b7a6/ffffff?text={{ artiste.getPseudoUtilisateur()|first|upper }}';">
-									<span class="green-text-user mb-0">{{ artiste.getPseudoUtilisateur()|length > 7 ? artiste.getPseudoUtilisateur()|slice(0, 7) ~ '...' : artiste.getPseudoUtilisateur() }}</span>
+								<a href="/?controller=utilisateur&method=afficherProfilArtiste&pseudo={{ artiste.getPseudoUtilisateur() }}"
+								   class="artist-item flex-shrink-0 d-flex flex-column align-items-center text-decoration-none"
+								   title="{{ artiste.getPseudoUtilisateur() }}">
+									<img src="{{ artiste.geturlPhotoUtilisateur() ?: 'https://placehold.co/160x160/e9b7a6/ffffff?text=' ~ artiste.getPseudoUtilisateur()|first|upper }}"
+										 alt="Photo de {{ artiste.getPseudoUtilisateur() }}"
+										 class="artist-avatar"
+										 onerror="this.onerror=null; this.src='https://placehold.co/160x160/e9b7a6/ffffff?text={{ artiste.getPseudoUtilisateur()|first|upper }}';">
+									<p class="green-text mb-0">
+										{{ artiste.getPseudoUtilisateur()|length > 10 ? artiste.getPseudoUtilisateur()|slice(0, 10) ~ '...' : artiste.getPseudoUtilisateur() }}
+									</p>
 								</a>
 							{% endfor %}
 						{% else %}
@@ -107,8 +107,9 @@
 					{% endfor %}
 				</div>
 			</section>
-		</main>
-	</div>
+			</div>
+		</div>
+	</main>
 {% endblock %}
 
 {% block script %}
