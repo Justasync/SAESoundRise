@@ -38,8 +38,8 @@ mkdir -p "$LOG_DIR"
 SUMMARY_FILE="$LOG_DIR/simulation_summary.txt"
 
 # Chemins des binaires MariaDB utilisés pendant le test.
-MYSQL_BIN="/c/wamp64/bin/mariadb/mariadb11.5.2/bin/mysql.exe"
-MYSQLDUMP_BIN="/c/wamp64/bin/mariadb/mariadb11.5.2/bin/mysqldump.exe"
+MYSQL_BIN="${MYSQL:-mysql}"
+MYSQLDUMP_BIN="${MYSQLDUMP:-mysqldump}"
 
 # Variables du scénario de test.
 DB_USER="root"
@@ -56,14 +56,55 @@ if [ -n "$DB_PASSWORD" ]; then
   MYSQL_PWD_OPT="-p$DB_PASSWORD"
 fi
 
-# Ajouter MariaDB au PATH pour les scripts appelés.
-export PATH="/c/wamp64/bin/mariadb/mariadb11.5.2/bin:$PATH"
+# Détecter mysql/mysqldump automatiquement si non disponibles dans le PATH.
+if [ "$MYSQL_BIN" = "mysql" ] && ! command -v mysql &> /dev/null; then
+  for candidate in \
+    /c/wamp64/bin/mysql/*/bin/mysql.exe \
+    /c/wamp64/bin/mariadb/*/bin/mysql.exe \
+    /mingw64/bin/mysql.exe \
+    /usr/bin/mysql
+  do
+    if [ -x "$candidate" ]; then
+      MYSQL_BIN="$candidate"
+      break
+    fi
+  done
+fi
+
+if [ "$MYSQLDUMP_BIN" = "mysqldump" ] && ! command -v mysqldump &> /dev/null; then
+  for candidate in \
+    /c/wamp64/bin/mysql/*/bin/mysqldump.exe \
+    /c/wamp64/bin/mariadb/*/bin/mysqldump.exe \
+    /mingw64/bin/mysqldump.exe \
+    /usr/bin/mysqldump
+  do
+    if [ -x "$candidate" ]; then
+      MYSQLDUMP_BIN="$candidate"
+      break
+    fi
+  done
+fi
+
+if [ ! -x "$MYSQL_BIN" ] && ! command -v "$MYSQL_BIN" &> /dev/null; then
+  echo "[ERREUR] mysql introuvable via MYSQL=$MYSQL_BIN" | tee -a "$SUMMARY_FILE"
+  exit 1
+fi
+
+if [ ! -x "$MYSQLDUMP_BIN" ] && ! command -v "$MYSQLDUMP_BIN" &> /dev/null; then
+  echo "[ERREUR] mysqldump introuvable via MYSQLDUMP=$MYSQLDUMP_BIN" | tee -a "$SUMMARY_FILE"
+  exit 1
+fi
+
+# Ajouter le dossier des binaires détectés au PATH pour les scripts appelés.
+MYSQL_BIN_DIR="$(dirname "$MYSQL_BIN")"
+export PATH="$MYSQL_BIN_DIR:$PATH"
 # Exporter variables attendues par les scripts backup/recovery.
 export DB_USER
 export DB_PASSWORD
 export DB_NAME
 export BACKUP_DIR
 export MYSQL="$MYSQL_BIN"
+export MYSQLDUMP="$MYSQLDUMP_BIN"
 # Désactiver volontairement le distant pour un test local contrôlé.
 export ENABLE_REMOTE_SYNC="false"
 export ENABLE_REMOTE_RESTORE="false"

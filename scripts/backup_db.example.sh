@@ -71,6 +71,22 @@ if [ -n "$DB_PASSWORD" ]; then
     MYSQL_PWD_OPT="-p$DB_PASSWORD"
 fi
 
+# Si MYSQLDUMP n'est pas fourni et introuvable dans le PATH, tenter des chemins locaux usuels.
+if [ "$MYSQLDUMP" = "mysqldump" ] && ! command -v mysqldump &> /dev/null; then
+    for candidate in \
+        /c/wamp64/bin/mysql/*/bin/mysqldump.exe \
+        /c/wamp64/bin/mariadb/*/bin/mysqldump.exe \
+        /mingw64/bin/mysqldump.exe \
+        /usr/bin/mysqldump
+    do
+        if [ -x "$candidate" ]; then
+            MYSQLDUMP="$candidate"
+            log_info "mysqldump détecté automatiquement: $MYSQLDUMP"
+            break
+        fi
+    done
+fi
+
 # Vérifier disponibilité de mysqldump (chemin explicite ou PATH).
 if [ ! -x "$MYSQLDUMP" ] && ! command -v "$MYSQLDUMP" &> /dev/null
 then

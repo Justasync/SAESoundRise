@@ -48,6 +48,7 @@ log_error() {
 DB_USER="root" # changer le nom d'utilisateur admin MySQL
 DB_PASSWORD="" # changer le mot de passe admin MySQL
 BACKUP_DIR="dir/backup" # changer le chemin si besoin
+MYSQL="${MYSQL:-mysql}" # chemin du client mysql (optionnel)
 
 # ===== SERVEUR EXTERNE (OPTIONNEL) =====
 ENABLE_REMOTE_RESTORE="false" # true pour télécharger le dernier export users depuis serveur externe
@@ -58,11 +59,26 @@ REMOTE_DIR="/srv/backups/paaxio"
 SSH_KEY="" # ex: /home/user/.ssh/id_rsa (laisser vide pour clé par défaut)
 
 # ===== VERIFICATION mysql =====
+# Si MYSQL n'est pas fourni et introuvable dans le PATH, tenter des chemins locaux usuels.
+if [ "$MYSQL" = "mysql" ] && ! command -v mysql &> /dev/null; then
+    for candidate in \
+        /c/wamp64/bin/mysql/*/bin/mysql.exe \
+        /c/wamp64/bin/mariadb/*/bin/mysql.exe \
+        /mingw64/bin/mysql.exe \
+        /usr/bin/mysql
+    do
+        if [ -x "$candidate" ]; then
+            MYSQL="$candidate"
+            log_info "mysql détecté automatiquement: $MYSQL"
+            break
+        fi
+    done
+fi
+
 # Vérifier mysql.
-if ! command -v mysql &> /dev/null
+if [ ! -x "$MYSQL" ] && ! command -v "$MYSQL" &> /dev/null
 then
-    log_error "mysql n'est pas installé ou n'est pas dans le PATH."
-    log_error "Installe MySQL ou ajoute le dossier bin de MySQL dans ton PATH."
+    log_error "mysql n'est pas accessible via MYSQL=$MYSQL"
     exit 1
 fi
 
@@ -123,7 +139,7 @@ log_info "Restauration des utilisateurs MySQL en cours..."
 
 # ===== RESTAURATION =====
 # Exécuter la restauration des users/grants.
-mysql -u "$DB_USER" -p"$DB_PASSWORD" < "$USERS_FILE" 2>error_restore_users.log
+"$MYSQL" -u "$DB_USER" -p"$DB_PASSWORD" < "$USERS_FILE" 2>error_restore_users.log
 
 # ===== VERIFICATION RESULTAT =====
 if [ $? -eq 0 ]; then

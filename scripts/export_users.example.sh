@@ -48,7 +48,7 @@ DB_USER="${DB_USER:-root}"
 # Mot de passe admin (optionnel).
 DB_PASSWORD="${DB_PASSWORD:-}"
 # Chemin du binaire mysql.
-MYSQL="${MYSQL:-/c/wamp64/bin/mariadb/mariadb11.5.2/bin/mysql.exe}"
+MYSQL="${MYSQL:-mysql}"
 # Dossier local de sortie users_*.sql.
 BACKUP_DIR="${BACKUP_DIR:-dir/backup}"
 # Horodatage pour le nom de fichier.
@@ -66,6 +66,22 @@ SSH_KEY="${SSH_KEY:-}"
 MYSQL_PWD_OPT=""
 if [ -n "$DB_PASSWORD" ]; then
     MYSQL_PWD_OPT="-p$DB_PASSWORD"
+fi
+
+# Si MYSQL n'est pas fourni et introuvable dans le PATH, tenter des chemins locaux usuels.
+if [ "$MYSQL" = "mysql" ] && ! command -v mysql &> /dev/null; then
+    for candidate in \
+        /c/wamp64/bin/mysql/*/bin/mysql.exe \
+        /c/wamp64/bin/mariadb/*/bin/mysql.exe \
+        /mingw64/bin/mysql.exe \
+        /usr/bin/mysql
+    do
+        if [ -x "$candidate" ]; then
+            MYSQL="$candidate"
+            log_info "mysql détecté automatiquement: $MYSQL"
+            break
+        fi
+    done
 fi
 
 # Vérifier l'accès au client mysql.
