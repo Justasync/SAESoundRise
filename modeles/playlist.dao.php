@@ -97,6 +97,8 @@ class PlaylistDAO
         foreach ($tableauxAssoc as $tableauAssoc) {
             $playlist = $this->hydrate($tableauAssoc);
             if ($playlist !== null) {
+                $pochette = $this->recupererPochetteAuto($playlist->getIdPlaylist());
+                $playlist->setUrlPochetteAuto($pochette);
                 $playlists[] = $playlist;
             }
         }
@@ -153,5 +155,29 @@ class PlaylistDAO
     public function setPdo(?PDO $pdo): void
     {
         $this->pdo = $pdo;
+    }
+
+    /**
+     * @param int $idPlaylist L'ID de la playlist pour laquelle récupérer la pochette automatique.
+     * @return string|null L'URL de la pochette automatique ou null si aucune chanson n'est associée à la playlist.
+     */
+    public function recupererPochetteAuto(int $idPlaylist): ?string
+    {
+        $sql = "
+            SELECT a.urlPochetteAlbum
+            FROM chansonPlaylist cp
+            JOIN chanson c ON cp.idChanson = c.idChanson
+            JOIN album a ON c.albumChanson = a.idAlbum
+            WHERE cp.idPlaylist = :idPlaylist
+            ORDER BY cp.positionChanson ASC
+            LIMIT 1
+        ";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['idPlaylist' => $idPlaylist]);
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result ? $result['urlPochetteAlbum'] : null;
     }
 }
