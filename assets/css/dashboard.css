@@ -134,10 +134,11 @@
     color: #298780;
 }
 
-/* Scroll horizontal: meilleur contraste + scrollbar plus discrète */
-.paaxio-horizontal-scroll,
-.artist-list-container {
-    background-color: #EBA997;
+/* Scroll horizontal: fond harmonisé avec chansons/albums */
+.open-dashboard .paaxio-horizontal-scroll,
+.open-dashboard .artist-list-container {
+    background-color: var(--paaxio-cream);
+    border: 1px solid #F7DED7;
 }
 
 .paaxio-horizontal-scroll::-webkit-scrollbar,
