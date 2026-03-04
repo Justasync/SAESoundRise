@@ -24,7 +24,7 @@ body {
 .btn-primary {
   background-color: #fbf8f5;
   border: 1px solid #000000;
-  color: #337f77;
+  color: #333333;
 }
 .btn-primary:hover {
   background-color: #c26a4f;
@@ -34,7 +34,7 @@ body {
 
 /* Secondary */
 .btn-secondary {
-  background-color: #e58e82;
+  background-color: #fbf8f5;
   border: 1px solid #000000;
   color: #f4a261;
 }

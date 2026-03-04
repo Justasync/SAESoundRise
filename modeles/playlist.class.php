@@ -34,6 +34,11 @@ class Playlist {
      * @var string|null $emailProprietaire L'email du propriétaire de la playlist.
      */
     private string|null $emailProprietaire;
+
+    /**
+     * @var string|null $urlPochetteAuto L'URL de la pochette automatique de la playlist.
+     */
+    private ?string $urlPochetteAuto = null;
     
     /**
      * Constructeur de la classe Playlist.
@@ -144,5 +149,21 @@ class Playlist {
     public function setEmailProprietaire(string $emailProprietaire): void
     {
         $this->emailProprietaire = $emailProprietaire;
+    }
+
+    /**
+     * Get the value of urlPochette
+     */
+    public function getUrlPochetteAuto(): ?string
+    {
+        return $this->urlPochetteAuto;
+    }
+
+    /**
+     * Set the value of urlPochette
+     */
+    public function setUrlPochetteAuto(?string $url): void
+    {
+        $this->urlPochetteAuto = $url;
     }
 }
