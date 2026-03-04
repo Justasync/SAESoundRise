@@ -15,6 +15,7 @@
 	{% endfor %}
 	{% set totalMinutes = (totalDuration / 60)|round(0, 'floor') %}
 	{% set totalSeconds = totalDuration % 60 %}
+	{% set totalSecondsPadded = '%02d'|format(totalSeconds) %}
 
 	<main class="container-xl py-5 paaxio-dashboard paaxio-album-details">
 		<div class="main-content-container bg-white">
@@ -40,7 +41,7 @@
 						titre{{ chansons|length > 1 ? 's' : '' }},
 						{{ totalMinutes }}
 						min
-						{{ totalSeconds|number_format(0, '', '02') }}
+						{{ totalSecondsPadded }}
 						s
 					</p>
 
@@ -97,7 +98,7 @@
 									</td>
 									<td class="py-3 px-4 track-title">{{ chanson.getTitreChanson() }}</td>
 									<td class="py-3 px-4 d-none d-sm-table-cell track-listens">{{ chanson.getNbEcouteChanson() ?? 0 }}</td>
-									<td class="py-3 px-4 track-duration">{{ (chanson.getDureeChanson() / 60)|round(0, 'floor') }}:{{ (chanson.getDureeChanson() % 60)|number_format(0, '', '02') }}</td>
+									<td class="py-3 px-4 track-duration">{{ (chanson.getDureeChanson() / 60)|round(0, 'floor') }}:{{ '%02d'|format(chanson.getDureeChanson() % 60) }}</td>
 									<td class="py-3 px-4 text-center">
 										<button type="button" class="btn btn-sm btn-link p-1" title="Modifier" data-bs-toggle="modal" data-bs-target="#modifierChansonModal" data-song-id="{{ chanson.getIdChanson() }}" data-song-title="{{ chanson.getTitreChanson() }}" data-song-genre="{{ chanson.getGenreChanson() ? chanson.getGenreChanson().getNomGenre() : '' }}">
 											<svg class="bi paaxio-album-details__iconBtn" width="16" height="16" fill="currentColor">
@@ -227,7 +228,7 @@ playlist.push({
 	id: {{ chanson.getIdChanson() }},
 	title: "{{ chanson.getTitreChanson()|e('js') }}",
 	src: "{{ chanson.geturlAudioChanson()|default('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3')|e('js') }}",
-	durationFormatted: "{{ (chanson.getDureeChanson() / 60)|round(0, 'floor') }}:{{ (chanson.getDureeChanson() % 60)|number_format(0, '', '02') }}"
+	durationFormatted: "{{ (chanson.getDureeChanson() / 60)|round(0, 'floor') }}:{{ '%02d'|format(chanson.getDureeChanson() % 60) }}"
 });
 {% endfor %}
 

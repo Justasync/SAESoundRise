@@ -15,6 +15,7 @@
 	{% endfor %}
 	{% set totalMinutes = (totalDuration / 60)|round(0, 'floor') %}
 	{% set totalSeconds = totalDuration % 60 %}
+	{% set totalSecondsPadded = '%02d'|format(totalSeconds) %}
 
 	<main class="container-xl py-5 paaxio-dashboard paaxio-album-details">
 		<div class="main-content-container bg-white">
@@ -44,7 +45,7 @@
 						titre{{ chansons|length > 1 ? 's' : '' }},
 						{{ totalMinutes }}
 						min
-						{{ totalSeconds|number_format(0, '', '02') }}
+						{{ totalSecondsPadded }}
 						s
 					</p>
 
@@ -113,16 +114,17 @@
 						{% if chansons is not empty %}
 							{% for chanson in chansons %}
 								<tr class="track-row paaxio-album-details__row{% if chansonSelected and chanson.getIdChanson() == chansonSelected %} selected-track{% endif %}" data-index="{{ loop.index0 }}" data-song-id="{{ chanson.getIdChanson() }}">
-									<td class="py-3 px-4 fw-bold track-index">{{ loop.index }}</td>
+									<td class="py-3 px-4 fw-bold track-index">
+										<span class="track-index-number">{{ loop.index }}</span>
+										<span class="track-index-play" data-index="{{ loop.index0 }}" onclick="event.stopPropagation(); loadTrack({{ loop.index0 }})">
+											<i class="bi bi-play-fill track-play-icon paaxio-album-details__iconBtn" style="font-size: 1rem;"></i>
+										</span>
+									</td>
 									<td class="py-3 px-4 track-title">{{ chanson.getTitreChanson() }}</td>
 									<td class="py-3 px-4 d-none d-sm-table-cell track-listens">{{ chanson.getNbEcouteChanson() ?? 0 }}</td>
-									<td class="py-3 px-4 track-duration">{{ (chanson.getDureeChanson() / 60)|round(0, 'floor') }}:{{ (chanson.getDureeChanson() % 60)|number_format(0, '', '02') }}</td>
+									<td class="py-3 px-4 track-duration">{{ (chanson.getDureeChanson() / 60)|round(0, 'floor') }}:{{ '%02d'|format(chanson.getDureeChanson() % 60) }}</td>
 									<td
 										class="py-3 px-4 text-center">
-										<!-- Bouton pour la lecture de la piste spécifique -->
-										<button title="Lire la musique" class="btn btn-sm btn-link p-1 play-track-btn" data-index="{{ loop.index0 }}" onclick="loadTrack({{ loop.index0 }})">
-											<i class="bi bi-play-fill track-play-icon paaxio-album-details__iconBtn" style="font-size: 1.2rem;"></i>
-										</button>
 										<button title="Aimer la musique" class="btn btn-sm btn-link p-1 like-btn" data-id="{{ chanson.getIdChanson() }}">
 											<i class="bi {% if chanson.getIsLiked() %}bi-heart-fill text-danger{% else %}bi-heart paaxio-album-details__iconBtn{% endif %}" style="font-size: 1rem;"></i>
 										</button>
@@ -172,7 +174,7 @@ let isPlaying = false;
 // CSRF token removed
 
 // 1. CRÉATION DYNAMIQUE DE LA PLAYLIST À PARTIR DES DONNÉES TWIG
-const playlist = [];{% for chanson in chansons %}playlist.push({id: {{ chanson.getIdChanson() }}, title: "{{ chanson.getTitreChanson()|e('js') }}", src: "{{ chanson.geturlAudioChanson()|default('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3')|e('js') }}", durationFormatted: "{{ (chanson.getDureeChanson() / 60)|round(0, 'floor') }}:{{ (chanson.getDureeChanson() % 60)|number_format(0, '', '02') }}"});{% endfor %}
+const playlist = [];{% for chanson in chansons %}playlist.push({id: {{ chanson.getIdChanson() }}, title: "{{ chanson.getTitreChanson()|e('js') }}", src: "{{ chanson.geturlAudioChanson()|default('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3')|e('js') }}", durationFormatted: "{{ (chanson.getDureeChanson() / 60)|round(0, 'floor') }}:{{ '%02d'|format(chanson.getDureeChanson() % 60) }}"});{% endfor %}
 
 // Suivi des chansons ayant atteint 75% de lecture (pour éviter les faux clics)
 const playedBeyond75 = new Set();

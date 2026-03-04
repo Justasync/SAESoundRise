@@ -5,7 +5,7 @@
 }
 
 .paaxio-album-details__hero {
-  background: linear-gradient(135deg, rgba(224, 122, 95, 0.92) 0%, rgba(38, 70, 83, 0.92) 100%);
+  background-color: var(--paaxio-terracotta);
   border: 1px solid rgba(38, 70, 83, 0.14);
   border-radius: 1rem;
   box-shadow: 0 18px 45px rgba(38, 70, 83, 0.12);
