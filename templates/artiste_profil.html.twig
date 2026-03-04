@@ -113,7 +113,7 @@
                     {% if photo %}
                         <img src="{{ photo }}" alt="Photo de {{ utilisateur.getPseudoUtilisateur() }}" class="rounded-circle shadow">
                     {% else %}
-                        <img src="/assets/images/default_profile.png" alt="Profil par défaut" class="rounded-circle shadow">
+                        <img src="{{ asset_version('/assets/images/default_profile.png') }}" alt="Profil par défaut" class="rounded-circle shadow">
                     {% endif %}
                 </div>
                 <h2 class="h4 fw-bold mb-0">{{ utilisateur.getPseudoUtilisateur() ?? utilisateur.getNomUtilisateur() }}</h2>

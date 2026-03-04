@@ -18,26 +18,11 @@ if (!class_exists('ControllerBattle')) {
         }
 
         /**
-         * @brief Affiche les détails d'une battle.
-         */
-        public function afficher(): void
-        {
-            $idBattle = isset($_GET['idBattle']) ? (int)$_GET['idBattle'] : null;
-            $managerBattle = new BattleDao($this->getPdo());
-            $battle = $managerBattle->find($idBattle);
-
-            echo $this->getTwig()->render('test.html.twig', [
-                'page' => ['title' => "Détails Battle", 'name' => "battle"],
-                'testing' => $battle,
-            ]);
-        }
-
-        /**
          * @brief Liste les battles actives pour l'arène publique.
          */
         public function lister(): void
         {
-            $this->requireRole(RoleEnum::Artiste);
+            $this->requireAnyRole([RoleEnum::Artiste, RoleEnum::Auditeur]);
 
             $battleDao = new BattleDao($this->getPdo());
             $toutesLesBattles = $battleDao->findAll();

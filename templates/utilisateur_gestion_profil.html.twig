@@ -4,8 +4,8 @@
 {% endblock %}
 
 {% block stylesheets %}
-	<link rel="stylesheet" href="/assets/css/profil_global.css">
-	<link rel="stylesheet" href="/assets/css/utilisateur_gestion_profil.css">
+	<link rel="stylesheet" href="{{ asset_version('/assets/css/profil_global.css') }}">
+	<link rel="stylesheet" href="{{ asset_version('/assets/css/utilisateur_gestion_profil.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -24,7 +24,7 @@
 				<!-- Photo Profil -->
 				<label class="form-label d-block">Photo de profil</label>
 				<div class="profile-pic-round mb-3">
-					<img src="/{{ user.urlPhotoUtilisateur ?: 'assets/images/profile_pictures/default.png' }}" alt="Photo">
+					<img src="./{{ user.urlPhotoUtilisateur ?: './assets/images/profile_pictures/default.png' }}" alt="Photo">
 				</div>
 				<input
 				type="file" name="photo" class="form-control form-control-sm mb-4" style="max-width: 300px;">
@@ -109,5 +109,5 @@
 {% endblock %}
 
 {% block script %}
-	<script src="assets/js/utilisateur_gestion_profil.js"></script>
+	<script src="{{ asset_version('/assets/js/utilisateur_gestion_profil.js') }}"></script>
 {% endblock %}

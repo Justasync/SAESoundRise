@@ -4,7 +4,7 @@
 
 {% block head %}
     {{ parent() }}
-    <link rel="stylesheet" href="assets/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="{{ asset_version('/assets/css/dataTables.bootstrap5.min.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -166,9 +166,9 @@
 {% block script %}
     {{ parent() }}
     
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/jquery.dataTables.min.js"></script>
-    <script src="assets/js/dataTables.bootstrap5.min.js"></script>
+    <script src="{{ asset_version('/assets/js/jquery.min.js') }}"></script>
+    <script src="{{ asset_version('/assets/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset_version('/assets/js/dataTables.bootstrap5.min.js') }}"></script>
 
     <script>
         $(document).ready(function() {

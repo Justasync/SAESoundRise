@@ -2,13 +2,14 @@
 
 {% block header %}
     {{ parent() }}
-    <link rel="stylesheet" href="/assets/css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset_version('/assets/css/dashboard.css') }}">
 {% endblock %}
 
 {% block content %}
-<div class="dashboard-container py-4">
-
-    <main class="container-lg">
+<main class="container-xl py-5 paaxio-dashboard">
+    <div class="main-content-container bg-white">
+        <div class="container-fluid pt-4 pb-2">
 
         {# Titre #}
         <section class="my-5 text-center">
@@ -24,27 +25,28 @@
                 Artistes les plus écoutés
             </h2>
 
-            <div class="bg-terracotta p-4 rounded-4 shadow-lg">
-                <div class="collaboration-scroll d-flex gap-4 pb-2">
+            <div class="artist-scroll-wrapper w-100 paaxio-horizontal-scroll rounded-4 shadow-lg">
+                <div class="artist-list-container paaxio-horizontal-scroll">
 
                     {% if artistes is not empty %}
                         {% for artiste in artistes|slice(0,8) %}
-                            <a href="/?controller=utilisateur&method=afficherProfilArtiste&pseudo={{ artiste.pseudoUtilisateur }}"
-                               class="flex-shrink-0 d-flex flex-column align-items-center text-decoration-none"
-                               style="width: 8rem;">
+                            {% set pseudo = (artiste.pseudoUtilisateur is defined and artiste.pseudoUtilisateur) ? artiste.pseudoUtilisateur : (artiste.getPseudoUtilisateur is defined ? artiste.getPseudoUtilisateur() : '') %}
+                            {% set photo = (artiste.urlPhotoUtilisateur is defined and artiste.urlPhotoUtilisateur) ? artiste.urlPhotoUtilisateur : (artiste.geturlPhotoUtilisateur is defined ? artiste.geturlPhotoUtilisateur() : null) %}
 
-                                <img src="{{ artiste.urlPhotoUtilisateur ?: 'https://placehold.co/112x112/e9b7a6/ffffff?text=' ~ artiste.pseudoUtilisateur|first|upper }}"
-                                     alt="Avatar de {{ artiste.pseudoUtilisateur }}"
-                                     class="rounded-circle border border-4 border-white"
-                                     style="width: 7rem; height: 7rem; object-fit: cover;">
-
-                                <span class="green-text-user text-center mt-2">
-                                    {{ artiste.pseudoUtilisateur|length > 8 ? artiste.pseudoUtilisateur|slice(0,8) ~ '...' : artiste.pseudoUtilisateur }}
-                                </span>
+                            <a href="/?controller=utilisateur&method=afficherProfilArtiste&pseudo={{ pseudo }}"
+                               class="artist-item flex-shrink-0 d-flex flex-column align-items-center text-decoration-none"
+                               title="{{ pseudo }}">
+                                <img src="{{ photo ?: 'https://placehold.co/160x160/e9b7a6/ffffff?text=' ~ pseudo|first|upper }}"
+                                     alt="Avatar de {{ pseudo }}"
+                                     class="artist-avatar"
+                                     onerror="this.onerror=null; this.src='https://placehold.co/160x160/e9b7a6/ffffff?text={{ pseudo|first|upper }}';">
+                                <p class="green-text mb-0">
+                                    {{ pseudo|length > 10 ? pseudo|slice(0,10) ~ '...' : pseudo }}
+                                </p>
                             </a>
                         {% endfor %}
                     {% else %}
-                        <p class="text-center text-white p-3 mb-0">
+                        <p class="text-center text-gray-500 p-3 mb-0">
                             Aucun artiste à découvrir pour le moment.
                         </p>
                     {% endif %}
@@ -61,8 +63,8 @@
 
             <div class="row g-4">
                 <div class="col-md-4">
-                    <div class="bg-paaxio-salmon p-4 rounded-4 shadow-lg text-center text-white">
-                        <p class="fs-5 fw-medium mb-1">Artistes inscrits cette semaine</p>
+                    <div class="bg-paaxio-salmon p-4 rounded-4 shadow-lg text-center text-paaxio-turquoise">
+                        <p class="fs-5 fw-medium mb-1 text-paaxio-turquoise">Artistes inscrits cette semaine</p>
                         <p class="display-5 fw-bold mb-0">
                             {{ stats.artistesInscritsSemaine }}
                         </p>
@@ -70,8 +72,8 @@
                 </div>
 
                 <div class="col-md-4">
-                    <div class="bg-paaxio-salmon p-4 rounded-4 shadow-lg text-center text-white">
-                        <p class="fs-5 fw-medium mb-1">Artistes trouvés</p>
+                    <div class="bg-paaxio-salmon p-4 rounded-4 shadow-lg text-center text-paaxio-turquoise">
+                        <p class="fs-5 fw-medium mb-1 text-paaxio-turquoise">Artistes trouvés</p>
                         <p class="display-5 fw-bold mb-0">
                             {{ stats.artistesTrouves }}
                         </p>
@@ -79,8 +81,8 @@
                 </div>
 
                 <div class="col-md-4">
-                    <div class="bg-paaxio-salmon p-4 rounded-4 shadow-lg text-center text-white">
-                        <p class="fs-5 fw-medium mb-1">Top Battles</p>
+                    <div class="bg-paaxio-salmon p-4 rounded-4 shadow-lg text-center text-paaxio-turquoise">
+                        <p class="fs-5 fw-medium mb-1 text-paaxio-turquoise">Top Battles</p>
                         <p class="fw-bold mb-0">
                             {{ stats.artistePlusBatailles }}
                         </p>
@@ -130,8 +132,9 @@
             </div>
         </section>
 
-    </main>
-</div>
+        </div>
+    </div>
+</main>
 {% endblock %}
 
 {% block script %}

@@ -4,8 +4,8 @@
 
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="/assets/css/profil_global.css">
-    <link rel="stylesheet" href="/assets/css/utilisateur_securite.css">
+    <link rel="stylesheet" href="{{ asset_version('/assets/css/profil_global.css') }}">
+    <link rel="stylesheet" href="{{ asset_version('/assets/css/utilisateur_securite.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -122,5 +122,5 @@
 {% endblock %}
 
 {% block script %}
-    <script src="assets/js/utilisateur_securite.js"></script>
+    <script src="{{ asset_version('/assets/js/utilisateur_securite.js') }}"></script>
 {% endblock %}
