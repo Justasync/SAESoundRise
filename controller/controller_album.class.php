@@ -352,6 +352,19 @@ class ControllerAlbum extends Controller
         $chansonDAO = new ChansonDAO($this->getPDO());
         $chansons = $chansonDAO->rechercherParAlbum((int)$idAlbum);
 
+        $emailUtilisateur = $_SESSION['user_email'] ?? null;
+        if ($emailUtilisateur) {
+            foreach ($chansons as $chanson) {
+                $sqlLike = "SELECT 1 FROM likeChanson WHERE idChanson = :idChanson AND emailUtilisateur = :emailUtilisateur LIMIT 1";
+                $stmtLike = $this->getPDO()->prepare($sqlLike);
+                $stmtLike->execute([
+                    ':idChanson' => $chanson->getIdChanson(),
+                    ':emailUtilisateur' => $emailUtilisateur
+                ]);
+                $chanson->setIsLiked((bool) $stmtLike->fetchColumn());
+            }
+        }
+
         // Déterminer le rôle de l'utilisateur à partir de la session
         $userRole = $_SESSION['user_role'] ?? null;
         $template = '';
