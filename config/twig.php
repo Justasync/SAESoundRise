@@ -67,3 +67,6 @@ $twig->addExtension(new \Twig\Extension\DebugExtension());
  * Décommenter la ligne ci-dessous pour l'activer.
  */
 // $twig->addExtension(new IntlExtension());
+
+require_once __DIR__ . '/AssetVersionExtension.php';
+$twig->addExtension(new AssetVersionExtension());

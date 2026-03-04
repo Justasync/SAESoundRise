@@ -3,7 +3,7 @@
 {% block title %}Gestion de mes Battles - Paaxio{% endblock %}
 
 {% block header %}
-    <link rel="stylesheet" href="assets/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="{{ asset_version('/assets/css/dataTables.bootstrap5.min.css') }}">
     <style>
         /* --- CONFIGURATION ERGONOMIQUE & CHARTE GRAPHIQUE --- */
         #battlesTable_wrapper {
@@ -177,9 +177,9 @@
 
 {% block script %}
     {{ parent() }}
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/jquery.dataTables.min.js"></script>
-    <script src="assets/js/dataTables.bootstrap5.min.js"></script>
+    <script src="{{ asset_version('/assets/js/jquery.min.js') }}"></script>
+    <script src="{{ asset_version('/assets/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset_version('/assets/js/dataTables.bootstrap5.min.js') }}"></script>
     <script>
         $(document).ready(function() {
             $('#battlesTable').DataTable({

@@ -3,7 +3,7 @@
 {% block header %}
 	{{ parent() }}
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="/assets/css/dashboard.css">
+	<link rel="stylesheet" href="{{ asset_version('/assets/css/dashboard.css') }}">
 {% endblock %}
 
 {% block content %}
