@@ -45,8 +45,8 @@ log_error() {
 
 # ===== CONFIGURATION =====
 # Configuration DB cible de restauration.
-DB_USER="root" # changer le nom d'utilisateur
-DB_PASSWORD="" # changer le mot de passe
+DB_USER="NomUser" # changer le nom d'utilisateur
+DB_PASSWORD="MotDePasse" # changer le mot de passe
 DB_NAME="paaxio_db" # changer le nom de la base de données
 BACKUP_DIR="dir/backup" # changer le chemin si besoin
 MYSQL="${MYSQL:-mysql}" # chemin du client mysql (optionnel)
