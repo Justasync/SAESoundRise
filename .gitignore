@@ -25,6 +25,8 @@ Thumbs.db
 
 # Fichiers de logs
 *.log
+/logs/
+scripts/logs/
 .cache/
 npm-debug.log*
 yarn-debug.log*
@@ -58,3 +60,4 @@ scripts/backups/
 scripts/backup_db.sh
 scripts/recovery_db.sh
 scripts/export_users.sh
+scripts/recovery_users.sh
