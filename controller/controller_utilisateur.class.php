@@ -121,6 +121,7 @@ class ControllerUtilisateur extends Controller
             $_SESSION['user_email'] = $utilisateur->getEmailUtilisateur();
             $_SESSION['user_pseudo'] = $utilisateur->getPseudoUtilisateur();
             $_SESSION['user_role'] = $utilisateur->getRoleUtilisateur()?->getRoleEnum();
+            $_SESSION['user_photo'] = $utilisateur->geturlPhotoUtilisateur();
             $_SESSION['user_logged_in'] = true;
 
             // Réponse de succès
@@ -1056,6 +1057,7 @@ class ControllerUtilisateur extends Controller
         if ($uDAO->update($user, $emailActuel)) {
             // Mettre à jour la session
             $_SESSION['user_pseudo'] = $user->getPseudoUtilisateur();
+            $_SESSION['user_photo'] = $user->geturlPhotoUtilisateur();
             
             // Redirection avec message de succès
             $_SESSION['user_email'] = $user->getEmailUtilisateur();

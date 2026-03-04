@@ -127,7 +127,11 @@
 						{% endif %}
 						<div class="dropdown">
 						<button class="btn text-secondary d-flex align-items-center justify-content-center" type="button" id="userDropdown" data-bs-toggle="dropdown">
-							<i class="bi bi-person-circle fs-4"></i>
+							{% if session.user_logged_in is defined and session.user_logged_in and session.user_photo is defined and session.user_photo and 'default' not in session.user_photo %}
+								<img src="{{ session.user_photo }}" alt="Photo de profil" class="rounded-circle" style="width:28px;height:28px;object-fit:cover;border:1.5px solid rgba(0,0,0,0.15);">
+							{% else %}
+								<i class="bi bi-person-circle fs-4"></i>
+							{% endif %}
 						</button>
 						<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown" style="min-width:180px;">
 							{% if session.user_logged_in is defined and session.user_logged_in %}
