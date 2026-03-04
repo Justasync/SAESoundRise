@@ -44,9 +44,9 @@ log_error() {
 
 # ===== CONFIGURATION =====
 # Compte admin MySQL pour lire mysql.user et les grants.
-DB_USER="${DB_USER:-root}"
+DB_USER="${DB_USER:-NomUser}"
 # Mot de passe admin (optionnel).
-DB_PASSWORD="${DB_PASSWORD:-}"
+DB_PASSWORD="${DB_PASSWORD:-MotDePasse}"
 # Chemin du binaire mysql.
 MYSQL="${MYSQL:-mysql}"
 # Dossier local de sortie users_*.sql.

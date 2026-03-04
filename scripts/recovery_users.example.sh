@@ -45,8 +45,8 @@ log_error() {
 
 # ===== CONFIGURATION =====
 # Compte admin pour exécuter le SQL users/grants.
-DB_USER="root" # changer le nom d'utilisateur admin MySQL
-DB_PASSWORD="" # changer le mot de passe admin MySQL
+DB_USER="NomUser" # changer le nom d'utilisateur admin MySQL
+DB_PASSWORD="MotDePasse" # changer le mot de passe admin MySQL
 BACKUP_DIR="dir/backup" # changer le chemin si besoin
 MYSQL="${MYSQL:-mysql}" # chemin du client mysql (optionnel)
 
