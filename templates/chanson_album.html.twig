@@ -109,7 +109,7 @@
 									<td class="py-3 px-4 track-duration">{{ (chanson.getDureeChanson() / 60)|round(0, 'floor') }}:{{ '%02d'|format(chanson.getDureeChanson() % 60) }}</td>
 									<td class="py-3 px-4 text-center">
 										<button title="Aimer la musique" class="btn btn-sm btn-link p-1 like-btn" data-id="{{ chanson.getIdChanson() }}" onclick="event.stopPropagation();">
-											<i class="bi {% if chanson.getIsLiked() %}bi-heart-fill text-danger{% else %}bi-heart paaxio-album-details__iconBtn{% endif %}" style="font-size: 1rem;"></i>
+											<i class="bi {% if chanson.getIsLiked() %}bi-heart-fill{% else %}bi-heart paaxio-album-details__iconBtn{% endif %}" style="font-size: 1rem;{% if chanson.getIsLiked() %} color: #2A9D8F;{% endif %}"></i>
 										</button>
 									</td>
 								</tr>
@@ -451,11 +451,11 @@
                 if (data.liked) {
                     icon.classList.remove('bi-heart');
                     icon.classList.add('bi-heart-fill');
-                    icon.classList.add('text-danger');
+                    icon.style.color = '#2A9D8F';
                 } else {
                     icon.classList.remove('bi-heart-fill');
                     icon.classList.add('bi-heart');
-                    icon.classList.remove('text-danger');
+                    icon.style.color = '';
 
                     if (window.location.search.includes('controller=utilisateur') && window.location.search.includes('method=afficherMesLikes')) {
                         if (row) row.remove();
