@@ -5,11 +5,11 @@
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="/assets/css/dashboard.css">
 {% endblock %}{% block content %}
-<main class="container-xl py-5">
+<main class="container-xl py-5 open-dashboard">
 	<div class="main-content-container bg-white">
 		<div class="container-fluid pt-4 pb-2">
 
-			<h1 class="text-center fw-bold mb-4" style="color: var(--paaxio-turquoise);">
+			<h1 class="text-center fw-bold mb-4 open-dashboard__title">
 				En tendance
 			</h1>
 
@@ -35,7 +35,7 @@
 
 			<h3 class="text-center fw-semibold mb-4 text-secondary pt-3">Chansons</h3>
 
-			<div class="d-flex gap-4 flex-wrap ps-5">
+			<div class="open-dashboard__song-grid">
 
 				{% if chansons is not empty %}
 					{% for chanson in chansons %}
@@ -56,8 +56,7 @@
 							&idAlbum={{ album is not null and (album.idAlbum is defined and album.idAlbum) 
 								? album.idAlbum 
 								: '' }}"
-						class="flex-shrink-0 bg-paaxio-salmon p-2 rounded-4 shadow-lg text-decoration-none hover-bg-terracotta"
-						style="width: 10.5rem; height: 13rem;">
+						class="flex-shrink-0 bg-paaxio-salmon p-2 rounded-4 shadow-lg text-decoration-none hover-bg-terracotta open-dashboard__song-card">
 
 							{# Mini pochette #}
 							<img
@@ -65,8 +64,7 @@
 									? album.urlPochetteAlbum 
 									: 'https://placehold.co/200x200/e9b7a6/ffffff?text=No+Img' }}"
 								alt="Pochette"
-								class="rounded-3 m-1 shadow-sm"
-								style="height: 65%; width: calc(100% - 0.5rem); object-fit: cover;"
+								class="rounded-3 m-1 shadow-sm open-dashboard__song-cover"
 							>
 
 							{# Titre + artiste #}

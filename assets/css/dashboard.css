@@ -2,11 +2,31 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
 :root {
-    --paaxio-beige: #fbf8f5;
-    --paaxio-salmon: #e9b7a6;
-    --paaxio-dark: #333333;
-    --paaxio-terracotta: #d68f7b;
-    --paaxio-border: #91c9c4;
+    /*
+      Palette officielle Paaxio:
+      - Terre cuite: #E07A5F
+      - Turquoise:   #2A9D8F
+      - Crème sable: #F4E1D2
+      - Nuit indigo: #264653
+      - Brun cacao:  #3D2C2E
+      - Blanc:       #FFFFFF
+
+      Notes de compat:
+      - Plusieurs pages utilisent encore les anciens tokens "--paaxio-salmon/--paaxio-beige".
+        On les mappe vers la palette officielle pour éviter les régressions.
+    */
+    --paaxio-terracotta: #E07A5F;
+    --paaxio-turquoise: #2A9D8F;
+    --paaxio-cream: #F4E1D2;
+    --paaxio-indigo: #264653;
+    --paaxio-cocoa: #3D2C2E;
+    --paaxio-white: #FFFFFF;
+
+    /* Anciens tokens (compat) */
+    --paaxio-beige: var(--paaxio-cream);
+    --paaxio-salmon: var(--paaxio-cream);
+    --paaxio-dark: var(--paaxio-cocoa);
+    --paaxio-border: #9FD3CC;
 }
 
 /* Conteneur principal dashboard */
@@ -18,9 +38,87 @@
 
 /* Main content */
 .main-content-container {
-    border: 1px solid var(--paaxio-border);
-    border-radius: 0.75rem;
+    background: var(--paaxio-white);
+    border: 1px solid #D8DEE0;
+    border-radius: 1rem;
     padding-bottom: 3rem;
+    box-shadow: 0 18px 45px rgba(38, 70, 83, 0.08);
+}
+
+/* ====== Open dashboard (tendance) ====== */
+.open-dashboard__title {
+    color: var(--paaxio-turquoise);
+    letter-spacing: -0.02em;
+}
+
+.open-dashboard__song-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr));
+    gap: 1.25rem;
+    padding: 0 0.5rem;
+}
+
+.open-dashboard__song-card {
+    width: 100%;
+    min-height: 13rem;
+    border: 1px solid #F7DED7;
+    background-color: var(--paaxio-cream);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.open-dashboard__song-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 35px rgba(61, 44, 46, 0.18);
+    border-color: #EEB6A7;
+}
+
+.open-dashboard__song-cover {
+    height: 65%;
+    width: calc(100% - 0.5rem);
+    object-fit: cover;
+}
+
+/* Harmonise les couleurs existantes utilisées par les dashboards */
+.green-text {
+    color: var(--paaxio-turquoise);
+}
+
+.green-text-user {
+    color: var(--paaxio-indigo);
+}
+
+.green-text-user:hover {
+    color: var(--paaxio-terracotta);
+}
+
+.album-title {
+    color: var(--paaxio-indigo);
+}
+
+.album-artist {
+    color: #298780;
+}
+
+/* Scroll horizontal: meilleur contraste + scrollbar plus discrète */
+.paaxio-horizontal-scroll,
+.artist-list-container {
+    background-color: #EBA997;
+}
+
+.paaxio-horizontal-scroll::-webkit-scrollbar,
+.artist-list-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.paaxio-horizontal-scroll::-webkit-scrollbar-thumb,
+.artist-list-container::-webkit-scrollbar-thumb {
+    background-color: #B3BEC3;
+    border-radius: 8px;
+}
+
+.paaxio-horizontal-scroll::-webkit-scrollbar-track,
+.artist-list-container::-webkit-scrollbar-track {
+    background: transparent;
 }
 
 /* Scroll horizontal collaboration */
@@ -42,13 +140,13 @@
 /* Card add-album */
 .add-album-card {
     background-color: transparent;
-    border: 3px dashed var(--paaxio-salmon);
+    border: 3px dashed #EEB6A7;
     color: var(--paaxio-dark);
     transition: all 0.2s ease;
 }
 
 .add-album-card:hover {
-    background-color: rgba(233, 183, 166, 0.15);
+    background-color: rgba(244, 225, 210, 0.45);
     border-color: var(--paaxio-terracotta);
     color: var(--paaxio-terracotta);
 }
@@ -61,7 +159,7 @@
 
 .add-album-card:hover .add-album-inner {
     background-color: rgba(255, 255, 255, 0.95);
-    border-color: var(--paaxio-salmon);
+    border-color: #F1C3B7;
 }
 
 .add-album-card .bi-plus-lg {
