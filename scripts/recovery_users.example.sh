@@ -1,36 +1,36 @@
 #!/bin/bash
 
 # ================================================================
-# SCRIPT : recovery_db.example.sh
-# OBJET  : Exemple prêt à copier pour restaurer une base depuis un backup
-#          local (.sql.gz) ou distant (optionnel).
+# SCRIPT : recovery_users.example.sh
+# OBJET  : Exemple prêt à copier pour restaurer les utilisateurs MySQL/
+#          MariaDB depuis un export users_*.sql local ou distant.
 #
 # UTILISATION TYPE :
-# - cp recovery_db.example.sh recovery_db.sh
-# - Adapter les variables DB et chemins de backup
-# - Exécuter le script sur la base cible
+# - cp recovery_users.example.sh recovery_users.sh
+# - Adapter les variables de connexion et de chemin
+# - Exécuter le script avec un compte admin MySQL
 #
 # SORTIES :
-# - Base restaurée
+# - Comptes utilisateurs restaurés
 # - Logs horodatés dans le dossier logs/
 # ================================================================
 
 # ===== COMMANDE POUR L'UTILISER =====
-# 1. Copier ce fichier : cp recovery_db.example.sh recovery_db.sh
-# 2. Rendre le script exécutable : chmod +x recovery_db.sh
+# 1. Copier ce fichier : cp recovery_users.example.sh recovery_users.sh
+# 2. Rendre le script exécutable : chmod +x recovery_users.sh
 # 3. Ajouter MySQL au PATH si nécessaire (ex: export PATH=$PATH:/chemin/vers/mysql/bin)
 # 4. Tester si ça a bien fonctionné : mysql --version
-# 5. Exécuter le script : ./recovery_db.sh
+# 5. Exécuter le script : ./recovery_users.sh
 
-# Nom du script pour le log.
+# Nom du script pour la journalisation.
 SCRIPT_NAME="$(basename "$0" .sh)"
 # Dossier absolu du script.
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-# Dossier logs local.
+# Dossier local des logs.
 LOG_DIR="$SCRIPT_DIR/logs"
-# Créer le dossier logs si besoin.
+# Créer logs/ si nécessaire.
 mkdir -p "$LOG_DIR"
-# Fichier log journalier.
+# Fichier log du jour.
 LOG_FILE="$LOG_DIR/${SCRIPT_NAME}_$(date +"%Y-%m-%d").log"
 
 # Logger INFO.
@@ -44,15 +44,14 @@ log_error() {
 }
 
 # ===== CONFIGURATION =====
-# Configuration DB cible de restauration.
-DB_USER="NomUser" # changer le nom d'utilisateur
-DB_PASSWORD="MotDePasse" # changer le mot de passe
-DB_NAME="paaxio_db" # changer le nom de la base de données
+# Compte admin pour exécuter le SQL users/grants.
+DB_USER="NomUser" # changer le nom d'utilisateur admin MySQL
+DB_PASSWORD="MotDePasse" # changer le mot de passe admin MySQL
 BACKUP_DIR="dir/backup" # changer le chemin si besoin
 MYSQL="${MYSQL:-mysql}" # chemin du client mysql (optionnel)
 
 # ===== SERVEUR EXTERNE (OPTIONNEL) =====
-ENABLE_REMOTE_RESTORE="false" # true pour télécharger le dernier backup depuis serveur externe
+ENABLE_REMOTE_RESTORE="false" # true pour télécharger le dernier export users depuis serveur externe
 REMOTE_USER="backup_user"
 REMOTE_HOST="backup.example.com"
 REMOTE_PORT="22"
@@ -76,22 +75,14 @@ if [ "$MYSQL" = "mysql" ] && ! command -v mysql &> /dev/null; then
     done
 fi
 
-# Vérifier mysql (import SQL).
+# Vérifier mysql.
 if [ ! -x "$MYSQL" ] && ! command -v "$MYSQL" &> /dev/null
 then
     log_error "mysql n'est pas accessible via MYSQL=$MYSQL"
     exit 1
 fi
 
-# ===== VERIFICATION gunzip =====
-# Vérifier gunzip (lecture .sql.gz).
-if ! command -v gunzip &> /dev/null
-then
-    log_error "gunzip n'est pas installé ou n'est pas dans le PATH."
-    exit 1
-fi
-
-# Vérifier ssh/scp uniquement en mode distant.
+# Vérifier ssh/scp en mode distant uniquement.
 if [ "$ENABLE_REMOTE_RESTORE" = "true" ]; then
     if ! command -v scp &> /dev/null || ! command -v ssh &> /dev/null
     then
@@ -101,16 +92,16 @@ if [ "$ENABLE_REMOTE_RESTORE" = "true" ]; then
 fi
 
 # ===== VERIFICATION DOSSIER =====
-# Vérifier le dossier local de backup.
+# Vérifier existence du dossier local de backup.
 if [ ! -d "$BACKUP_DIR" ]; then
     log_error "Le dossier de backup n'existe pas : $BACKUP_DIR"
     exit 1
 fi
 
 # ===== TELECHARGEMENT DEPUIS SERVEUR EXTERNE (OPTIONNEL) =====
-# En mode distant, récupérer le dernier backup avant restore.
+# Télécharger le dernier users_*.sql distant si activé.
 if [ "$ENABLE_REMOTE_RESTORE" = "true" ]; then
-    log_info "Recherche du dernier backup distant..."
+    log_info "Recherche du dernier export users distant..."
 
     # Préparer options SSH.
     SSH_OPTS="-p $REMOTE_PORT"
@@ -118,44 +109,44 @@ if [ "$ENABLE_REMOTE_RESTORE" = "true" ]; then
         SSH_OPTS="$SSH_OPTS -i $SSH_KEY"
     fi
 
-    # Sélectionner le dernier backup distant .sql.gz.
-    REMOTE_BACKUP=$(ssh $SSH_OPTS "$REMOTE_USER@$REMOTE_HOST" "ls -t '$REMOTE_DIR'/*.sql.gz 2>/dev/null | head -n 1")
+    # Rechercher le dernier users_*.sql distant.
+    REMOTE_USERS_FILE=$(ssh $SSH_OPTS "$REMOTE_USER@$REMOTE_HOST" "ls -t '$REMOTE_DIR'/users_*.sql 2>/dev/null | head -n 1")
 
-    if [ -z "$REMOTE_BACKUP" ]; then
-        log_error "Aucun backup .sql.gz trouvé sur le serveur externe"
+    if [ -z "$REMOTE_USERS_FILE" ]; then
+        log_error "Aucun fichier users_*.sql trouvé sur le serveur externe"
         exit 1
     fi
 
-    log_info "Backup distant sélectionné : $REMOTE_BACKUP"
-    # Télécharger ce backup côté local.
-    scp $SSH_OPTS "$REMOTE_USER@$REMOTE_HOST:$REMOTE_BACKUP" "$BACKUP_DIR/" || {
-        log_error "Échec du téléchargement du backup distant."
+    log_info "Fichier distant sélectionné : $REMOTE_USERS_FILE"
+    # Télécharger le fichier users distant vers BACKUP_DIR.
+    scp $SSH_OPTS "$REMOTE_USER@$REMOTE_HOST:$REMOTE_USERS_FILE" "$BACKUP_DIR/" || {
+        log_error "Échec du téléchargement de l'export users distant."
         exit 1
     }
 fi
 
-# ===== SELECTION DERNIER BACKUP =====
-# Sélectionner le dernier backup local .sql.gz.
-BACKUP_FILE=$(ls -t "$BACKUP_DIR"/*.sql.gz 2>/dev/null | head -n 1)
+# ===== SELECTION DERNIER EXPORT USERS =====
+# Sélectionner le dernier export users local.
+USERS_FILE=$(ls -t "$BACKUP_DIR"/users_*.sql 2>/dev/null | head -n 1)
 
-if [ -z "$BACKUP_FILE" ]; then
-    log_error "Aucun backup .sql.gz trouvé dans $BACKUP_DIR"
+if [ -z "$USERS_FILE" ]; then
+    log_error "Aucun fichier users_*.sql trouvé dans $BACKUP_DIR"
     exit 1
 fi
 
-log_info "Backup sélectionné : $BACKUP_FILE"
-log_info "Restauration de la base $DB_NAME en cours..."
+log_info "Fichier sélectionné : $USERS_FILE"
+log_info "Restauration des utilisateurs MySQL en cours..."
 
 # ===== RESTAURATION =====
-# Restaurer la base cible à partir de l'archive.
-gunzip -c "$BACKUP_FILE" | "$MYSQL" -u "$DB_USER" -p"$DB_PASSWORD" "$DB_NAME" 2>error_restore_db.log
+# Exécuter la restauration des users/grants.
+"$MYSQL" -u "$DB_USER" -p"$DB_PASSWORD" < "$USERS_FILE" 2>error_restore_users.log
 
 # ===== VERIFICATION RESULTAT =====
 if [ $? -eq 0 ]; then
-    log_info "Restauration BDD réussie."
+    log_info "Restauration des utilisateurs réussie."
 else
-    log_error "Erreur lors de la restauration BDD."
+    log_error "Erreur lors de la restauration des utilisateurs."
     log_error "Détail de l'erreur :"
-    cat error_restore_db.log | tee -a "$LOG_FILE"
+    cat error_restore_users.log | tee -a "$LOG_FILE"
     exit 1
 fi
