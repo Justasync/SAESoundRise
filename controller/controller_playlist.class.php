@@ -64,21 +64,15 @@ class ControllerPlaylist extends Controller
         // Récupération des chansons de la playlist
         $chansons = $managerPlaylist->getChansonsByPlaylist($idPlaylist, $_SESSION['user_email'] ?? null);
 
-        // Conversion de la playlist en objet stdClass pour utiliser avec le template
-        $playlistObj = (object) [
-            "getTitreAlbum" => function () use ($playlist) {
-                return $playlist->getNomPlaylist();
-            },
-            "getUrlImageAlbum" => function () {
-                return null;
-            },
-            "getArtisteAlbum" => function () {
-                return "Ma Playlist";
-            },
-            "getDateSortieAlbum" => function () {
-                return null;
-            },
-        ];
+        $nomPlaylist = $playlist->getNomPlaylist();
+        $playlistObj = new class($nomPlaylist) {
+            private string $nom;
+            public function __construct(string $nom) { $this->nom = $nom; }
+            public function getTitreAlbum(): string { return $this->nom; }
+            public function getUrlImageAlbum(): ?string { return null; }
+            public function getArtisteAlbum(): string { return ''; }
+            public function getDateSortieAlbum(): ?string { return null; }
+        };
 
         // Chargement du template
         $template = $this->getTwig()->load('chanson_album.html.twig');

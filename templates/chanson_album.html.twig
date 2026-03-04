@@ -28,15 +28,17 @@
 				</div>
 
 				<div class="flex-grow-1">
-					<span class="text-sm fw-light text-uppercase paaxio-album-details__kicker">Album</span>
+					<span class="text-sm fw-light text-uppercase paaxio-album-details__kicker">{{ page.name == 'playlist' ? 'Playlist' : 'Album' }}</span>
 					<h2 class="display-4 fw-bolder mt-1 mb-2 paaxio-album-details__title" id="album-title">{{ album.getTitreAlbum() }}</h2>
 					<p class="fs-5 fw-light paaxio-album-details__meta" id="album-meta">
-						{{ album.getArtisteAlbum() }}
-						{% if album.getDateSortieAlbum() %}
+						{% if page.name != 'playlist' %}
+							{{ album.getArtisteAlbum() }}
+							{% if album.getDateSortieAlbum() %}
+								·
+								{{ album.getDateSortieAlbum()|date('Y') }}
+							{% endif %}
 							·
-							{{ album.getDateSortieAlbum()|date('Y') }}
 						{% endif %}
-						·
 						{{ chansons|length }}
 						titre{{ chansons|length > 1 ? 's' : '' }},
 						{{ totalMinutes }}
