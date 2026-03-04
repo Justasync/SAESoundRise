@@ -24,7 +24,7 @@
 				<!-- Photo Profil -->
 				<label class="form-label d-block">Photo de profil</label>
 				<div class="profile-pic-round mb-3">
-					<img src="/{{ user.urlPhotoUtilisateur ?: 'assets/images/profile_pictures/default.png' }}" alt="Photo">
+					<img src="./{{ user.urlPhotoUtilisateur ?: './assets/images/profile_pictures/default.png' }}" alt="Photo">
 				</div>
 				<input
 				type="file" name="photo" class="form-control form-control-sm mb-4" style="max-width: 300px;">
