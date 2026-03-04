@@ -65,11 +65,13 @@ class ControllerPlaylist extends Controller
         $chansons = $managerPlaylist->getChansonsByPlaylist($idPlaylist, $_SESSION['user_email'] ?? null);
 
         $nomPlaylist = $playlist->getNomPlaylist();
-        $playlistObj = new class($nomPlaylist) {
+        $imagePlaylist = $managerPlaylist->recupererPochetteAuto($idPlaylist);
+        $playlistObj = new class($nomPlaylist, $imagePlaylist) {
             private string $nom;
-            public function __construct(string $nom) { $this->nom = $nom; }
+            private ?string $image;
+            public function __construct(string $nom, ?string $image) { $this->nom = $nom; $this->image = $image; }
             public function getTitreAlbum(): string { return $this->nom; }
-            public function getUrlImageAlbum(): ?string { return null; }
+            public function getUrlImageAlbum(): ?string { return $this->image; }
             public function getArtisteAlbum(): string { return ''; }
             public function getDateSortieAlbum(): ?string { return null; }
         };
