@@ -85,6 +85,19 @@
     padding: 0.25rem 0.25rem 0.5rem;
 }
 
+.open-dashboard .artist-item p {
+    max-width: 100%;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(38, 70, 83, 0.12);
+    color: var(--paaxio-indigo);
+    font-weight: 700;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    box-shadow: 0 6px 14px rgba(61, 44, 46, 0.12);
+}
+
 .open-dashboard .artist-avatar {
     width: 8.25rem;
     height: 8.25rem;
