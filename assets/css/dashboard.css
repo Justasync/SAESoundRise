@@ -78,6 +78,28 @@
     object-fit: cover;
 }
 
+/* Top artistes: plus grand, style "carousel" (Spotify-like) */
+.open-dashboard .artist-item {
+    width: 9.5rem;
+    gap: 0.5rem;
+    padding: 0.25rem 0.25rem 0.5rem;
+}
+
+.open-dashboard .artist-avatar {
+    width: 8.25rem;
+    height: 8.25rem;
+    object-fit: cover;
+    border-radius: 999px;
+    border: 4px solid var(--paaxio-white);
+    box-shadow: 0 10px 22px rgba(61, 44, 46, 0.18);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.open-dashboard .artist-item:hover .artist-avatar {
+    transform: scale(1.04);
+    box-shadow: 0 16px 32px rgba(61, 44, 46, 0.22);
+}
+
 /* Harmonise les couleurs existantes utilisées par les dashboards */
 .green-text {
     color: var(--paaxio-turquoise);
@@ -190,22 +212,6 @@
 
 .paaxio-card:hover .album-cover img {
     transform: scale(1.05);
-}
-
-/* Artist avatar */
-.artist-avatar {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 3px solid white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.artist-item:hover .artist-avatar {
-    transform: scale(1.05);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
 }
 
 /* Texte overflow propre */
