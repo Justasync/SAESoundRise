@@ -59,6 +59,12 @@ REMOTE_PORT="22"
 REMOTE_DIR="/srv/backups/paaxio"
 SSH_KEY="" # ex: /home/user/.ssh/id_rsa (laisser vide pour clé par défaut)
 
+# Option mot de passe construite conditionnellement.
+MYSQL_PWD_OPT=""
+if [ -n "$DB_PASSWORD" ]; then
+    MYSQL_PWD_OPT="-p$DB_PASSWORD"
+fi
+
 # ===== VERIFICATION mysql =====
 # Si MYSQL n'est pas fourni et introuvable dans le PATH, tenter des chemins locaux usuels.
 if [ "$MYSQL" = "mysql" ] && ! command -v mysql &> /dev/null; then
@@ -148,7 +154,7 @@ log_info "Restauration de la base $DB_NAME en cours..."
 
 # ===== RESTAURATION =====
 # Restaurer la base cible à partir de l'archive.
-gunzip -c "$BACKUP_FILE" | "$MYSQL" -u "$DB_USER" -p"$DB_PASSWORD" "$DB_NAME" 2>error_restore_db.log
+gunzip -c "$BACKUP_FILE" | "$MYSQL" -u "$DB_USER" $MYSQL_PWD_OPT "$DB_NAME" 2>error_restore_db.log
 
 # ===== VERIFICATION RESULTAT =====
 if [ $? -eq 0 ]; then

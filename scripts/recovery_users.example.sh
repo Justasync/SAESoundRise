@@ -58,6 +58,12 @@ REMOTE_PORT="22"
 REMOTE_DIR="/srv/backups/paaxio"
 SSH_KEY="" # ex: /home/user/.ssh/id_rsa (laisser vide pour clé par défaut)
 
+# Option mot de passe construite conditionnellement.
+MYSQL_PWD_OPT=""
+if [ -n "$DB_PASSWORD" ]; then
+    MYSQL_PWD_OPT="-p$DB_PASSWORD"
+fi
+
 # ===== VERIFICATION mysql =====
 # Si MYSQL n'est pas fourni et introuvable dans le PATH, tenter des chemins locaux usuels.
 if [ "$MYSQL" = "mysql" ] && ! command -v mysql &> /dev/null; then
@@ -139,7 +145,7 @@ log_info "Restauration des utilisateurs MySQL en cours..."
 
 # ===== RESTAURATION =====
 # Exécuter la restauration des users/grants.
-"$MYSQL" -u "$DB_USER" -p"$DB_PASSWORD" < "$USERS_FILE" 2>error_restore_users.log
+"$MYSQL" -u "$DB_USER" $MYSQL_PWD_OPT < "$USERS_FILE" 2>error_restore_users.log
 
 # ===== VERIFICATION RESULTAT =====
 if [ $? -eq 0 ]; then
