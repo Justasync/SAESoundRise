@@ -108,7 +108,7 @@
 									<td class="py-3 px-4 d-none d-sm-table-cell track-listens">{{ chanson.getNbEcouteChanson() ?? 0 }}</td>
 									<td class="py-3 px-4 track-duration">{{ (chanson.getDureeChanson() / 60)|round(0, 'floor') }}:{{ '%02d'|format(chanson.getDureeChanson() % 60) }}</td>
 									<td class="py-3 px-4 text-center">
-										<button title="Aimer la musique" class="btn btn-sm btn-link p-1 like-btn" data-id="{{ chanson.getIdChanson() }}" onclick="event.stopPropagation();">
+										<button title="Aimer la musique" class="btn btn-sm btn-link p-1 like-btn" data-id="{{ chanson.getIdChanson() }}">
 											<i class="bi {% if chanson.getIsLiked() %}bi-heart-fill{% else %}bi-heart paaxio-album-details__iconBtn{% endif %}" style="font-size: 1rem;{% if chanson.getIsLiked() %} color: #2A9D8F;{% endif %}"></i>
 										</button>
 									</td>
