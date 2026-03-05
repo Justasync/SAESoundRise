@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file modeles/playlist.dao.php
  * @brief DAO pour la gestion des playlists
@@ -191,6 +192,30 @@ class PlaylistDAO
             $map[(int)$row['idChanson']][] = (int)$row['idPlaylist'];
         }
         return $map;
+    }
+
+    /**
+     * Supprime une chanson d'une playlist.
+     *
+     * @param int $idPlaylist L'ID de la playlist.
+     * @param int $idChanson L'ID de la chanson à retirer.
+     * @return bool true si la suppression a réussi, false si la chanson n'était pas dans la playlist.
+     */
+    public function supprimerChansonPlaylist(int $idPlaylist, int $idChanson): bool
+    {
+        $sql = "DELETE FROM chansonPlaylist WHERE idPlaylist = :idPlaylist AND idChanson = :idChanson";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':idPlaylist' => $idPlaylist, ':idChanson' => $idChanson]);
+
+        if ($stmt->rowCount() === 0) {
+            return false;
+        }
+
+        $sqlUpdate = "UPDATE playlist SET dateDerniereModification = NOW() WHERE idPlaylist = :idPlaylist";
+        $stmtUpdate = $this->pdo->prepare($sqlUpdate);
+        $stmtUpdate->execute([':idPlaylist' => $idPlaylist]);
+
+        return true;
     }
 
     /**

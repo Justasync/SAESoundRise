@@ -69,11 +69,27 @@ class ControllerPlaylist extends Controller
         $playlistObj = new class($nomPlaylist, $imagePlaylist) {
             private string $nom;
             private ?string $image;
-            public function __construct(string $nom, ?string $image) { $this->nom = $nom; $this->image = $image; }
-            public function getTitreAlbum(): string { return $this->nom; }
-            public function getUrlImageAlbum(): ?string { return $this->image; }
-            public function getArtisteAlbum(): string { return ''; }
-            public function getDateSortieAlbum(): ?string { return null; }
+            public function __construct(string $nom, ?string $image)
+            {
+                $this->nom = $nom;
+                $this->image = $image;
+            }
+            public function getTitreAlbum(): string
+            {
+                return $this->nom;
+            }
+            public function getUrlImageAlbum(): ?string
+            {
+                return $this->image;
+            }
+            public function getArtisteAlbum(): string
+            {
+                return '';
+            }
+            public function getDateSortieAlbum(): ?string
+            {
+                return null;
+            }
         };
 
         // Chargement du template
@@ -85,7 +101,8 @@ class ControllerPlaylist extends Controller
                 'description' => "Playlist dans Paaxio"
             ],
             'album' => $playlistObj,
-            'chansons' => $chansons
+            'chansons' => $chansons,
+            'idPlaylist' => $idPlaylist
         ]);
     }
 
@@ -137,6 +154,58 @@ class ControllerPlaylist extends Controller
             echo json_encode(['success' => true, 'message' => 'Chanson ajoutée à la playlist']);
         } else {
             echo json_encode(['success' => false, 'message' => 'Cette chanson est déjà dans la playlist']);
+        }
+        exit;
+    }
+
+    /**
+     * @brief Supprime une chanson d'une playlist de l'utilisateur connecté (AJAX).
+     *
+     * Attend une requête POST avec idPlaylist et idChanson.
+     * Retourne une réponse JSON.
+     *
+     * @return void
+     */
+    public function supprimerChanson()
+    {
+        header('Content-Type: application/json');
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            echo json_encode(['success' => false, 'message' => 'Méthode non autorisée']);
+            exit;
+        }
+
+        if (!isset($_SESSION['user_logged_in']) || !$_SESSION['user_logged_in']) {
+            http_response_code(401);
+            echo json_encode(['success' => false, 'message' => 'Non authentifié']);
+            exit;
+        }
+
+        $idPlaylist = isset($_POST['idPlaylist']) ? (int)$_POST['idPlaylist'] : 0;
+        $idChanson = isset($_POST['idChanson']) ? (int)$_POST['idChanson'] : 0;
+
+        if (!$idPlaylist || !$idChanson) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Paramètres manquants']);
+            exit;
+        }
+
+        $managerPlaylist = new PlaylistDAO($this->getPdo());
+        $playlist = $managerPlaylist->findFromUser($idPlaylist, $_SESSION['user_email'] ?? null);
+
+        if (!$playlist) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'message' => 'Playlist introuvable ou accès refusé']);
+            exit;
+        }
+
+        $removed = $managerPlaylist->supprimerChansonPlaylist($idPlaylist, $idChanson);
+
+        if ($removed) {
+            echo json_encode(['success' => true, 'message' => 'Chanson retirée de la playlist']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Cette chanson n\'est pas dans la playlist']);
         }
         exit;
     }

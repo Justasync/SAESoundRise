@@ -109,11 +109,16 @@
 									<td class="py-3 px-4 track-title">{{ chanson.getTitreChanson() }}</td>
 									<td class="py-3 px-4 d-none d-sm-table-cell track-listens">{{ chanson.getNbEcouteChanson() ?? 0 }}</td>
 									<td class="py-3 px-4 track-duration">{{ (chanson.getDureeChanson() / 60)|round(0, 'floor') }}:{{ '%02d'|format(chanson.getDureeChanson() % 60) }}</td>
-									<td class="py-3 px-4 text-center">
-										<button title="Aimer la musique" class="btn btn-sm btn-link p-1 like-btn" data-id="{{ chanson.getIdChanson() }}">
-											<i class="bi {% if chanson.getIsLiked() %}bi-heart-fill{% else %}bi-heart paaxio-album-details__iconBtn{% endif %}" style="font-size: 1rem;{% if chanson.getIsLiked() %} color: #2A9D8F;{% endif %}"></i>
+								<td class="py-3 px-4 text-center d-flex align-items-center justify-content-center gap-1">
+									<button title="Aimer la musique" class="btn btn-sm btn-link p-1 like-btn" data-id="{{ chanson.getIdChanson() }}">
+										<i class="bi {% if chanson.getIsLiked() %}bi-heart-fill{% else %}bi-heart paaxio-album-details__iconBtn{% endif %}" style="font-size: 1rem;{% if chanson.getIsLiked() %} color: #2A9D8F;{% endif %}"></i>
+									</button>
+									{% if page.name == 'playlist' and idPlaylist is defined %}
+										<button title="Retirer de la playlist" class="btn btn-sm btn-link p-1 remove-from-playlist-btn paaxio-album-details__iconBtn" data-chanson-id="{{ chanson.getIdChanson() }}" data-playlist-id="{{ idPlaylist }}" onclick="event.stopPropagation()">
+											<i class="bi bi-dash-circle" style="font-size: 1rem;"></i>
 										</button>
-									</td>
+									{% endif %}
+								</td>
 								</tr>
 							{% endfor %}
 						{% else %}
@@ -129,6 +134,16 @@
 	</main>
 
 	<audio id="audio-player"></audio>
+
+	<!-- Toast container -->
+	<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1090;">
+		<div id="playlist-toast" class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true">
+			<div class="d-flex">
+				<div class="toast-body" id="playlist-toast-body"></div>
+				<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Fermer"></button>
+			</div>
+		</div>
+	</div>
 
 {% endblock %}
 
@@ -490,6 +505,71 @@
             .catch(err => {
                 console.error('Erreur like:', err);
                 if (icon) icon.classList.add('text-muted');
+            });
+        });
+
+        // --- Toast helper ---
+        function showPlaylistToast(message, success) {
+            const toastEl = document.getElementById('playlist-toast');
+            const toastBody = document.getElementById('playlist-toast-body');
+            toastBody.textContent = message;
+            toastEl.className = 'toast align-items-center border-0 text-white ' + (success ? 'bg-success' : 'bg-danger');
+            const toast = new bootstrap.Toast(toastEl, { delay: 3000 });
+            toast.show();
+        }
+
+        // --- Suppression d'une chanson de la playlist ---
+        document.querySelectorAll('.remove-from-playlist-btn').forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const idChanson = btn.dataset.chansonId;
+                const idPlaylist = btn.dataset.playlistId;
+                const row = btn.closest('tr');
+
+                fetch('/?controller=playlist&method=supprimerChanson', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `idChanson=${encodeURIComponent(idChanson)}&idPlaylist=${encodeURIComponent(idPlaylist)}`
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        showPlaylistToast('Chanson retirée de la playlist', true);
+
+                        if (row) row.remove();
+
+                        const indexInPlaylist = playlist.findIndex(track => track.id == idChanson);
+                        if (indexInPlaylist !== -1) {
+                            playlist.splice(indexInPlaylist, 1);
+
+                            if (currentTrackIndex === indexInPlaylist) {
+                                if (playlist.length > 0) {
+                                    const nextIndex = Math.min(indexInPlaylist, playlist.length - 1);
+                                    loadTrack(nextIndex);
+                                } else {
+                                    audioPlayer.pause();
+                                    audioPlayer.currentTime = 0;
+                                    progressBar.style.width = '0%';
+                                    currentTimeEl.textContent = '0:00';
+                                    currentTrackTitleEl.textContent = 'Piste en cours : Aucune';
+                                    currentTrackIndex = -1;
+                                    isPlaying = false;
+                                    playPauseIcon.classList.replace('bi-pause-fill', 'bi-play-fill');
+                                }
+                            } else if (currentTrackIndex > indexInPlaylist) {
+                                currentTrackIndex--;
+                            }
+                        }
+                    } else {
+                        showPlaylistToast(data.message || 'Erreur lors de la suppression', false);
+                    }
+                })
+                .catch(err => {
+                    console.error('Erreur suppression playlist:', err);
+                    showPlaylistToast('Erreur réseau', false);
+                });
             });
         });
     </script>
