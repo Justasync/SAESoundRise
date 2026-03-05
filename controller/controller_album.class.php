@@ -380,9 +380,12 @@ class ControllerAlbum extends Controller
         }
 
         $playlists = [];
+        $chansonPlaylistMap = [];
         if ($emailUtilisateur) {
             $managerPlaylist = new PlaylistDAO($this->getPdo());
             $playlists = $managerPlaylist->findAllFromUser($emailUtilisateur);
+            $chansonIds = array_map(fn($c) => $c->getIdChanson(), $chansons);
+            $chansonPlaylistMap = $managerPlaylist->getPlaylistIdsForChansons($chansonIds, $emailUtilisateur);
         }
 
         $template = $this->getTwig()->load($template);
@@ -392,6 +395,7 @@ class ControllerAlbum extends Controller
             'chansonSelected' => $idChanson ? (int)$idChanson : null,
             'session' => $_SESSION,
             'playlists' => $playlists,
+            'chansonPlaylistMap' => $chansonPlaylistMap,
         ]);
     }
 

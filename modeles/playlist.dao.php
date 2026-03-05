@@ -158,6 +158,42 @@ class PlaylistDAO
     }
 
     /**
+     * Pour un ensemble de chansons et un utilisateur, retourne un tableau
+     * chansonId => [playlistId, ...] indiquant dans quelles playlists
+     * de l'utilisateur chaque chanson se trouve déjà.
+     *
+     * @param array $chansonIds Liste d'IDs de chansons.
+     * @param string $emailUtilisateur Email du propriétaire des playlists.
+     * @return array<int, int[]> Map chansonId => tableau de playlistIds.
+     */
+    public function getPlaylistIdsForChansons(array $chansonIds, string $emailUtilisateur): array
+    {
+        if (empty($chansonIds)) {
+            return [];
+        }
+
+        $placeholders = implode(',', array_fill(0, count($chansonIds), '?'));
+        $sql = "
+            SELECT cp.idChanson, cp.idPlaylist
+            FROM chansonPlaylist cp
+            JOIN playlist p ON cp.idPlaylist = p.idPlaylist
+            WHERE p.emailProprietaire = ?
+              AND cp.idChanson IN ($placeholders)
+        ";
+
+        $params = array_merge([$emailUtilisateur], array_map('intval', $chansonIds));
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $map = [];
+        foreach ($rows as $row) {
+            $map[(int)$row['idChanson']][] = (int)$row['idPlaylist'];
+        }
+        return $map;
+    }
+
+    /**
      * Ajoute une chanson à une playlist.
      * La position est calculée automatiquement (dernière position + 1).
      *
