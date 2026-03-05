@@ -129,27 +129,26 @@
 									</button>
 									{% if session is defined and session.user_logged_in is defined %}
 										{% set existingIds = chansonPlaylistMap[chanson.getIdChanson()] ?? [] %}
-										{% set availablePlaylists = [] %}
-										{% if playlists is defined %}
-											{% for playlist in playlists %}
-												{% if playlist.getIdPlaylist() not in existingIds %}
-													{% set availablePlaylists = availablePlaylists|merge([playlist]) %}
-												{% endif %}
-											{% endfor %}
-										{% endif %}
 										<div class="dropdown add-to-playlist-dropdown">
 											<button class="btn btn-sm btn-link p-1 paaxio-album-details__iconBtn" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Ajouter à une playlist" onclick="event.stopPropagation()">
 												<i class="bi bi-plus-circle" style="font-size: 1rem;"></i>
 											</button>
 											<ul class="dropdown-menu dropdown-menu-end">
 												<li><h6 class="dropdown-header">Ajouter à une playlist</h6></li>
-												{% for playlist in availablePlaylists %}
-													<li>
-														<a class="dropdown-item add-to-playlist-item" href="#" data-chanson-id="{{ chanson.getIdChanson() }}" data-playlist-id="{{ playlist.getIdPlaylist() }}">
-															{{ playlist.getNomPlaylist() }}
-														</a>
-													</li>
-												{% endfor %}
+												{% if playlists is defined %}
+													{% for playlist in playlists %}
+														<li>
+															<a class="dropdown-item toggle-playlist-item d-flex align-items-center justify-content-between" href="#"
+															   data-chanson-id="{{ chanson.getIdChanson() }}"
+															   data-playlist-id="{{ playlist.getIdPlaylist() }}"
+															   data-playlist-name="{{ playlist.getNomPlaylist()|e('html_attr') }}"
+															   data-in-playlist="{{ playlist.getIdPlaylist() in existingIds ? '1' : '0' }}">
+																<span>{{ playlist.getNomPlaylist() }}</span>
+																<i class="bi bi-check-lg ms-2 {% if playlist.getIdPlaylist() not in existingIds %}d-none{% endif %}" style="color:#2A9D8F;"></i>
+															</a>
+														</li>
+													{% endfor %}
+												{% endif %}
 												<li><hr class="dropdown-divider"></li>
 												<li>
 													<a class="dropdown-item create-playlist-from-song" href="#" data-chanson-id="{{ chanson.getIdChanson() }}">
@@ -718,18 +717,21 @@ function showPlaylistToast(message, success) {
     toast.show();
 }
 
-// --- Ajout à une playlist ---
-document.querySelectorAll('.add-to-playlist-item').forEach(function(item) {
+// --- Toggle chanson dans une playlist ---
+document.querySelectorAll('.toggle-playlist-item').forEach(function(item) {
     item.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
 
         const idChanson = item.dataset.chansonId;
         const idPlaylist = item.dataset.playlistId;
-        const playlistName = item.textContent.trim();
-        const dropdown = item.closest('.add-to-playlist-dropdown');
+        const playlistName = item.dataset.playlistName;
+        const isIn = item.dataset.inPlaylist === '1';
+        const checkIcon = item.querySelector('.bi-check-lg');
 
-        fetch('/?controller=playlist&method=ajouterChanson', {
+        const method = isIn ? 'supprimerChanson' : 'ajouterChanson';
+
+        fetch(`/?controller=playlist&method=${method}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: `idChanson=${encodeURIComponent(idChanson)}&idPlaylist=${encodeURIComponent(idPlaylist)}`
@@ -737,16 +739,21 @@ document.querySelectorAll('.add-to-playlist-item').forEach(function(item) {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                showPlaylistToast(`Ajouté à « ${playlistName} »`, true);
-
-                const li = item.closest('li');
-                if (li) li.remove();
+                if (isIn) {
+                    item.dataset.inPlaylist = '0';
+                    checkIcon.classList.add('d-none');
+                    showPlaylistToast(`Retiré de « ${playlistName} »`, true);
+                } else {
+                    item.dataset.inPlaylist = '1';
+                    checkIcon.classList.remove('d-none');
+                    showPlaylistToast(`Ajouté à « ${playlistName} »`, true);
+                }
             } else {
-                showPlaylistToast(data.message || 'Erreur lors de l\'ajout', false);
+                showPlaylistToast(data.message || 'Erreur', false);
             }
         })
         .catch(err => {
-            console.error('Erreur ajout playlist:', err);
+            console.error('Erreur toggle playlist:', err);
             showPlaylistToast('Erreur réseau', false);
         });
     });
