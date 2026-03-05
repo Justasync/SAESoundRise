@@ -72,6 +72,12 @@
 								<i class="bi bi-heart-fill" style="font-size: 1.8rem; color: rgba(255, 255, 255, 0.9);"></i>
 							</button>
 
+							{% if page.name == 'playlist' and idPlaylist is defined %}
+								<button type="button" id="delete-playlist-btn" class="btn btn-link p-0" title="Supprimer la playlist" data-playlist-id="{{ idPlaylist }}">
+									<i class="bi bi-trash3-fill" style="font-size: 1.8rem; color: rgba(255, 255, 255, 0.9);"></i>
+								</button>
+							{% endif %}
+
 							<div class="d-flex align-items-center ms-auto gap-2">
 								<button id="volume-btn" type="button" class="btn btn-link p-0">
 									<i id="volume-icon" class="bi bi-volume-up-fill" style="font-size: 1.8rem; color: rgba(255, 255, 255, 0.9);"></i>
@@ -516,6 +522,39 @@
             toastEl.className = 'toast align-items-center border-0 text-white ' + (success ? 'bg-success' : 'bg-danger');
             const toast = new bootstrap.Toast(toastEl, { delay: 3000 });
             toast.show();
+        }
+
+        // --- Suppression de la playlist entière ---
+        const deletePlaylistBtn = document.getElementById('delete-playlist-btn');
+        if (deletePlaylistBtn) {
+            deletePlaylistBtn.addEventListener('click', function() {
+                if (!confirm('Êtes-vous sûr de vouloir supprimer cette playlist ? Cette action est irréversible.')) {
+                    return;
+                }
+
+                const idPlaylist = this.dataset.playlistId;
+
+                fetch('/?controller=playlist&method=supprimerPlaylist', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `idPlaylist=${encodeURIComponent(idPlaylist)}`
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        showPlaylistToast('Playlist supprimée', true);
+                        setTimeout(() => {
+                            window.location.href = '/?controller=home&method=afficher';
+                        }, 1000);
+                    } else {
+                        showPlaylistToast(data.message || 'Erreur lors de la suppression', false);
+                    }
+                })
+                .catch(err => {
+                    console.error('Erreur suppression playlist:', err);
+                    showPlaylistToast('Erreur réseau', false);
+                });
+            });
         }
 
         // --- Suppression d'une chanson de la playlist ---

@@ -276,6 +276,24 @@ class PlaylistDAO
     }
 
     /**
+     * Supprime une playlist et toutes ses associations chansonPlaylist (CASCADE).
+     *
+     * @param int $idPlaylist L'ID de la playlist à supprimer.
+     * @param string $emailProprietaire L'email du propriétaire (sécurité).
+     * @return bool true si la suppression a réussi.
+     */
+    public function supprimerPlaylist(int $idPlaylist, string $emailProprietaire): bool
+    {
+        $sql = "DELETE FROM playlist WHERE idPlaylist = :idPlaylist AND emailProprietaire = :email";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':idPlaylist' => $idPlaylist,
+            ':email' => $emailProprietaire
+        ]);
+        return $stmt->rowCount() > 0;
+    }
+
+    /**
      * @param int $idPlaylist L'ID de la playlist pour laquelle récupérer la pochette automatique.
      * @return string|null L'URL de la pochette automatique ou null si aucune chanson n'est associée à la playlist.
      */

@@ -260,6 +260,57 @@ class ControllerPlaylist extends Controller
     }
 
     /**
+     * @brief Supprime une playlist de l'utilisateur connecté (AJAX).
+     *
+     * Attend une requête POST avec idPlaylist.
+     * Retourne une réponse JSON.
+     *
+     * @return void
+     */
+    public function supprimerPlaylist()
+    {
+        header('Content-Type: application/json');
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            echo json_encode(['success' => false, 'message' => 'Méthode non autorisée']);
+            exit;
+        }
+
+        if (!isset($_SESSION['user_logged_in']) || !$_SESSION['user_logged_in']) {
+            http_response_code(401);
+            echo json_encode(['success' => false, 'message' => 'Non authentifié']);
+            exit;
+        }
+
+        $idPlaylist = isset($_POST['idPlaylist']) ? (int)$_POST['idPlaylist'] : 0;
+
+        if (!$idPlaylist) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Paramètre manquant']);
+            exit;
+        }
+
+        $managerPlaylist = new PlaylistDAO($this->getPdo());
+        $playlist = $managerPlaylist->findFromUser($idPlaylist, $_SESSION['user_email'] ?? null);
+
+        if (!$playlist) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'message' => 'Playlist introuvable ou accès refusé']);
+            exit;
+        }
+
+        $deleted = $managerPlaylist->supprimerPlaylist($idPlaylist, $_SESSION['user_email']);
+
+        if ($deleted) {
+            echo json_encode(['success' => true, 'message' => 'Playlist supprimée']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Erreur lors de la suppression']);
+        }
+        exit;
+    }
+
+    /**
      * @brief Liste toutes les playlists de la plateforme.
      * 
      * Récupère toutes les playlists et les affiche dans un template de test.
