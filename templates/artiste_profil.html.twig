@@ -113,7 +113,7 @@
                     {% if photo %}
                         <img src="{{ photo }}" alt="Photo de {{ utilisateur.getPseudoUtilisateur() }}" class="rounded-circle shadow">
                     {% else %}
-                        <img src="{{ asset_version('/assets/images/default_profile.png') }}" alt="Profil par défaut" class="rounded-circle shadow">
+                        <img src="{{ 'https://placehold.co/160x160/e9b7a6/ffffff?text=' ~ utilisateur.getPseudoUtilisateur()|first|upper }}" alt="Profil par défaut" class="rounded-circle shadow">
                     {% endif %}
                 </div>
                 <h2 class="h4 fw-bold mb-0">{{ utilisateur.getPseudoUtilisateur() ?? utilisateur.getNomUtilisateur() }}</h2>

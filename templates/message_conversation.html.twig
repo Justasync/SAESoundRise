@@ -11,7 +11,7 @@
             <a href="index.php?controller=message&method=lister" class="btn btn-sm btn-outline-secondary me-2">
                 <i class="bi bi-arrow-left"></i>
             </a>
-            <img src="{{ contact.urlPhotoUtilisateur ?? '/assets/images/default-avatar.png' }}" alt="{{ contact.pseudoUtilisateur }}">
+            <img src="{{ contact.urlPhotoUtilisateur is not empty ? contact.urlPhotoUtilisateur : 'https://placehold.co/160x160/e9b7a6/ffffff?text=' ~ contact.pseudoUtilisateur|first|upper }}" alt="{{ contact.pseudoUtilisateur }}">
             <h3>{{ contact.pseudoUtilisateur }}</h3>
         </div>
 

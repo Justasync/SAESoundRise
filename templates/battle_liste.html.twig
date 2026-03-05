@@ -30,7 +30,7 @@
                             
                             <div class="text-center" style="width: 200px;">
                                 <div class="position-relative img-hover-play mb-3" onclick="playBattleTrack('{{ battle.getChansonCreateurObj().geturlAudioChanson()|e('js') }}', '{{ battle.getCreateur().getPseudoUtilisateur()|e('js') }}')">
-                                    <img src="{{ battle.getCreateur().geturlPhotoUtilisateur() ?? 'assets/images/default-avatar.png' }}" 
+                                    <img src="{{ battle.getCreateur().geturlPhotoUtilisateur() is not empty ? battle.getCreateur().geturlPhotoUtilisateur() : 'https://placehold.co/160x160/e9b7a6/ffffff?text=' ~ battle.getCreateur().getPseudoUtilisateur()|first|upper }}" 
                                          class="rounded-4 shadow-sm w-100" style="height:200px; object-fit:cover; cursor:pointer;">
                                     <div class="play-overlay"><i class="bi bi-play-fill fs-1 text-white"></i></div>
                                 </div>
@@ -57,7 +57,7 @@
 
                             <div class="text-center" style="width: 200px;">
                                 <div class="position-relative img-hover-play mb-3" onclick="playBattleTrack('{{ battle.getChansonParticipantObj().geturlAudioChanson()|e('js') }}', '{{ battle.getParticipant().getPseudoUtilisateur()|e('js') }}')">
-                                    <img src="{{ battle.getParticipant().geturlPhotoUtilisateur() ?? 'assets/images/default-avatar.png' }}" 
+                                    <img src="{{ battle.getParticipant().geturlPhotoUtilisateur() is not empty ? battle.getParticipant().geturlPhotoUtilisateur() : 'https://placehold.co/160x160/e9b7a6/ffffff?text=' ~ battle.getParticipant().getPseudoUtilisateur()|first|upper }}" 
                                          class="rounded-4 shadow-sm w-100" style="height:200px; object-fit:cover; cursor:pointer;">
                                     <div class="play-overlay"><i class="bi bi-play-fill fs-1 text-white"></i></div>
                                 </div>

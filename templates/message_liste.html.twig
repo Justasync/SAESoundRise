@@ -13,7 +13,14 @@
                 <a href="?controller=message&method=conversation&contact={{ item.user.pseudoUtilisateur }}" class="contact-item">
                     
                     <div style="position: relative;">
-                        <img src="{{ item.user.urlPhotoUtilisateur ?? '/assets/images/default-avatar.png' }}" alt="{{ item.user.pseudoUtilisateur }}" class="contact-avatar">
+                        <div style="position: relative;">
+                            <img src="{{ item.user.urlPhotoUtilisateur is not empty ? item.user.urlPhotoUtilisateur : 'https://placehold.co/160x160/e9b7a6/ffffff?text=' ~ item.user.pseudoUtilisateur|first|upper }}" alt="{{ item.user.pseudoUtilisateur }}" class="contact-avatar">
+                            
+                            {# 🚨 L'indicateur visuel si le message n'est pas lu #}
+                            {% if item.aNonLu %}
+                                <span class="unread-badge"></span>
+                            {% endif %}
+                        </div>
                         
                         {# 🚨 L'indicateur visuel si le message n'est pas lu #}
                         {% if item.aNonLu %}
