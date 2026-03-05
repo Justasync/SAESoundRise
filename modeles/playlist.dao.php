@@ -159,6 +159,26 @@ class PlaylistDAO
     }
 
     /**
+     * Crée une nouvelle playlist pour un utilisateur.
+     *
+     * @param string $nom Le nom de la playlist.
+     * @param string $emailProprietaire L'email du propriétaire.
+     * @param bool $estPublique Si la playlist est publique.
+     * @return int L'ID de la playlist créée.
+     */
+    public function creerPlaylist(string $nom, string $emailProprietaire, bool $estPublique = false): int
+    {
+        $sql = "INSERT INTO playlist (nomPlaylist, estPubliquePlaylist, emailProprietaire) VALUES (:nom, :estPublique, :email)";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':nom' => $nom,
+            ':estPublique' => $estPublique ? 1 : 0,
+            ':email' => $emailProprietaire
+        ]);
+        return (int)$this->pdo->lastInsertId();
+    }
+
+    /**
      * Pour un ensemble de chansons et un utilisateur, retourne un tableau
      * chansonId => [playlistId, ...] indiquant dans quelles playlists
      * de l'utilisateur chaque chanson se trouve déjà.

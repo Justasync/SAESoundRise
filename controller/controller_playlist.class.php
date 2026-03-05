@@ -217,6 +217,55 @@ class ControllerPlaylist extends Controller
      * 
      * @return void
      */
+    public function creerPlaylist()
+    {
+        header('Content-Type: application/json');
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            echo json_encode(['success' => false, 'message' => 'Méthode non autorisée']);
+            exit;
+        }
+
+        if (!isset($_SESSION['user_logged_in']) || !$_SESSION['user_logged_in']) {
+            http_response_code(401);
+            echo json_encode(['success' => false, 'message' => 'Non authentifié']);
+            exit;
+        }
+
+        $nom = trim($_POST['nomPlaylist'] ?? '');
+
+        if ($nom === '') {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Le nom de la playlist est requis']);
+            exit;
+        }
+
+        if (mb_strlen($nom) > 255) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Le nom est trop long (255 caractères max)']);
+            exit;
+        }
+
+        $managerPlaylist = new PlaylistDAO($this->getPdo());
+        $idPlaylist = $managerPlaylist->creerPlaylist($nom, $_SESSION['user_email']);
+
+        echo json_encode([
+            'success' => true,
+            'message' => 'Playlist créée',
+            'idPlaylist' => $idPlaylist,
+            'nomPlaylist' => $nom
+        ]);
+        exit;
+    }
+
+    /**
+     * @brief Liste toutes les playlists de la plateforme.
+     * 
+     * Récupère toutes les playlists et les affiche dans un template de test.
+     * 
+     * @return void
+     */
     public function lister()
     {
         // Récupération des playlists

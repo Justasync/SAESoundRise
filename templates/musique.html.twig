@@ -8,7 +8,17 @@
 
     <!-- Playlists -->
     <section class="text-center">
-        <h2 class="text-center fw-semibold mb-4 text-secondary pt-3">Playlists</h2>
+        <div class="d-flex justify-content-center align-items-center gap-3 mb-4 pt-3">
+            <h2 class="fw-semibold text-secondary mb-0">Playlists</h2>
+            <button type="button" class="btn btn-sm rounded-circle d-flex align-items-center justify-content-center"
+                    style="width:32px; height:32px; background-color:#e9b7a6; border:none; transition: background-color 0.2s ease;"
+                    onmouseover="this.style.backgroundColor='#d4967f';"
+                    onmouseout="this.style.backgroundColor='#e9b7a6';"
+                    data-bs-toggle="modal" data-bs-target="#createPlaylistModal"
+                    title="Nouvelle playlist">
+                <i class="bi bi-plus-lg" style="font-size:1.1rem; color:#fff; -webkit-text-stroke:1px #fff;"></i>
+            </button>
+        </div>
 
         {% set premieresPlaylists = playlists|slice(0, 3) %}
         <div class="d-flex justify-content-center flex-wrap gap-4 mb-4">
@@ -54,4 +64,100 @@
             </div>
         {% endfor %}
     </section>
+
+    <!-- Modal créer une playlist -->
+    <div class="modal fade" id="createPlaylistModal" tabindex="-1" aria-labelledby="createPlaylistModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createPlaylistModalLabel">Nouvelle playlist</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="createPlaylistForm">
+                        <div class="mb-3">
+                            <label for="newPlaylistName" class="form-label">Nom de la playlist</label>
+                            <input type="text" class="form-control" id="newPlaylistName" placeholder="Ma playlist" maxlength="255" required autofocus>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary" id="createPlaylistSubmit">Créer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1090;">
+        <div id="playlist-toast" class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body" id="playlist-toast-body"></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Fermer"></button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    {{ parent() }}
+    <script>
+        function showPlaylistToast(message, success) {
+            const toastEl = document.getElementById('playlist-toast');
+            const toastBody = document.getElementById('playlist-toast-body');
+            toastBody.textContent = message;
+            toastEl.className = 'toast align-items-center border-0 text-white ' + (success ? 'bg-success' : 'bg-danger');
+            const toast = new bootstrap.Toast(toastEl, { delay: 3000 });
+            toast.show();
+        }
+
+        const createModal = document.getElementById('createPlaylistModal');
+        const nameInput = document.getElementById('newPlaylistName');
+        const submitBtn = document.getElementById('createPlaylistSubmit');
+
+        createModal.addEventListener('shown.bs.modal', () => nameInput.focus());
+
+        nameInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                submitBtn.click();
+            }
+        });
+
+        submitBtn.addEventListener('click', () => {
+            const nom = nameInput.value.trim();
+            if (!nom) {
+                nameInput.classList.add('is-invalid');
+                return;
+            }
+            nameInput.classList.remove('is-invalid');
+            submitBtn.disabled = true;
+
+            fetch('/?controller=playlist&method=creerPlaylist', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `nomPlaylist=${encodeURIComponent(nom)}`
+            })
+            .then(res => res.json())
+            .then(data => {
+                submitBtn.disabled = false;
+                if (data.success) {
+                    bootstrap.Modal.getInstance(createModal).hide();
+                    nameInput.value = '';
+                    showPlaylistToast(`Playlist « ${data.nomPlaylist} » créée`, true);
+                    setTimeout(() => {
+                        window.location.href = `/?controller=playlist&method=afficher&idPlaylist=${data.idPlaylist}`;
+                    }, 800);
+                } else {
+                    showPlaylistToast(data.message || 'Erreur lors de la création', false);
+                }
+            })
+            .catch(err => {
+                submitBtn.disabled = false;
+                console.error('Erreur création playlist:', err);
+                showPlaylistToast('Erreur réseau', false);
+            });
+        });
+    </script>
 {% endblock %}

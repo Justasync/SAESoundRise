@@ -127,39 +127,37 @@
 									<button title="Aimer la musique" class="btn btn-sm btn-link p-1 like-btn" data-id="{{ chanson.getIdChanson() }}">
 										<i class="bi {% if chanson.getIsLiked() %}bi-heart-fill{% else %}bi-heart paaxio-album-details__iconBtn{% endif %}" style="font-size: 1rem;{% if chanson.getIsLiked() %} color: #2A9D8F;{% endif %}"></i>
 									</button>
-									{% if playlists is defined and playlists|length > 0 %}
+									{% if session is defined and session.user_logged_in is defined %}
 										{% set existingIds = chansonPlaylistMap[chanson.getIdChanson()] ?? [] %}
 										{% set availablePlaylists = [] %}
-										{% for playlist in playlists %}
-											{% if playlist.getIdPlaylist() not in existingIds %}
-												{% set availablePlaylists = availablePlaylists|merge([playlist]) %}
-											{% endif %}
-										{% endfor %}
-										{% if availablePlaylists|length > 0 %}
-											<div class="dropdown add-to-playlist-dropdown">
-												<button class="btn btn-sm btn-link p-1 paaxio-album-details__iconBtn" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Ajouter à une playlist" onclick="event.stopPropagation()">
-													<i class="bi bi-plus-circle" style="font-size: 1rem;"></i>
-												</button>
-												<ul class="dropdown-menu dropdown-menu-end">
-													<li><h6 class="dropdown-header">Ajouter à une playlist</h6></li>
-													{% for playlist in availablePlaylists %}
-														<li>
-															<a class="dropdown-item add-to-playlist-item" href="#" data-chanson-id="{{ chanson.getIdChanson() }}" data-playlist-id="{{ playlist.getIdPlaylist() }}">
-																{{ playlist.getNomPlaylist() }}
-															</a>
-														</li>
-													{% endfor %}
-												</ul>
-											</div>
-										{% else %}
-											<button class="btn btn-sm btn-link p-1" type="button" disabled title="Déjà dans toutes vos playlists" onclick="event.stopPropagation()">
-												<i class="bi bi-plus-circle" style="font-size: 1rem; opacity: 0.35;"></i>
-											</button>
+										{% if playlists is defined %}
+											{% for playlist in playlists %}
+												{% if playlist.getIdPlaylist() not in existingIds %}
+													{% set availablePlaylists = availablePlaylists|merge([playlist]) %}
+												{% endif %}
+											{% endfor %}
 										{% endif %}
-									{% else %}
-										<button class="btn btn-sm btn-link p-1" type="button" disabled title="Aucune playlist" onclick="event.stopPropagation()">
-											<i class="bi bi-plus-circle" style="font-size: 1rem; opacity: 0.35;"></i>
-										</button>
+										<div class="dropdown add-to-playlist-dropdown">
+											<button class="btn btn-sm btn-link p-1 paaxio-album-details__iconBtn" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Ajouter à une playlist" onclick="event.stopPropagation()">
+												<i class="bi bi-plus-circle" style="font-size: 1rem;"></i>
+											</button>
+											<ul class="dropdown-menu dropdown-menu-end">
+												<li><h6 class="dropdown-header">Ajouter à une playlist</h6></li>
+												{% for playlist in availablePlaylists %}
+													<li>
+														<a class="dropdown-item add-to-playlist-item" href="#" data-chanson-id="{{ chanson.getIdChanson() }}" data-playlist-id="{{ playlist.getIdPlaylist() }}">
+															{{ playlist.getNomPlaylist() }}
+														</a>
+													</li>
+												{% endfor %}
+												<li><hr class="dropdown-divider"></li>
+												<li>
+													<a class="dropdown-item create-playlist-from-song" href="#" data-chanson-id="{{ chanson.getIdChanson() }}">
+														<i class="bi bi-plus-lg me-1"></i> Nouvelle playlist
+													</a>
+												</li>
+											</ul>
+										</div>
 									{% endif %}
 								</td>
 								</tr>
@@ -185,6 +183,29 @@
 			<div class="d-flex">
 				<div class="toast-body" id="playlist-toast-body"></div>
 				<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Fermer"></button>
+			</div>
+		</div>
+	</div>
+
+	<!-- Modal créer une playlist -->
+	<div class="modal fade" id="createPlaylistModal" tabindex="-1" aria-labelledby="createPlaylistModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="createPlaylistModalLabel">Nouvelle playlist</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+				</div>
+				<div class="modal-body">
+					<input type="hidden" id="createPlaylistChansonId" value="">
+					<div class="mb-3">
+						<label for="newPlaylistName" class="form-label">Nom de la playlist</label>
+						<input type="text" class="form-control" id="newPlaylistName" placeholder="Ma playlist" maxlength="255" required>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+					<button type="button" class="btn btn-primary" id="createPlaylistSubmit">Créer</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -735,5 +756,85 @@ document.querySelectorAll('.add-to-playlist-item').forEach(function(item) {
         });
     });
 });
+
+// --- Créer une playlist depuis le dropdown ---
+document.querySelectorAll('.create-playlist-from-song').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        document.getElementById('createPlaylistChansonId').value = link.dataset.chansonId;
+        document.getElementById('newPlaylistName').value = '';
+        document.getElementById('newPlaylistName').classList.remove('is-invalid');
+        new bootstrap.Modal(document.getElementById('createPlaylistModal')).show();
+    });
+});
+
+(function() {
+    const createModal = document.getElementById('createPlaylistModal');
+    const nameInput = document.getElementById('newPlaylistName');
+    const submitBtn = document.getElementById('createPlaylistSubmit');
+    const chansonIdInput = document.getElementById('createPlaylistChansonId');
+
+    if (!createModal) return;
+
+    createModal.addEventListener('shown.bs.modal', () => nameInput.focus());
+
+    nameInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); submitBtn.click(); }
+    });
+
+    submitBtn.addEventListener('click', () => {
+        const nom = nameInput.value.trim();
+        if (!nom) { nameInput.classList.add('is-invalid'); return; }
+        nameInput.classList.remove('is-invalid');
+        submitBtn.disabled = true;
+
+        const chansonId = chansonIdInput.value;
+
+        fetch('/?controller=playlist&method=creerPlaylist', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `nomPlaylist=${encodeURIComponent(nom)}`
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (!data.success) {
+                submitBtn.disabled = false;
+                showPlaylistToast(data.message || 'Erreur', false);
+                return;
+            }
+
+            if (chansonId) {
+                return fetch('/?controller=playlist&method=ajouterChanson', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `idChanson=${encodeURIComponent(chansonId)}&idPlaylist=${encodeURIComponent(data.idPlaylist)}`
+                })
+                .then(r => r.json())
+                .then(addData => {
+                    submitBtn.disabled = false;
+                    bootstrap.Modal.getInstance(createModal).hide();
+                    nameInput.value = '';
+                    chansonIdInput.value = '';
+                    if (addData.success) {
+                        showPlaylistToast(`Ajouté à la nouvelle playlist « ${data.nomPlaylist} »`, true);
+                    } else {
+                        showPlaylistToast(`Playlist créée, mais : ${addData.message}`, false);
+                    }
+                });
+            } else {
+                submitBtn.disabled = false;
+                bootstrap.Modal.getInstance(createModal).hide();
+                nameInput.value = '';
+                showPlaylistToast(`Playlist « ${data.nomPlaylist} » créée`, true);
+            }
+        })
+        .catch(err => {
+            submitBtn.disabled = false;
+            console.error('Erreur création playlist:', err);
+            showPlaylistToast('Erreur réseau', false);
+        });
+    });
+})();
 	</script>
 {% endblock %}
