@@ -255,12 +255,26 @@ class ControllerHome extends Controller
     private function auditeurDashboard()
     {
         $utilisateurDAO = new UtilisateurDAO($this->getPDO());
-        // Récupérer des artistes suggérés pour l'auditeur
-        $artistesSuggere = $utilisateurDAO->findAllArtistes($_SESSION['user_email']);
+        $artistesSuggere = $utilisateurDAO->findTrending(8, 7);
 
-        // Récupérer les albums les plus écoutés
+        $chansonsDAO = new ChansonDAO($this->getPDO());
+        $chansonsPopulaires = $chansonsDAO->findTrending(8, 7);
+
+        $chansonsAvecArtiste = [];
+        foreach ($chansonsPopulaires as $chanson) {
+            $artistePseudo = null;
+            if ($chanson->getEmailPublicateur()) {
+                $utilisateur = $utilisateurDAO->find($chanson->getEmailPublicateur());
+                $artistePseudo = $utilisateur ? $utilisateur->getPseudoUtilisateur() : null;
+            }
+            $chansonsAvecArtiste[] = [
+                'chanson' => $chanson,
+                'artistePseudo' => $artistePseudo,
+            ];
+        }
+
         $albumDAO = new AlbumDAO($this->getPDO());
-        $albumsPopulaires = $albumDAO->findMostListened(8); // On récupère les 8 plus populaires
+        $albumsPopulaires = $albumDAO->findMostListened(8);
 
         $template = $this->getTwig()->load('auditeur_dashboard.html.twig');
         echo $template->render([
@@ -271,6 +285,7 @@ class ControllerHome extends Controller
             ],
             'session' => $_SESSION,
             'artistes' => $artistesSuggere,
+            'chansons' => $chansonsAvecArtiste,
             'albums' => $albumsPopulaires,
         ]);
     }
