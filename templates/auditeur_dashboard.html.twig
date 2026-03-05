@@ -1,130 +1,127 @@
 {% extends "base_template.html.twig" %}
 
 {% block header %}
-    {{ parent() }}
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset_version('/assets/css/dashboard.css') }}">
+	{{ parent() }}
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="{{ asset_version('/assets/css/dashboard.css') }}">
 {% endblock %}
 
 {% block content %}
-    <main class="container-xl py-5 paaxio-dashboard">
-        <div class="main-content-container bg-white">
-            <div class="container-fluid pt-4 pb-2">
+	<main class="container-xl py-5 paaxio-dashboard">
+		<div class="main-content-container bg-white">
+			<div class="container-fluid pt-4 pb-2">
 
-                <h1 class="text-center fw-bold mb-4 green-text">
-                    Bienvenue, {{ session.user_pseudo }} !
-                </h1>
+				<h1 class="text-center fw-bold mb-4 green-text">
+					Bienvenue,
+					{{ session.user_pseudo }}
+					!
+				</h1>
 
-			<!-- Section Artistes -->
-			<h3 class="text-center fw-semibold mb-4 text-secondary pt-3">Artistes à découvrir</h3>
+				<!-- Section Artistes -->
+				<h3 class="text-center fw-semibold mb-4 text-secondary pt-3">Artistes à découvrir</h3>
 
-			<div class="artist-scroll-wrapper w-100 paaxio-horizontal-scroll rounded-4 shadow-lg">
-				<div class="artist-list-container paaxio-horizontal-scroll">
-					{% if artistes is not empty %}
-						{% for artiste in artistes %}
-							<a href="/?controller=utilisateur&method=afficherProfilArtiste&pseudo={{ artiste.pseudoUtilisateur }}" class="artist-item flex-shrink-0 d-flex flex-column align-items-center text-decoration-none" title="{{ artiste.pseudoUtilisateur }}">
-								<img src="{{ artiste.geturlPhotoUtilisateur() ?: 'https://placehold.co/160x160/e9b7a6/ffffff?text=' ~ artiste.getPseudoUtilisateur()|first|upper }}" alt="Photo de {{ artiste.getPseudoUtilisateur() }}" class="artist-avatar" onerror="this.onerror=null; this.src='https://placehold.co/160x160/e9b7a6/ffffff?text={{ artiste.getPseudoUtilisateur()|first|upper }}';">
-								<p class="green-text mb-0">{{ artiste.pseudoUtilisateur|length > 10 ? artiste.pseudoUtilisateur|slice(0, 10) ~ '...' : artiste.pseudoUtilisateur }}</p>
+				<div class="artist-scroll-wrapper w-100 paaxio-horizontal-scroll rounded-4 shadow-lg">
+					<div class="artist-list-container paaxio-horizontal-scroll">
+						{% if artistes is not empty %}
+							{% for artiste in artistes|slice(0, 8) %}
+								<a href="/?controller=utilisateur&method=afficherProfilArtiste&pseudo={{ artiste.pseudoUtilisateur }}" class="artist-item flex-shrink-0 d-flex flex-column align-items-center text-decoration-none" title="{{ artiste.pseudoUtilisateur }}">
+									<img src="{{ artiste.geturlPhotoUtilisateur() ?: 'https://placehold.co/160x160/e9b7a6/ffffff?text=' ~ artiste.getPseudoUtilisateur()|first|upper }}" alt="Photo de {{ artiste.getPseudoUtilisateur() }}" class="artist-avatar" onerror="this.onerror=null; this.src='https://placehold.co/160x160/e9b7a6/ffffff?text={{ artiste.getPseudoUtilisateur()|first|upper }}';">
+									<p class="green-text mb-0">{{ artiste.pseudoUtilisateur|length > 10 ? artiste.pseudoUtilisateur|slice(0, 10) ~ '...' : artiste.pseudoUtilisateur }}</p>
+								</a>
+							{% endfor %}
+						{% else %}
+							<p class="text-center text-gray-500 p-3">Aucun artiste à découvrir pour le moment.</p>
+						{% endif %}
+					</div>
+				</div>
+
+				<!-- Section Chansons -->
+
+				<h3 class="text-center fw-semibold mb-4 text-secondary pt-3">Chansons</h3>
+
+				<div class="open-dashboard__song-grid">
+
+					{% if chansons is not empty %}
+						{% for chanson in chansons %}
+
+							{% set album = null %}
+							{% if chanson.chanson.albumChanson is defined and chanson.chanson.albumChanson %}
+								{% set album = chanson.chanson.albumChanson %}
+							{% elseif chanson.chanson.getAlbumChanson is defined and chanson.chanson.getAlbumChanson() %}
+								{% set album = chanson.chanson.getAlbumChanson() %}
+							{% endif %}
+
+							<a
+								href="/?controller=album&method=afficherDetails
+									                                &idChanson={{ chanson.chanson.idChanson is defined
+									                                    ? chanson.chanson.idChanson
+									                                    : (chanson.chanson.getIdChanson is defined
+									                                        ? chanson.chanson.getIdChanson()
+									                                        : '') }}
+									                                &idAlbum={{ album is not null and (album.idAlbum is defined and album.idAlbum)
+									                                    ? album.idAlbum
+									                                    : '' }}" class="flex-shrink-0 bg-paaxio-salmon rounded-4 shadow-lg text-decoration-none hover-bg-terracotta open-dashboard__song-card">
+
+								{# Mini pochette #}
+								<img
+								src="{{ album is not null and (album.urlPochetteAlbum is defined and album.urlPochetteAlbum) ? album.urlPochetteAlbum : 'https://placehold.co/200x200/e9b7a6/ffffff?text=No+Img' }}" alt="Pochette" class="rounded-3 shadow-sm open-dashboard__song-cover">
+
+								{# Titre + artiste #}
+								<div class="open-dashboard__song-meta">
+
+									<p class="mb-0 open-dashboard__song-title">
+										{{ chanson.chanson.titreChanson|length > 18 
+                                            ? chanson.chanson.titreChanson|slice(0,18) ~ '...' 
+                                            : chanson.chanson.titreChanson }}
+									</p>
+
+									<span class="open-dashboard__song-artist">
+										{{ chanson.artistePseudo ?: 'Artiste inconnu' }}
+									</span>
+
+								</div>
+
 							</a>
+
 						{% endfor %}
 					{% else %}
-						<p class="text-center text-gray-500 p-3">Aucun artiste à découvrir pour le moment.</p>
+						<p class="text-center col-12">
+							Aucune chanson en tendance.
+						</p>
+					{% endif %}
+
+				</div>
+
+				<!-- Section Albums/Singles -->
+				<h3 class="text-center fw-semibold mt-5 mb-4 text-secondary">Album/Singles les plus écoutés</h3>
+
+				<div class="row row-cols-2 row-cols-md-4 g-4 px-2">
+					{% if albums is not empty %}
+						{% for album in albums %}
+							<article class="col">
+								<a href="/?controller=album&method=afficherDetails&idAlbum={{ album.idAlbum }}" class="text-decoration-none col-item-card">
+									<div class="paaxio-card p-3 h-100 d-flex flex-column">
+										<div class="album-cover">
+											<img src="{{ album.urlPochetteAlbum ?: 'https://placehold.co/300x300/cccccc/333?text=No+Image' }}" alt="Pochette de {{ album.nomAlbum }}">
+										</div>
+										<div class="text-center mt-auto">
+											<p class="mb-0 album-title">{{ album.nomAlbum }}</p>
+											<p class="album-artist">{{ album.pseudoArtiste }}</p>
+										</div>
+									</div>
+								</a>
+							</article>
+						{% endfor %}
+					{% else %}
+						<p class="text-center text-gray-500 col-12">Aucun album populaire pour le moment.</p>
 					{% endif %}
 				</div>
 			</div>
-
-                <!-- Section Chansons -->
-
-                <h3 class="text-center fw-semibold mb-4 text-secondary pt-3">Chansons</h3>
-
-                <div class="open-dashboard__song-grid">
-
-                    {% if chansons is not empty %}
-                        {% for chanson in chansons %}
-
-                            {% set album = null %}
-                            {% if chanson.chanson.albumChanson is defined and chanson.chanson.albumChanson %}
-                                {% set album = chanson.chanson.albumChanson %}
-                            {% elseif chanson.chanson.getAlbumChanson is defined and chanson.chanson.getAlbumChanson() %}
-                                {% set album = chanson.chanson.getAlbumChanson() %}
-                            {% endif %}
-
-                            <a href="/?controller=album&method=afficherDetails
-                                &idChanson={{ chanson.chanson.idChanson is defined 
-                                    ? chanson.chanson.idChanson 
-                                    : (chanson.chanson.getIdChanson is defined 
-                                        ? chanson.chanson.getIdChanson() 
-                                        : '') }}
-                                &idAlbum={{ album is not null and (album.idAlbum is defined and album.idAlbum) 
-                                    ? album.idAlbum 
-                                    : '' }}"
-                            class="flex-shrink-0 bg-paaxio-salmon rounded-4 shadow-lg text-decoration-none hover-bg-terracotta open-dashboard__song-card">
-
-                                {# Mini pochette #}
-                                <img
-                                    src="{{ album is not null and (album.urlPochetteAlbum is defined and album.urlPochetteAlbum) 
-                                        ? album.urlPochetteAlbum 
-                                        : 'https://placehold.co/200x200/e9b7a6/ffffff?text=No+Img' }}"
-                                    alt="Pochette"
-                                    class="rounded-3 shadow-sm open-dashboard__song-cover"
-                                >
-
-                                {# Titre + artiste #}
-                                <div class="open-dashboard__song-meta">
-
-                                    <p class="mb-0 open-dashboard__song-title">
-                                        {{ chanson.chanson.titreChanson|length > 18 
-                                            ? chanson.chanson.titreChanson|slice(0,18) ~ '...' 
-                                            : chanson.chanson.titreChanson }}
-                                    </p>
-
-                                    <span class="open-dashboard__song-artist">
-                                        {{ chanson.artistePseudo ?: 'Artiste inconnu' }}
-                                    </span>
-
-                                </div>
-
-                            </a>
-
-                        {% endfor %}
-                    {% else %}
-                        <p class="text-center col-12">
-                            Aucune chanson en tendance.
-                        </p>
-                    {% endif %}
-
-                </div>
-
-                <!-- Section Albums/Singles -->
-                <h3 class="text-center fw-semibold mt-5 mb-4 text-secondary">Album/Singles les plus écoutés</h3>
-
-                <div class="row row-cols-2 row-cols-md-4 g-4 px-2">
-                    {% if albums is not empty %}
-                        {% for album in albums %}
-                            <article class="col">
-                                <a href="/?controller=album&method=afficherDetails&idAlbum={{ album.idAlbum }}" class="text-decoration-none col-item-card">
-                                    <div class="paaxio-card p-3 h-100 d-flex flex-column">
-                                        <div class="album-cover">
-                                            <img src="{{ album.urlPochetteAlbum ?: 'https://placehold.co/300x300/cccccc/333?text=No+Image' }}" alt="Pochette de {{ album.nomAlbum }}">
-                                        </div>
-                                        <div class="text-center mt-auto">
-                                            <p class="mb-0 album-title">{{ album.nomAlbum }}</p>
-                                            <p class="album-artist">{{ album.pseudoArtiste }}</p>
-                                        </div>
-                                    </div>
-                                </a>
-                            </article>
-                        {% endfor %}
-                    {% else %}
-                        <p class="text-center text-gray-500 col-12">Aucun album populaire pour le moment.</p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </main>
+		</div>
+	</main>
 {% endblock %}
 
 {% block script %}
-    {{ parent() }}
-    {# Pas de script spécifique pour cette page pour le moment #}
+	{{ parent() }}
+	{# Pas de script spécifique pour cette page pour le moment #}
 {% endblock %}
