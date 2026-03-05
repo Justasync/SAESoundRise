@@ -51,16 +51,7 @@
 								{% set album = chanson.chanson.getAlbumChanson() %}
 							{% endif %}
 
-							<a
-								href="/?controller=album&method=afficherDetails
-									                                &idChanson={{ chanson.chanson.idChanson is defined
-									                                    ? chanson.chanson.idChanson
-									                                    : (chanson.chanson.getIdChanson is defined
-									                                        ? chanson.chanson.getIdChanson()
-									                                        : '') }}
-									                                &idAlbum={{ album is not null and (album.idAlbum is defined and album.idAlbum)
-									                                    ? album.idAlbum
-									                                    : '' }}" class="flex-shrink-0 bg-paaxio-salmon rounded-4 shadow-lg text-decoration-none hover-bg-terracotta open-dashboard__song-card">
+						<a href="/?controller=album&method=afficherDetails&idChanson={{ chanson.chanson.idChanson is defined ? chanson.chanson.idChanson : (chanson.chanson.getIdChanson is defined ? chanson.chanson.getIdChanson() : '') }}&idAlbum={{ album is not null and (album.idAlbum is defined and album.idAlbum) ? album.idAlbum : '' }}" class="flex-shrink-0 bg-paaxio-salmon rounded-4 shadow-lg text-decoration-none hover-bg-terracotta open-dashboard__song-card">
 
 								{# Mini pochette #}
 								<img
