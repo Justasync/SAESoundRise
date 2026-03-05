@@ -15,30 +15,23 @@
                     Bienvenue, {{ session.user_pseudo }} !
                 </h1>
 
-                <!-- Section Artistes -->
-                <h3 class="text-center fw-semibold mb-4 text-secondary pt-3">Artistes à découvrir</h3>
-                
-                <div class="artist-scroll-wrapper w-100 paaxio-horizontal-scroll rounded-4 shadow-lg">
-                    <div class="artist-list-container paaxio-horizontal-scroll">
-                        {% if artistes is not empty %}
-                            {% for artiste in artistes %}
-                                <a href="/?controller=utilisateur&method=afficherProfilArtiste&pseudo={{ artiste.getPseudoUtilisateur() }}"
-                                   class="artist-item flex-shrink-0 d-flex flex-column align-items-center text-decoration-none"
-                                   title="{{ artiste.getPseudoUtilisateur() }}">
-                                    <img src="{{ artiste.geturlPhotoUtilisateur() ?: 'https://placehold.co/160x160/e9b7a6/ffffff?text=' ~ artiste.getPseudoUtilisateur()|first|upper }}"
-                                         alt="Photo de {{ artiste.getPseudoUtilisateur() }}"
-                                         class="artist-avatar"
-                                         onerror="this.onerror=null; this.src='https://placehold.co/160x160/e9b7a6/ffffff?text={{ artiste.getPseudoUtilisateur()|first|upper }}';">
-                                    <p class="green-text mb-0">
-                                        {{ artiste.getPseudoUtilisateur()|length > 10 ? artiste.getPseudoUtilisateur()|slice(0, 10) ~ '...' : artiste.getPseudoUtilisateur() }}
-                                    </p>
-                                </a>
-                            {% endfor %}
-                        {% else %}
-                            <p class="text-center text-gray-500 p-3">Aucun artiste à découvrir pour le moment.</p>
-                        {% endif %}
-                    </div>
-                </div>
+			<!-- Section Artistes -->
+			<h3 class="text-center fw-semibold mb-4 text-secondary pt-3">Artistes à découvrir</h3>
+
+			<div class="artist-scroll-wrapper w-100 paaxio-horizontal-scroll rounded-4 shadow-lg">
+				<div class="artist-list-container paaxio-horizontal-scroll">
+					{% if artistes is not empty %}
+						{% for artiste in artistes %}
+							<a href="/?controller=utilisateur&method=afficherProfilArtiste&pseudo={{ artiste.pseudoUtilisateur }}" class="artist-item flex-shrink-0 d-flex flex-column align-items-center text-decoration-none" title="{{ artiste.pseudoUtilisateur }}">
+								<img src="{{ artiste.geturlPhotoUtilisateur() ?: 'https://placehold.co/160x160/e9b7a6/ffffff?text=' ~ artiste.getPseudoUtilisateur()|first|upper }}" alt="Photo de {{ artiste.getPseudoUtilisateur() }}" class="artist-avatar" onerror="this.onerror=null; this.src='https://placehold.co/160x160/e9b7a6/ffffff?text={{ artiste.getPseudoUtilisateur()|first|upper }}';">
+								<p class="green-text mb-0">{{ artiste.pseudoUtilisateur|length > 10 ? artiste.pseudoUtilisateur|slice(0, 10) ~ '...' : artiste.pseudoUtilisateur }}</p>
+							</a>
+						{% endfor %}
+					{% else %}
+						<p class="text-center text-gray-500 p-3">Aucun artiste à découvrir pour le moment.</p>
+					{% endif %}
+				</div>
+			</div>
 
                 <!-- Section Chansons -->
 
