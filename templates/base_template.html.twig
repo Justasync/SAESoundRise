@@ -62,60 +62,14 @@
 	<body>
 		<header>
 			<nav class="navbar navbar-expand-lg">
-				<div
-					class="container-fluid">
+				<div class="container-fluid">
 					<!-- Logo -->
 					<a class="navbar-brand {% if session.user_logged_in is defined and session.user_logged_in %}header-shift-up{% endif %}" href="/?controller=home&method=afficher">
 						<img src="{{ asset_version('/assets/images/logos/paaxio_logo_nom_droit_noir.svg') }}" alt="Paaxio" width="150">
 					</a>
-					<!-- Toggle mobile -->
-					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 
-						<span class="navbar-toggler-icon"></span>
-					</button>
-					<!-- Navbar content -->
-					<div
-						class="collapse navbar-collapse flex-column" id="navbarSupportedContent">
-						<!-- Navigation -->
-						<ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-							{% if session.user_logged_in is defined and session.user_logged_in and session.user_role is defined and session.user_role.value == 'admin' %}
-								<li class="nav-item">
-									<a class="nav-link fs-4 mx-2 {% if page.name is defined and page.name == 'admin' %}active{% endif %}" href="/?controller=admin&method=afficher">
-										Admin
-									</a>
-								</li>
-							{% else %}
-								{% if session.user_logged_in is defined and session.user_logged_in %}
-									{% if session.user_role is defined and session.user_role.value == 'artiste' %}
-										<li class="nav-item nav-item-offset">
-											<a class="nav-link fs-4 mx-2 {% if page.name is defined and page.name == 'maMusique' %}active{% endif %}" href="/?controller=album&method=afficherMaMusique">
-												Publications
-											</a>
-										</li>
-									{% endif %}
-									<li class="nav-item nav-item-offset">
-										<a class="nav-link fs-4 mx-2 {% if page.name is defined and page.name == 'maBiblio' %}active{% endif %}" href="/?controller=musique&method=afficher">
-											Bibliothèque
-										</a>
-									</li>
-									<li class="nav-item nav-item-offset">
-										<a class="nav-link fs-4 mx-2 {% if page.name is defined and page.name == 'battle' %}active{% endif %}" href="?controller=battle&method=lister">
-											Battle
-										</a>
-									</li>
-								{% endif %}
-							{% endif %}
-						</ul>
-						<!-- Search (centré) -->
-						<div class="search-bar mx-auto w-50 position-relative mb-3">
-							<form action="index.php" method="get" role="search">
-								<input id="searchInput" name="term" class="form-control" type="search" placeholder="Rechercher artistes, chansons..." autocomplete="off">
-							</form>
-							<div id="searchResults" class="list-group position-absolute w-100 shadow" style="display:none; z-index:9999; top:100%; left:0; background:white; max-height:300px; overflow-y:auto;"></div>
-						</div>
-					</div>
-					<!-- Right side: messages, upload album (artists) + user dropdown -->
-					<div class="d-flex align-items-center gap-1 ms-auto {% if session.user_logged_in is defined and session.user_logged_in %}header-shift-up{% endif %}">
+					<!-- Right side icons (always visible, before toggler for proper mobile flow) -->
+					<div class="d-flex align-items-center gap-1 order-lg-3 {% if session.user_logged_in is defined and session.user_logged_in %}header-shift-up{% endif %}">
 						{% if session.user_logged_in is defined and session.user_logged_in %}
 							<a class="btn text-secondary d-flex align-items-center justify-content-center position-relative {% if page.name is defined and page.name == 'messages' %}text-primary{% endif %}" href="?controller=message&method=lister" title="Messages" aria-label="Messages">
 								<i class="bi bi-chat-dots fs-4"></i>
@@ -172,6 +126,51 @@
 									</li>
 								{% endif %}
 							</ul>
+						</div>
+					</div>
+
+					<!-- Toggle mobile -->
+					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+
+					<!-- Navbar collapsible content -->
+					<div class="collapse navbar-collapse order-lg-2 flex-lg-column" id="navbarSupportedContent">
+						<ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+							{% if session.user_logged_in is defined and session.user_logged_in and session.user_role is defined and session.user_role.value == 'admin' %}
+								<li class="nav-item">
+									<a class="nav-link fs-4 mx-2 {% if page.name is defined and page.name == 'admin' %}active{% endif %}" href="/?controller=admin&method=afficher">
+										Admin
+									</a>
+								</li>
+							{% else %}
+								{% if session.user_logged_in is defined and session.user_logged_in %}
+									{% if session.user_role is defined and session.user_role.value == 'artiste' %}
+										<li class="nav-item nav-item-offset">
+											<a class="nav-link fs-4 mx-2 {% if page.name is defined and page.name == 'maMusique' %}active{% endif %}" href="/?controller=album&method=afficherMaMusique">
+												Publications
+											</a>
+										</li>
+									{% endif %}
+									<li class="nav-item nav-item-offset">
+										<a class="nav-link fs-4 mx-2 {% if page.name is defined and page.name == 'maBiblio' %}active{% endif %}" href="/?controller=musique&method=afficher">
+											Bibliothèque
+										</a>
+									</li>
+									<li class="nav-item nav-item-offset">
+										<a class="nav-link fs-4 mx-2 {% if page.name is defined and page.name == 'battle' %}active{% endif %}" href="?controller=battle&method=lister">
+											Battle
+										</a>
+									</li>
+								{% endif %}
+							{% endif %}
+						</ul>
+						<!-- Search -->
+						<div class="search-bar mx-auto w-50 position-relative mb-3 mb-lg-0">
+							<form action="index.php" method="get" role="search">
+								<input id="searchInput" name="term" class="form-control" type="search" placeholder="Rechercher artistes, chansons..." autocomplete="off">
+							</form>
+							<div id="searchResults" class="list-group position-absolute w-100 shadow" style="display:none; z-index:9999; top:100%; left:0; background:white; max-height:300px; overflow-y:auto;"></div>
 						</div>
 					</div>
 				</div>
