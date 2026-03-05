@@ -379,12 +379,19 @@ class ControllerAlbum extends Controller
             $template = 'album_details_auditeur.html.twig';
         }
 
+        $playlists = [];
+        if ($emailUtilisateur) {
+            $managerPlaylist = new PlaylistDAO($this->getPdo());
+            $playlists = $managerPlaylist->findAllFromUser($emailUtilisateur);
+        }
+
         $template = $this->getTwig()->load($template);
         echo $template->render([
             'album' => $album,
             'chansons' => $chansons,
             'chansonSelected' => $idChanson ? (int)$idChanson : null,
             'session' => $_SESSION,
+            'playlists' => $playlists,
         ]);
     }
 

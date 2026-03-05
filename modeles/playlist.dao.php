@@ -158,6 +158,43 @@ class PlaylistDAO
     }
 
     /**
+     * Ajoute une chanson à une playlist.
+     * La position est calculée automatiquement (dernière position + 1).
+     *
+     * @param int $idPlaylist L'ID de la playlist.
+     * @param int $idChanson L'ID de la chanson à ajouter.
+     * @return bool true si l'ajout a réussi, false si la chanson est déjà dans la playlist.
+     */
+    public function ajouterChansonPlaylist(int $idPlaylist, int $idChanson): bool
+    {
+        $sqlCheck = "SELECT 1 FROM chansonPlaylist WHERE idPlaylist = :idPlaylist AND idChanson = :idChanson LIMIT 1";
+        $stmtCheck = $this->pdo->prepare($sqlCheck);
+        $stmtCheck->execute([':idPlaylist' => $idPlaylist, ':idChanson' => $idChanson]);
+        if ($stmtCheck->fetchColumn()) {
+            return false;
+        }
+
+        $sqlPos = "SELECT COALESCE(MAX(positionChanson), 0) + 1 AS nextPos FROM chansonPlaylist WHERE idPlaylist = :idPlaylist";
+        $stmtPos = $this->pdo->prepare($sqlPos);
+        $stmtPos->execute([':idPlaylist' => $idPlaylist]);
+        $nextPos = (int)$stmtPos->fetchColumn();
+
+        $sql = "INSERT INTO chansonPlaylist (idPlaylist, idChanson, positionChanson) VALUES (:idPlaylist, :idChanson, :position)";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            ':idPlaylist' => $idPlaylist,
+            ':idChanson' => $idChanson,
+            ':position' => $nextPos
+        ]);
+
+        $sqlUpdate = "UPDATE playlist SET dateDerniereModification = NOW() WHERE idPlaylist = :idPlaylist";
+        $stmtUpdate = $this->pdo->prepare($sqlUpdate);
+        $stmtUpdate->execute([':idPlaylist' => $idPlaylist]);
+
+        return true;
+    }
+
+    /**
      * @param int $idPlaylist L'ID de la playlist pour laquelle récupérer la pochette automatique.
      * @return string|null L'URL de la pochette automatique ou null si aucune chanson n'est associée à la playlist.
      */

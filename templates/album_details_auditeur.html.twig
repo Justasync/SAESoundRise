@@ -123,12 +123,28 @@
 									<td class="py-3 px-4 track-title">{{ chanson.getTitreChanson() }}</td>
 									<td class="py-3 px-4 d-none d-sm-table-cell track-listens">{{ chanson.getNbEcouteChanson() ?? 0 }}</td>
 									<td class="py-3 px-4 track-duration">{{ (chanson.getDureeChanson() / 60)|round(0, 'floor') }}:{{ '%02d'|format(chanson.getDureeChanson() % 60) }}</td>
-									<td
-										class="py-3 px-4 text-center">
-										<button title="Aimer la musique" class="btn btn-sm btn-link p-1 like-btn" data-id="{{ chanson.getIdChanson() }}">
-											<i class="bi {% if chanson.getIsLiked() %}bi-heart-fill{% else %}bi-heart paaxio-album-details__iconBtn{% endif %}" style="font-size: 1rem;{% if chanson.getIsLiked() %} color: #2A9D8F;{% endif %}"></i>
-										</button>
-									</td>
+								<td class="py-3 px-4 text-center d-flex align-items-center justify-content-center gap-1">
+									<button title="Aimer la musique" class="btn btn-sm btn-link p-1 like-btn" data-id="{{ chanson.getIdChanson() }}">
+										<i class="bi {% if chanson.getIsLiked() %}bi-heart-fill{% else %}bi-heart paaxio-album-details__iconBtn{% endif %}" style="font-size: 1rem;{% if chanson.getIsLiked() %} color: #2A9D8F;{% endif %}"></i>
+									</button>
+									{% if playlists is defined and playlists|length > 0 %}
+										<div class="dropdown add-to-playlist-dropdown">
+											<button class="btn btn-sm btn-link p-1 paaxio-album-details__iconBtn" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Ajouter à une playlist" onclick="event.stopPropagation()">
+												<i class="bi bi-plus-circle" style="font-size: 1rem;"></i>
+											</button>
+											<ul class="dropdown-menu dropdown-menu-end">
+												<li><h6 class="dropdown-header">Ajouter à une playlist</h6></li>
+												{% for playlist in playlists %}
+													<li>
+														<a class="dropdown-item add-to-playlist-item" href="#" data-chanson-id="{{ chanson.getIdChanson() }}" data-playlist-id="{{ playlist.getIdPlaylist() }}">
+															{{ playlist.getNomPlaylist() }}
+														</a>
+													</li>
+												{% endfor %}
+											</ul>
+										</div>
+									{% endif %}
+								</td>
 								</tr>
 							{% endfor %}
 						{% else %}
@@ -641,6 +657,50 @@ document.addEventListener('click', function(e) {
         console.error('Erreur like:', err);
         // Affiche une erreur visuelle minimale pour l'utilisateur
         if (icon) icon.classList.add('text-muted');
+    });
+    });
+
+// --- Ajout à une playlist ---
+document.querySelectorAll('.add-to-playlist-item').forEach(function(item) {
+    item.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const idChanson = item.dataset.chansonId;
+        const idPlaylist = item.dataset.playlistId;
+        const dropdown = item.closest('.add-to-playlist-dropdown');
+        const icon = dropdown.querySelector('button i');
+
+        fetch('/?controller=playlist&method=ajouterChanson', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `idChanson=${encodeURIComponent(idChanson)}&idPlaylist=${encodeURIComponent(idPlaylist)}`
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                icon.classList.remove('bi-plus-circle');
+                icon.classList.add('bi-check-circle');
+                icon.style.color = '#2A9D8F';
+                setTimeout(() => {
+                    icon.classList.remove('bi-check-circle');
+                    icon.classList.add('bi-plus-circle');
+                    icon.style.color = '';
+                }, 1500);
+            } else {
+                icon.classList.remove('bi-plus-circle');
+                icon.classList.add('bi-exclamation-circle');
+                icon.style.color = '#e07a5f';
+                setTimeout(() => {
+                    icon.classList.remove('bi-exclamation-circle');
+                    icon.classList.add('bi-plus-circle');
+                    icon.style.color = '';
+                }, 1500);
+            }
+        })
+        .catch(err => {
+            console.error('Erreur ajout playlist:', err);
+        });
     });
 });
 	</script>
