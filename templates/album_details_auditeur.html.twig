@@ -741,11 +741,6 @@ document.querySelectorAll('.add-to-playlist-item').forEach(function(item) {
 
                 const li = item.closest('li');
                 if (li) li.remove();
-
-                const remaining = dropdown.querySelectorAll('.add-to-playlist-item');
-                if (remaining.length === 0) {
-                    dropdown.remove();
-                }
             } else {
                 showPlaylistToast(data.message || 'Erreur lors de l\'ajout', false);
             }
