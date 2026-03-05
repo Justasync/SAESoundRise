@@ -1,9 +1,15 @@
-<If "%{HTTP_HOST} =~ /beta/">
-    AuthType Basic
-    AuthName "Veuillez vous identifier pour accéder au site de test"
-    AuthUserFile /home/u488841025/domains/beta.paaxio.com/public_html/config/.htpasswd
-    Require valid-user
-</If>
+# Beta site protection: skip auth for non-beta hosts
+SetEnvIf Host .* SKIP_AUTH
+SetEnvIfNoCase Host "beta" !SKIP_AUTH
+
+AuthType Basic
+AuthName "Veuillez vous identifier pour accéder au site de test"
+AuthUserFile /home/u488841025/domains/beta.paaxio.com/public_html/config/.htpasswd
+Require valid-user
+Satisfy Any
+Order Deny,Allow
+Deny from all
+Allow from env=SKIP_AUTH
 
 <IfModule mod_php.c>
     php_value upload_max_filesize 25M
@@ -15,7 +21,6 @@
 # Disable directory listing
 Options -Indexes
 
-# Evita el acceso directo a archivos dentro de config y views
 RewriteEngine On
 
 RewriteRule ^archive/ - [F,L]
