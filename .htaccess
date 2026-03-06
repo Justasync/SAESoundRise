@@ -26,8 +26,10 @@ RewriteEngine On
 RewriteRule ^archive/ - [F,L]
 RewriteRule ^config/ - [F,L]
 RewriteRule ^sql/ - [F,L]
+RewriteRule ^scripts/logs/ - [F,L]
+RewriteRule ^backups/ - [F,L]
 
 # Deny access to sensitive files
-<FilesMatch "\.(htaccess|htpasswd|env|ini|log|sh|p8|pem|key|crt|gitignore|gitmodules|lock|sql|bak)$">
+<FilesMatch "\.(htaccess|htpasswd|env|ini|log|sh|p8|pem|key|crt|gitignore|gitmodules|lock|sql|bak|gz|tar|zip|dump)$">
   Require all denied
 </FilesMatch>
