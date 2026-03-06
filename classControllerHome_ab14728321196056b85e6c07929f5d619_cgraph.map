@@ -1,0 +1,5 @@
+<map id="ControllerHome\afficherConsentement" name="ControllerHome\afficherConsentement">
+<area shape="rect" id="Node000001" title="Affiche la page de consentement à la diffusion et à la republication." alt="" coords="5,5,279,31"/>
+<area shape="rect" id="Node000002" href="$classController.html#afd7d94db564ae6e196ac7ac0461e0989" title="Récupère l&#39;environnement Twig." alt="" coords="327,5,467,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="279,15,313,15,313,21,279,21"/>
+</map>

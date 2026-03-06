@@ -1,0 +1,5 @@
+<map id="ControllerSearch\json_search" name="ControllerSearch\json_search">
+<area shape="rect" id="Node000001" title="Retourne les résultats de la recherche au format JSON." alt="" coords="5,5,167,45"/>
+<area shape="rect" id="Node000002" href="$classController.html#aed88cab8d9c1a6735fd3aac0993e5021" title="Récupère la connexion PDO." alt="" coords="215,13,353,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="167,23,201,23,201,28,167,28"/>
+</map>

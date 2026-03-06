@@ -1,0 +1,9 @@
+<map id="ControllerUtilisateur\afficherAbonnement" name="ControllerUtilisateur\afficherAbonnement">
+<area shape="rect" id="Node000001" title="Affiche la page de gestion de l&#39;abonnement." alt="" coords="5,47,164,87"/>
+<area shape="rect" id="Node000002" href="$classController.html#aed88cab8d9c1a6735fd3aac0993e5021" title="Récupère la connexion PDO." alt="" coords="220,5,359,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="163,46,222,31,223,37,165,51"/>
+<area shape="rect" id="Node000003" href="$classController.html#afd7d94db564ae6e196ac7ac0461e0989" title="Récupère l&#39;environnement Twig." alt="" coords="219,55,359,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="164,65,206,65,206,70,164,70"/>
+<area shape="rect" id="Node000004" href="$classController.html#a56c96fd35f673f4d5084ef7ad0cd395c" title="Redirige vers un contrôleur et une méthode donnés." alt="" coords="212,104,367,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="165,84,223,98,222,103,163,89"/>
+</map>

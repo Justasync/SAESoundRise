@@ -1,0 +1,9 @@
+<map id="Constantes\getInstance" name="Constantes\getInstance">
+<area shape="rect" id="Node000001" title="Retourne l&#39;instance unique de la classe Constantes (pattern Singleton)." alt="" coords="389,31,564,56"/>
+<area shape="rect" id="Node000002" href="$classbd.html#a4a2288b05ac3dfea4f4174aa8297f07e" title="Constructeur privé pour empêcher l&#39;instanciation directe." alt="" coords="205,5,321,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="375,34,321,27,322,22,376,29"/>
+<area shape="rect" id="Node000003" href="$classbd.html#aff97e60ed4fc9b73efa36e0e0dcbf3a5" title="Crée et retourne une connexion PDO pour le rôle donné (lazy)." alt="" coords="185,55,341,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="376,57,342,61,341,56,375,52"/>
+<area shape="rect" id="Node000004" href="$classbd.html#a19ae164fa5373346938241b4449d5064" title="Retourne la connexion PDO pour le rôle demandé." alt="" coords="5,55,137,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="172,70,137,70,137,65,172,65"/>
+</map>

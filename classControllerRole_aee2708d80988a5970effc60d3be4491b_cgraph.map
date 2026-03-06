@@ -1,0 +1,5 @@
+<map id="ControllerRole\lister" name="ControllerRole\lister">
+<area shape="rect" id="Node000001" title="Liste tous les rôles de la plateforme." alt="" coords="5,5,157,31"/>
+<area shape="rect" id="Node000002" href="$classController.html#afd7d94db564ae6e196ac7ac0461e0989" title="Récupère l&#39;environnement Twig." alt="" coords="205,5,345,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="158,15,191,15,191,21,158,21"/>
+</map>

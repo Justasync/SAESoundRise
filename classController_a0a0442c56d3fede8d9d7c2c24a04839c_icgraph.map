@@ -1,0 +1,15 @@
+<map id="Controller\getPost" name="Controller\getPost">
+<area shape="rect" id="Node000001" title="Récupère les données POST." alt="" coords="285,159,424,185"/>
+<area shape="rect" id="Node000002" href="$classControllerNewsletter.html#abf7e574941e852179163eb9830dda5cf" title="Traite l&#39;inscription à la newsletter." alt="" coords="43,5,200,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="334,150,292,104,265,80,236,60,199,44,201,39,239,55,269,76,296,100,338,147"/>
+<area shape="rect" id="Node000003" href="$classControllerMessage.html#a9b70f2585ae8ff404a433b5bd54301dd" title="Affiche une discussion précise et gère l&#39;envoi d&#39;un nouveau message." alt="" coords="5,70,237,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="321,154,282,131,236,110,194,98,196,93,238,106,284,127,324,149"/>
+<area shape="rect" id="Node000004" href="$classControllerUtilisateur.html#a0e6ff8b903944ba1de24d13278ec3082" title="Traite la demande de réinitialisation de mot de passe." alt="" coords="26,120,217,160"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="271,163,217,156,217,150,272,158"/>
+<area shape="rect" id="Node000005" href="$classControllerUtilisateur.html#afd558d0616f1e5fca72af8f49ef5de3e" title="Gère la connexion (authentification) d&#39;un utilisateur." alt="" coords="44,184,199,224"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="272,186,199,196,199,191,271,181"/>
+<area shape="rect" id="Node000006" href="$classControllerUtilisateur.html#a6a37c32b8d27a485a0706ac537fcf191" title="Gère l&#39;inscription d&#39;un nouvel utilisateur." alt="" coords="44,248,199,288"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="323,194,283,217,238,238,200,252,198,247,236,234,281,212,321,190"/>
+<area shape="rect" id="Node000007" href="$classControllerUtilisateur.html#ac23258d9876caad56dba0ffcb0669d53" title="Traite la réinitialisation du mot de passe." alt="" coords="39,312,203,352"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="340,198,298,251,270,279,239,302,205,318,202,313,236,298,267,274,294,247,336,195"/>
+</map>

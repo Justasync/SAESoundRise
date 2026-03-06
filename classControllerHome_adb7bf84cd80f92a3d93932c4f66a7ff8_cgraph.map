@@ -1,0 +1,23 @@
+<map id="ControllerHome\afficher" name="ControllerHome\afficher">
+<area shape="rect" id="Node000001" title="Affiche la page d&#39;accueil selon le rôle de l&#39;utilisateur." alt="" coords="5,119,184,145"/>
+<area shape="rect" id="Node000002" href="$classControllerHome.html#afa387b4cc8f4ade844e23c91f345096c" title="Affiche le tableau de bord de l&#39;artiste connecté." alt="" coords="238,70,479,95"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="163,117,276,95,277,101,164,122"/>
+<area shape="rect" id="Node000005" href="$classControllerHome.html#ae66821d9d12bddaa6422f805c5d1b9b9" title="Affiche le tableau de bord de l&#39;auditeur connecté." alt="" coords="232,119,485,145"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="184,129,218,129,218,135,184,135"/>
+<area shape="rect" id="Node000006" href="$classControllerHome.html#a37d489f78f71195bd48371f961d47bd1" title="Affiche le tableau de bord public (utilisateurs non connectés ou invités)." alt="" coords="243,169,474,194"/>
+<area shape="poly" id="edge7_Node000001_Node000006" title=" " alt="" coords="164,142,277,163,276,169,163,147"/>
+<area shape="rect" id="Node000007" href="$classControllerHome.html#a67484343bd7975874176eb9ebed4a856" title="Affiche le tableau de bord du producteur connecté." alt="" coords="259,5,458,45"/>
+<area shape="poly" id="edge10_Node000001_Node000007" title=" " alt="" coords="114,117,166,86,231,55,254,47,255,52,233,60,168,91,117,122"/>
+<area shape="rect" id="Node000008" href="$classController.html#a56c96fd35f673f4d5084ef7ad0cd395c" title="Redirige vers un contrôleur et une méthode donnés." alt="" coords="281,218,436,243"/>
+<area shape="poly" id="edge13_Node000001_Node000008" title=" " alt="" coords="116,143,168,174,233,204,268,214,267,220,231,209,165,178,114,147"/>
+<area shape="rect" id="Node000003" href="$classController.html#aed88cab8d9c1a6735fd3aac0993e5021" title="Récupère la connexion PDO." alt="" coords="534,70,673,95"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="480,80,520,80,520,85,480,85"/>
+<area shape="rect" id="Node000004" href="$classController.html#afd7d94db564ae6e196ac7ac0461e0989" title="Récupère l&#39;environnement Twig." alt="" coords="533,119,673,145"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="424,93,486,105,528,114,527,119,485,111,423,98"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="428,117,485,105,531,96,532,101,486,111,429,122"/>
+<area shape="poly" id="edge6_Node000005_Node000004" title=" " alt="" coords="486,129,519,129,519,135,486,135"/>
+<area shape="poly" id="edge8_Node000006_Node000003" title=" " alt="" coords="457,166,484,155,499,144,508,132,517,119,532,106,545,99,547,103,535,110,521,122,512,135,502,148,487,160,460,171"/>
+<area shape="poly" id="edge9_Node000006_Node000004" title=" " alt="" coords="428,166,485,155,531,145,532,150,486,160,429,171"/>
+<area shape="poly" id="edge11_Node000007_Node000003" title=" " alt="" coords="445,43,536,64,534,69,444,48"/>
+<area shape="poly" id="edge12_Node000007_Node000004" title=" " alt="" coords="460,42,487,55,502,68,512,81,521,93,535,106,545,111,542,116,532,110,517,97,507,84,499,71,484,60,457,47"/>
+</map>

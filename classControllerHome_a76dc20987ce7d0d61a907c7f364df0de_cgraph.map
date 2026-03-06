@@ -1,0 +1,9 @@
+<map id="ControllerHome\apercuProducteur" name="ControllerHome\apercuProducteur">
+<area shape="rect" id="Node000001" title="Méthode d&#39;aperçu du dashboard producteur (utile hors session producteur)." alt="" coords="5,31,248,56"/>
+<area shape="rect" id="Node000002" href="$classControllerHome.html#a67484343bd7975874176eb9ebed4a856" title="Affiche le tableau de bord du producteur connecté." alt="" coords="296,23,495,63"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="248,41,282,41,282,46,248,46"/>
+<area shape="rect" id="Node000003" href="$classController.html#aed88cab8d9c1a6735fd3aac0993e5021" title="Récupère la connexion PDO." alt="" coords="543,5,682,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="495,29,529,25,530,30,496,34"/>
+<area shape="rect" id="Node000004" href="$classController.html#afd7d94db564ae6e196ac7ac0461e0989" title="Récupère l&#39;environnement Twig." alt="" coords="543,55,683,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="496,52,529,55,528,61,495,57"/>
+</map>

@@ -1,0 +1,19 @@
+<map id="Email\getSiteUrl" name="Email\getSiteUrl">
+<area shape="rect" id="Node000001" title="Récupère l&#39;URL du site." alt="" coords="491,129,619,155"/>
+<area shape="rect" id="Node000002" href="$classEmail.html#a8c71ec8d159d28e642c37888d94d7aa2" title="Envoie un email de confirmation d&#39;inscription." alt="" coords="221,5,435,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="533,121,493,81,468,61,441,44,413,33,415,28,444,40,471,57,497,77,536,117"/>
+<area shape="rect" id="Node000003" href="$classEmail.html#a0912c368e838674b441f50dafdeb9201" title="Envoie un email de contact (depuis le formulaire de contact)" alt="" coords="237,55,419,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="516,125,442,94,401,83,402,78,444,89,518,120"/>
+<area shape="rect" id="Node000004" href="$classEmail.html#a1ebc55f26145ec1d583b272e84c9c480" title="Envoie un email de newsletter." alt="" coords="227,104,429,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="476,136,429,131,430,125,477,131"/>
+<area shape="rect" id="Node000006" href="$classEmail.html#a0ee4dc977a9847d4d23c72a2e708337e" title="Envoie un email de notification (nouvel album, nouveau follower, etc.)" alt="" coords="225,153,431,179"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="477,153,432,158,431,152,476,148"/>
+<area shape="rect" id="Node000007" href="$classEmail.html#a71c29bcbebc4fb0e32b9bd382c334cbc" title="Envoie un email de réinitialisation de mot de passe." alt="" coords="213,203,443,228"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="516,163,444,193,397,205,396,200,442,187,514,158"/>
+<area shape="rect" id="Node000008" href="$classEmail.html#a67accca2885af8491566d685127f069c" title="Envoie un email de bienvenue à un nouvel utilisateur." alt="" coords="233,252,423,277"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="536,167,496,205,471,225,444,242,411,254,409,249,441,237,468,221,493,201,532,163"/>
+<area shape="rect" id="Node000005" href="$classEmail.html#ace294aab67bdd1728f4b95ead374f3d9" title="Envoie un email en masse à plusieurs destinataires (pour la newsletter)" alt="" coords="5,104,165,129"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="213,119,165,119,165,114,213,114"/>
+<area shape="rect" id="Node000009" href="$classEmail.html#a84786f0307c864ddd7cfb12acba129b3" title="Fonction de test simple de la classe Email avec un nom et un email factices." alt="" coords="23,252,148,277"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="219,267,148,267,148,262,219,262"/>
+</map>

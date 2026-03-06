@@ -1,0 +1,5 @@
+<map id="ControllerUtilisateur\suivreArtiste" name="ControllerUtilisateur\suivreArtiste">
+<area shape="rect" id="Node000001" title="Gère l&#39;abonnement/désabonnement à un artiste via une requête AJAX." alt="" coords="5,5,160,45"/>
+<area shape="rect" id="Node000002" href="$classController.html#aed88cab8d9c1a6735fd3aac0993e5021" title="Récupère la connexion PDO." alt="" coords="208,13,347,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,23,194,23,194,28,160,28"/>
+</map>

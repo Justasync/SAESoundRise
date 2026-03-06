@@ -1,0 +1,5 @@
+<map id="Email\loadMailConfig" name="Email\loadMailConfig">
+<area shape="rect" id="Node000001" title="Charge la configuration email depuis le fichier config.json." alt="" coords="191,5,351,31"/>
+<area shape="rect" id="Node000002" href="$classEmail.html#a7c5f000d14ecfeb9af014ea1efa7d3b9" title="Constructeur de la classe Email." alt="" coords="5,5,143,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="177,21,143,21,143,15,177,15"/>
+</map>

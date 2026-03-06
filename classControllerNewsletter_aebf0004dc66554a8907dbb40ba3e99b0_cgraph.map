@@ -1,0 +1,5 @@
+<map id="ControllerNewsletter\afficher" name="ControllerNewsletter\afficher">
+<area shape="rect" id="Node000001" title="Affiche le formulaire d&#39;inscription à la newsletter." alt="" coords="5,5,163,45"/>
+<area shape="rect" id="Node000002" href="$classController.html#afd7d94db564ae6e196ac7ac0461e0989" title="Récupère l&#39;environnement Twig." alt="" coords="211,13,351,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="163,23,197,23,197,28,163,28"/>
+</map>

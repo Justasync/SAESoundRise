@@ -1,0 +1,254 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Paaxio:  Fichier source de message.dao.php</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Paaxio<span id="projectnumber">&#160;1.0</span>
+   </div>
+   <div id="projectbrief">Plateforme de streaming musical - SAE IUT Bayonne</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('message_8dao_8php_source.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">message.dao.php</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="message_8dao_8php.html">Aller à la documentation de ce fichier.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span>&lt;?php</div>
+<div class="foldopen" id="foldopen00007" data-start="{" data-end="};">
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="classMessageDAO.html">    7</a></span><span class="keyword">class </span><a class="code hl_class" href="classMessageDAO.html">MessageDAO</a></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>{</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="classMessageDAO.html#a6288deb0c388bd2fa313e8e253fb32a5">   12</a></span>    <span class="keyword">private</span> ?PDO <a class="code hl_variable" href="classMessageDAO.html#a6288deb0c388bd2fa313e8e253fb32a5">$pdo</a>;</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="foldopen" id="foldopen00018" data-start="{" data-end="}">
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classMessageDAO.html#a388adcc2a9b2100f06ed5c112f542997">   18</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classMessageDAO.html#a388adcc2a9b2100f06ed5c112f542997">__construct</a>(?PDO <a class="code hl_variable" href="classMessageDAO.html#a6288deb0c388bd2fa313e8e253fb32a5">$pdo</a> = <span class="keyword">null</span>)</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    {</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        $this-&gt;pdo = <a class="code hl_variable" href="classMessageDAO.html#a6288deb0c388bd2fa313e8e253fb32a5">$pdo</a>;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    }</div>
+</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="foldopen" id="foldopen00029" data-start="{" data-end="}">
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="classMessageDAO.html#acb4466638d025afe1f499f5d15de1719">   29</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classMessageDAO.html#acb4466638d025afe1f499f5d15de1719">create</a>(<a class="code hl_class" href="classMessage.html">Message</a> $message): bool</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    {</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        $sql = <span class="stringliteral">&quot;INSERT INTO message (dateMessage, contenuMessage, estLuMessage, emailExpediteur, emailDestinataire) VALUES (:dateMessage, :contenuMessage, :estLuMessage, :emailExpediteur, :emailDestinataire)&quot;</span>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        $stmt = $this-&gt;pdo-&gt;prepare($sql);</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        $dateEnvoi = $message-&gt;<a class="code hl_function" href="classMessage.html#a91142e519fd2b80ff0e98528e0e32548">getDateEnvoi</a>()?-&gt;format(<span class="stringliteral">&#39;Y-m-d H:i:s&#39;</span>);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        $emailExpediteur = $message-&gt;<a class="code hl_function" href="classMessage.html#a17d04b76bf4d011e723389b49556d97e">getEmailExpediteur</a>()?-&gt;getEmailUtilisateur();</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        $emailDestinataire = $message-&gt;<a class="code hl_function" href="classMessage.html#a6ba12b20b5a877ca4ed300da00065991">getEmailDestinataire</a>()?-&gt;getEmailUtilisateur();</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        <span class="keywordflow">return</span> $stmt-&gt;execute([</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>            <span class="stringliteral">&#39;:dateMessage&#39;</span> =&gt; $dateEnvoi ?? date(<span class="stringliteral">&#39;Y-m-d H:i:s&#39;</span>),</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            <span class="stringliteral">&#39;:contenuMessage&#39;</span> =&gt; $message-&gt;<a class="code hl_function" href="classMessage.html#a944818d0c6fcb9edcb5518cee8f1e6dd">getContenu</a>(),</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>            <span class="stringliteral">&#39;:estLuMessage&#39;</span> =&gt; $message-&gt;<a class="code hl_function" href="classMessage.html#aa866344ad361092a01212ecb35b9c75a">getEstLu</a>() ? 1 : 0,</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>            <span class="stringliteral">&#39;:emailExpediteur&#39;</span> =&gt; $emailExpediteur,</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>            <span class="stringliteral">&#39;:emailDestinataire&#39;</span> =&gt; $emailDestinataire</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        ]);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    }</div>
+</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="foldopen" id="foldopen00051" data-start="{" data-end="}">
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="classMessageDAO.html#a22a203288c3db327576498145c78654c">   51</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classMessageDAO.html#a22a203288c3db327576498145c78654c">getConversations</a>(<span class="keywordtype">string</span> $myEmail): array</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    {</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        $sql = <span class="stringliteral">&quot;</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="stringliteral">            SELECT u.*, </span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="stringliteral">                MAX(m.dateMessage) as derniereActivite,</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="stringliteral">                SUM(CASE WHEN m.emailDestinataire = :myEmail AND m.emailExpediteur = u.emailUtilisateur AND m.estLuMessage = 0 THEN 1 ELSE 0 END) as nbNonLus</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="stringliteral">            FROM utilisateur u</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="stringliteral">            JOIN message m ON (u.emailUtilisateur = m.emailExpediteur OR u.emailUtilisateur = m.emailDestinataire)</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="stringliteral">            WHERE (m.emailExpediteur = :myEmail OR m.emailDestinataire = :myEmail)</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="stringliteral">            AND u.emailUtilisateur != :myEmail</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="stringliteral">            GROUP BY u.emailUtilisateur</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="stringliteral">            ORDER BY derniereActivite DESC</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="stringliteral">        &quot;</span>;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        $stmt = $this-&gt;pdo-&gt;prepare($sql);</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        $stmt-&gt;execute([<span class="stringliteral">&#39;:myEmail&#39;</span> =&gt; $myEmail]);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        $contacts = [];</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        <span class="comment">// On suppose que tu as une classe UtilisateurDAO ou que tu hydrates manuellement</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        <span class="comment">// Ici, je fais une hydration simple basée sur ta classe Utilisateur</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        <span class="keywordflow">while</span> ($row = $stmt-&gt;fetch(PDO::FETCH_ASSOC)) {</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>            <span class="comment">// Note: Idéalement, utilise ton UtilisateurDAO pour créer l&#39;objet proprement</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>            $user = <span class="keyword">new</span> <a class="code hl_class" href="classUtilisateur.html">Utilisateur</a>($row[<span class="stringliteral">&#39;emailUtilisateur&#39;</span>]);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>            $user-&gt;setNomUtilisateur($row[<span class="stringliteral">&#39;nomUtilisateur&#39;</span>]);</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>            $user-&gt;setPseudoUtilisateur($row[<span class="stringliteral">&#39;pseudoUtilisateur&#39;</span>]);</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>            $user-&gt;setUrlPhotoUtilisateur($row[<span class="stringliteral">&#39;urlPhotoUtilisateur&#39;</span>]);</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>            $contacts[] = [</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>                <span class="stringliteral">&#39;user&#39;</span> =&gt; $user,</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>                <span class="stringliteral">&#39;aNonLu&#39;</span> =&gt; ($row[<span class="stringliteral">&#39;nbNonLus&#39;</span>] &gt; 0)</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>            ];</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        }</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        <span class="keywordflow">return</span> $contacts;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    }</div>
+</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="foldopen" id="foldopen00091" data-start="{" data-end="}">
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="classMessageDAO.html#a792631c68041801960e9efb44679b289">   91</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classMessageDAO.html#a792631c68041801960e9efb44679b289">getUnreadCountForUser</a>(<span class="keywordtype">string</span> $myEmail): int</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    {</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        $sql = <span class="stringliteral">&quot;</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="stringliteral">            SELECT COUNT(*) AS nbNonLus</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="stringliteral">            FROM message</span></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="stringliteral">            WHERE emailDestinataire = :myEmail</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="stringliteral">              AND estLuMessage = 0</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="stringliteral">        &quot;</span>;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        $stmt = $this-&gt;pdo-&gt;prepare($sql);</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        $stmt-&gt;execute([<span class="stringliteral">&#39;:myEmail&#39;</span> =&gt; $myEmail]);</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        $row = $stmt-&gt;fetch(PDO::FETCH_ASSOC);</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        <span class="keywordflow">return</span> $row !== <span class="keyword">false</span> ? (int) $row[<span class="stringliteral">&#39;nbNonLus&#39;</span>] : 0;</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    }</div>
+</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="foldopen" id="foldopen00113" data-start="{" data-end="}">
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="classMessageDAO.html#a5fb7c86803405a13c42e8462eaa9cb05">  113</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classMessageDAO.html#a5fb7c86803405a13c42e8462eaa9cb05">markAsRead</a>(<span class="keywordtype">int</span> $idMessage): bool</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    {</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        $sql = <span class="stringliteral">&quot;UPDATE message SET estLuMessage = 1 WHERE idMessage = :idMessage&quot;</span>;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        $stmt = $this-&gt;pdo-&gt;prepare($sql);</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        <span class="keywordflow">return</span> $stmt-&gt;execute([<span class="stringliteral">&#39;:idMessage&#39;</span> =&gt; $idMessage]);</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    }</div>
+</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
+<div class="foldopen" id="foldopen00126" data-start="{" data-end="}">
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno"><a class="line" href="classMessageDAO.html#ae5a72ad05ab21ea15eac073b34eec289">  126</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classMessageDAO.html#ae5a72ad05ab21ea15eac073b34eec289">getMessagesConversation</a>(<span class="keywordtype">string</span> $myEmail, <span class="keywordtype">string</span> $contactEmail): array</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    {</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        $sql = <span class="stringliteral">&quot;SELECT * FROM message </span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="stringliteral">                WHERE (emailExpediteur = :me AND emailDestinataire = :other)</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="stringliteral">                   OR (emailExpediteur = :other AND emailDestinataire = :me)</span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="stringliteral">                ORDER BY dateMessage ASC&quot;</span>; <span class="comment">// ASC pour lire du plus vieux au plus récent (flux de chat)</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>        $stmt = $this-&gt;pdo-&gt;prepare($sql);</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>        $stmt-&gt;execute([<span class="stringliteral">&#39;:me&#39;</span> =&gt; $myEmail, <span class="stringliteral">&#39;:other&#39;</span> =&gt; $contactEmail]);</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>        $messages = [];</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>        <span class="keywordflow">while</span> ($row = $stmt-&gt;fetch(PDO::FETCH_ASSOC)) {</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>            <span class="comment">// On recrée les objets Utilisateur juste avec l&#39;email pour l&#39;instant</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>            $expediteur = <span class="keyword">new</span> <a class="code hl_class" href="classUtilisateur.html">Utilisateur</a>($row[<span class="stringliteral">&#39;emailExpediteur&#39;</span>]);</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>            $destinataire = <span class="keyword">new</span> <a class="code hl_class" href="classUtilisateur.html">Utilisateur</a>($row[<span class="stringliteral">&#39;emailDestinataire&#39;</span>]);</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>            $messages[] = <span class="keyword">new</span> <a class="code hl_class" href="classMessage.html">Message</a>(</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>                (<span class="keywordtype">int</span>)$row[<span class="stringliteral">&#39;idMessage&#39;</span>],</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>                $row[<span class="stringliteral">&#39;contenuMessage&#39;</span>],</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>                <span class="keyword">new</span> DateTime($row[<span class="stringliteral">&#39;dateMessage&#39;</span>]),</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>                (<span class="keywordtype">bool</span>)$row[<span class="stringliteral">&#39;estLuMessage&#39;</span>],</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>                $expediteur,</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>                $destinataire</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>            );</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>        }</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>        <span class="keywordflow">return</span> $messages;</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    }</div>
+</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>}</div>
+</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>?&gt;</div>
+<div class="ttc" id="aclassMessageDAO_html"><div class="ttname"><a href="classMessageDAO.html">MessageDAO</a></div><div class="ttdef"><b>Definition</b> <a href="message_8dao_8php_source.html#l00007">message.dao.php:8</a></div></div>
+<div class="ttc" id="aclassMessageDAO_html_a22a203288c3db327576498145c78654c"><div class="ttname"><a href="classMessageDAO.html#a22a203288c3db327576498145c78654c">MessageDAO\getConversations</a></div><div class="ttdeci">getConversations(string $myEmail)</div><div class="ttdoc">Récupère la liste des utilisateurs avec qui l'utilisateur courant a discuté (Inbox).</div><div class="ttdef"><b>Definition</b> <a href="message_8dao_8php_source.html#l00051">message.dao.php:51</a></div></div>
+<div class="ttc" id="aclassMessageDAO_html_a388adcc2a9b2100f06ed5c112f542997"><div class="ttname"><a href="classMessageDAO.html#a388adcc2a9b2100f06ed5c112f542997">MessageDAO\__construct</a></div><div class="ttdeci">__construct(?PDO $pdo=null)</div><div class="ttdoc">Constructeur de la classe MessageDAO.</div><div class="ttdef"><b>Definition</b> <a href="message_8dao_8php_source.html#l00018">message.dao.php:18</a></div></div>
+<div class="ttc" id="aclassMessageDAO_html_a5fb7c86803405a13c42e8462eaa9cb05"><div class="ttname"><a href="classMessageDAO.html#a5fb7c86803405a13c42e8462eaa9cb05">MessageDAO\markAsRead</a></div><div class="ttdeci">markAsRead(int $idMessage)</div><div class="ttdoc">Marque un message comme lu.</div><div class="ttdef"><b>Definition</b> <a href="message_8dao_8php_source.html#l00113">message.dao.php:113</a></div></div>
+<div class="ttc" id="aclassMessageDAO_html_a6288deb0c388bd2fa313e8e253fb32a5"><div class="ttname"><a href="classMessageDAO.html#a6288deb0c388bd2fa313e8e253fb32a5">MessageDAO\$pdo</a></div><div class="ttdeci">PDO $pdo</div><div class="ttdef"><b>Definition</b> <a href="message_8dao_8php_source.html#l00012">message.dao.php:12</a></div></div>
+<div class="ttc" id="aclassMessageDAO_html_a792631c68041801960e9efb44679b289"><div class="ttname"><a href="classMessageDAO.html#a792631c68041801960e9efb44679b289">MessageDAO\getUnreadCountForUser</a></div><div class="ttdeci">getUnreadCountForUser(string $myEmail)</div><div class="ttdoc">Retourne le nombre total de messages non lus pour un utilisateur donné.</div><div class="ttdef"><b>Definition</b> <a href="message_8dao_8php_source.html#l00091">message.dao.php:91</a></div></div>
+<div class="ttc" id="aclassMessageDAO_html_acb4466638d025afe1f499f5d15de1719"><div class="ttname"><a href="classMessageDAO.html#acb4466638d025afe1f499f5d15de1719">MessageDAO\create</a></div><div class="ttdeci">create(Message $message)</div><div class="ttdoc">Crée un nouveau message dans la base de données.</div><div class="ttdef"><b>Definition</b> <a href="message_8dao_8php_source.html#l00029">message.dao.php:29</a></div></div>
+<div class="ttc" id="aclassMessageDAO_html_ae5a72ad05ab21ea15eac073b34eec289"><div class="ttname"><a href="classMessageDAO.html#ae5a72ad05ab21ea15eac073b34eec289">MessageDAO\getMessagesConversation</a></div><div class="ttdeci">getMessagesConversation(string $myEmail, string $contactEmail)</div><div class="ttdoc">Récupère l'historique de discussion entre deux personnes.</div><div class="ttdef"><b>Definition</b> <a href="message_8dao_8php_source.html#l00126">message.dao.php:126</a></div></div>
+<div class="ttc" id="aclassMessage_html"><div class="ttname"><a href="classMessage.html">Message</a></div><div class="ttdef"><b>Definition</b> <a href="message_8class_8php_source.html#l00008">message.class.php:9</a></div></div>
+<div class="ttc" id="aclassMessage_html_a17d04b76bf4d011e723389b49556d97e"><div class="ttname"><a href="classMessage.html#a17d04b76bf4d011e723389b49556d97e">Message\getEmailExpediteur</a></div><div class="ttdeci">getEmailExpediteur()</div><div class="ttdoc">Get the value of emailExpediteur.</div><div class="ttdef"><b>Definition</b> <a href="message_8class_8php_source.html#l00152">message.class.php:152</a></div></div>
+<div class="ttc" id="aclassMessage_html_a6ba12b20b5a877ca4ed300da00065991"><div class="ttname"><a href="classMessage.html#a6ba12b20b5a877ca4ed300da00065991">Message\getEmailDestinataire</a></div><div class="ttdeci">getEmailDestinataire()</div><div class="ttdoc">Get $emailDestinataire L'email du destinataire du message.</div><div class="ttdef"><b>Definition</b> <a href="message_8class_8php_source.html#l00174">message.class.php:174</a></div></div>
+<div class="ttc" id="aclassMessage_html_a91142e519fd2b80ff0e98528e0e32548"><div class="ttname"><a href="classMessage.html#a91142e519fd2b80ff0e98528e0e32548">Message\getDateEnvoi</a></div><div class="ttdeci">getDateEnvoi()</div><div class="ttdoc">Get the value of dateEnvoi.</div><div class="ttdef"><b>Definition</b> <a href="message_8class_8php_source.html#l00086">message.class.php:86</a></div></div>
+<div class="ttc" id="aclassMessage_html_a944818d0c6fcb9edcb5518cee8f1e6dd"><div class="ttname"><a href="classMessage.html#a944818d0c6fcb9edcb5518cee8f1e6dd">Message\getContenu</a></div><div class="ttdeci">getContenu()</div><div class="ttdoc">Get $contenu Le contenu du message.</div><div class="ttdef"><b>Definition</b> <a href="message_8class_8php_source.html#l00108">message.class.php:108</a></div></div>
+<div class="ttc" id="aclassMessage_html_aa866344ad361092a01212ecb35b9c75a"><div class="ttname"><a href="classMessage.html#aa866344ad361092a01212ecb35b9c75a">Message\getEstLu</a></div><div class="ttdeci">getEstLu()</div><div class="ttdoc">Get the value of estLu.</div><div class="ttdef"><b>Definition</b> <a href="message_8class_8php_source.html#l00130">message.class.php:130</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html"><div class="ttname"><a href="classUtilisateur.html">Utilisateur</a></div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00036">utilisateur.class.php:37</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_94350f523feee7bac2b3c4d6268d38b5.html">modeles</a></li><li class="navelem"><a class="el" href="message_8dao_8php.html">message.dao.php</a></li>
+    <li class="footer">Généré le Vendredi 6 Mars 2026 00:04:18 pour Paaxio par <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,6 @@
+<map id="ControllerHome" name="ControllerHome">
+<area shape="rect" id="Node000001" title="Contrôleur dédié à la gestion de la page d&#39;accueil." alt="" coords="5,519,188,824"/>
+<area shape="rect" id="Node000002" href="$classController.html" title="Classe de base pour tous les contrôleurs de l&#39;application." alt="" coords="27,5,166,471"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="90,484,91,518,85,518,85,484"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="108,484,108,518,103,518,103,484"/>
+</map>

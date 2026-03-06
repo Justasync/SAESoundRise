@@ -1,0 +1,5 @@
+<map id="Controller\requireAuth" name="Controller\requireAuth">
+<area shape="rect" id="Node000001" title="Exige que l&#39;utilisateur soit authentifié." alt="" coords="5,5,172,31"/>
+<area shape="rect" id="Node000002" href="$classController.html#a56c96fd35f673f4d5084ef7ad0cd395c" title="Redirige vers un contrôleur et une méthode donnés." alt="" coords="220,5,375,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="172,15,206,15,206,21,172,21"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="ControllerHome\artisteDashboard" name="ControllerHome\artisteDashboard">
+<area shape="rect" id="Node000001" title="Affiche le tableau de bord de l&#39;artiste connecté." alt="" coords="5,31,247,56"/>
+<area shape="rect" id="Node000002" href="$classController.html#aed88cab8d9c1a6735fd3aac0993e5021" title="Récupère la connexion PDO." alt="" coords="295,5,434,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="245,28,282,24,282,29,246,33"/>
+<area shape="rect" id="Node000003" href="$classController.html#afd7d94db564ae6e196ac7ac0461e0989" title="Récupère l&#39;environnement Twig." alt="" coords="295,55,435,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="247,53,281,56,280,62,246,58"/>
+</map>

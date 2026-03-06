@@ -1,0 +1,7 @@
+<map id="ControllerHome\connect" name="ControllerHome\connect">
+<area shape="rect" id="Node000001" title="Affiche la page de connexion." alt="" coords="5,31,185,56"/>
+<area shape="rect" id="Node000002" href="$classController.html#afd7d94db564ae6e196ac7ac0461e0989" title="Récupère l&#39;environnement Twig." alt="" coords="241,5,381,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="185,30,227,25,227,30,186,35"/>
+<area shape="rect" id="Node000003" href="$classController.html#a56c96fd35f673f4d5084ef7ad0cd395c" title="Redirige vers un contrôleur et une méthode donnés." alt="" coords="233,55,388,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="186,51,220,55,219,60,185,56"/>
+</map>

@@ -1,0 +1,60 @@
+<map id="Controller\getPDO" name="Controller\getPDO">
+<area shape="rect" id="Node000001" title="Récupère la connexion PDO." alt="" coords="597,731,736,757"/>
+<area shape="rect" id="Node000002" href="$classControllerUtilisateur.html#add534c065de988c4190bb06b1402778c" title="Affiche la page de gestion de l&#39;abonnement." alt="" coords="343,5,502,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="662,717,655,580,637,382,622,280,603,187,578,110,563,81,547,59,527,43,501,33,503,29,529,39,551,55,568,78,583,108,608,185,628,279,642,381,660,580,667,717"/>
+<area shape="rect" id="Node000003" href="$classControllerAlbum.html#a667cf5cf6637e7b5765fd60668ed1c2e" title="Affiche les détails d&#39;un album avec vue différenciée selon le rôle." alt="" coords="332,69,513,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="661,718,653,592,633,413,618,321,599,238,575,169,562,143,547,123,532,110,513,101,515,96,534,106,551,119,567,140,580,167,604,236,623,320,638,412,658,591,667,717"/>
+<area shape="rect" id="Node000004" href="$classControllerUtilisateur.html#a4b450adc34448bfdd2ca98da636724a1" title="Affiche la page de gestion du profil de l&#39;utilisateur connecté." alt="" coords="343,133,502,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="661,718,650,604,629,444,614,362,595,288,573,228,561,205,547,187,526,172,501,162,503,157,529,167,551,183,565,202,578,226,600,287,619,361,634,443,656,603,666,717"/>
+<area shape="rect" id="Node000005" href="$classControllerUtilisateur.html#a6178dff94504f04a3cc4538711ed071a" title="Affiche le profil public d&#39;un artiste." alt="" coords="345,197,500,237"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="660,718,648,616,625,475,610,404,591,339,571,287,547,251,526,235,500,226,501,221,528,231,551,247,575,284,596,338,615,403,630,474,653,615,665,717"/>
+<area shape="rect" id="Node000006" href="$classControllerNewsletter.html#abf7e574941e852179163eb9830dda5cf" title="Traite l&#39;inscription à la newsletter." alt="" coords="344,261,501,301"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="659,718,645,627,620,506,588,390,568,345,547,315,526,300,501,290,502,285,528,295,551,311,573,343,593,388,626,505,650,626,664,717"/>
+<area shape="rect" id="Node000007" href="$classControllerHome.html#afa387b4cc8f4ade844e23c91f345096c" title="Affiche le tableau de bord de l&#39;artiste connecté." alt="" coords="302,326,543,351"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="663,717,660,646,645,550,630,499,610,450,583,404,548,365,531,354,535,349,551,361,587,401,615,447,635,498,650,549,665,646,669,717"/>
+<area shape="rect" id="Node000009" href="$classControllerHome.html#ae66821d9d12bddaa6422f805c5d1b9b9" title="Affiche le tableau de bord de l&#39;auditeur connecté." alt="" coords="296,375,549,401"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="662,718,656,655,638,572,624,528,604,486,579,447,548,414,531,403,534,399,551,410,583,444,609,484,629,526,643,571,661,654,667,717"/>
+<area shape="rect" id="Node000010" href="$classControllerMessage.html#a9b70f2585ae8ff404a433b5bd54301dd" title="Affiche une discussion précise et gère l&#39;envoi d&#39;un nouveau message." alt="" coords="307,425,539,450"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="660,718,651,664,631,595,616,559,598,524,575,492,548,465,528,452,530,448,551,461,579,489,602,521,621,556,636,593,656,663,665,717"/>
+<area shape="rect" id="Node000011" href="$classControllerUtilisateur.html#a0e6ff8b903944ba1de24d13278ec3082" title="Traite la demande de réinitialisation de mot de passe." alt="" coords="327,475,518,515"/>
+<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="656,719,643,676,621,625,589,573,570,549,548,529,517,512,520,507,551,525,574,546,594,570,626,622,648,675,661,717"/>
+<area shape="rect" id="Node000012" href="$classControllerUtilisateur.html#af0b2e3313066e8335337f685e1cf9d9a" title="Traite et enregistre les modifications du profil utilisateur." alt="" coords="345,539,500,579"/>
+<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="651,720,611,656,582,622,548,593,525,581,499,572,501,567,527,576,551,588,586,618,615,653,655,717"/>
+<area shape="rect" id="Node000013" href="$classControllerUtilisateur.html#abbfd16bafa283856d06476b006239871" title="Gère la création d&#39;un nouvel utilisateur par l&#39;administrateur." alt="" coords="345,603,500,643"/>
+<area shape="poly" id="edge13_Node000001_Node000013" title=" " alt="" coords="641,724,599,689,548,657,500,639,502,634,551,652,602,685,644,720"/>
+<area shape="rect" id="Node000014" href="$classControllerSearch.html#a3d3f49132711aaf57212f56fb5be91e8" title="Retourne les résultats de la recherche au format JSON." alt="" coords="342,667,503,707"/>
+<area shape="poly" id="edge14_Node000001_Node000014" title=" " alt="" coords="598,731,503,708,504,703,599,726"/>
+<area shape="rect" id="Node000015" href="$classControllerMessage.html#aa0fab7f37aedcfd38980e418cfa82393" title="Affiche la liste des conversations de l&#39;utilisateur connecté." alt="" coords="332,731,513,757"/>
+<area shape="poly" id="edge15_Node000001_Node000015" title=" " alt="" coords="583,747,513,747,513,741,583,741"/>
+<area shape="rect" id="Node000016" href="$classControllerAdmin.html#a65506a5e6ff98256bd5c39307db816f0" title="Modifie un utilisateur existant." alt="" coords="329,781,516,806"/>
+<area shape="poly" id="edge16_Node000001_Node000016" title=" " alt="" coords="591,762,550,771,488,783,487,778,549,765,590,757"/>
+<area shape="rect" id="Node000017" href="$classControllerAlbum.html#a39a4e1d517fac239f47665a9e8110cdd" title="Modifie les informations d&#39;une chanson." alt="" coords="329,831,516,871"/>
+<area shape="poly" id="edge17_Node000001_Node000017" title=" " alt="" coords="639,767,598,794,550,820,514,833,512,828,548,815,596,790,636,763"/>
+<area shape="rect" id="Node000018" href="$classControllerUtilisateur.html#a0ce75c324883f099fcb82c9c69f68f0c" title="Traite la modification du mot de passe avec vérifications de sécurité." alt="" coords="343,895,503,935"/>
+<area shape="poly" id="edge18_Node000001_Node000018" title=" " alt="" coords="654,770,613,828,584,859,551,885,504,905,502,900,548,880,580,855,609,825,649,767"/>
+<area shape="rect" id="Node000019" href="$classControllerHome.html#a37d489f78f71195bd48371f961d47bd1" title="Affiche le tableau de bord public (utilisateurs non connectés ou invités)." alt="" coords="307,959,538,985"/>
+<area shape="poly" id="edge19_Node000001_Node000019" title=" " alt="" coords="661,771,647,811,624,859,593,908,573,930,551,949,528,962,525,957,548,944,569,926,588,905,619,857,642,809,656,769"/>
+<area shape="rect" id="Node000020" href="$classControllerHome.html#a67484343bd7975874176eb9ebed4a856" title="Affiche le tableau de bord du producteur connecté." alt="" coords="323,1009,522,1049"/>
+<area shape="poly" id="edge21_Node000001_Node000020" title=" " alt="" coords="664,771,652,820,631,882,598,945,577,974,551,999,523,1016,521,1011,548,995,572,971,594,942,626,879,647,818,658,770"/>
+<area shape="rect" id="Node000022" href="$classControllerUtilisateur.html#aaabd0c49bb15aac96b9358753608db1d" title="Affiche le formulaire de réinitialisation de mot de passe." alt="" coords="345,1073,500,1113"/>
+<area shape="poly" id="edge24_Node000001_Node000022" title=" " alt="" coords="666,771,659,831,640,910,625,952,606,992,581,1030,551,1063,527,1079,501,1089,499,1084,525,1074,548,1059,577,1027,601,990,620,950,635,909,653,830,661,770"/>
+<area shape="rect" id="Node000023" href="$classControllerUtilisateur.html#afd558d0616f1e5fca72af8f49ef5de3e" title="Gère la connexion (authentification) d&#39;un utilisateur." alt="" coords="345,1137,500,1177"/>
+<area shape="poly" id="edge25_Node000001_Node000023" title=" " alt="" coords="668,770,664,841,648,937,634,989,613,1039,586,1086,551,1127,528,1143,501,1153,500,1148,525,1139,548,1123,582,1083,609,1037,629,987,643,936,659,841,663,770"/>
+<area shape="rect" id="Node000024" href="$classControllerUtilisateur.html#a6a37c32b8d27a485a0706ac537fcf191" title="Gère l&#39;inscription d&#39;un nouvel utilisateur." alt="" coords="345,1201,500,1241"/>
+<area shape="poly" id="edge26_Node000001_Node000024" title=" " alt="" coords="665,771,651,864,627,990,611,1054,593,1111,573,1159,551,1191,528,1208,501,1218,499,1213,525,1203,547,1187,569,1156,588,1110,606,1052,622,989,645,863,659,770"/>
+<area shape="rect" id="Node000025" href="$classControllerUtilisateur.html#af92717c985f792067878e380438302c5" title="Gère l&#39;abonnement/désabonnement à un artiste via une requête AJAX." alt="" coords="345,1265,500,1305"/>
+<area shape="poly" id="edge27_Node000001_Node000025" title=" " alt="" coords="666,771,654,876,631,1021,616,1095,597,1162,576,1217,551,1255,528,1272,501,1282,500,1277,526,1267,547,1251,571,1215,592,1161,610,1094,626,1020,648,875,660,770"/>
+<area shape="rect" id="Node000026" href="$classControllerAlbum.html#aad96094767cc4b5a0520a29b22f7c77d" title="Supprime une chanson (action réservée à l&#39;artiste propriétaire)." alt="" coords="323,1329,522,1369"/>
+<area shape="poly" id="edge28_Node000001_Node000026" title=" " alt="" coords="666,771,656,888,635,1052,620,1136,601,1213,578,1276,565,1300,551,1319,524,1338,521,1334,547,1315,561,1298,574,1274,596,1211,615,1135,630,1051,651,887,661,770"/>
+<area shape="rect" id="Node000027" href="$classControllerUtilisateur.html#a90295c90b4694ff79b67e53cc6fb8713" title="Supprime définitivement le compte de l&#39;utilisateur connecté." alt="" coords="345,1393,500,1433"/>
+<area shape="poly" id="edge29_Node000001_Node000027" title=" " alt="" coords="667,771,659,899,639,1083,624,1177,605,1263,581,1334,567,1362,551,1383,528,1400,501,1411,499,1406,526,1396,547,1379,562,1359,576,1332,600,1262,619,1176,634,1082,653,899,662,770"/>
+<area shape="rect" id="Node000028" href="$classControllerUtilisateur.html#ac23258d9876caad56dba0ffcb0669d53" title="Traite la réinitialisation du mot de passe." alt="" coords="341,1457,505,1497"/>
+<area shape="poly" id="edge30_Node000001_Node000028" title=" " alt="" coords="667,770,661,910,643,1113,629,1218,609,1314,583,1393,568,1424,551,1447,530,1463,506,1473,504,1468,528,1459,547,1443,564,1421,578,1391,604,1312,623,1217,638,1112,656,910,662,770"/>
+<area shape="rect" id="Node000008" href="$classControllerHome.html#adb7bf84cd80f92a3d93932c4f66a7ff8" title="Affiche la page d&#39;accueil selon le rôle de l&#39;utilisateur." alt="" coords="37,667,216,693"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="305,360,298,365,260,399,228,439,201,483,179,528,148,611,133,668,128,666,143,610,174,526,196,481,223,436,256,395,294,361,302,355"/>
+<area shape="poly" id="edge9_Node000009_Node000008" title=" " alt="" coords="306,409,298,414,263,442,233,476,207,512,185,550,152,619,134,668,129,666,147,617,180,547,202,509,229,472,260,438,294,410,304,404"/>
+<area shape="poly" id="edge20_Node000019_Node000008" title=" " alt="" coords="306,956,294,949,260,920,229,887,203,850,181,813,148,743,130,694,135,692,153,741,185,810,208,847,234,883,264,916,298,944,309,951"/>
+<area shape="poly" id="edge22_Node000020_Node000008" title=" " alt="" coords="309,1009,294,999,257,964,224,922,197,878,175,832,144,749,128,693,133,692,149,748,180,830,202,875,229,919,261,960,298,995,312,1005"/>
+<area shape="rect" id="Node000021" href="$classControllerHome.html#a76dc20987ce7d0d61a907c7f364df0de" title="Méthode d&#39;aperçu du dashboard producteur (utile hors session producteur)." alt="" coords="5,1017,248,1042"/>
+<area shape="poly" id="edge23_Node000020_Node000021" title=" " alt="" coords="310,1032,248,1032,248,1027,310,1027"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="AlbumDAO\create" name="AlbumDAO\create">
+<area shape="rect" id="Node000001" title="Crée un nouvel album dans la base de données." alt="" coords="5,55,144,80"/>
+<area shape="rect" id="Node000002" href="$classAlbum.html#abdc6593e83f348f6e76681550293e07e" title="Getter pour le nom de l&#39;artiste de l&#39;album." alt="" coords="205,5,379,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="131,52,221,31,223,36,132,57"/>
+<area shape="rect" id="Node000003" href="$classAlbum.html#aebaf73bac860cb0858d7a0c768f37999" title="Getter pour la date de sortie de l&#39;album." alt="" coords="192,55,392,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="145,65,178,65,178,70,145,70"/>
+<area shape="rect" id="Node000004" href="$classAlbum.html#a289eb86ecefd151635e9d3c1d8a2a85c" title="Getter pour le titre de l&#39;album." alt="" coords="211,104,373,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="132,77,223,98,221,104,131,83"/>
+<area shape="rect" id="Node000005" href="$classAlbum.html#acc9dd6d896eeefb54b8a6f5ef71d867a" title="Getter pour le nom de l&#39;album." alt="" coords="440,104,603,129"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="373,114,426,114,426,119,373,119"/>
+</map>

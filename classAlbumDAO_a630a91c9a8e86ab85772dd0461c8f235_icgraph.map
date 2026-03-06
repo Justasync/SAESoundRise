@@ -1,0 +1,9 @@
+<map id="AlbumDAO\hydrateMany" name="AlbumDAO\hydrateMany">
+<area shape="rect" id="Node000001" title="Hydrate plusieurs albums à partir d&#39;un tableau de tableaux associatifs." alt="" coords="244,63,427,88"/>
+<area shape="rect" id="Node000002" href="$classAlbumDAO.html#a994a65f33e2f7764e7547a2e7409855f" title="Récupère tous les albums de la base de données." alt="" coords="31,5,170,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="269,62,153,33,154,28,270,57"/>
+<area shape="rect" id="Node000003" href="$classAlbumDAO.html#ab01d941e55482986f0ebe0988915335d" title="Récupère les albums d&#39;un artiste en utilisant son email." alt="" coords="5,55,196,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="230,78,196,78,196,73,230,73"/>
+<area shape="rect" id="Node000004" href="$classAlbumDAO.html#a2cefe4747ac3d75c28c42f390b4d3787" title="Récupère les albums d&#39;un artiste en utilisant son pseudo." alt="" coords="10,120,191,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="270,94,154,123,153,117,269,89"/>
+</map>

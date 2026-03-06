@@ -1,0 +1,7 @@
+<map id="ControllerUtilisateur\modifierMotDePasse" name="ControllerUtilisateur\modifierMotDePasse">
+<area shape="rect" id="Node000001" title="Traite la modification du mot de passe avec vérifications de sécurité." alt="" coords="5,23,165,63"/>
+<area shape="rect" id="Node000002" href="$classController.html#aed88cab8d9c1a6735fd3aac0993e5021" title="Récupère la connexion PDO." alt="" coords="221,5,360,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="165,31,207,26,208,31,166,36"/>
+<area shape="rect" id="Node000003" href="$classController.html#a56c96fd35f673f4d5084ef7ad0cd395c" title="Redirige vers un contrôleur et une méthode donnés." alt="" coords="213,55,368,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="166,50,200,54,199,59,165,55"/>
+</map>

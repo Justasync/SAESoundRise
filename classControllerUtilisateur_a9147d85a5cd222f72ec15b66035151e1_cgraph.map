@@ -1,0 +1,5 @@
+<map id="ControllerUtilisateur\logout" name="ControllerUtilisateur\logout">
+<area shape="rect" id="Node000001" title="Déconnecte l&#39;utilisateur et détruit la session." alt="" coords="5,5,160,45"/>
+<area shape="rect" id="Node000002" href="$classController.html#a56c96fd35f673f4d5084ef7ad0cd395c" title="Redirige vers un contrôleur et une méthode donnés." alt="" coords="208,13,363,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,23,194,23,194,28,160,28"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="Chanson" name="Chanson">
+<area shape="rect" id="Node000001" title=" " alt="" coords="61,493,303,919"/>
+<area shape="rect" id="Node000002" href="$classAlbum.html" title=" " alt="" coords="5,5,183,431"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="123,431,130,469,131,477,126,478,125,470,118,431"/>
+<area shape="rect" id="Node000003" href="$classGenre.html" title=" " alt="" coords="207,135,336,301"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="267,301,258,383,245,470,243,478,238,477,239,469,253,382,262,301"/>
+</map>

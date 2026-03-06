@@ -1,0 +1,5 @@
+<map id="ControllerHome\homeBienvenue" name="ControllerHome\homeBienvenue">
+<area shape="rect" id="Node000001" title="Affiche la page d&#39;accueil de bienvenue." alt="" coords="5,5,240,31"/>
+<area shape="rect" id="Node000002" href="$classController.html#afd7d94db564ae6e196ac7ac0461e0989" title="Récupère l&#39;environnement Twig." alt="" coords="288,5,428,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="240,15,274,15,274,21,240,21"/>
+</map>

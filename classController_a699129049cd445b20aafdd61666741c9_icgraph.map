@@ -1,0 +1,7 @@
+<map id="Controller\getGet" name="Controller\getGet">
+<area shape="rect" id="Node000001" title="Récupère les données GET." alt="" coords="285,35,420,60"/>
+<area shape="rect" id="Node000002" href="$classControllerMessage.html#a9b70f2585ae8ff404a433b5bd54301dd" title="Affiche une discussion précise et gère l&#39;envoi d&#39;un nouveau message." alt="" coords="5,5,237,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="271,40,221,33,222,28,272,34"/>
+<area shape="rect" id="Node000003" href="$classControllerUtilisateur.html#aaabd0c49bb15aac96b9358753608db1d" title="Affiche le formulaire de réinitialisation de mot de passe." alt="" coords="44,55,199,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="272,60,199,69,198,63,271,54"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="bd\createConnection" name="bd\createConnection">
+<area shape="rect" id="Node000001" title="Crée et retourne une connexion PDO pour le rôle donné (lazy)." alt="" coords="185,5,341,31"/>
+<area shape="rect" id="Node000002" href="$classbd.html#a19ae164fa5373346938241b4449d5064" title="Retourne la connexion PDO pour le rôle demandé." alt="" coords="5,5,137,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="172,21,137,21,137,15,172,15"/>
+</map>

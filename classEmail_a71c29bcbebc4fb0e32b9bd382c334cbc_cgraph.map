@@ -1,0 +1,9 @@
+<map id="Email\sendPasswordResetEmail" name="Email\sendPasswordResetEmail">
+<area shape="rect" id="Node000001" title="Envoie un email de réinitialisation de mot de passe." alt="" coords="5,31,235,56"/>
+<area shape="rect" id="Node000002" href="$classEmail.html#ae28ae8c6b6977c4fa419438f93f5ea3a" title="Récupère l&#39;URL du site." alt="" coords="284,5,412,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="234,28,270,24,271,29,235,33"/>
+<area shape="rect" id="Node000003" href="$classEmail.html#a9aca469b70f5907964a1ee99dc76d787" title="Envoie un email générique." alt="" coords="283,55,413,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="236,53,269,56,269,62,235,58"/>
+<area shape="rect" id="Node000004" href="$classEmail.html#ad45a36acb02ab1c873e93ccbb98de680" title="Crée et configure une instance PHPMailer." alt="" coords="461,55,607,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="413,65,447,65,447,70,413,70"/>
+</map>

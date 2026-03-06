@@ -1,0 +1,7 @@
+<map id="bd\createConnection" name="bd\createConnection">
+<area shape="rect" id="Node000001" title="Crée et retourne une connexion PDO pour le rôle donné (lazy)." alt="" coords="5,31,161,56"/>
+<area shape="rect" id="Node000002" href="$classbd.html#ad36b9c38435df25391d62e7f3d4df5c2" title="Construit le DSN MySQL à partir de la config partagée." alt="" coords="253,5,341,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="162,31,239,22,239,27,162,37"/>
+<area shape="rect" id="Node000003" href="$classConstantes.html#acf14c5fd1b76665675cf2f25f7c23497" title="Retourne l&#39;instance unique de la classe Constantes (pattern Singleton)." alt="" coords="209,55,384,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="162,49,196,53,196,59,162,55"/>
+</map>

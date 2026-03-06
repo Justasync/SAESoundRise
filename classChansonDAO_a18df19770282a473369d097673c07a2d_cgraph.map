@@ -1,0 +1,9 @@
+<map id="ChansonDAO\updateChanson" name="ChansonDAO\updateChanson">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,217,80"/>
+<area shape="rect" id="Node000002" href="$classChanson.html#a5d211f9f2b3c3a33b95e47f113628502" title="Get the value of genreChanson." alt="" coords="265,5,464,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="177,52,285,31,286,36,178,57"/>
+<area shape="rect" id="Node000003" href="$classChanson.html#a55e08cb80a4957646c50fda88acec872" title="Get the value of idChanson." alt="" coords="279,55,450,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="218,65,265,65,265,70,218,70"/>
+<area shape="rect" id="Node000004" href="$classChanson.html#adbb3d4c53f48da4a850e6abd87521957" title="Get the value of titreChanson." alt="" coords="270,104,459,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="178,77,286,99,285,104,177,83"/>
+</map>

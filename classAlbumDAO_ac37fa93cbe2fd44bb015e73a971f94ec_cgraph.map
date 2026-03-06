@@ -1,0 +1,5 @@
+<map id="AlbumDAO\find" name="AlbumDAO\find">
+<area shape="rect" id="Node000001" title="Récupère un album par son identifiant." alt="" coords="5,5,127,31"/>
+<area shape="rect" id="Node000002" href="$classAlbumDAO.html#a46b67cb5e8f7a16329720a866aff9e17" title="Hydrate un album à partir d&#39;un tableau associatif." alt="" coords="175,5,321,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="127,15,160,15,160,21,127,21"/>
+</map>

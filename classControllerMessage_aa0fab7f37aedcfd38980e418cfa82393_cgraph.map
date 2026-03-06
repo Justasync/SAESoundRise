@@ -1,0 +1,11 @@
+<map id="ControllerMessage\lister" name="ControllerMessage\lister">
+<area shape="rect" id="Node000001" title="Affiche la liste des conversations de l&#39;utilisateur connecté." alt="" coords="5,55,187,80"/>
+<area shape="rect" id="Node000002" href="$classController.html#aed88cab8d9c1a6735fd3aac0993e5021" title="Récupère la connexion PDO." alt="" coords="249,5,387,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="153,52,246,31,247,36,154,57"/>
+<area shape="rect" id="Node000003" href="$classController.html#afd7d94db564ae6e196ac7ac0461e0989" title="Récupère l&#39;environnement Twig." alt="" coords="248,55,388,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="187,65,234,65,234,70,187,70"/>
+<area shape="rect" id="Node000004" href="$classController.html#a769e4e81d545b126413501bb3f3e77c3" title="Exige que l&#39;utilisateur soit authentifié." alt="" coords="235,104,401,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="154,77,247,98,246,104,153,83"/>
+<area shape="rect" id="Node000005" href="$classController.html#a56c96fd35f673f4d5084ef7ad0cd395c" title="Redirige vers un contrôleur et une méthode donnés." alt="" coords="449,104,604,129"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="401,114,435,114,435,119,401,119"/>
+</map>

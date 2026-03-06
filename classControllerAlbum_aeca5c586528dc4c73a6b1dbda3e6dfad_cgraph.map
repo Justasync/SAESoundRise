@@ -1,0 +1,5 @@
+<map id="ControllerAlbum\listerTableau" name="ControllerAlbum\listerTableau">
+<area shape="rect" id="Node000001" title="Liste tous les albums sous forme de tableau." alt="" coords="5,5,220,31"/>
+<area shape="rect" id="Node000002" href="$classController.html#afd7d94db564ae6e196ac7ac0461e0989" title="Récupère l&#39;environnement Twig." alt="" coords="268,5,408,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="220,15,254,15,254,21,220,21"/>
+</map>

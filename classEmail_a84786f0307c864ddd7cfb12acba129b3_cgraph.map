@@ -1,0 +1,11 @@
+<map id="Email\testEmail" name="Email\testEmail">
+<area shape="rect" id="Node000001" title="Fonction de test simple de la classe Email avec un nom et un email factices." alt="" coords="5,31,131,56"/>
+<area shape="rect" id="Node000002" href="$classEmail.html#a67accca2885af8491566d685127f069c" title="Envoie un email de bienvenue à un nouvel utilisateur." alt="" coords="179,31,369,56"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="131,41,165,41,165,46,131,46"/>
+<area shape="rect" id="Node000003" href="$classEmail.html#ae28ae8c6b6977c4fa419438f93f5ea3a" title="Récupère l&#39;URL du site." alt="" coords="419,5,547,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="370,29,405,25,406,30,370,34"/>
+<area shape="rect" id="Node000004" href="$classEmail.html#a9aca469b70f5907964a1ee99dc76d787" title="Envoie un email générique." alt="" coords="417,55,548,80"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="370,52,404,56,403,61,370,57"/>
+<area shape="rect" id="Node000005" href="$classEmail.html#ad45a36acb02ab1c873e93ccbb98de680" title="Crée et configure une instance PHPMailer." alt="" coords="596,55,741,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="548,65,582,65,582,70,548,70"/>
+</map>

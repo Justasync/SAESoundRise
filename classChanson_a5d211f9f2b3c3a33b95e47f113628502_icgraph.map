@@ -1,0 +1,7 @@
+<map id="Chanson\getGenreChanson" name="Chanson\getGenreChanson">
+<area shape="rect" id="Node000001" title="Get the value of genreChanson." alt="" coords="265,31,464,56"/>
+<area shape="rect" id="Node000002" href="$classChansonDAO.html#a571f3d96b5c32b26059289c7f2fe619d" title=" " alt="" coords="7,5,215,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="251,35,215,31,216,26,252,29"/>
+<area shape="rect" id="Node000003" href="$classChansonDAO.html#a18df19770282a473369d097673c07a2d" title=" " alt="" coords="5,55,217,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="252,57,218,60,217,55,251,51"/>
+</map>

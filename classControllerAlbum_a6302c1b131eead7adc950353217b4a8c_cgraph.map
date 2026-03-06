@@ -1,0 +1,13 @@
+<map id="ControllerAlbum\afficherFormulaireAjout" name="ControllerAlbum\afficherFormulaireAjout">
+<area shape="rect" id="Node000001" title="Affiche le formulaire d&#39;ajout d&#39;album." alt="" coords="5,20,187,60"/>
+<area shape="rect" id="Node000002" href="$classController.html#afd7d94db564ae6e196ac7ac0461e0989" title="Récupère l&#39;environnement Twig." alt="" coords="461,27,601,53"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="187,37,448,37,448,43,187,43"/>
+<area shape="rect" id="Node000003" href="$classController.html#a56c96fd35f673f4d5084ef7ad0cd395c" title="Redirige vers un contrôleur et une méthode donnés." alt="" coords="663,27,817,53"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="187,24,234,19,425,4,508,4,615,12,675,22,674,27,614,17,508,9,425,9,235,24,187,29"/>
+<area shape="rect" id="Node000004" href="$classController.html#a3c8ca59e4609ef5e27e868a91f5ce090" title="Exige que l&#39;utilisateur ait un rôle spécifique." alt="" coords="235,78,400,103"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="184,57,249,72,247,78,183,63"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="371,75,463,53,464,58,373,81"/>
+<area shape="rect" id="Node000005" href="$classController.html#a769e4e81d545b126413501bb3f3e77c3" title="Exige que l&#39;utilisateur soit authentifié." alt="" coords="448,77,615,102"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="400,88,434,87,434,93,400,93"/>
+<area shape="poly" id="edge6_Node000005_Node000003" title=" " alt="" coords="585,74,672,53,673,58,586,79"/>
+</map>

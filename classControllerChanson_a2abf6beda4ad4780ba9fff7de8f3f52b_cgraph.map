@@ -1,0 +1,5 @@
+<map id="ControllerChanson\rechercherParTitre" name="ControllerChanson\rechercherParTitre">
+<area shape="rect" id="Node000001" title="Recherche des chansons par leur titre." alt="" coords="5,5,220,45"/>
+<area shape="rect" id="Node000002" href="$classController.html#afd7d94db564ae6e196ac7ac0461e0989" title="Récupère l&#39;environnement Twig." alt="" coords="268,13,408,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="220,23,254,23,254,28,220,28"/>
+</map>

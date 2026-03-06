@@ -1,0 +1,14 @@
+<map id="Battle" name="Battle">
+<area shape="rect" id="Node000001" title="Classe représentant une battle musicale." alt="" coords="198,1036,379,1521"/>
+<area shape="rect" id="Node000002" href="$classUtilisateur.html" title=" " alt="" coords="53,493,271,959"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="218,958,232,1019,227,1020,213,960"/>
+<area shape="rect" id="Node000003" href="$classGenre.html" title=" " alt="" coords="213,135,343,301"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="257,302,217,455,211,478,206,477,211,454,252,301"/>
+<area shape="rect" id="Node000005" href="$classChanson.html" title=" " alt="" coords="295,513,538,939"/>
+<area shape="poly" id="edge6_Node000005_Node000003" title=" " alt="" coords="303,300,357,497,352,498,298,302"/>
+<area shape="rect" id="Node000004" href="$classRole.html" title=" " alt="" coords="5,95,137,341"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="67,341,68,405,75,469,77,477,71,478,70,470,63,405,61,341"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="370,939,351,1021,346,1020,365,938"/>
+<area shape="rect" id="Node000006" href="$classAlbum.html" title=" " alt="" coords="419,5,596,431"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="487,431,481,470,475,498,470,497,475,469,482,430"/>
+</map>

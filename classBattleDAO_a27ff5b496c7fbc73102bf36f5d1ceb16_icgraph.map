@@ -1,0 +1,9 @@
+<map id="BattleDAO\hydrate" name="BattleDAO\hydrate">
+<area shape="rect" id="Node000001" title="Hydrate une battle à partir d&#39;un tableau associatif." alt="" coords="416,31,560,56"/>
+<area shape="rect" id="Node000002" href="$classBattleDAO.html#aaf028ef6cee5f45701eaf226944d7f46" title="Récupère une battle par son identifiant." alt="" coords="219,5,337,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="402,36,337,28,338,22,403,30"/>
+<area shape="rect" id="Node000003" href="$classBattleDAO.html#ac960bd74514a1626eb931976170884a1" title="Hydrate plusieurs battles à partir d&#39;un tableau de tableaux associatifs." alt="" coords="188,55,368,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="403,56,368,60,368,54,402,50"/>
+<area shape="rect" id="Node000004" href="$classBattleDAO.html#a68a7261df3e7ac3b78a1a8770f117aec" title="Récupère toutes les battles de la base de données." alt="" coords="5,55,140,80"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="174,70,140,70,140,65,174,65"/>
+</map>

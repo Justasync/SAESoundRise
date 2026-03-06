@@ -1,0 +1,14 @@
+<map id="ControllerAlbum\modifierChanson" name="ControllerAlbum\modifierChanson">
+<area shape="rect" id="Node000001" title="Modifie les informations d&#39;une chanson." alt="" coords="5,49,192,89"/>
+<area shape="rect" id="Node000002" href="$classController.html#aed88cab8d9c1a6735fd3aac0993e5021" title="Récupère la connexion PDO." alt="" coords="253,5,392,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="187,46,252,31,253,36,188,51"/>
+<area shape="rect" id="Node000003" href="$classController.html#a56c96fd35f673f4d5084ef7ad0cd395c" title="Redirige vers un contrôleur et une méthode donnés." alt="" coords="668,107,823,132"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="193,66,390,72,505,80,620,91,678,101,677,106,620,97,505,85,389,78,192,72"/>
+<area shape="rect" id="Node000004" href="$classController.html#a3c8ca59e4609ef5e27e868a91f5ce090" title="Exige que l&#39;utilisateur ait un rôle spécifique." alt="" coords="240,107,405,132"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="188,86,253,101,252,106,187,91"/>
+<area shape="rect" id="Node000005" href="$classController.html#afd7d94db564ae6e196ac7ac0461e0989" title="Récupère l&#39;environnement Twig." alt="" coords="467,107,607,132"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="406,117,453,117,453,122,406,122"/>
+<area shape="rect" id="Node000006" href="$classController.html#a769e4e81d545b126413501bb3f3e77c3" title="Exige que l&#39;utilisateur soit authentifié." alt="" coords="453,156,620,181"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="379,129,468,150,467,155,378,135"/>
+<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="590,153,677,133,678,138,592,159"/>
+</map>

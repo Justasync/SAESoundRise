@@ -1,0 +1,6 @@
+<map id="ControllerMessage" name="ControllerMessage">
+<area shape="rect" id="Node000001" title="Contrôleur dédié à la gestion des messages." alt="" coords="7,519,143,624"/>
+<area shape="rect" id="Node000002" href="$classController.html" title="Classe de base pour tous les contrôleurs de l&#39;application." alt="" coords="5,5,144,471"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="69,484,71,518,65,519,64,484"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="85,484,84,519,79,518,80,484"/>
+</map>

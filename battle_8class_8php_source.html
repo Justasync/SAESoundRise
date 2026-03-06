@@ -1,0 +1,380 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Paaxio:  Fichier source de battle.class.php</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Paaxio<span id="projectnumber">&#160;1.0</span>
+   </div>
+   <div id="projectbrief">Plateforme de streaming musical - SAE IUT Bayonne</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Généré par Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Recherche');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('battle_8class_8php_source.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Chargement...</div>
+<div class="SRStatus" id="Searching">Recherche...</div>
+<div class="SRStatus" id="NoMatches">Aucune correspondance</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">battle.class.php</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="battle_8class_8php.html">Aller à la documentation de ce fichier.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span>&lt;?php</div>
+<div class="foldopen" id="foldopen00014" data-start="{" data-end="};">
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="battle_8class_8php.html#aabfa451edee96474a4ea638c55d58aa5">   14</a></span><span class="keyword">enum</span> <a class="code hl_enumeration" href="battle_8class_8php.html#aabfa451edee96474a4ea638c55d58aa5">StatutBattle</a>: <span class="keywordtype">string</span> {</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="keywordflow">case</span> En_attente = <span class="stringliteral">&#39;en_attente&#39;</span>;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keywordflow">case</span> En_cours = <span class="stringliteral">&#39;en_cours&#39;</span>;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="keywordflow">case</span> Terminee = <span class="stringliteral">&#39;terminee&#39;</span>;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="battle_8class_8php.html#aabfa451edee96474a4ea638c55d58aa5a386f21a0d3fbbbdc6573263941da2ed8">Annulee</a> = <span class="stringliteral">&#39;annulee&#39;</span>;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="battle_8class_8php.html#aabfa451edee96474a4ea638c55d58aa5a386f21a0d3fbbbdc6573263941da2ed8">   19</a></span>}</div>
+</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="foldopen" id="foldopen00029" data-start="{" data-end="};">
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="classBattle.html">   29</a></span><span class="keyword">class </span><a class="code hl_class" href="classBattle.html">Battle</a> {</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="classBattle.html#ae5dac7a0e034c77eeb4f4ab79f8b4e2e">   33</a></span>    <span class="keyword">private</span> <span class="keywordtype">int</span>|<span class="keyword">null</span> <a class="code hl_variable" href="classBattle.html#ae5dac7a0e034c77eeb4f4ab79f8b4e2e">$idBattle</a>;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="classBattle.html#a3d16f74a91805c629fcd112b518e086c">   38</a></span>    <span class="keyword">private</span> <span class="keywordtype">string</span>|<span class="keyword">null</span> <a class="code hl_variable" href="classBattle.html#a3d16f74a91805c629fcd112b518e086c">$titreBattle</a>;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="classBattle.html#a3339f7242876922e66f4dd92d8fb8331">   43</a></span>    <span class="keyword">private</span> DateTime|<span class="keyword">null</span> <a class="code hl_variable" href="classBattle.html#a3339f7242876922e66f4dd92d8fb8331">$dateDebutBattle</a>;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="classBattle.html#a0968332f1d5c7e70448cdfb0abbdd525">   48</a></span>    <span class="keyword">private</span> DateTime|<span class="keyword">null</span> <a class="code hl_variable" href="classBattle.html#a0968332f1d5c7e70448cdfb0abbdd525">$dateFinBattle</a>;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="classBattle.html#aec0eeef25ee5b33b16e0aac294235e2d">   53</a></span>    <span class="keyword">private</span> <a class="code hl_enumeration" href="battle_8class_8php.html#aabfa451edee96474a4ea638c55d58aa5">StatutBattle</a>|<span class="keyword">null</span> <a class="code hl_variable" href="classBattle.html#aec0eeef25ee5b33b16e0aac294235e2d">$statutBattle</a>;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="classBattle.html#a08d02434149a8935eb89f7389035b9bd">   58</a></span>    <span class="keyword">private</span> <span class="keywordtype">string</span>|<span class="keyword">null</span> <a class="code hl_variable" href="classBattle.html#a08d02434149a8935eb89f7389035b9bd">$emailCreateurBattle</a>;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="classBattle.html#a4172e097b3cd636eea3aa8be6367bcd9">   63</a></span>    <span class="keyword">private</span> <span class="keywordtype">string</span>|<span class="keyword">null</span> <a class="code hl_variable" href="classBattle.html#a4172e097b3cd636eea3aa8be6367bcd9">$emailParticipantBattle</a>;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="classBattle.html#abb940ee6bb77efb5b273486fbaad736c">   68</a></span>    <span class="keyword">private</span> <span class="keywordtype">int</span>|<span class="keyword">null</span> <a class="code hl_variable" href="classBattle.html#abb940ee6bb77efb5b273486fbaad736c">$idChansonCreateur</a>;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="classBattle.html#a58e10a6374e98dd0ab77c89ade09bbe8">   73</a></span>    <span class="keyword">private</span> <span class="keywordtype">int</span>|<span class="keyword">null</span> <a class="code hl_variable" href="classBattle.html#a58e10a6374e98dd0ab77c89ade09bbe8">$idChansonParticipant</a>;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="classBattle.html#aaa43fec9b5d7c4020b55c99a3208ed57">   78</a></span>    <span class="keyword">private</span> ?<a class="code hl_class" href="classUtilisateur.html">Utilisateur</a> <a class="code hl_variable" href="classBattle.html#aaa43fec9b5d7c4020b55c99a3208ed57">$createur</a> = <span class="keyword">null</span>;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="classBattle.html#aed49368cd75ba4bddc426ebc1d772eb8">   83</a></span>    <span class="keyword">private</span> ?<a class="code hl_class" href="classUtilisateur.html">Utilisateur</a> <a class="code hl_variable" href="classBattle.html#aed49368cd75ba4bddc426ebc1d772eb8">$participant</a> = <span class="keyword">null</span>;</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="classBattle.html#aa4e3d96822d2c8c9f8d01d0f5869d60f">   88</a></span>    <span class="keyword">private</span> ?<a class="code hl_class" href="classChanson.html">Chanson</a> <a class="code hl_variable" href="classBattle.html#aa4e3d96822d2c8c9f8d01d0f5869d60f">$chansonCreateurObj</a> = <span class="keyword">null</span>;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="classBattle.html#ab9d6d30fb1c99255ad1505c8f14cd2b5">   93</a></span>    <span class="keyword">private</span> ?<a class="code hl_class" href="classChanson.html">Chanson</a> <a class="code hl_variable" href="classBattle.html#ab9d6d30fb1c99255ad1505c8f14cd2b5">$chansonParticipantObj</a> = <span class="keyword">null</span>;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="classBattle.html#aa3f4fe5a4caa98e7362d1276fe74599f">   98</a></span>    <span class="keyword">private</span> <span class="keywordtype">bool</span> <a class="code hl_variable" href="classBattle.html#aa3f4fe5a4caa98e7362d1276fe74599f">$dejaVote</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="classBattle.html#acecaaccc2a6b80c947343397899c1a37">  104</a></span>    <span class="keyword">public</span> ?<span class="keywordtype">int</span> <a class="code hl_variable" href="classBattle.html#acecaaccc2a6b80c947343397899c1a37">$votesCreateur</a> = <span class="keyword">null</span>;</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="classBattle.html#ab59d9985aaf08d6c394cc16ee792502d">  110</a></span>    <span class="keyword">public</span> ?<span class="keywordtype">int</span> <a class="code hl_variable" href="classBattle.html#ab59d9985aaf08d6c394cc16ee792502d">$votesParticipant</a> = <span class="keyword">null</span>;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
+<div class="foldopen" id="foldopen00124" data-start="{" data-end="}">
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="classBattle.html#a9d7f3a8c469934b475755a33092126c9">  124</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#a9d7f3a8c469934b475755a33092126c9">__construct</a>(?<span class="keywordtype">int</span> <a class="code hl_variable" href="classBattle.html#ae5dac7a0e034c77eeb4f4ab79f8b4e2e">$idBattle</a> = <span class="keyword">null</span>, ?<span class="keywordtype">string</span> <a class="code hl_variable" href="classBattle.html#a3d16f74a91805c629fcd112b518e086c">$titreBattle</a> = <span class="keyword">null</span>, ?DateTime <a class="code hl_variable" href="classBattle.html#a3339f7242876922e66f4dd92d8fb8331">$dateDebutBattle</a> = <span class="keyword">null</span>, </div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>                                ?DateTime <a class="code hl_variable" href="classBattle.html#a0968332f1d5c7e70448cdfb0abbdd525">$dateFinBattle</a> = <span class="keyword">null</span>, ?<a class="code hl_enumeration" href="battle_8class_8php.html#aabfa451edee96474a4ea638c55d58aa5">StatutBattle</a> <a class="code hl_variable" href="classBattle.html#aec0eeef25ee5b33b16e0aac294235e2d">$statutBattle</a> = <span class="keyword">null</span>, </div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>                                ?<span class="keywordtype">string</span> <a class="code hl_variable" href="classBattle.html#a08d02434149a8935eb89f7389035b9bd">$emailCreateurBattle</a> = <span class="keyword">null</span>, ?<span class="keywordtype">string</span> <a class="code hl_variable" href="classBattle.html#a4172e097b3cd636eea3aa8be6367bcd9">$emailParticipantBattle</a> = <span class="keyword">null</span>,</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>                                ?<span class="keywordtype">int</span> <a class="code hl_variable" href="classBattle.html#abb940ee6bb77efb5b273486fbaad736c">$idChansonCreateur</a> = <span class="keyword">null</span>, ?<span class="keywordtype">int</span> <a class="code hl_variable" href="classBattle.html#a58e10a6374e98dd0ab77c89ade09bbe8">$idChansonParticipant</a> = <span class="keyword">null</span>)</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    {</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        $this-&gt;idBattle = <a class="code hl_variable" href="classBattle.html#ae5dac7a0e034c77eeb4f4ab79f8b4e2e">$idBattle</a>;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        $this-&gt;titreBattle = <a class="code hl_variable" href="classBattle.html#a3d16f74a91805c629fcd112b518e086c">$titreBattle</a>;</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        $this-&gt;dateDebutBattle = <a class="code hl_variable" href="classBattle.html#a3339f7242876922e66f4dd92d8fb8331">$dateDebutBattle</a>;</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        $this-&gt;dateFinBattle = <a class="code hl_variable" href="classBattle.html#a0968332f1d5c7e70448cdfb0abbdd525">$dateFinBattle</a>;</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>        $this-&gt;statutBattle = <a class="code hl_variable" href="classBattle.html#aec0eeef25ee5b33b16e0aac294235e2d">$statutBattle</a>;</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>        $this-&gt;emailCreateurBattle = <a class="code hl_variable" href="classBattle.html#a08d02434149a8935eb89f7389035b9bd">$emailCreateurBattle</a>;</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>        $this-&gt;emailParticipantBattle = <a class="code hl_variable" href="classBattle.html#a4172e097b3cd636eea3aa8be6367bcd9">$emailParticipantBattle</a>;</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>        $this-&gt;idChansonCreateur = <a class="code hl_variable" href="classBattle.html#abb940ee6bb77efb5b273486fbaad736c">$idChansonCreateur</a>;</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>        $this-&gt;idChansonParticipant = <a class="code hl_variable" href="classBattle.html#a58e10a6374e98dd0ab77c89ade09bbe8">$idChansonParticipant</a>;</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    }</div>
+</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span> </div>
+<div class="foldopen" id="foldopen00144" data-start="{" data-end="}">
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno"><a class="line" href="classBattle.html#aeb5c70abc6a12d87ac0107a9146930c3">  144</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#aeb5c70abc6a12d87ac0107a9146930c3">getIdBattle</a>(): ?int</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    {</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classBattle.html#ae5dac7a0e034c77eeb4f4ab79f8b4e2e">$this-&gt;idBattle</a>;</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    }</div>
+</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
+<div class="foldopen" id="foldopen00154" data-start="{" data-end="}">
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno"><a class="line" href="classBattle.html#afef65dbf4b07e377eb8f696a2d61528f">  154</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#afef65dbf4b07e377eb8f696a2d61528f">setIdBattle</a>(?<span class="keywordtype">int</span> <a class="code hl_variable" href="classBattle.html#ae5dac7a0e034c77eeb4f4ab79f8b4e2e">$idBattle</a>): void</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    {</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>        $this-&gt;idBattle = <a class="code hl_variable" href="classBattle.html#ae5dac7a0e034c77eeb4f4ab79f8b4e2e">$idBattle</a>;</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    }</div>
+</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
+<div class="foldopen" id="foldopen00163" data-start="{" data-end="}">
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno"><a class="line" href="classBattle.html#a13f34d69f076d4510a2ffacbe7db9cab">  163</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#a13f34d69f076d4510a2ffacbe7db9cab">getTitreBattle</a>(): ?string</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    {</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classBattle.html#a3d16f74a91805c629fcd112b518e086c">$this-&gt;titreBattle</a>;</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    }</div>
+</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
+<div class="foldopen" id="foldopen00173" data-start="{" data-end="}">
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno"><a class="line" href="classBattle.html#ad82e36b0bf33bf9fc66088c2b19f3e8c">  173</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#ad82e36b0bf33bf9fc66088c2b19f3e8c">setTitreBattle</a>(?<span class="keywordtype">string</span> <a class="code hl_variable" href="classBattle.html#a3d16f74a91805c629fcd112b518e086c">$titreBattle</a>): void</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    {</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>        $this-&gt;titreBattle = <a class="code hl_variable" href="classBattle.html#a3d16f74a91805c629fcd112b518e086c">$titreBattle</a>;</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    }</div>
+</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span> </div>
+<div class="foldopen" id="foldopen00182" data-start="{" data-end="}">
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno"><a class="line" href="classBattle.html#a978bfafbff6e4b126607b2fef798390d">  182</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#a978bfafbff6e4b126607b2fef798390d">getDateDebutBattle</a>(): ?DateTime</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    {</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classBattle.html#a3339f7242876922e66f4dd92d8fb8331">$this-&gt;dateDebutBattle</a>;</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    }</div>
+</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span> </div>
+<div class="foldopen" id="foldopen00192" data-start="{" data-end="}">
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno"><a class="line" href="classBattle.html#ab025d52f2aa1efc1f45bb6a9ed22ae08">  192</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#ab025d52f2aa1efc1f45bb6a9ed22ae08">setDateDebutBattle</a>(?DateTime <a class="code hl_variable" href="classBattle.html#a3339f7242876922e66f4dd92d8fb8331">$dateDebutBattle</a>): void</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    {</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>        $this-&gt;dateDebutBattle = <a class="code hl_variable" href="classBattle.html#a3339f7242876922e66f4dd92d8fb8331">$dateDebutBattle</a>;</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    }</div>
+</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
+<div class="foldopen" id="foldopen00201" data-start="{" data-end="}">
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno"><a class="line" href="classBattle.html#a8308580f00281dd81f0e1f2772a5f329">  201</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#a8308580f00281dd81f0e1f2772a5f329">getDateFinBattle</a>(): ?DateTime</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    {</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classBattle.html#a0968332f1d5c7e70448cdfb0abbdd525">$this-&gt;dateFinBattle</a>;</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    }</div>
+</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span> </div>
+<div class="foldopen" id="foldopen00211" data-start="{" data-end="}">
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno"><a class="line" href="classBattle.html#a2325450ed961fcdf10bda34a14b551a3">  211</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#a2325450ed961fcdf10bda34a14b551a3">setDateFinBattle</a>(?DateTime <a class="code hl_variable" href="classBattle.html#a0968332f1d5c7e70448cdfb0abbdd525">$dateFinBattle</a>): void</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    {</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>        $this-&gt;dateFinBattle = <a class="code hl_variable" href="classBattle.html#a0968332f1d5c7e70448cdfb0abbdd525">$dateFinBattle</a>;</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>    }</div>
+</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span> </div>
+<div class="foldopen" id="foldopen00220" data-start="{" data-end="}">
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno"><a class="line" href="classBattle.html#a478dd28b05d6fe290d3302b60be42954">  220</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#a478dd28b05d6fe290d3302b60be42954">getStatutBattle</a>(): ?<a class="code hl_enumeration" href="battle_8class_8php.html#aabfa451edee96474a4ea638c55d58aa5">StatutBattle</a></div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>    {</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classBattle.html#aec0eeef25ee5b33b16e0aac294235e2d">$this-&gt;statutBattle</a>;</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>    }</div>
+</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span> </div>
+<div class="foldopen" id="foldopen00230" data-start="{" data-end="}">
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno"><a class="line" href="classBattle.html#a8c03e68cc5823fe1d47d0192fcf2292a">  230</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#a8c03e68cc5823fe1d47d0192fcf2292a">setStatutBattle</a>(?<a class="code hl_enumeration" href="battle_8class_8php.html#aabfa451edee96474a4ea638c55d58aa5">StatutBattle</a> <a class="code hl_variable" href="classBattle.html#aec0eeef25ee5b33b16e0aac294235e2d">$statutBattle</a>): void</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    {</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>        $this-&gt;statutBattle = <a class="code hl_variable" href="classBattle.html#aec0eeef25ee5b33b16e0aac294235e2d">$statutBattle</a>;</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>    }</div>
+</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span> </div>
+<div class="foldopen" id="foldopen00239" data-start="{" data-end="}">
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno"><a class="line" href="classBattle.html#a0d0f5857ee87816d050012d256610e93">  239</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#a0d0f5857ee87816d050012d256610e93">getEmailCreateurBattle</a>(): ?string</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>    {</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classBattle.html#a08d02434149a8935eb89f7389035b9bd">$this-&gt;emailCreateurBattle</a>;</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    }</div>
+</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span> </div>
+<div class="foldopen" id="foldopen00249" data-start="{" data-end="}">
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno"><a class="line" href="classBattle.html#a1002769a83d7ef60b6869382824c5e68">  249</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#a1002769a83d7ef60b6869382824c5e68">setEmailCreateurBattle</a>(?<span class="keywordtype">string</span> <a class="code hl_variable" href="classBattle.html#a08d02434149a8935eb89f7389035b9bd">$emailCreateurBattle</a>): void</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    {</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>        $this-&gt;emailCreateurBattle = <a class="code hl_variable" href="classBattle.html#a08d02434149a8935eb89f7389035b9bd">$emailCreateurBattle</a>;</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>    }</div>
+</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
+<div class="foldopen" id="foldopen00258" data-start="{" data-end="}">
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno"><a class="line" href="classBattle.html#a4446f63a61abed5f8837fcaa30da0a3d">  258</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#a4446f63a61abed5f8837fcaa30da0a3d">getEmailParticipantBattle</a>(): ?string</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    {</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classBattle.html#a4172e097b3cd636eea3aa8be6367bcd9">$this-&gt;emailParticipantBattle</a>;</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    }</div>
+</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span> </div>
+<div class="foldopen" id="foldopen00268" data-start="{" data-end="}">
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno"><a class="line" href="classBattle.html#a04cdc8c8f0e295a1435436f36a3e9bbd">  268</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#a04cdc8c8f0e295a1435436f36a3e9bbd">setEmailParticipantBattle</a>(?<span class="keywordtype">string</span> <a class="code hl_variable" href="classBattle.html#a4172e097b3cd636eea3aa8be6367bcd9">$emailParticipantBattle</a>): void</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>    {</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>        $this-&gt;emailParticipantBattle = <a class="code hl_variable" href="classBattle.html#a4172e097b3cd636eea3aa8be6367bcd9">$emailParticipantBattle</a>;</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>    }</div>
+</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span> </div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno"><a class="line" href="classBattle.html#a93af8b31543ccbee22dc997392c0b4dd">  277</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#a93af8b31543ccbee22dc997392c0b4dd">getIdChansonCreateur</a>(): ?int { return $this-&gt;idChansonCreateur; }</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span> </div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno"><a class="line" href="classBattle.html#ad430251984ecf76f45a89f48fe826e1d">  284</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#ad430251984ecf76f45a89f48fe826e1d">setIdChansonCreateur</a>(?<span class="keywordtype">int</span> $id): void { $this-&gt;idChansonCreateur = $id; }</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span> </div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno"><a class="line" href="classBattle.html#a3045d8d497b45e64688a93c362611151">  290</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#a3045d8d497b45e64688a93c362611151">getIdChansonParticipant</a>(): ?int { return $this-&gt;idChansonParticipant; }</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span> </div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno"><a class="line" href="classBattle.html#a4e7eef98b31e937218dd2cf58651b6da">  297</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#a4e7eef98b31e937218dd2cf58651b6da">setIdChansonParticipant</a>(?<span class="keywordtype">int</span> $id): void { $this-&gt;idChansonParticipant = $id; }</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span> </div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno"><a class="line" href="classBattle.html#ae00dd2b8f5b22bffddad163a5d05b1f5">  303</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#ae00dd2b8f5b22bffddad163a5d05b1f5">getCreateur</a>(): ?<a class="code hl_class" href="classUtilisateur.html">Utilisateur</a> { return $this-&gt;createur; }</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span> </div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno"><a class="line" href="classBattle.html#af5426c051b171d0cdca3b2aa6d8b2665">  310</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#af5426c051b171d0cdca3b2aa6d8b2665">setCreateur</a>(?<a class="code hl_class" href="classUtilisateur.html">Utilisateur</a> $u): void { $this-&gt;createur = $u; }</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span> </div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno"><a class="line" href="classBattle.html#a086105e5a89a2a21af1aa840149021b7">  316</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#a086105e5a89a2a21af1aa840149021b7">getParticipant</a>(): ?<a class="code hl_class" href="classUtilisateur.html">Utilisateur</a> { return $this-&gt;participant; }</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span> </div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno"><a class="line" href="classBattle.html#a78fcb3085c2169a095333421690474f1">  323</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#a78fcb3085c2169a095333421690474f1">setParticipant</a>(?<a class="code hl_class" href="classUtilisateur.html">Utilisateur</a> $u): void { $this-&gt;participant = $u; }</div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span> </div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno"><a class="line" href="classBattle.html#a3cbacc8100dddd0e8b46c2a178373e04">  329</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#a3cbacc8100dddd0e8b46c2a178373e04">getChansonCreateurObj</a>(): ?<a class="code hl_class" href="classChanson.html">Chanson</a> { return $this-&gt;chansonCreateurObj; }</div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span> </div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno"><a class="line" href="classBattle.html#a94f60659749fa71540b036d061cfc254">  336</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#a94f60659749fa71540b036d061cfc254">setChansonCreateurObj</a>(?<a class="code hl_class" href="classChanson.html">Chanson</a> $c): void { $this-&gt;chansonCreateurObj = $c; }</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span> </div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno"><a class="line" href="classBattle.html#af4e2d60eb31cc043a6d5e409d7c6dc3e">  342</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#af4e2d60eb31cc043a6d5e409d7c6dc3e">getChansonParticipantObj</a>(): ?<a class="code hl_class" href="classChanson.html">Chanson</a> { return $this-&gt;chansonParticipantObj; }</div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span> </div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno"><a class="line" href="classBattle.html#a657dda0191ca2309e7bc31509eced16c">  349</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#a657dda0191ca2309e7bc31509eced16c">setChansonParticipantObj</a>(?<a class="code hl_class" href="classChanson.html">Chanson</a> $c): void { $this-&gt;chansonParticipantObj = $c; }</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span> </div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno"><a class="line" href="classBattle.html#a740d82cac5d54c7bfe379a10a3336403">  355</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#a740d82cac5d54c7bfe379a10a3336403">getDejaVote</a>(): bool { return $this-&gt;dejaVote; }</div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span> </div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno"><a class="line" href="classBattle.html#a7d6fe743bb6f296dba47727f9466f939">  362</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#a7d6fe743bb6f296dba47727f9466f939">setDejaVote</a>(<span class="keywordtype">bool</span> $dejaVote): void { $this-&gt;dejaVote = $dejaVote; }</div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span> </div>
+<div class="foldopen" id="foldopen00368" data-start="{" data-end="}">
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno"><a class="line" href="classBattle.html#a828a9b883c9ce94095296b832ae1a942">  368</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#a828a9b883c9ce94095296b832ae1a942">getVotesCreateur</a>(): ?int {</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>        return $this-&gt;votesCreateur;</div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>    }</div>
+</div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span> </div>
+<div class="foldopen" id="foldopen00377" data-start="{" data-end="}">
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno"><a class="line" href="classBattle.html#aa61c59a078212b73e08f82468ce7a2bc">  377</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#aa61c59a078212b73e08f82468ce7a2bc">setVotesCreateur</a>(?<span class="keywordtype">int</span> $votes): void {</div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>        $this-&gt;votesCreateur = $votes;</div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>    }</div>
+</div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span> </div>
+<div class="foldopen" id="foldopen00385" data-start="{" data-end="}">
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno"><a class="line" href="classBattle.html#a2ecc3249afd25796bb24c2deda63ae47">  385</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#a2ecc3249afd25796bb24c2deda63ae47">getVotesParticipant</a>(): ?int {</div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>        return $this-&gt;votesParticipant;</div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>    }</div>
+</div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span> </div>
+<div class="foldopen" id="foldopen00394" data-start="{" data-end="}">
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno"><a class="line" href="classBattle.html#a6733a8ef42f75f65e539d03e6bb8d9ce">  394</a></span>    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code hl_function" href="classBattle.html#a6733a8ef42f75f65e539d03e6bb8d9ce">setVotesParticipant</a>(?<span class="keywordtype">int</span> $votes): void {</div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>        $this-&gt;votesParticipant = $votes;</div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>    }</div>
+</div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>    </div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>}</div>
+</div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>?&gt;</div>
+<div class="ttc" id="abattle_8class_8php_html_aabfa451edee96474a4ea638c55d58aa5"><div class="ttname"><a href="battle_8class_8php.html#aabfa451edee96474a4ea638c55d58aa5">StatutBattle</a></div><div class="ttdeci">StatutBattle</div><div class="ttdoc">Enumération des statuts possibles pour une battle.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00014">battle.class.php:14</a></div></div>
+<div class="ttc" id="abattle_8class_8php_html_aabfa451edee96474a4ea638c55d58aa5a386f21a0d3fbbbdc6573263941da2ed8"><div class="ttname"><a href="battle_8class_8php.html#aabfa451edee96474a4ea638c55d58aa5a386f21a0d3fbbbdc6573263941da2ed8">Annulee</a></div><div class="ttdeci">@ Annulee</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00019">battle.class.php:18</a></div></div>
+<div class="ttc" id="aclassBattle_html"><div class="ttname"><a href="classBattle.html">Battle</a></div><div class="ttdoc">Classe représentant une battle musicale.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00029">battle.class.php:29</a></div></div>
+<div class="ttc" id="aclassBattle_html_a04cdc8c8f0e295a1435436f36a3e9bbd"><div class="ttname"><a href="classBattle.html#a04cdc8c8f0e295a1435436f36a3e9bbd">Battle\setEmailParticipantBattle</a></div><div class="ttdeci">setEmailParticipantBattle(?string $emailParticipantBattle)</div><div class="ttdoc">Setter pour emailParticipantBattle.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00268">battle.class.php:268</a></div></div>
+<div class="ttc" id="aclassBattle_html_a086105e5a89a2a21af1aa840149021b7"><div class="ttname"><a href="classBattle.html#a086105e5a89a2a21af1aa840149021b7">Battle\getParticipant</a></div><div class="ttdeci">getParticipant()</div><div class="ttdoc">Getter pour l'objet Utilisateur participant.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00316">battle.class.php:316</a></div></div>
+<div class="ttc" id="aclassBattle_html_a08d02434149a8935eb89f7389035b9bd"><div class="ttname"><a href="classBattle.html#a08d02434149a8935eb89f7389035b9bd">Battle\$emailCreateurBattle</a></div><div class="ttdeci">string null $emailCreateurBattle</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00058">battle.class.php:58</a></div></div>
+<div class="ttc" id="aclassBattle_html_a0968332f1d5c7e70448cdfb0abbdd525"><div class="ttname"><a href="classBattle.html#a0968332f1d5c7e70448cdfb0abbdd525">Battle\$dateFinBattle</a></div><div class="ttdeci">DateTime null $dateFinBattle</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00048">battle.class.php:48</a></div></div>
+<div class="ttc" id="aclassBattle_html_a0d0f5857ee87816d050012d256610e93"><div class="ttname"><a href="classBattle.html#a0d0f5857ee87816d050012d256610e93">Battle\getEmailCreateurBattle</a></div><div class="ttdeci">getEmailCreateurBattle()</div><div class="ttdoc">Getter pour emailCreateurBattle.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00239">battle.class.php:239</a></div></div>
+<div class="ttc" id="aclassBattle_html_a1002769a83d7ef60b6869382824c5e68"><div class="ttname"><a href="classBattle.html#a1002769a83d7ef60b6869382824c5e68">Battle\setEmailCreateurBattle</a></div><div class="ttdeci">setEmailCreateurBattle(?string $emailCreateurBattle)</div><div class="ttdoc">Setter pour emailCreateurBattle.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00249">battle.class.php:249</a></div></div>
+<div class="ttc" id="aclassBattle_html_a13f34d69f076d4510a2ffacbe7db9cab"><div class="ttname"><a href="classBattle.html#a13f34d69f076d4510a2ffacbe7db9cab">Battle\getTitreBattle</a></div><div class="ttdeci">getTitreBattle()</div><div class="ttdoc">Getter pour titreBattle.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00163">battle.class.php:163</a></div></div>
+<div class="ttc" id="aclassBattle_html_a2325450ed961fcdf10bda34a14b551a3"><div class="ttname"><a href="classBattle.html#a2325450ed961fcdf10bda34a14b551a3">Battle\setDateFinBattle</a></div><div class="ttdeci">setDateFinBattle(?DateTime $dateFinBattle)</div><div class="ttdoc">Setter pour dateFinBattle.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00211">battle.class.php:211</a></div></div>
+<div class="ttc" id="aclassBattle_html_a2ecc3249afd25796bb24c2deda63ae47"><div class="ttname"><a href="classBattle.html#a2ecc3249afd25796bb24c2deda63ae47">Battle\getVotesParticipant</a></div><div class="ttdeci">getVotesParticipant()</div><div class="ttdoc">Obtient le nombre de votes du participant.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00385">battle.class.php:385</a></div></div>
+<div class="ttc" id="aclassBattle_html_a3045d8d497b45e64688a93c362611151"><div class="ttname"><a href="classBattle.html#a3045d8d497b45e64688a93c362611151">Battle\getIdChansonParticipant</a></div><div class="ttdeci">getIdChansonParticipant()</div><div class="ttdoc">Getter pour idChansonParticipant.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00290">battle.class.php:290</a></div></div>
+<div class="ttc" id="aclassBattle_html_a3339f7242876922e66f4dd92d8fb8331"><div class="ttname"><a href="classBattle.html#a3339f7242876922e66f4dd92d8fb8331">Battle\$dateDebutBattle</a></div><div class="ttdeci">DateTime null $dateDebutBattle</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00043">battle.class.php:43</a></div></div>
+<div class="ttc" id="aclassBattle_html_a3cbacc8100dddd0e8b46c2a178373e04"><div class="ttname"><a href="classBattle.html#a3cbacc8100dddd0e8b46c2a178373e04">Battle\getChansonCreateurObj</a></div><div class="ttdeci">getChansonCreateurObj()</div><div class="ttdoc">Getter pour l'objet Chanson du créateur.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00329">battle.class.php:329</a></div></div>
+<div class="ttc" id="aclassBattle_html_a3d16f74a91805c629fcd112b518e086c"><div class="ttname"><a href="classBattle.html#a3d16f74a91805c629fcd112b518e086c">Battle\$titreBattle</a></div><div class="ttdeci">string null $titreBattle</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00038">battle.class.php:38</a></div></div>
+<div class="ttc" id="aclassBattle_html_a4172e097b3cd636eea3aa8be6367bcd9"><div class="ttname"><a href="classBattle.html#a4172e097b3cd636eea3aa8be6367bcd9">Battle\$emailParticipantBattle</a></div><div class="ttdeci">string null $emailParticipantBattle</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00063">battle.class.php:63</a></div></div>
+<div class="ttc" id="aclassBattle_html_a4446f63a61abed5f8837fcaa30da0a3d"><div class="ttname"><a href="classBattle.html#a4446f63a61abed5f8837fcaa30da0a3d">Battle\getEmailParticipantBattle</a></div><div class="ttdeci">getEmailParticipantBattle()</div><div class="ttdoc">Getter pour emailParticipantBattle.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00258">battle.class.php:258</a></div></div>
+<div class="ttc" id="aclassBattle_html_a478dd28b05d6fe290d3302b60be42954"><div class="ttname"><a href="classBattle.html#a478dd28b05d6fe290d3302b60be42954">Battle\getStatutBattle</a></div><div class="ttdeci">getStatutBattle()</div><div class="ttdoc">Getter pour statutBattle.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00220">battle.class.php:220</a></div></div>
+<div class="ttc" id="aclassBattle_html_a4e7eef98b31e937218dd2cf58651b6da"><div class="ttname"><a href="classBattle.html#a4e7eef98b31e937218dd2cf58651b6da">Battle\setIdChansonParticipant</a></div><div class="ttdeci">setIdChansonParticipant(?int $id)</div><div class="ttdoc">Setter pour idChansonParticipant.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00297">battle.class.php:297</a></div></div>
+<div class="ttc" id="aclassBattle_html_a58e10a6374e98dd0ab77c89ade09bbe8"><div class="ttname"><a href="classBattle.html#a58e10a6374e98dd0ab77c89ade09bbe8">Battle\$idChansonParticipant</a></div><div class="ttdeci">int null $idChansonParticipant</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00073">battle.class.php:73</a></div></div>
+<div class="ttc" id="aclassBattle_html_a657dda0191ca2309e7bc31509eced16c"><div class="ttname"><a href="classBattle.html#a657dda0191ca2309e7bc31509eced16c">Battle\setChansonParticipantObj</a></div><div class="ttdeci">setChansonParticipantObj(?Chanson $c)</div><div class="ttdoc">Setter pour l'objet Chanson du participant.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00349">battle.class.php:349</a></div></div>
+<div class="ttc" id="aclassBattle_html_a6733a8ef42f75f65e539d03e6bb8d9ce"><div class="ttname"><a href="classBattle.html#a6733a8ef42f75f65e539d03e6bb8d9ce">Battle\setVotesParticipant</a></div><div class="ttdeci">setVotesParticipant(?int $votes)</div><div class="ttdoc">Définit le nombre de votes du participant.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00394">battle.class.php:394</a></div></div>
+<div class="ttc" id="aclassBattle_html_a740d82cac5d54c7bfe379a10a3336403"><div class="ttname"><a href="classBattle.html#a740d82cac5d54c7bfe379a10a3336403">Battle\getDejaVote</a></div><div class="ttdeci">getDejaVote()</div><div class="ttdoc">Getter pour dejaVote.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00355">battle.class.php:355</a></div></div>
+<div class="ttc" id="aclassBattle_html_a78fcb3085c2169a095333421690474f1"><div class="ttname"><a href="classBattle.html#a78fcb3085c2169a095333421690474f1">Battle\setParticipant</a></div><div class="ttdeci">setParticipant(?Utilisateur $u)</div><div class="ttdoc">Setter pour l'objet Utilisateur participant.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00323">battle.class.php:323</a></div></div>
+<div class="ttc" id="aclassBattle_html_a7d6fe743bb6f296dba47727f9466f939"><div class="ttname"><a href="classBattle.html#a7d6fe743bb6f296dba47727f9466f939">Battle\setDejaVote</a></div><div class="ttdeci">setDejaVote(bool $dejaVote)</div><div class="ttdoc">Setter pour dejaVote.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00362">battle.class.php:362</a></div></div>
+<div class="ttc" id="aclassBattle_html_a828a9b883c9ce94095296b832ae1a942"><div class="ttname"><a href="classBattle.html#a828a9b883c9ce94095296b832ae1a942">Battle\getVotesCreateur</a></div><div class="ttdeci">getVotesCreateur()</div><div class="ttdoc">Obtient le nombre de votes du créateur.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00368">battle.class.php:368</a></div></div>
+<div class="ttc" id="aclassBattle_html_a8308580f00281dd81f0e1f2772a5f329"><div class="ttname"><a href="classBattle.html#a8308580f00281dd81f0e1f2772a5f329">Battle\getDateFinBattle</a></div><div class="ttdeci">getDateFinBattle()</div><div class="ttdoc">Getter pour dateFinBattle.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00201">battle.class.php:201</a></div></div>
+<div class="ttc" id="aclassBattle_html_a8c03e68cc5823fe1d47d0192fcf2292a"><div class="ttname"><a href="classBattle.html#a8c03e68cc5823fe1d47d0192fcf2292a">Battle\setStatutBattle</a></div><div class="ttdeci">setStatutBattle(?StatutBattle $statutBattle)</div><div class="ttdoc">Setter pour statutBattle.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00230">battle.class.php:230</a></div></div>
+<div class="ttc" id="aclassBattle_html_a93af8b31543ccbee22dc997392c0b4dd"><div class="ttname"><a href="classBattle.html#a93af8b31543ccbee22dc997392c0b4dd">Battle\getIdChansonCreateur</a></div><div class="ttdeci">getIdChansonCreateur()</div><div class="ttdoc">Getter pour idChansonCreateur.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00277">battle.class.php:277</a></div></div>
+<div class="ttc" id="aclassBattle_html_a94f60659749fa71540b036d061cfc254"><div class="ttname"><a href="classBattle.html#a94f60659749fa71540b036d061cfc254">Battle\setChansonCreateurObj</a></div><div class="ttdeci">setChansonCreateurObj(?Chanson $c)</div><div class="ttdoc">Setter pour l'objet Chanson du créateur.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00336">battle.class.php:336</a></div></div>
+<div class="ttc" id="aclassBattle_html_a978bfafbff6e4b126607b2fef798390d"><div class="ttname"><a href="classBattle.html#a978bfafbff6e4b126607b2fef798390d">Battle\getDateDebutBattle</a></div><div class="ttdeci">getDateDebutBattle()</div><div class="ttdoc">Getter pour dateDebutBattle.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00182">battle.class.php:182</a></div></div>
+<div class="ttc" id="aclassBattle_html_a9d7f3a8c469934b475755a33092126c9"><div class="ttname"><a href="classBattle.html#a9d7f3a8c469934b475755a33092126c9">Battle\__construct</a></div><div class="ttdeci">__construct(?int $idBattle=null, ?string $titreBattle=null, ?DateTime $dateDebutBattle=null, ?DateTime $dateFinBattle=null, ?StatutBattle $statutBattle=null, ?string $emailCreateurBattle=null, ?string $emailParticipantBattle=null, ?int $idChansonCreateur=null, ?int $idChansonParticipant=null)</div><div class="ttdoc">Constructeur de la classe Battle.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00124">battle.class.php:124</a></div></div>
+<div class="ttc" id="aclassBattle_html_aa3f4fe5a4caa98e7362d1276fe74599f"><div class="ttname"><a href="classBattle.html#aa3f4fe5a4caa98e7362d1276fe74599f">Battle\$dejaVote</a></div><div class="ttdeci">bool $dejaVote</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00098">battle.class.php:98</a></div></div>
+<div class="ttc" id="aclassBattle_html_aa4e3d96822d2c8c9f8d01d0f5869d60f"><div class="ttname"><a href="classBattle.html#aa4e3d96822d2c8c9f8d01d0f5869d60f">Battle\$chansonCreateurObj</a></div><div class="ttdeci">Chanson $chansonCreateurObj</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00088">battle.class.php:88</a></div></div>
+<div class="ttc" id="aclassBattle_html_aa61c59a078212b73e08f82468ce7a2bc"><div class="ttname"><a href="classBattle.html#aa61c59a078212b73e08f82468ce7a2bc">Battle\setVotesCreateur</a></div><div class="ttdeci">setVotesCreateur(?int $votes)</div><div class="ttdoc">Définit le nombre de votes du créateur.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00377">battle.class.php:377</a></div></div>
+<div class="ttc" id="aclassBattle_html_aaa43fec9b5d7c4020b55c99a3208ed57"><div class="ttname"><a href="classBattle.html#aaa43fec9b5d7c4020b55c99a3208ed57">Battle\$createur</a></div><div class="ttdeci">Utilisateur $createur</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00078">battle.class.php:78</a></div></div>
+<div class="ttc" id="aclassBattle_html_ab025d52f2aa1efc1f45bb6a9ed22ae08"><div class="ttname"><a href="classBattle.html#ab025d52f2aa1efc1f45bb6a9ed22ae08">Battle\setDateDebutBattle</a></div><div class="ttdeci">setDateDebutBattle(?DateTime $dateDebutBattle)</div><div class="ttdoc">Setter pour dateDebutBattle.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00192">battle.class.php:192</a></div></div>
+<div class="ttc" id="aclassBattle_html_ab59d9985aaf08d6c394cc16ee792502d"><div class="ttname"><a href="classBattle.html#ab59d9985aaf08d6c394cc16ee792502d">Battle\$votesParticipant</a></div><div class="ttdeci">int $votesParticipant</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00110">battle.class.php:110</a></div></div>
+<div class="ttc" id="aclassBattle_html_ab9d6d30fb1c99255ad1505c8f14cd2b5"><div class="ttname"><a href="classBattle.html#ab9d6d30fb1c99255ad1505c8f14cd2b5">Battle\$chansonParticipantObj</a></div><div class="ttdeci">Chanson $chansonParticipantObj</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00093">battle.class.php:93</a></div></div>
+<div class="ttc" id="aclassBattle_html_abb940ee6bb77efb5b273486fbaad736c"><div class="ttname"><a href="classBattle.html#abb940ee6bb77efb5b273486fbaad736c">Battle\$idChansonCreateur</a></div><div class="ttdeci">int null $idChansonCreateur</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00068">battle.class.php:68</a></div></div>
+<div class="ttc" id="aclassBattle_html_acecaaccc2a6b80c947343397899c1a37"><div class="ttname"><a href="classBattle.html#acecaaccc2a6b80c947343397899c1a37">Battle\$votesCreateur</a></div><div class="ttdeci">int $votesCreateur</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00104">battle.class.php:104</a></div></div>
+<div class="ttc" id="aclassBattle_html_ad430251984ecf76f45a89f48fe826e1d"><div class="ttname"><a href="classBattle.html#ad430251984ecf76f45a89f48fe826e1d">Battle\setIdChansonCreateur</a></div><div class="ttdeci">setIdChansonCreateur(?int $id)</div><div class="ttdoc">Setter pour idChansonCreateur.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00284">battle.class.php:284</a></div></div>
+<div class="ttc" id="aclassBattle_html_ad82e36b0bf33bf9fc66088c2b19f3e8c"><div class="ttname"><a href="classBattle.html#ad82e36b0bf33bf9fc66088c2b19f3e8c">Battle\setTitreBattle</a></div><div class="ttdeci">setTitreBattle(?string $titreBattle)</div><div class="ttdoc">Setter pour titreBattle.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00173">battle.class.php:173</a></div></div>
+<div class="ttc" id="aclassBattle_html_ae00dd2b8f5b22bffddad163a5d05b1f5"><div class="ttname"><a href="classBattle.html#ae00dd2b8f5b22bffddad163a5d05b1f5">Battle\getCreateur</a></div><div class="ttdeci">getCreateur()</div><div class="ttdoc">Getter pour l'objet Utilisateur créateur.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00303">battle.class.php:303</a></div></div>
+<div class="ttc" id="aclassBattle_html_ae5dac7a0e034c77eeb4f4ab79f8b4e2e"><div class="ttname"><a href="classBattle.html#ae5dac7a0e034c77eeb4f4ab79f8b4e2e">Battle\$idBattle</a></div><div class="ttdeci">int null $idBattle</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00033">battle.class.php:33</a></div></div>
+<div class="ttc" id="aclassBattle_html_aeb5c70abc6a12d87ac0107a9146930c3"><div class="ttname"><a href="classBattle.html#aeb5c70abc6a12d87ac0107a9146930c3">Battle\getIdBattle</a></div><div class="ttdeci">getIdBattle()</div><div class="ttdoc">Getter pour idBattle.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00144">battle.class.php:144</a></div></div>
+<div class="ttc" id="aclassBattle_html_aec0eeef25ee5b33b16e0aac294235e2d"><div class="ttname"><a href="classBattle.html#aec0eeef25ee5b33b16e0aac294235e2d">Battle\$statutBattle</a></div><div class="ttdeci">StatutBattle null $statutBattle</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00053">battle.class.php:53</a></div></div>
+<div class="ttc" id="aclassBattle_html_aed49368cd75ba4bddc426ebc1d772eb8"><div class="ttname"><a href="classBattle.html#aed49368cd75ba4bddc426ebc1d772eb8">Battle\$participant</a></div><div class="ttdeci">Utilisateur $participant</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00083">battle.class.php:83</a></div></div>
+<div class="ttc" id="aclassBattle_html_af4e2d60eb31cc043a6d5e409d7c6dc3e"><div class="ttname"><a href="classBattle.html#af4e2d60eb31cc043a6d5e409d7c6dc3e">Battle\getChansonParticipantObj</a></div><div class="ttdeci">getChansonParticipantObj()</div><div class="ttdoc">Getter pour l'objet Chanson du participant.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00342">battle.class.php:342</a></div></div>
+<div class="ttc" id="aclassBattle_html_af5426c051b171d0cdca3b2aa6d8b2665"><div class="ttname"><a href="classBattle.html#af5426c051b171d0cdca3b2aa6d8b2665">Battle\setCreateur</a></div><div class="ttdeci">setCreateur(?Utilisateur $u)</div><div class="ttdoc">Setter pour l'objet Utilisateur créateur.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00310">battle.class.php:310</a></div></div>
+<div class="ttc" id="aclassBattle_html_afef65dbf4b07e377eb8f696a2d61528f"><div class="ttname"><a href="classBattle.html#afef65dbf4b07e377eb8f696a2d61528f">Battle\setIdBattle</a></div><div class="ttdeci">setIdBattle(?int $idBattle)</div><div class="ttdoc">Setter pour idBattle.</div><div class="ttdef"><b>Definition</b> <a href="battle_8class_8php_source.html#l00154">battle.class.php:154</a></div></div>
+<div class="ttc" id="aclassChanson_html"><div class="ttname"><a href="classChanson.html">Chanson</a></div><div class="ttdef"><b>Definition</b> <a href="chanson_8class_8php_source.html#l00007">chanson.class.php:8</a></div></div>
+<div class="ttc" id="aclassUtilisateur_html"><div class="ttname"><a href="classUtilisateur.html">Utilisateur</a></div><div class="ttdef"><b>Definition</b> <a href="utilisateur_8class_8php_source.html#l00036">utilisateur.class.php:37</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_94350f523feee7bac2b3c4d6268d38b5.html">modeles</a></li><li class="navelem"><a class="el" href="battle_8class_8php.html">battle.class.php</a></li>
+    <li class="footer">Généré le Vendredi 6 Mars 2026 00:04:18 pour Paaxio par <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

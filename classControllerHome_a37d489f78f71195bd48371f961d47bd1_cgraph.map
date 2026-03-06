@@ -1,0 +1,7 @@
+<map id="ControllerHome\openDashboard" name="ControllerHome\openDashboard">
+<area shape="rect" id="Node000001" title="Affiche le tableau de bord public (utilisateurs non connectés ou invités)." alt="" coords="5,31,236,56"/>
+<area shape="rect" id="Node000002" href="$classController.html#aed88cab8d9c1a6735fd3aac0993e5021" title="Récupère la connexion PDO." alt="" coords="285,5,423,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="236,28,271,24,271,30,237,33"/>
+<area shape="rect" id="Node000003" href="$classController.html#afd7d94db564ae6e196ac7ac0461e0989" title="Récupère l&#39;environnement Twig." alt="" coords="284,55,424,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="237,53,270,56,270,61,236,58"/>
+</map>
